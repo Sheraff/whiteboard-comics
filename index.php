@@ -36,7 +36,7 @@
 	// get graphs in reverse chronological order
 	$globbed = glob("graphs/*.svg");
 	rsort( $globbed );
-	
+
 	foreach ($globbed as $key => $file) {
 		$parsed = path_to_components($file);
 
@@ -68,7 +68,7 @@
 	$next_page = $initial_index===count($files)-1 ? '/' : path_to_components($files[$initial_index+1][path])[name];
 
 	// random subtitle for H2
-	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES); 
+	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
   $h2 = $f_contents[rand(0, count($f_contents) - 1)];
 
   // log initial page load
@@ -136,6 +136,8 @@
 	ability adjust speed while drawing
 	make the archive page ajax too, with boards zooming in and out
 
+	this is a new branch
+
 	KEYBOARDS CONTROLS
 	- left/right to navigate graphs
 	- tab key behavior
@@ -144,7 +146,7 @@
 	- remove self promo in footer
 	- add settings
 	- add icon for link to website
-	- is an external font necessary ? 
+	- is an external font necessary ?
 
 	try out Vollkorn webfont instead of Roboto Slab
 
