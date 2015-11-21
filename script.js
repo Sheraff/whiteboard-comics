@@ -111,7 +111,7 @@ function initialize () {
 	var total_duration = play_svg(svg, .5)
 	if(!ANIMATE)
 		force_finish_drawing_element_svg(svg)
-	
+
 	// preload next graph
 	if(GRAPHS[INDEX+1])
 		load_svg(INDEX+1, setup_page.bind(undefined, INDEX+1))
@@ -135,7 +135,7 @@ function navigate (direction, event) {
 	var svg = document.querySelector('main svg')
 	interrupt_drawing_element_svg(svg)
 	if(ANIMATE)
-		erase(svg, 0, setup_page.bind(undefined, direction===0?0:(INDEX+direction))) 
+		erase(svg, 0, setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
 	else
 		ERASED = true
 	load_svg(direction===0?0:(INDEX+direction), setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
@@ -225,7 +225,7 @@ function setup_page (index, force) {
 }
 
 // enable browser history navigation
-window.onpopstate = function (event) { 
+window.onpopstate = function (event) {
 	if(!event.state)
 		return
 	var index = -1
@@ -291,7 +291,9 @@ function load_svg (index, callback) {
 function loaded_svg (index, httpRequest, callback) {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
-			GRAPHS[index].content = httpRequest.responseText
+      var el = document.createElement('div')
+      el.innerHTML = httpRequest.responseText
+			GRAPHS[index].content = el.getElementsByTagName('svg')[0]
 			callback()
 		} else {
 			setTimeout(load_svg.bind(undefined, index, callback), 1000)

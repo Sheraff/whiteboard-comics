@@ -64,6 +64,7 @@
 
 	// load content for matched (or latest) graph
 	$files[$initial_index][content] = file_get_contents($files[$initial_index][path]);
+
 	$prev_page = $initial_index===$latest_release ? '/' : path_to_components($files[$initial_index-1][path])[name];
 	$next_page = $initial_index===count($files)-1 ? '/' : path_to_components($files[$initial_index+1][path])[name];
 
@@ -100,6 +101,20 @@
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
 	<link rel="icon" type="image/png" href="favicon.png">
 	<link href='style.css' rel='stylesheet'>
+	<style>
+		main svg path, main svg line, main svg polyline{
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-miterlimit: 10;
+			fill: none;
+		}
+		main svg path:not([stroke]), main svg line:not([stroke]), main svg polyline:not([stroke]){
+			stroke: black;
+		}
+		main svg path:not([stroke-width]), main svg line:not([stroke-width]), main svg polyline:not([stroke-width]){
+			stroke-width: 4;
+		}
+	</style>
 </head>
 <aside>
 	<input type="checkbox" id="cog_check">
@@ -135,8 +150,6 @@
 <!-- todo
 	ability adjust speed while drawing
 	make the archive page ajax too, with boards zooming in and out
-
-	this is a new branch
 
 	KEYBOARDS CONTROLS
 	- left/right to navigate graphs
