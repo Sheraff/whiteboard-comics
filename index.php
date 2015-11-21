@@ -114,6 +114,9 @@
 		main svg path:not([stroke-width]), main svg line:not([stroke-width]), main svg polyline:not([stroke-width]){
 			stroke-width: 4;
 		}
+		main svg [data-type=erase]{
+			stroke-linejoin: bevel;
+		}
 	</style>
 </head>
 <aside>
@@ -169,6 +172,7 @@
 	MORE FLEXIBILITY
 	- SVG metadata stored somewhere else than in the filenames
 	- rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
+	⚠ for now, spans outside the SVG tags will be ignored (#authorship)
 
 	ALLOW FOR SHARING OF IMAGES
 	- authorship / credits must go in a <text></text> svg element, along with the whiteboard-comics.com watermark

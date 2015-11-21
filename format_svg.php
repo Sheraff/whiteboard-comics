@@ -5,6 +5,7 @@
     $file_content = preg_replace([
       '/([^>])(\n|\r)([\t\s]?)*/',
       '/ ?stroke-linejoin="round" ?/',
+      '/ ?stroke-linejoin="bevel" ?/',
       '/ ?stroke-linecap="round" ?/',
       '/ ?stroke-width="4" ?/',
       '/ ?fill="none" ?/',
@@ -13,6 +14,7 @@
       '/ +/'
     ], [
       '$1 ',
+      ' ',
       ' ',
       ' ',
       ' ',
