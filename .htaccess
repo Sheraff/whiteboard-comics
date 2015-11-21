@@ -1,0 +1,16 @@
+AddType image/svg+xml .svg .svgz
+
+RewriteEngine on
+RewriteRule ^([^/]*)\)$ ?graph=$1)
+RewriteRule ^svg/(.*)$ svg.php?graph=$1
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/svg+xml "access 1 day"
+ExpiresByType image/png "access 1 day"
+ExpiresByType text/css "access 1 day"
+ExpiresByType application/x-javascript "access 1 day"
+ExpiresDefault "access 2 days"
+</IfModule>
+## EXPIRES CACHING ##
