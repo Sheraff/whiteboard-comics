@@ -276,7 +276,7 @@ function refresh_svg (index) {
 	if(GRAPHS[INDEX].author){
     var span = document.createElement('span')
     span.setAttribute('id', 'authorship')
-    span.innerHTML = GRAPHS[INDEX].credit
+    span.innerHTML = GRAPHS[INDEX].credit + ' '
     var a = document.createElement('a')
     a.className = 'credits'
     a.setAttribute('href', GRAPHS[INDEX].source)
