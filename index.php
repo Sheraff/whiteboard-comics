@@ -5,7 +5,7 @@
 	require 'php_utils.php';
 
 	// read METADATA
-	$graphs = read_metadata();
+	$graphs = read_metadata($master);
 
 	// try and MATCH graph to query
 	$initial_index = -1;
@@ -79,6 +79,7 @@
 <style>
 	main svg{
 		max-width: 100%;
+		overflow: visible;
 	}
 </style>
 <noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>

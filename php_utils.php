@@ -9,7 +9,7 @@
     return $a[timestamp] > $b[timestamp] ? -1 : 1;
   }
 
-  function read_metadata(){
+  function read_metadata($master){
     $time = time();
     $graphs = array();
     $metadata = str_getcsv(file_get_contents('graph_list.tsv'), "\n");
