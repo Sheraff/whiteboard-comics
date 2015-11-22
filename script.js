@@ -256,22 +256,31 @@ function refresh_svg (index) {
 	INDEX = index
   var svg = document.querySelector('main svg')
 	svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
+  svg = document.querySelector('main svg')
 
-  // DEBUG: new ways to deal with authorship now
 	// remove old authorship span (if existing) and add new one (if given)
-	// var authorship = document.getElementById('authorship')
-	// if(authorship)
-	// 	authorship.parentElement.removeChild(authorship)
-	// var new_authorship = div.lastElementChild
-	// if(new_authorship)
-	// 	document.querySelector('main svg').parentElement.appendChild(new_authorship)
+	var authorship = document.getElementById('authorship')
+	if(authorship)
+		authorship.parentElement.removeChild(authorship)
+	if(GRAPHS[INDEX].author){
+    var span = document.createElement('span')
+    span.setAttribute('id', 'authorship')
+    span.innerHTML = GRAPHS[INDEX].credit
+    var a = document.createElement('a')
+    a.className = 'credits'
+    a.setAttribute('href', GRAPHS[INDEX].source)
+    a.setAttribute('target', '_blank')
+    a.innerHTML = GRAPHS[INDEX].author
+    span.appendChild(a)
+		svg.parentElement.appendChild(span)
+  }
 
 	// add/update date of publication
 	var pubdate = document.getElementById('pubdate')
 	if(!pubdate){
 		pubdate = document.createElement('span')
 		pubdate.id = 'pubdate'
-		document.querySelector('main svg').parentElement.appendChild(pubdate)
+		svg.parentElement.appendChild(pubdate)
 	}
 	var date_obj = new Date(GRAPHS[INDEX].release[1] + ' / ' + GRAPHS[INDEX].release[2] + ' / ' + GRAPHS[INDEX].release[0])
 	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release[0]
