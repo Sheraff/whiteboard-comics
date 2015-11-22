@@ -138,13 +138,17 @@ function navigate (direction, event) {
 	event.stopPropagation()
 	event.preventDefault()
 
+  var requested_new_index = direction===0?0:(INDEX+direction)
+  if(!GRAPHS[requested_new_index])
+    return
+
 	var svg = document.querySelector('main svg')
 	interrupt_drawing_element_svg(svg)
 	if(ANIMATE)
-		erase(svg, 0, setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
+		erase(svg, 0, setup_page.bind(undefined, requested_new_index))
 	else
 		ERASED = true
-	load_svg(direction===0?0:(INDEX+direction), setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
+	load_svg(requested_new_index, setup_page.bind(undefined, requested_new_index))
 }
 
 document.getElementById('speed_input').addEventListener('change', function (event) {
@@ -160,6 +164,15 @@ document.getElementById('animation_check').addEventListener('change', function (
 		play_svg(svg, 0)
 	else
 		force_finish_drawing_element_svg(svg)
+})
+
+window.addEventListener('keydown', function (event) {
+  if(event.repeat) return
+  console.log(event.keyCode)
+  if(event.keyCode===37 || event.keyCode===38)
+    navigate(-1, event)
+  if(event.keyCode===39 || event.keyCode===40)
+    navigate(1, event)
 })
 
 

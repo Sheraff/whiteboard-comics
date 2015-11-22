@@ -151,7 +151,6 @@
 	make the archive page ajax too, with boards zooming in and out
 
 	KEYBOARDS CONTROLS
-	- left/right to navigate graphs
 	- tab key behavior
 
 	IMPROVE MOBILE VERSION
@@ -162,6 +161,11 @@
 
 	add GitHub button
 	add Donate button
+
+	ROBUSTNESS
+	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
+
+	allow for og:image and page title to be shown even before release date if name matches (easier posting on facebook)
 
 	DURABILITY & MAINTAINABILITY
 	- some php is repeated across files => should be centralized
