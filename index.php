@@ -26,8 +26,6 @@
 			$graphs[] = $row;
 	}
 
-	array_splice($graphs, 0, $key);
-
 	// order graphs // debug: this shouldn't need to happen
 	function anti_chronological($a, $b){
 		if($a[timestamp]===$b[timestamp])
