@@ -149,7 +149,7 @@
 	var LETTERS = <? echo json_encode($letters).';'; ?>
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
 </html>
 
 
