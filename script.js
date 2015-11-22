@@ -291,8 +291,10 @@ function refresh_svg (index) {
   else
     svg_to_png(get_DOM(GRAPHS[INDEX].content), set_img.bind(undefined, svg, INDEX))
   function set_img (svg, index, data){
-    if(!GRAPHS[index].urldata)
+    if(!GRAPHS[index].urldata){
       GRAPHS[index].urldata = data
+      var is_new = true
+    }
     var img = new Image()
     img.src = data
     img.setAttribute('id', 'overlay')
@@ -301,6 +303,8 @@ function refresh_svg (index) {
     img.width = svg_rect.width
     img.setAttribute('alt',GRAPHS[index].name+'.png')
     document.querySelector('main').appendChild(img)
+    if(is_new)
+      save_img_to_server(img, index)
   }
 
 
@@ -344,6 +348,34 @@ function preprocess_svg (index, callback) {
     GRAPHS[index].is_processed = true
   }
   callback()
+}
+
+function save_img_to_server (img, index) {
+  // upload (if GRAPHS[index] doesnt already have a path to watermarked img)
+  if(!GRAPHS[index].watermarked){
+    var params = "dataURL=" + encodeURIComponent(img.src)
+    var request = new XMLHttpRequest();
+    request.open("POST", "/save_img.php?name="+GRAPHS[index].name, true);
+    request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+    request.onreadystatechange = (function (img) {
+      if (request.readyState === 4 && request.status === 200){
+        console.log(request.responseText)
+        GRAPHS[index].watermarked = request.responseText
+        new_url_for_image(request.responseText, img)
+      }
+    }).bind(undefined, img)
+    request.send(params)
+  } else {
+    new_url_for_image(GRAPHS[index].watermarked, img)
+  }
+  // receive new url, create img, when loaded, replace old img
+  function new_url_for_image(url, img){
+    var temp_img = new Image()
+    temp_img.onload = (function (img, temp_img) {
+      img.src = temp_img.src
+    }).bind(undefined, img, temp_img)
+    temp_img.src = url
+  }
 }
 
 ////////////////////////
