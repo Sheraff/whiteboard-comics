@@ -22,16 +22,13 @@
 		$row[tags] = str_getcsv($row[tags]);
 		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;
-		if($row[timestamp] < $time){ // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
-			// echo 
+		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
 			$graphs[] = $row;
-		}
 	}
-	// array_shift($metadata);
 
 	array_splice($graphs, 0, $key);
 
-	// order metadata // debug: this shouldn't need to happen
+	// order graphs // debug: this shouldn't need to happen
 	function anti_chronological($a, $b){
 		if($a[timestamp]===$b[timestamp])
 			return 0;
@@ -39,17 +36,14 @@
 	}
 	usort($graphs, 'anti_chronological');
 
-	// find LATEST and CURRENT graphs
-	$latest_release = -1;
+	// try and MATCH graph to query
 	$initial_index = -1;
 	foreach ($graphs as $key => $graph){
-		if($latest_release===-1)
-			$latest_release = $key;
 		if($_GET['graph'] && $initial_index===-1 && $graph[name]===$_GET['graph'])// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
 			$initial_index = $key;
 	}
 	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
-		$initial_index = $latest_release;
+		$initial_index = 0;
 		echo "use latest release $initial_index\n";
 	} else{
 		echo "use matched name $initial_index\n";
@@ -58,8 +52,8 @@
 
 	// create CONTENT bites
 	// links
-	$prev_page = $initial_index===$latest_release ? '/' : $files[$initial_index-1][name];
-	$next_page = $initial_index===count($graphs)-1 ? '/' : $files[$initial_index+1][name];
+	$prev_page = $initial_index===0 ? '/' : $graphs[$initial_index-1][name];
+	$next_page = $initial_index===count($graphs)-1 ? '/' : $graphs[$initial_index+1][name];
 	// h2 subtitle
 	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
   $h2 = $f_contents[rand(0, count($f_contents) - 1)];
