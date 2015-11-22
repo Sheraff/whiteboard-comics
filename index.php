@@ -128,7 +128,7 @@
 	var INDEX = <? echo $initial_index . ';'; ?>
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Quattrocento' rel='stylesheet' type='text/css'>
 </html>
 
 

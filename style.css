@@ -7,7 +7,11 @@
 html, body{
 	width: 100%;
 	background-color: #CCCCCC;
-	font-family: 'Vollkorn', Courier, 'Courier New', monospace;
+	font-family: 'Quattrocento', Georgia, serif;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	letter-spacing: 0.0000001em;
 }
 main svg{
 	position: absolute;
@@ -72,9 +76,11 @@ h2{
 	font-size: 1.5vw;
 	border-bottom: solid 1px black;
 	white-space: nowrap;
+	font-weight: 500;
 }
 aside img{
 	height: 1.5rem;
+	transform: translateY(.25rem);
 }
 a{
 	text-decoration: none;
@@ -216,6 +222,9 @@ label[for="animation_check"]{
 }
 #blurb+p::after{
 	content: ' »';
+}
+#blurb, #blurb+p{
+	line-height: 1.4;
 }
 
 #logo path, #logo polyline{
