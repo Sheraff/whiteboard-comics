@@ -1,5 +1,7 @@
 <!--
 <?
+	$master = $_GET['all'];
+
 	// set TIMEZONE
 	date_default_timezone_set('America/Los_Angeles');
 	$time = time();
@@ -25,7 +27,7 @@
 		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;
 
-		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+		if(file_exists($row[path]) && ($row[timestamp] < $time || $master)) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
 			$graphs[] = $row;
 	}
 

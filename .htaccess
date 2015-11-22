@@ -1,6 +1,7 @@
 AddType image/svg+xml .svg .svgz
 
 RewriteEngine on
+RewriteRule ^chapon$ ?all=true
 RewriteRule ^([^/]*)\)$ ?graph=$1)
 RewriteRule ^svg/(.*)$ svg.php?graph=$1
 
