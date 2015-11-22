@@ -307,7 +307,12 @@ function loaded_svg (index, httpRequest, callback) {
 function preprocess_svg (index, callback) {
   if(!GRAPHS[index].is_processed){
     console.log('preprocessing '+GRAPHS[index].name)
-    GRAPHS[index].content = rewrite_with_paths(get_DOM(GRAPHS[index].content))
+    var svg = get_DOM(GRAPHS[index].content)
+    var erase = svg.removeChild(svg.getElementsByTagName('path')[0])
+    erase.setAttribute('data-type', 'erase')
+    erase.setAttribute('stroke', 'transparent')
+    svg.appendChild(erase)
+    GRAPHS[index].content = rewrite_with_paths(svg)
     GRAPHS[index].is_processed = true
   }
   callback()
@@ -322,9 +327,6 @@ function rewrite_with_paths (svg) {
 	var texts = svg.getElementsByTagName('text')
 	for (var text_pointer = 0; text_pointer < texts.length; text_pointer++) {
 		var text = texts[text_pointer]
-
-		if(text.getAttribute('id')==='watermark')
-			continue
 
 		var tspans = text.getElementsByTagName('tspan')
 		if(tspans.length===0){
@@ -380,7 +382,7 @@ function rewrite_with_paths (svg) {
 				var x = text_position.x + x_length
 				var y = text_position.y - letter.viewbox.height + 10
 				paths[i].setAttribute('transform', 'translate(' + x + ',' + y + ')')
-				paths[i].setAttribute('class','writing')
+				paths[i].setAttribute('data-type','writing')
 				if(color)
 					paths[i].setAttribute('stroke', color)
 				insert_at.parentNode.insertBefore(paths[i], insert_at)
@@ -501,19 +503,18 @@ function prepare_drawing_element (element) {
 
 function start_drawing_element (element, delay, callback) {
 	var length = element.getTotalLength()
-	switch(element.getAttribute('data-type')){
-		case 'main':
-			var speed_power = .6
-			var smoothing = 'ease-in-out'
-			break
-		case 'erase':
-			var speed_power = .4
-			var smoothing = 'linear'
-			break
-		default:
-			var speed_power = .25
-			var smoothing = 'ease-out'
-	}
+
+  if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
+    var speed_power = .25
+    var smoothing = 'ease-out'
+  } else if (element.getAttribute('data-type')==='erase'){
+    var speed_power = .4
+    var smoothing = 'linear'
+  } else {
+    var speed_power = .6
+    var smoothing = 'ease-in-out'
+  }
+
 	var duration = .1/SPEED*Math.pow(length, speed_power)
 
 	element.getBoundingClientRect()
