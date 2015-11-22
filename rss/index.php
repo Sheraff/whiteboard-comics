@@ -1,5 +1,5 @@
 <?
-	$f_contents = file("../subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES); 
+	$f_contents = file("../subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
   $h2 = $f_contents[rand(0, count($f_contents) - 1)];
   $root = 'http://whiteboard-comics.com';
 ?>
@@ -13,60 +13,59 @@
 
 
 <?
+	// set TIMEZONE
 	date_default_timezone_set('America/Los_Angeles');
+	$time = time();
 
-	function path_to_components($path){
-		$name_pieces = explode('-', basename($path), 4);
-
-		$tags = explode('$', substr($name_pieces[3], 0, -4));
-		if(count($tags)>1)
-			$name = array_shift($tags);
-		else{
-			$name = $tags[0];
-			$tags = false;
-		}
-
-		return [
-			'path' => $path,
-			'name' => $name,
-			'release_date_pieces' => [$name_pieces[0], $name_pieces[1], $name_pieces[2]],
-			'release_date' => strtotime("$name_pieces[0]-$name_pieces[1]-$name_pieces[2] 8:45:00"),
-			'thumbnail' => str_replace(['../', 'graphs/', '.svg', '$'], ['', 'png/', '.png', '#'], $path),
-			'formatted_name' => trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $name) ) ) ) ),
-			'tags' => $tags
-		];
+	// read METADATA
+	$graphs = array();
+	$metadata = str_getcsv(file_get_contents('../graph_list.tsv'), "\n");
+	foreach($metadata as $key => &$row){
+		$row = str_getcsv($row, "\t");
+		if($key===0)
+			continue;
+		$temp = $row;
+		$row = [];
+		foreach($temp as $key => $item)
+			$row[$metadata[0][$key]] = $item;
+		$row[timestamp] = strtotime("$row[release] 8:45:00");
+		$row[release] = explode('-', $row[release]);
+		$row[path] = "graphs/graphs_$row[name].svg";
+		$row[thumbnail] = "png/$row[name].png";
+		$row[tags] = str_getcsv($row[tags]);
+		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
+		$row[content] = false;
+		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+			$graphs[] = $row;
 	}
 
-	// get graphs in reverse chronological order
-	$globbed = glob("../graphs/*.svg");
-	rsort( $globbed );
-	
-	$count_released = 0;
-	foreach ($globbed as $key => $file) {
-		$parsed = path_to_components($file);
+	// order graphs // debug: this shouldn't need to happen
+	function anti_chronological($a, $b){
+		if($a[timestamp]===$b[timestamp])
+			return 0;
+		return $a[timestamp] > $b[timestamp] ? -1 : 1;
+	}
+	usort($graphs, 'anti_chronological');
 
-		// skip the ones that shouldn't be released yet. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris) <=> (before work LA, before lunch NYC, after work Paris)
-		if($parsed[release_date] > time())
-			continue;
-
-		$count_released++;
-		$formatted_date = date('r', $parsed[release_date]);
+	// try and MATCH graph to query
+	foreach ($graphs as $key => $graph){
+		$formatted_date = date('r', $graph[timestamp]);
 
 
 		echo <<<EOT
 	<item>
-		<title>$parsed[formatted_name]</title>
+		<title>$graph[formatted_name]</title>
 		<description>
-			<![CDATA[ $parsed[formatted_name] <br/> <img src="$root/$parsed[thumbnail]"> <br/> For an animated version of this image, go to <a href="$root/$parsed[name]">Whiteboard</a> ]]>
+			<![CDATA[ <img src="$root/$graph[thumbnail]"> <br/> For an animated version of this image, go to <a href="$root/$graph[name]">whiteboard-comics.com</a> ]]>
     </description>
-		<link>$root/$parsed[name]</link>
+		<link>$root/$graph[name]</link>
 		<pubDate>$formatted_date</pubDate>
-		<guid isPermaLink="true">$root/$parsed[name]</guid>
-		<category></category> 
+		<guid isPermaLink="true">$root/$graph[name]</guid>
+		<category></category>
 	</item>\n
 EOT;
 
-		if($count_released>100)
+		if($key>100)
 			break;
 	}
 ?>
