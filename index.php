@@ -108,13 +108,7 @@
 	<link href='style.css' rel='stylesheet'>
 </head>
 <style>
-#overlay{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	opacity: 0;
-}
+
 </style>
 <noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
 <aside>
@@ -176,13 +170,6 @@
 		- above/below in AI for scenario
 		- rename artboards in AI for streamlining exports
 		- run format_svg.php to pre-process svg
-
-	ALLOW FOR SHARING OF IMAGES
-	- authorship / credits must go in a <text></text> svg element, along with the whiteboard-comics.com watermark
-	- JS must be used to dynamically generate a .png based on SVG, and said png must be SRC attribute of IMG (look at how it's done in FBTF logo generator)
-	- IMG must be overlayed (⚠ z-index) within MAIN (position absolute, height 100%, width 100%) on top of SVG and beneath PUBDATE and AUTHORSHIP
-		- possibly, IMG could be set to be exactly the size of SVG (change to be made @ each change of SVG)
-	⚠ how is the image going to be named then?
 
 
  -->
