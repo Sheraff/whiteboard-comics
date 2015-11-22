@@ -171,7 +171,10 @@
 
 	MORE FLEXIBILITY
 	- SVG metadata stored somewhere else than in the filenames
+		- create metadata table
+		- rethink scripts to abstract metadata location
 	- rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
+	- algorithm for guessing the ERASE and MAIN paths so that illustrator exports can be used seamlessly
 	⚠ for now, spans outside the SVG tags will be ignored (#authorship)
 
 	ALLOW FOR SHARING OF IMAGES
