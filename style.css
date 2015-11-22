@@ -7,7 +7,7 @@
 html, body{
 	width: 100%;
 	background-color: #CCCCCC;
-	font-family: 'Roboto Slab', Courier, 'Courier New', monospace;
+	font-family: 'Vollkorn', Courier, 'Courier New', monospace;
 }
 main svg{
 	position: absolute;
@@ -271,7 +271,7 @@ label[for="animation_check"]{
 		position: fixed;
 		bottom: 0;
 		right: 0;
-		z-index: 1;	
+		z-index: 1;
 		width: 5rem;
 	}
 	#footer{
