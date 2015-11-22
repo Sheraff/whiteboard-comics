@@ -38,11 +38,11 @@
 <path fill="none" stroke="#7AC943" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M51.3,359c20.3-49.7,53-88.6,87.7-121.4s72.2-60.4,106.6-93.8c33.5-32.6,63.9-70.5,93-109.9"/>
 <g>
-	<text transform="matrix(1 0 0 1 556.0201 296.2677)" font-family="'PermanentMarker'" font-size="31">iness</text>
 	<text transform="matrix(1 0 0 1 202.968 221.8628)" font-family="'PermanentMarker'" font-size="30.74">individual happiness</text>
 	<text transform="matrix(1 0 0 1 176.468 258.4341)" font-family="'PermanentMarker'" font-size="30.74">× population</text>
 	<text transform="matrix(1 0 0 1 171.468 296.2677)" font-family="'PermanentMarker'" font-size="30.74">= why kids make you happ</text>
 	<path fill="none" stroke="#C1272D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M426.7,300.9c17.9-9.6,35.9-19.2,53.8-28.8"/>
+		M416.7,300.9c17.9-9.6,35.9-19.2,53.8-28.8"/>
+	<text transform="matrix(1 0 0 1 550.0164 296.2677)" font-family="'PermanentMarker'" font-size="31">iness</text>
 </g>
 </svg>

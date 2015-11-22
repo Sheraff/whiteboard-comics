@@ -1,17 +1,32 @@
 release	name	tags	author	source	credit
-2015-09-03	kindness=f(IQ)	morality			
-2015-09-16	productivity=f(time)	productivity,work life			
-2015-10-02	care_for_look=f(fat)	body image			
-2015-10-16	time_of_the_day=f(energy,distractions)	productivity,work life			
-2015-10-29	goodness=f(witnesses)	morality			
-2015-11-03	good_time_for_drinking=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/9aj9a8m9fm	Original idea by 
-2015-11-09	quantity_of_subjects=f(quantity_of_knowledge)	academia	PhD Comics	http://www.phdcomics.com/comics/archive.php?comicid=1056	Inspired by 
-2015-11-16	productivity=f(population)	productivity			
-2015-11-23	perceived_week_length=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/8nqZ4Pm9Qz	Inspired by 
+2015-09-03	kindness=f(IQ)	morality
+2015-09-16	productivity=f(time)	productivity,work life
+2015-10-02	care_for_look=f(fat)	body image
+2015-10-16	time_of_the_day=f(energy,distractions)	productivity,work life
+2015-10-29	goodness=f(witnesses)	morality
+2015-11-03	good_time_for_drinking=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/9aj9a8m9fm	Original idea by
+2015-11-09	quantity_of_subjects=f(quantity_of_knowledge)	academia	PhD Comics	http://www.phdcomics.com/comics/archive.php?comicid=1056	Inspired by
+2015-11-16	productivity=f(population)	productivity
+2015-11-23	perceived_week_length=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/8nqZ4Pm9Qz	Inspired by
 2015-11-30	specialness=f(population)	morality	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
-2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life			
-2015-12-14	time_cost=f(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by 
-2015-12-21	money_earned,money_desired=f(time)	money,growing up			
+2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life
+2015-12-14	time_cost=f(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by
+2015-12-21	money_earned,money_desired=f(time)	money,growing up
 2015-12-28	partying_late,waking_up_early=f(age)	growing up	Chaz Hutton	https://instagram.com/p/7cpzvSm9Xv	By
-2016-01-04	money_left,money_perceived=f(evening_weekend)	money	Chaz Hutton	https://instagram.com/p/9DptAhm9bq	Original idea by 
-2016-01-11	total_happiness=f(number_of_kids)	morality			
+2016-01-04	money_left,money_perceived=f(evening_weekend)	money	Chaz Hutton	https://instagram.com/p/9DptAhm9bq	Original idea by
+2016-01-11	total_happiness=f(number_of_kids)	morality	SMBC comics	http://www.smbc-comics.com/?id=2569	Inspired by
+2016-01-18	rejection_of_authority,confidence_in_small_sample=f(age)	morality,growing up	SMBC comics	http://www.smbc-comics.com/?id=2692	By
+2016-01-25	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
+2016-02-01	law_adoption=f(avg_preference,elite_preference)	morality	Gilens & Page	https://scholar.princeton.edu/sites/default/files/mgilens/files/gilens_and_page_2014_-testing_theories_of_american_politics.doc.pdf	From Princeton (2014),
+2016-02-08	pizzas_eaten=f(exercise,sitting)	body image,productivity
+2016-02-15	eadibleness=f(cuteness)	morality,miscellaneous	SMBC comics	http://www.smbc-comics.com/?id=2393	By
+2016-02-22	perceived_complexity_of_society=f(age)	morality,growing up	SMBC comics	http://www.smbc-comics.com/?id=2868	By
+2016-02-29	toothpaste=f(time)	miscellaneous	Chaz Hutton	https://instagram.com/p/7MvBu_m9QW/	By
+2016-03-07	panic_stages=f(time)	productivity
+2016-03-14	shaving_efforts=f(beard_length)	miscellaneous,productivity	Maxime Escouboue	https://www.facebook.com/maxime.escouboue	From his brightest moment,
+2016-03-21	planed_budget,actual_budget=f(time)	money	Chaz Hutton	https://instagram.com/p/7XGvB7G9YJ	By
+2016-03-28	estimated_completion=f(time_invested)	productivity
+2016-04-04	earnings=f(age)	money,growing up
+2016-04-11	sweat,care=f(time)	body image	Chaz Hutton	https://instagram.com/p/7CpK8rm9ew	Original idea by
+2016-04-18	procrastination=f(fulfillment)	productivity,morality	Indexed	http://thisisindexed.com/2006/08/	By
+2016-04-25	desire_for_money=f(money_owned)	money,morality

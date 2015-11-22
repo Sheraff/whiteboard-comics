@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 774 376.5" enable-background="new 0 0 774 376.5" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M39,1.2
+	C23.4,27.9,14.8,58.6,14.3,89.4c-0.1,8.1,0.8,17.3,7.3,22.1c10.3,7.8,24.6-1.4,34.1-10.2c32.8-30.5,65.5-61,98.3-91.5
+	c-42,99.3-89.2,196.4-141.6,290.7c-9.3,16.8-18.9,37.6-9.2,54.3c8.5,14.7,29.4,18.3,45.1,11.9c15.7-6.4,27-20.4,35.9-34.9
+	c29.6-47.8,40.3-104.5,58.6-157.6s48.4-107.1,99.7-130c30-13.3,63.8-14.4,96.7-15.3c60.4-1.6,120.9-3.2,181.3-4.8
+	c9-0.2,18.9-0.1,25.5,5.9c8.9,8.1,6.9,23.6-1.1,32.6c-7.9,9.1-19.8,13.5-31.2,17.5c-81.4,28.7-164.8,57.7-251.2,57.6
+	c-15,0-30.7-0.8-44,6c-21.2,10.7-29.4,36.3-34.4,59.5c-10.5,48.5-15.9,98.2-16.1,147.9c-0.1,10.6,1.9,23.8,11.9,27.3
+	c10.6,3.6,20.4-6.8,26.8-15.9c38.6-55.2,77.2-110.3,115.8-165.5c1.5,47,2.9,94,4.4,140.9c0.2,6.2,0.5,12.9,4.1,18
+	c7.9,11,26.7,6.9,34.2-4.3s7-25.8,5.9-39.2s-2.5-27.8,3.9-39.7c6.4-11.9,23.8-18.8,33.7-9.6c12.2,11.3,2.1,31.6,4.9,47.9
+	c2.4,13.9,14.8,24.3,28.2,28.6c13.4,4.3,27.8,3.7,41.9,3c77.4-3.9,154.7-7.7,232.1-11.6c5.7-0.3,12.1-0.9,15.9-5.2
+	c5-5.8,2.1-15.3-3.9-20c-6-4.7-13.9-5.8-21.5-6.8c-74.8-9.5-164.4-26.5-239.2-36.1c178.6-13.7,372-19.9,550.6-33.6"/>
+<text transform="matrix(1 0 0 1 71.0088 41.6128)" font-family="'PermanentMarker'" font-size="31">estimated time until completion</text>
+<g>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		8.2,41.6 30.7,19.6 53.2,41.6 	"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="30.7" y1="19.6" x2="30.7" y2="368.3"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="763.5" y1="346" x2="7.7" y2="346"/>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		741.5,323.5 763.5,346 741.5,368.5 	"/>
+</g>
+<text transform="matrix(1 0 0 1 363.6533 323.4707)" font-family="'PermanentMarker'" font-size="31">time spent on a project</text>
+<path fill="none" stroke="#7AC943" stroke-width="7" stroke-linecap="round" stroke-linejoin="bevel" stroke-miterlimit="10" d="
+	M37.5,221.1c14.6,20.4,47,19.3,67.7,5.2c20.8-14.1,33.4-37,47.5-57.7s32.4-41.3,57.1-45.9c29.5-5.5,58.1,13.9,77.8,36.6
+	s34.5,49.8,57.6,68.9c42.9,35.4,103.9,35.7,159.5,34.3c170.3-4.4,340.6-8.7,510.9-13.1"/>
+</svg>
