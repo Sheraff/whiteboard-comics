@@ -33,7 +33,7 @@
 		$row[path] = "graphs/graphs_$row[name].svg";
 		if(file_exists("png/$row[name].png"))
 				$row[watermarked] = "png/$row[name].png";
-		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/$row[name].png";
+		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/graphs_$row[name].png";
 		$row[tags] = str_getcsv($row[tags]);
 		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;

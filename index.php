@@ -20,7 +20,7 @@
 		$row[path] = "graphs/graphs_$row[name].svg";
 		if(file_exists("png/$row[name].png"))
 				$row[watermarked] = "png/$row[name].png";
-		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/$row[name].png";
+		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/graphs_$row[name].png";
 		$row[tags] = str_getcsv($row[tags]);
 		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;
@@ -115,7 +115,7 @@
 	<input type="checkbox" id="cog_check">
 	<a class="home" href="./">
 		<? echo file_get_contents("logo.svg"); ?>
-</a>
+	</a>
 	<a class="home" href="./"><h2><? echo strtolower($h2); ?></h2></a>
 	<a id="prev" class="nav" href="<? echo $prev_page; ?>" data-title="previous graph"><img src="res/prev.svg"></a><a id="next" class="nav" href="<? echo $next_page; ?>" data-title="next graph"><img src="res/next.svg"></a>
 	<p id="blurb">This is a blurb I'm supposed to have written explaining how this website is insightful and funny, while still being an ironic side project.</p><p>A lot of the graphs presented on this website are about my life and relate to procrastination and poor strategic decision making regarding productivity. Sadly, they all contain a grain of personal truth. This is one of the reasons why this blurb is what it is.</p>
