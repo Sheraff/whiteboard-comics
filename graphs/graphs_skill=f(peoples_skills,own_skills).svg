@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 807 438" enable-background="new 0 0 807 438" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" d="M491,21.7
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M491,21.7
 	c-43.1,5-86.6,0-129.9-0.2s-88.4,4.9-125.3,27.8c-23,14.3-41.5,34.7-59.7,54.8c-33.6,37.3-67.2,74.5-100.8,111.8
 	C57.5,235.7,39,256.7,33,282.7c24.4,3.4,44.6-17.8,60.1-37c40.5-49.8,82.4-99.3,133.7-137.8s113.5-65.5,177.6-64.4
 	c8.6,0.2,18.8,1.9,22.4,9.7c5.2,11.1-7.5,21.9-18.2,27.9c-99.1,54.6-192.9,118.7-279.9,191.1c-13.4,11.2-28,28.3-20,43.8
@@ -13,17 +13,17 @@
 	c15.3-23.1,37.4-44.4,64.9-47.9c-27.5,41.8-55.7,85.6-61.3,135.3c79.5-29.9,166.5-39.4,250.6-27.5c4.5,0.6,9.5,1.7,11.8,5.5
 	c2.8,4.4,0.3,10.6-3.9,13.7s-9.6,3.9-14.8,4.6c-24.8,3.4-49.6,6.7-74.5,10.1c-17.1,2.3-35.7,4.4-50.7-4.2
 	c-15-8.6-21.7-32.6-7.9-43.1"/>
-<path stroke-width="7" d="M221.7,391.2"/>
+<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M221.7,391.2"/>
 <g>
 	
-		<line stroke-width="7" x1="219.5" y1="415" x2="219.5" y2="82"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="219.5" y1="415" x2="219.5" y2="82"/>
 	
-		<line stroke-width="7" x1="44" y1="267.5" x2="412" y2="267.5"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="44" y1="267.5" x2="412" y2="267.5"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		197,104 219.5,82 242,104 	"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		390,245 412,267.5 390,290 	"/>
 </g>
 <g>
@@ -35,7 +35,7 @@
 <g>
 	<text transform="matrix(1 0 0 1 242.0913 156.7453)" fill="#FF931E" font-family="'PermanentMarker'" font-size="31">how good i actually am</text>
 </g>
-<path stroke="#FF931E" stroke-width="7" d="M220,266c14-5,30-24,24-39
+<path fill="none" stroke="#FF931E" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M220,266c14-5,30-24,24-39
 	c-15-36-55-3-62,19c-20,59,70,81,99,32c22-36,1-65-34-80c-23-10-63-20-83-1c-17,16-21,52-20,74c3,38,40,67,76,75
 	c69,16,127-61,128-125c2-80-110-125-178-117c-72,9-81,98-78,157c3,62,54,104,113,113c76,11,148-36,178-106"/>
 </svg>

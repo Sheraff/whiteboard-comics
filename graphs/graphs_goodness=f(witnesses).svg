@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 752 387" enable-background="new 0 0 752 387" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" d="
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M61.6-25.2C35.1,59.9,8.6,145-17.9,230.2c5.5,4.6,14,3.4,19.8-0.8c5.8-4.2,9.3-10.7,12.4-17.1C42.1,155.1,52,90.4,81.2,33.9
 	c11.4-22.1,31.1-45.4,55.8-42.3c10.4,23.3,4.8,50.8-6,73.9s-26.4,43.8-36.8,67.1c-13.8,30.7-18.3,64.8-27.7,97.2
 	C51.7,280.6,24.1,329,22.8,382c9,1.7,15.7-8,19.7-16.3C86.9,274.8,129.2,182.9,169.3,90c14.4-33.3,29.3-67.8,56.5-91.7
@@ -17,30 +17,30 @@
 	"/>
 <g>
 	
-		<line stroke-width="7" x1="34.5" y1="382" x2="34.5" y2="49"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="34.5" y1="382" x2="34.5" y2="49"/>
 	<text transform="matrix(1 0 0 1 10.6426 26.2422)" font-family="'PermanentMarker'" font-size="31">how good of a person i am</text>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		12,71 34.5,49 57,71 	"/>
 </g>
 <g>
 	
-		<line stroke-width="7" x1="11" y1="145.5" x2="743" y2="145.5"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="11" y1="145.5" x2="743" y2="145.5"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		721,123 743,145.5 721,168 	"/>
 	<text transform="matrix(1 0 0 1 268.5605 96.3506)" font-family="'PermanentMarker'" font-size="31">how many people are watching</text>
 </g>
-<path stroke="#00A89C" stroke-width="7" d="M38.6,372.8
+<path fill="none" stroke="#00A89C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M38.6,372.8
 	c0-92,11-185,57-267c18-31,58-52,93-57c34-4,51,11,77,29c28,20,60,33,93,43c111,33,233,14,348,24"/>
 <g>
-	<path stroke-width="7" d="M85.7,163.1
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M85.7,163.1
 		c2,5.9,5.8,11,9.9,15.8c18.3,21.3,43.9,36.4,71.4,42"/>
 	<text transform="matrix(1 0 0 1 184.6426 236.8232)" font-family="'PermanentMarker'" font-size="31">i’m me</text>
 </g>
 <g>
 	<text transform="matrix(1 0 0 1 355.0156 256.8232)" font-family="'PermanentMarker'" font-size="31">i’m no one</text>
-	<path stroke-width="7" d="M529.2,236.9
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M529.2,236.9
 		c12.1-14,29.9-21.7,47.7-26.8s36.3-8,53.5-14.8c17.2-6.8,33.6-18.4,40.9-35.4"/>
 </g>
 </svg>

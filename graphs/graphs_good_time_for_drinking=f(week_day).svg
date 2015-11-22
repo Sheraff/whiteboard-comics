@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 854 333.3" enable-background="new 0 0 854 333.3" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" d="M857.1,19.6
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M857.1,19.6
 	C802.5,15.4,748,11.1,693.4,6.8c-17.6-1.4-35.3-2.7-52.9-2c-23,1-45.8,5.7-68.6,8.6c-62,8-124.8,3.6-187.3,3
 	c-21.1-0.2-42.4,0-63.3,3.1c-19.2,2.8-37.9,8-56.6,13C188.7,52.7,110.4,70.4,32.2,62.6c87.6,0.7,175.2,1.4,262.7,2.1
 	c-4.1,24,0.3,48.4,1.6,72.7s-1.3,50.5-16.7,69.2c56.9-76.1,144.7-128.2,238.7-141.8C478,124.5,389.4,134.7,347,193
@@ -15,29 +15,29 @@
 	c5.2-12.1,9-26.8,21-32.3"/>
 <g>
 	
-		<line stroke-width="7" x1="262.2" y1="182.7" x2="845.6" y2="182.7"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="262.2" y1="182.7" x2="845.6" y2="182.7"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		823.6,160.2 845.6,182.7 823.6,205.2 	"/>
 	
-		<line stroke-width="7" x1="361.2" y1="175" x2="361.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="361.2" y1="175" x2="361.2" y2="191"/>
 	
-		<line stroke-width="7" x1="438.2" y1="175" x2="438.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="438.2" y1="175" x2="438.2" y2="191"/>
 	
-		<line stroke-width="7" x1="515.2" y1="175" x2="515.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="515.2" y1="175" x2="515.2" y2="191"/>
 	
-		<line stroke-width="7" x1="592.2" y1="175" x2="592.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="592.2" y1="175" x2="592.2" y2="191"/>
 	
-		<line stroke-width="7" x1="669.2" y1="175" x2="669.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="669.2" y1="175" x2="669.2" y2="191"/>
 	
-		<line stroke-width="7" x1="746.2" y1="175" x2="746.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="746.2" y1="175" x2="746.2" y2="191"/>
 </g>
 <g>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		262.4,61 284.9,39 307.4,61 	"/>
 	
-		<line stroke-width="7" x1="284.7" y1="39" x2="284.7" y2="326.3"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="284.7" y1="39" x2="284.7" y2="326.3"/>
 	<text transform="matrix(1 0 0 1 259.3234 25.6289)" font-family="'PermanentMarker'" font-size="31">going out drinking on a wednesday is...</text>
 </g>
 <g>
@@ -53,6 +53,6 @@
 	<text transform="matrix(1 0 0 1 27.9865 70.9702)" font-family="'PermanentMarker'" font-size="31">a great idea !!!</text>
 	<text transform="matrix(1 0 0 1 2.6623 297.6548)" font-family="'PermanentMarker'" font-size="31">a really bad idea</text>
 </g>
-<polyline stroke="#F68D3D" stroke-width="7" points="
+<polyline fill="none" stroke="#F68D3D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 	284.9,183.2 515.2,61 515.2,297.7 823.3,182.7 "/>
 </svg>

@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 640.5 432.9" enable-background="new 0 0 640.5 432.9" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" d="M29.2,6.9
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M29.2,6.9
 	C29,18,19.7,26.3,12.2,34.5S-1.6,55.1,4.7,64.2c7.8,11.5,25.6,5.7,37.7-1.2C74,44.8,105.6,26.7,137.3,8.6
 	C122.1,71.3,31.2,92.7,17.9,155.9c36.6-17.8,63.5-50.2,91.7-79.6S192.1,21,232.5,15.9C172,72.4,89.9,127.2,44.7,196.6
 	C27.3,223.3,12.3,252,4.4,283s-8.4,64.4,2.7,94.3c2.1,5.6,5.2,11.7,11,13.2c7.8,2.1,14.6-5.3,19.4-11.8
@@ -17,16 +17,16 @@
 	c-0.6,13,11.6,23.6,24.3,26.1c12.7,2.5,25.8-1,38.4-4.1c80-19.8,163.4-25.6,245.3-17"/>
 <g>
 	
-		<line stroke-width="7" x1="482" y1="366.5" x2="16.5" y2="366.5"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="482" y1="366.5" x2="16.5" y2="366.5"/>
 	
-		<line stroke-width="7" x1="39" y1="54.9" x2="39" y2="389"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="39" y1="54.9" x2="39" y2="389"/>
 </g>
 <g>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		460,344 482,366.5 460,389 	"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		16.5,76.9 39,54.9 61.5,76.9 	"/>
 </g>
 <g>
@@ -35,14 +35,14 @@
 <g>
 	<text transform="matrix(1 0 0 1 257.1391 419.4306)" font-family="'PermanentMarker'" font-size="31">number of kids</text>
 </g>
-<path stroke="#7AC943" stroke-width="7" d="
+<path fill="none" stroke="#7AC943" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M51.3,359c20.3-49.7,53-88.6,87.7-121.4s72.2-60.4,106.6-93.8c33.5-32.6,63.9-70.5,93-109.9"/>
 <g>
 	<text transform="matrix(1 0 0 1 556.0201 296.2677)" font-family="'PermanentMarker'" font-size="31">iness</text>
 	<text transform="matrix(1 0 0 1 202.968 221.8628)" font-family="'PermanentMarker'" font-size="30.74">individual happiness</text>
 	<text transform="matrix(1 0 0 1 176.468 258.4341)" font-family="'PermanentMarker'" font-size="30.74">× population</text>
 	<text transform="matrix(1 0 0 1 171.468 296.2677)" font-family="'PermanentMarker'" font-size="30.74">= why kids make you happ</text>
-	<path stroke="#C1272D" stroke-width="7" d="
+	<path fill="none" stroke="#C1272D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M426.7,300.9c17.9-9.6,35.9-19.2,53.8-28.8"/>
 </g>
 </svg>

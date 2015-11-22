@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 711.4 371.3" enable-background="new 0 0 711.4 371.3" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" d="M116.3-58.7
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M116.3-58.7
 	C73.2-23.8,21.9,0.3-20,36.6s-74.9,91.3-62.8,145.5C36.1,114.2,151.1,39.5,261.4-41.6C179.3,92.9,53.5,199.6-11.3,343.3
 	C138.3,225.6,249,60.7,411.1-39c16.7-10.3,34.8-20,54.3-20.2c-11.5,41.7-46.6,71.7-78.5,100.9C251.2,165.9,144.2,321.2,76.4,492.3
 	c41.1-24.9,74.5-60.5,106.4-96.6C315.9,245,431.1,78.5,572.9-64.2c-5.1,36.4-27.1,67.7-46.8,98.8C449.6,155.2,400,296.1,404.4,438.9
@@ -12,17 +12,17 @@
 	c13.9-84,8.6-169.7,11.5-254.8c2.9-85,14.9-172.7,59.2-245.4"/>
 <g>
 	
-		<line stroke-width="7" x1="29.5" y1="365.7" x2="29.5" y2="40.7"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="29.5" y1="365.7" x2="29.5" y2="40.7"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		7.3,62.7 29.8,40.7 52.3,62.7 	"/>
 	<text transform="matrix(1 0 0 1 6 25.6667)" font-family="'PermanentMarker'" font-size="30.74">productivity</text>
 </g>
 <g>
 	
-		<line stroke-width="7" x1="6" y1="226.2" x2="697" y2="226.2"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="6" y1="226.2" x2="697" y2="226.2"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		676.6,203.7 698.6,226.2 676.6,248.7 	"/>
 	<g>
 		<text transform="matrix(1 0 0 1 638.5498 192.6667)" font-family="'PermanentMarker'" font-size="30.74">time</text>
@@ -30,30 +30,30 @@
 </g>
 <g>
 	
-		<line stroke-width="7" x1="178.5" y1="218.7" x2="178.5" y2="234.7"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="178.5" y1="218.7" x2="178.5" y2="234.7"/>
 	<text transform="matrix(1 0 0 1 148.7957 262.2271)" font-family="'PermanentMarker'" font-size="30.74">8am</text>
 </g>
 <g>
 	
-		<line stroke-width="7" x1="351.5" y1="218.7" x2="351.5" y2="234.7"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="351.5" y1="218.7" x2="351.5" y2="234.7"/>
 	<text transform="matrix(1 0 0 1 315.9719 262.1673)" font-family="'PermanentMarker'" font-size="30.74">12pm</text>
 </g>
 <g>
 	
-		<line stroke-width="7" x1="524.5" y1="218.7" x2="524.5" y2="234.7"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="524.5" y1="218.7" x2="524.5" y2="234.7"/>
 	<text transform="matrix(1 0 0 1 495.6663 262.2271)" font-family="'PermanentMarker'" font-size="30.74">8pm</text>
 </g>
-<path stroke="#C1272D" stroke-width="7" d="M29.8,226.7c0-9,5-15,12-10
+<path fill="none" stroke="#C1272D" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M29.8,226.7c0-9,5-15,12-10
 	c4,2,1,13,4,17c19,17,18-19,32-19c12,0,10,35,27,22c10-8,6-38,26-26c4,3,5,13,9,16c8,5,18,2,27,1c11-1,22-2,33-2c23,1,44,2,67,1
 	c30-2,49,4,72-18c18-18,36-46,65-30s33,61,70,63c47,2,53-55,65-91c9-29,23-86,65-77c40,9,49,49,64,80"/>
 <g>
-	<path stroke-width="7" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M140,101.6c-18,9-9,39,3,51c28.5,28.5,85.5,15,105,55.5"/>
 	<text transform="matrix(1 0 0 1 155.6692 110.0857)" font-family="'PermanentMarker'" font-size="30.74">this</text>
 </g>
 <g>
 	<text transform="matrix(1 0 0 1 225.3346 110.0857)" font-family="'PermanentMarker'" font-size="30.74">because of that</text>
-	<path stroke-width="7" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M447.5,74.6c30-15,70.5-19.5,97.5,1.5"/>
 </g>
 </svg>

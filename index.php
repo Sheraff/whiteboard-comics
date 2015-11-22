@@ -2,6 +2,8 @@
 <?
 	$master = $_GET['all'];
 
+	include 'php_utils.php';
+
 	// set TIMEZONE
 	date_default_timezone_set('America/Los_Angeles');
 	$time = time();
@@ -130,7 +132,7 @@
 	<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
 </aside>
 <main>
-	<? echo file_get_contents($graphs[$initial_index][path]); ?>
+	<? echo format_svg(file_get_contents($graphs[$initial_index][path])); ?>
 </main>
 <script>
 	///////////////////
@@ -170,6 +172,7 @@
 	allow for og:image and page title to be shown even before release date if name matches (easier posting on facebook)
 
 	DURABILITY & MAINTAINABILITY
+	- try and get valid / viewable SVG files through serving them via redirection and formatting them on the fly
 	- some php is repeated across files => should be centralized
 	- write readme so that the process is clear
 		- groups in AI for timing

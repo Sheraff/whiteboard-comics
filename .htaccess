@@ -1,9 +1,9 @@
 AddType image/svg+xml .svg .svgz
 
 RewriteEngine on
-RewriteRule ^chapon$ ?all=true
-RewriteRule ^([^/]*)\)$ ?graph=$1)
-RewriteRule ^svg/(.*)$ svg.php?graph=$1
+RewriteRule ^chapon$ index.php?all=true
+RewriteRule ^([^/]*\))$ index.php?graph=$1
+RewriteRule ^graphs/(.*)$ svg.php?graph=$1
 
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>

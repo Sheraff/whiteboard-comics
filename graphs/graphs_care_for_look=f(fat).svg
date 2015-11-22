@@ -1,9 +1,9 @@
- 
- 
- 
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 821.2 388" enable-background="new 0 0 821.2 388" xml:space="preserve">
-<path stroke="#FFFFFF" stroke-width="120" stroke-linecap="square" d="
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linecap="square" stroke-linejoin="bevel" stroke-miterlimit="10" d="
 	M35.7-11.6C25,35.1,13.1,81.5,0,127.6c22.1-1.3,37.7-21.5,50.1-39.8c26.6-39.3,54.3-80.2,95.2-104.5c-2.1,52.6-45.4,92.8-70.8,139
 	C59,150.5,50,181.7,42.2,212.8c-12.7,50.9-22.6,102.5-29.6,154.5c14.1,1.3,25.1-11.5,32.5-23.5c37.3-60.2,52.6-136.2,106.4-182.3
 	c-2,11.1-4,22.7-1.1,33.6s12,21.1,23.3,21.3c13.7,0.2,23.4-13.4,27.7-26.3c4.3-13,6-27.4,14.8-37.8c3.8-4.4,9.8-8,15.2-6
@@ -20,25 +20,25 @@
 	c7.9,8.2,9.2,20.7,9.3,32.2c0.5,40.4-7.9,80.8-24.3,117.7c-12.3,27.6-29.3,54.3-30.8,84.4c17.8,7,36.8,11,55.9,11.7"/>
 <g>
 	
-		<line stroke-width="7" x1="28.7" y1="371" x2="28.7" y2="41"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="28.7" y1="371" x2="28.7" y2="41"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		6.2,63 28.7,41 51.2,63 	"/>
 	<text transform="matrix(1 0 0 1 5.407 26.1953)" font-family="'PermanentMarker'" font-size="31">how much i care how i look</text>
 </g>
 <g>
 	
-		<line stroke-width="7" x1="5.2" y1="205.5" x2="814.2" y2="205.5"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="5.2" y1="205.5" x2="814.2" y2="205.5"/>
 	
-		<polyline stroke-width="7" points="
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		792.2,183 814.2,205.5 792.2,228 	"/>
 	<text transform="matrix(1 0 0 1 503.2733 164.2656)" font-family="'PermanentMarker'" font-size="31">how fat i think i am</text>
 </g>
-<path stroke="#006837" stroke-width="7" d="
+<path fill="none" stroke="#006837" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M31.7,160.3c34.5-3,54,3,84,16.5c25.5,12,66,19.5,93,7.5c28.5-13.5,55.5-43.5,75-66c21-24,34.5-58.5,58.5-78
 	c46.5,69,36,172.5,105,229.5c36,30,91.5,42,136.5,52.5c64.5,15,127.5,37.5,192,51c12,1.5,22.5,6,34.5,6"/>
 <g>
-	<path stroke-width="7" d="M358.9,47.2
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M358.9,47.2
 		c6.7-1.9,13.9-0.6,20.4,2c6.5,2.6,12.4,6.3,18.5,9.6c25.6,13.6,55.7,18.5,84.2,13.5"/>
 	<text transform="matrix(1 0 0 1 494.2117 71.2598)" font-family="'PermanentMarker'" font-size="31">f*ck it</text>
 </g>
