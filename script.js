@@ -1,7 +1,3 @@
-	// DEBUG: when a new graph is published, if you go to the root address whiteboard-comics.com, you see AS A FIRST GRAPH / LATEST RELEASE the latest release from your last visit
-	// 	this is because when writing a history.state in JS, I associate an index (temporary based on latest release) with a URL (permanent based on filename)
-	// 	SOLUTION: history.state should only containt stuff that is permanent
-
 ///////////////////////
 // UTILS + POLYFILLS //
 ///////////////////////
@@ -81,6 +77,8 @@ var ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('
 var SPEED = localStorage.getItem('speed') || 4
 var SIZE_FACTOR = 1.4
 var ERASED
+var SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
+var DOMURL = self.URL || self.webkitURL || self
 
 if(ANIMATE==="false") ANIMATE = false
 if(ANIMATE==="true") ANIMATE = true
@@ -285,6 +283,17 @@ function refresh_svg (index) {
 	var date_obj = new Date(GRAPHS[INDEX].release[1] + ' / ' + GRAPHS[INDEX].release[2] + ' / ' + GRAPHS[INDEX].release[0])
 	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release[0]
 
+  // create img
+  svg_to_png(get_DOM(GRAPHS[INDEX].content), (function (svg, img) {
+    img.setAttribute('id', 'overlay')
+    var svg_rect = svg.getBoundingClientRect()
+    img.height = svg_rect.height
+    img.width = svg_rect.width
+    img.setAttribute('alt',GRAPHS[INDEX].name+'.png')
+    document.querySelector('main').appendChild(img)
+  }).bind(undefined, svg))
+
+
 	initialize()
 }
 
@@ -327,6 +336,71 @@ function preprocess_svg (index, callback) {
   callback()
 }
 
+////////////////////////
+// SVG TO PNG LIBRARY //
+////////////////////////
+
+function upload_and_replace_img (img, name) {
+  
+}
+
+function svg_to_png (svg, callback) {
+  // clone
+  var clone_svg = svg.cloneNode(true)
+
+  // style // debug, this should come from .css or from getComputedStyle
+  clone_svg.style.backgroundColor = 'white';
+  var el = clone_svg.querySelectorAll('path, line, polyline')
+  for (var i = 0; i < el.length; i++) {
+    el[i].style.fill = 'none'
+    el[i].style.strokeLinecap = 'round'
+  	el[i].style.strokeLinejoin = 'round'
+  	el[i].style.strokeMiterlimit = 10
+  }
+  var el = clone_svg.querySelectorAll('path:not([stroke]), line:not([stroke]), polyline:not([stroke])')
+  for (var i = 0; i < el.length; i++) {
+    el[i].style.stroke = 'black'
+  }
+  var el = clone_svg.querySelectorAll('path:not([stroke-width]), line:not([stroke-width]), polyline:not([stroke-width])')
+  for (var i = 0; i < el.length; i++) {
+    el[i].style.strokeWidth = 4;
+  }
+
+  // add watermark on bottom left
+  var text = document.createElementNS(SVG_NAMESPACE, 'text')
+  text.innerHTML = 'whiteboard-comics.com' + (GRAPHS[INDEX].author ? (' & ' + GRAPHS[INDEX].author) : '')
+  text.setAttribute('id', 'watermark')
+  text.style.fontFamily = "'Droid Serif', Georgia, serif"
+  text.style.opacity = .8
+  clone_svg.appendChild(text)
+  var viewbox = clone_svg.getAttribute('viewBox').split(' ')
+  viewbox[3] = parseFloat(viewbox[3])+20
+  text.setAttribute('transform', 'translate(5,'+(viewbox[3]-5)+')')
+  clone_svg.setAttribute('viewBox', viewbox.join(' '))
+
+  // create SVG => XML => BLOB url => canvas => data => png
+  var svgString = new XMLSerializer().serializeToString(clone_svg)
+  var dimensions = {
+    width: 800,
+    height: 800/viewbox[2]*viewbox[3]
+  }
+  var img = new Image()
+  var svg_blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'})
+  var url = DOMURL.createObjectURL(svg_blob)
+  img.onload = (function(img, dimensions, callback) {
+    var canvas = document.createElement('canvas')
+    canvas.setAttribute('width', dimensions.width)
+    canvas.setAttribute('height', dimensions.height)
+    var ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height)
+    var png = ctx.canvas.toDataURL('image/png')
+    img.onload = null
+    img.src = png
+    callback(img)
+    DOMURL.revokeObjectURL(png)
+  }).bind(undefined, img, dimensions, callback)
+  img.src = url
+}
 
 //////////////////////////////
 // SVG FONT TO PATH LIBRARY //
@@ -384,7 +458,7 @@ function rewrite_with_paths (svg) {
 			var letter = get_letter(sentence.charAt(char_pointer))
 			if(!letter)
 				continue
-			var el = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+			var el = document.createElementNS(SVG_NAMESPACE, 'g')
 			el.innerHTML = letter.content
 			var paths = el.querySelectorAll('path,line,polyline')
 			for (var i = 0; i < paths.length; i++) {

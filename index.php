@@ -103,10 +103,24 @@
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
 	<link rel="icon" type="image/png" href="favicon.png">
 	<link href='style.css' rel='stylesheet'>
-	<style>
-		
-	</style>
 </head>
+<style>
+#watermark{
+	fill: black;
+	opacity: .7;
+	font-size: .8rem;
+	visibility: visible;
+	z-index: 999999;
+	font-family: 'Droid Serif', Georgia, serif;
+}
+#overlay{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	opacity: 0;
+}
+</style>
 <aside>
 	<input type="checkbox" id="cog_check">
 	<a class="home" href="./">
@@ -140,6 +154,7 @@
 
 
 <!-- todo
+	HARD PROBLEMS, MAJOR IMPROVEMENTS
 	ability adjust speed while drawing
 	make the archive page ajax too, with boards zooming in and out
 
@@ -153,24 +168,19 @@
 	- add icon for link to website
 	- is an external font necessary ?
 
-	try out Vollkorn webfont instead of Roboto Slab
-
 	add GitHub button
 	add Donate button
 
-	MORE FLEXIBILITY
-	- SVG metadata stored somewhere else than in the filenames
-		+ create metadata table
-		+ rethink scripts to abstract metadata location
-	+ rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
-	- algorithm for guessing the ERASE and MAIN paths so that illustrator exports can be used seamlessly
-		- re-layer the graphs
-	⚠ for now, spans outside the SVG tags will be ignored (#authorship)
+	DURABILITY & MAINTAINABILITY
+	- some php is repeated across files => should be centralized
+	- write readme so that the process is clear
+		- groups in AI for timing
+		- above/below in AI for scenario
+		- rename artboards in AI for streamlining exports
+		- run format_svg.php to pre-process svg
 
 	ALLOW FOR SHARING OF IMAGES
 	- authorship / credits must go in a <text></text> svg element, along with the whiteboard-comics.com watermark
-		- they must be set as transparent
-		- they must be used to create an external SPAN element (to mimic how it works right now)
 	- JS must be used to dynamically generate a .png based on SVG, and said png must be SRC attribute of IMG (look at how it's done in FBTF logo generator)
 	- IMG must be overlayed (⚠ z-index) within MAIN (position absolute, height 100%, width 100%) on top of SVG and beneath PUBDATE and AUTHORSHIP
 		- possibly, IMG could be set to be exactly the size of SVG (change to be made @ each change of SVG)
