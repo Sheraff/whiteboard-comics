@@ -49,7 +49,7 @@
 	} else{
 		echo "use matched name $initial_index\n";
 	}
-	$graphs[$initial_index][content] = file_get_contents($graphs[$initial_index][path]); // load content for matched (or latest) graph
+	// $graphs[$initial_index][content] = file_get_contents($graphs[$initial_index][path]); // load content for matched (or latest) graph
 
 	// create CONTENT bites
 	// links
@@ -134,7 +134,7 @@
 	<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
 </aside>
 <main>
-	<svg></svg>
+	<? echo file_get_contents($graphs[$initial_index][path]); ?>
 </main>
 <script>
 	///////////////////
@@ -143,6 +143,8 @@
 	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
+	var main = document.getElementsByTagName('main')[0]
+	GRAPHS[INDEX].content = main.replaceChild(document.createElement('svg'), main.firstElementChild)
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
@@ -166,8 +168,6 @@
 
 	add GitHub button
 	add Donate button
-
-	for SEO, echo svg within html on first page (and then read it into JS)
 
 	DURABILITY & MAINTAINABILITY
 	- some php is repeated across files => should be centralized
