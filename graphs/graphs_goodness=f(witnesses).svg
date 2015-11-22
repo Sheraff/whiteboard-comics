@@ -34,13 +34,13 @@
 <path stroke="#00A89C" stroke-width="7" d="M38.6,372.8
 	c0-92,11-185,57-267c18-31,58-52,93-57c34-4,51,11,77,29c28,20,60,33,93,43c111,33,233,14,348,24"/>
 <g>
-	<path stroke="#231F20" stroke-width="7" d="M85.7,163.1
+	<path stroke-width="7" d="M85.7,163.1
 		c2,5.9,5.8,11,9.9,15.8c18.3,21.3,43.9,36.4,71.4,42"/>
 	<text transform="matrix(1 0 0 1 184.6426 236.8232)" font-family="'PermanentMarker'" font-size="31">i’m me</text>
 </g>
 <g>
 	<text transform="matrix(1 0 0 1 355.0156 256.8232)" font-family="'PermanentMarker'" font-size="31">i’m no one</text>
-	<path stroke="#231F20" stroke-width="7" d="M529.2,236.9
+	<path stroke-width="7" d="M529.2,236.9
 		c12.1-14,29.9-21.7,47.7-26.8s36.3-8,53.5-14.8c17.2-6.8,33.6-18.4,40.9-35.4"/>
 </g>
 </svg>
