@@ -71,8 +71,8 @@
 	foreach ($globbed as $key => $file) {
 		$letter = str_replace(['alphabet_', '.svg'], '', basename($file));
 		$letter = str_replace(
-			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash'],
-			['!','?',',','"',"'",'.','#','-','*','+','=','(',')','[',']','{','}','&','@','/'],
+			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash'],
+			['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/'],
 			$letter
 		);
 		$letters[] = [
