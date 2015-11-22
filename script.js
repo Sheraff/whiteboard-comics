@@ -448,29 +448,23 @@ function erase (svg, delay, callback) {
 
 function play_svg (svg, delay, callback) {
 	// prepare
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].tagName==='text')
-				continue
-			prepare_drawing_element(elements[e])
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.tagName==='text')
+      return
+    prepare_drawing_element(element)
+  })
 
 	// launch
 	var total_duration = delay || 0
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		total_duration += .5
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].tagName==='text')
-				continue
-			if(elements[e].getAttribute('data-type')!=='erase'){
-				total_duration += start_drawing_element (elements[e], total_duration)
-			}
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.tagName==='text')
+      return
+    if(element.getAttribute('data-type')!=='erase'){
+      total_duration += start_drawing_element (element, total_duration)
+    }
+  }, function () {
+    total_duration += .5
+  })
 
 	if (callback)
 		setTimeout(callback, total_duration*1000)
@@ -479,29 +473,33 @@ function play_svg (svg, delay, callback) {
 }
 
 function interrupt_drawing_element_svg (svg) {
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			var computedStyle = window.getComputedStyle(elements[e])
-			elements[e].style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
-			elements[e].style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
-			elements[e].style.transition = 'none'
-		}
-	}
+  iterate_group(svg, function (element) {
+    var computedStyle = window.getComputedStyle(element)
+    element.style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
+    element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
+    element.style.transition = 'none'
+  })
 }
 
 function force_finish_drawing_element_svg (svg) {
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].getAttribute('data-type')==='erase'){
-				elements[e].style.strokeDashoffset = elements[e].getTotalLength()
-			}
-			elements[e].style.transition = 'none'
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.getAttribute('data-type')==='erase'){
+      element.style.strokeDashoffset = element.getTotalLength()
+    }
+    element.style.transition = 'none'
+  })
+}
+
+function iterate_group(parent, element_call, depth_call) {
+  var elements = parent.children
+  for (var e = 0, le = elements.length; e < le; e++) {
+    if(elements[e].tagName==='g'){
+      if(depth_call) depth_call()
+      iterate_group(elements[e], element_call, depth_call)
+    } else {
+      element_call(elements[e])
+    }
+  }
 }
 
 function prepare_drawing_element (element) {
