@@ -104,21 +104,7 @@
 	<link rel="icon" type="image/png" href="favicon.png">
 	<link href='style.css' rel='stylesheet'>
 	<style>
-		main svg path, main svg line, main svg polyline{
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			stroke-miterlimit: 10;
-			fill: none;
-		}
-		main svg path:not([stroke]), main svg line:not([stroke]), main svg polyline:not([stroke]){
-			stroke: black;
-		}
-		main svg path:not([stroke-width]), main svg line:not([stroke-width]), main svg polyline:not([stroke-width]){
-			stroke-width: 4;
-		}
-		main svg [data-type=erase]{
-			stroke-linejoin: bevel;
-		}
+		
 	</style>
 </head>
 <aside>
