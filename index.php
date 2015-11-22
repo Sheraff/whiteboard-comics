@@ -18,10 +18,13 @@
 		$row[timestamp] = strtotime("$row[release] 8:45:00");
 		$row[release] = explode('-', $row[release]);
 		$row[path] = "graphs/graphs_$row[name].svg";
-		$row[thumbnail] = "png/$row[name].png";
+		if(file_exists("png/$row[name].png"))
+				$row[watermarked] = "png/$row[name].png";
+		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/$row[name].png";
 		$row[tags] = str_getcsv($row[tags]);
 		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;
+
 		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
 			$graphs[] = $row;
 	}
@@ -113,6 +116,7 @@
 	opacity: 0;
 }
 </style>
+<noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
 <aside>
 	<input type="checkbox" id="cog_check">
 	<a class="home" href="./">
@@ -162,6 +166,8 @@
 
 	add GitHub button
 	add Donate button
+
+	for SEO, echo svg within html on first page (and then read it into JS)
 
 	DURABILITY & MAINTAINABILITY
 	- some php is repeated across files => should be centralized
