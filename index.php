@@ -84,6 +84,22 @@
   $thumbnail = $parsed[thumbnail];
   $name = $parsed[name];
 	$formatted_name = $parsed[formatted_name];
+
+	// grab alphabet
+	$globbed = glob("alphabet/*.svg");
+	$letters = array();
+	foreach ($globbed as $key => $file) {
+		$letter = str_replace(['alphabet_', '.svg'], '', basename($file));
+		$letter = str_replace(
+			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash'],
+			['!','?',',','"',"'",'.','#','-','*','+','=','(',')','[',']','{','}','&','@','/'],
+			$letter
+		);
+		$letters[] = [
+			'content' => file_get_contents($file),
+			'letter' => $letter
+		];
+	}
 ?>-->
 
 <!DOCTYPE html>
@@ -144,6 +160,7 @@
 	///////////////////
 	var GRAPHS = <? echo json_encode($files) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
+	var LETTERS = <? echo json_encode($letters).';'; ?>
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>

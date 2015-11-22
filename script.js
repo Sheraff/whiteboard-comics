@@ -60,6 +60,15 @@ function find_needle_with_key (needle, key) {
 	return index
 }
 
+function get_DOM (data) { // debug, this is hacky: this function is used when i have no idea why a variable contains a DOM element and not a string and vice-versa.
+  if(typeof data === 'string'){
+    var el = document.createElement('div')
+    el.innerHTML = data
+    return el.firstChild
+  } else
+    return data
+}
+
 
 
 
@@ -71,7 +80,6 @@ function find_needle_with_key (needle, key) {
 var ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('animation_check').checked : localStorage.getItem('animate')
 var SPEED = localStorage.getItem('speed') || 4
 var SIZE_FACTOR = 1.4
-var ABORT = false
 var ERASED
 
 if(ANIMATE==="false") ANIMATE = false
@@ -90,12 +98,12 @@ if(history.state && history.state.name)
 	recovered_index = find_needle_with_key(history.state.name, 'name')
 if(recovered_index !== -1){
 	console.log('state recovered from history: asking for index ' + recovered_index + ', graph @ ' + GRAPHS[recovered_index].name)
-	refresh_svg(recovered_index)
+  load_svg(INDEX, refresh_svg.bind(undefined, recovered_index))
 } else {
 	// create history state if there is none
 	console.log('replaceState to create history state: asking for index ' + INDEX + ', graph @ ' + GRAPHS[INDEX].name)
 	window.history.replaceState({name: GRAPHS[INDEX].name}, "", GRAPHS[INDEX].name)
-	refresh_svg(INDEX)
+  load_svg(INDEX, refresh_svg.bind(undefined, INDEX))
 }
 
 function initialize () {
@@ -247,17 +255,16 @@ function refresh_svg (index) {
 	// replace old svg with new one
 	INDEX = index
   var svg = document.querySelector('main svg')
-	var div = document.createElement('div')
-	div.innerHTML = GRAPHS[INDEX].content
-	svg.parentNode.replaceChild(div.firstChild, svg)
+	svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
 
+  // DEBUG: new ways to deal with authorship now
 	// remove old authorship span (if existing) and add new one (if given)
-	var authorship = document.getElementById('authorship')
-	if(authorship)
-		authorship.parentElement.removeChild(authorship)
-	var new_authorship = div.lastElementChild
-	if(new_authorship)
-		document.querySelector('main svg').parentElement.appendChild(new_authorship)
+	// var authorship = document.getElementById('authorship')
+	// if(authorship)
+	// 	authorship.parentElement.removeChild(authorship)
+	// var new_authorship = div.lastElementChild
+	// if(new_authorship)
+	// 	document.querySelector('main svg').parentElement.appendChild(new_authorship)
 
 	// add/update date of publication
 	var pubdate = document.getElementById('pubdate')
@@ -277,10 +284,8 @@ function refresh_svg (index) {
 ////////////////////
 
 function load_svg (index, callback) {
-	if(ABORT)
-		return
 	if(GRAPHS[index] && GRAPHS[index].content)
-		return callback()
+		return preprocess_svg(index, callback)
 
   var httpRequest = new XMLHttpRequest()
 	httpRequest.onreadystatechange = loaded_svg.bind(undefined, index, httpRequest, callback)
@@ -291,20 +296,130 @@ function load_svg (index, callback) {
 function loaded_svg (index, httpRequest, callback) {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
-      var el = document.createElement('div')
-      el.innerHTML = httpRequest.responseText
-			GRAPHS[index].content = el.getElementsByTagName('svg')[0]
-			callback()
+			GRAPHS[index].content = get_DOM(httpRequest.responseText)
+			preprocess_svg(index, callback)
 		} else {
 			setTimeout(load_svg.bind(undefined, index, callback), 1000)
 		}
 	}
 }
 
+function preprocess_svg (index, callback) {
+  if(!GRAPHS[index].is_processed){
+    console.log('preprocessing '+GRAPHS[index].name)
+    GRAPHS[index].content = rewrite_with_paths(get_DOM(GRAPHS[index].content))
+    GRAPHS[index].is_processed = true
+  }
+  callback()
+}
 
-/////////////////
-// SVG LIBRARY //
-/////////////////
+
+//////////////////////////////
+// SVG FONT TO PATH LIBRARY //
+//////////////////////////////
+
+function rewrite_with_paths (svg) {
+	var texts = svg.getElementsByTagName('text')
+	for (var text_pointer = 0; text_pointer < texts.length; text_pointer++) {
+		var text = texts[text_pointer]
+
+		if(text.getAttribute('id')==='watermark')
+			continue
+
+		var tspans = text.getElementsByTagName('tspan')
+		if(tspans.length===0){
+			replace_span(text)
+		} else {
+			for (var i = 0; i < tspans.length; i++) {
+				replace_span(tspans[i])
+			}
+		}
+	}
+  return svg
+
+	function replace_span (reference_element) {
+		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
+			console.log(reference_element.childNodes)
+			return console.log('this node still has children')
+		}
+
+		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
+
+		var text_position = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
+		text_position = text_position.slice(7,-1).split(' ')
+		text_position = {
+			x: parseFloat(text_position[4]),
+			y: parseFloat(text_position[5])
+		}
+		if(is_tspan){
+				text_position.x += parseFloat(reference_element.getAttribute('x'))
+				text_position.y += parseFloat(reference_element.getAttribute('y'))
+		}
+
+		var color = reference_element.getAttribute('fill')
+		if(!color)
+			color = is_tspan ? reference_element.parentElement.getAttribute('fill') : false
+
+		var sentence = reference_element.childNodes[0].nodeValue
+		var insert_at = is_tspan ? reference_element.parentElement : reference_element
+		var char_pointer = 0
+		var x_length = 0
+		for (var char_pointer = 0; char_pointer < sentence.length; char_pointer++) {
+			if(sentence[char_pointer]===' '){
+				x_length+=10
+				continue
+			}
+
+			var letter = get_letter(sentence.charAt(char_pointer))
+			if(!letter)
+				continue
+			var el = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+			el.innerHTML = letter.content
+			var paths = el.querySelectorAll('path,line,polyline')
+			for (var i = 0; i < paths.length; i++) {
+				var x = text_position.x + x_length
+				var y = text_position.y - letter.viewbox.height + 10
+				paths[i].setAttribute('transform', 'translate(' + x + ',' + y + ')')
+				paths[i].setAttribute('class','writing')
+				if(color)
+					paths[i].setAttribute('stroke', color)
+				insert_at.parentNode.insertBefore(paths[i], insert_at)
+			}
+			x_length += letter.viewbox.width + .5
+		}
+		reference_element.style.display = 'none'
+	}
+
+	function get_letter(letter) {
+		for (var i = 0; i < LETTERS.length; i++) {
+			if(LETTERS[i].letter===letter){
+        if(!LETTERS[i].viewbox)
+          LETTERS[i] = compute_letter(LETTERS[i])
+        return LETTERS[i]
+      }
+		}
+		console.log('letter "'+letter+'" not found')
+		return false
+	}
+
+  function compute_letter(letter){
+    var el = document.createElement('div')
+  	el.innerHTML = letter.content
+  	el = el.getElementsByTagName('svg')[0]
+  	var viewbox = (el.getAttribute('viewbox') || el.getAttribute('viewBox')).split(' ')
+  	letter.viewbox = {
+  		width: parseFloat(viewbox[2]),
+  		height: parseFloat(viewbox[3])
+  	}
+  	letter.content = el.innerHTML
+    return letter
+  }
+}
+
+
+///////////////////////////
+// SVG ANIMATION LIBRARY //
+///////////////////////////
 
 function erase (svg, delay, callback) {
 	if(ERASED)

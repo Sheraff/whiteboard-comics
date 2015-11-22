@@ -108,17 +108,17 @@ main svg [data-type=erase]{
 </main>
 <script>
 
-var letters = <? echo json_encode($letters).';'; ?>
-for (var i = 0; i < letters.length; i++) {
+var LETTERS = <? echo json_encode($letters).';'; ?>
+for (var i = 0; i < LETTERS.length; i++) {
 	var el = document.createElement('div')
-	el.innerHTML = letters[i].content
+	el.innerHTML = LETTERS[i].content
 	el = el.getElementsByTagName('svg')[0]
 	var viewbox = (el.getAttribute('viewbox') || el.getAttribute('viewBox')).split(' ')
-	letters[i].viewbox = {
+	LETTERS[i].viewbox = {
 		width: parseFloat(viewbox[2]),
 		height: parseFloat(viewbox[3])
 	}
-	letters[i].content = el.innerHTML
+	LETTERS[i].content = el.innerHTML
 }
 
 
@@ -197,9 +197,9 @@ function rewrite_with_paths(svg) {
 	}
 
 	function get_letter(letter) {
-		for (var i = 0; i < letters.length; i++) {
-			if(letters[i].letter===letter)
-			return letters[i]
+		for (var i = 0; i < LETTERS.length; i++) {
+			if(LETTERS[i].letter===letter)
+			return LETTERS[i]
 		}
 		console.log('letter "'+letter+'" not found')
 		return false
