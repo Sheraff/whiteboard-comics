@@ -284,14 +284,24 @@ function refresh_svg (index) {
 	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release[0]
 
   // create img
-  svg_to_png(get_DOM(GRAPHS[INDEX].content), (function (svg, img) {
+  var old_img = document.getElementById('overlay')
+  if(old_img) old_img.parentElement.removeChild(old_img)
+  if(GRAPHS[INDEX].urldata)
+    set_img(svg, INDEX, GRAPHS[INDEX].urldata)
+  else
+    svg_to_png(get_DOM(GRAPHS[INDEX].content), set_img.bind(undefined, svg, INDEX))
+  function set_img (svg, index, data){
+    if(!GRAPHS[index].urldata)
+      GRAPHS[index].urldata = data
+    var img = new Image()
+    img.src = data
     img.setAttribute('id', 'overlay')
     var svg_rect = svg.getBoundingClientRect()
     img.height = svg_rect.height
     img.width = svg_rect.width
-    img.setAttribute('alt',GRAPHS[INDEX].name+'.png')
+    img.setAttribute('alt',GRAPHS[index].name+'.png')
     document.querySelector('main').appendChild(img)
-  }).bind(undefined, svg))
+  }
 
 
 	initialize()
@@ -341,12 +351,13 @@ function preprocess_svg (index, callback) {
 ////////////////////////
 
 function upload_and_replace_img (img, name) {
-  
+
 }
 
 function svg_to_png (svg, callback) {
   // clone
   var clone_svg = svg.cloneNode(true)
+  force_finish_drawing_element_svg(clone_svg)
 
   // style // debug, this should come from .css or from getComputedStyle
   clone_svg.style.backgroundColor = 'white';
@@ -394,9 +405,7 @@ function svg_to_png (svg, callback) {
     var ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height)
     var png = ctx.canvas.toDataURL('image/png')
-    img.onload = null
-    img.src = png
-    callback(img)
+    callback(png)
     DOMURL.revokeObjectURL(png)
   }).bind(undefined, img, dimensions, callback)
   img.src = url

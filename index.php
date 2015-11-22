@@ -105,14 +105,6 @@
 	<link href='style.css' rel='stylesheet'>
 </head>
 <style>
-#watermark{
-	fill: black;
-	opacity: .7;
-	font-size: .8rem;
-	visibility: visible;
-	z-index: 999999;
-	font-family: 'Droid Serif', Georgia, serif;
-}
 #overlay{
 	position: absolute;
 	top: 50%;
