@@ -402,6 +402,8 @@ function rewrite_with_paths (svg) {
 	}
 
 	function get_letter(letter) {
+    letter = letter.toLowerCase()
+    letter = letter.replace('’',"'")
 		for (var i = 0; i < LETTERS.length; i++) {
 			if(LETTERS[i].letter===letter){
         if(!LETTERS[i].viewbox)
