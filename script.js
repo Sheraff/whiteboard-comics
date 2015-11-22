@@ -64,7 +64,7 @@ function get_DOM (data) { // debug, this is hacky: this function is used when i 
   if(typeof data === 'string'){
     var el = document.createElement('div')
     el.innerHTML = data
-    return el.firstChild
+    return el.firstElementChild
   } else
     return data
 }
@@ -175,7 +175,7 @@ function update_page_title () {
 
 function update_logo_colors () {
   var arrow = document.querySelectorAll('#logo path[stroke]:not([stroke="#000000"]), #logo polyline[stroke]:not([stroke="#000000"])')
-  var color = document.querySelector('main svg path[data-type="main"][stroke], main svg polyline[data-type="main"][stroke]').getAttribute('stroke')
+  var color = document.querySelector('main svg path[stroke], main svg polyline[stroke]').getAttribute('stroke')
   for (var i = 0, l = arrow.length; i < l; i++) {
     arrow[i].style.stroke = color
   }
@@ -273,8 +273,8 @@ function refresh_svg (index) {
 		pubdate.id = 'pubdate'
 		document.querySelector('main svg').parentElement.appendChild(pubdate)
 	}
-	var date_obj = new Date(GRAPHS[INDEX].release_date_pieces[1] + ' / ' + GRAPHS[INDEX].release_date_pieces[2] + ' / ' + GRAPHS[INDEX].release_date_pieces[0])
-	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release_date_pieces[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release_date_pieces[0]
+	var date_obj = new Date(GRAPHS[INDEX].release[1] + ' / ' + GRAPHS[INDEX].release[2] + ' / ' + GRAPHS[INDEX].release[0])
+	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release[0]
 
 	initialize()
 }
@@ -424,8 +424,12 @@ function rewrite_with_paths (svg) {
 function erase (svg, delay, callback) {
 	if(ERASED)
 		return callback()
-
-  start_drawing_element(svg.querySelector('[data-type="erase"]'), delay, (function (callback) {
+  var erase_path = svg.querySelector('[data-type="erase"]')
+  if(!erase_path){
+    ERASED = true
+    return callback()
+  }
+  start_drawing_element(erase_path, delay, (function (callback) {
 		ERASED = true
 		callback()
 	}).bind(undefined, callback))

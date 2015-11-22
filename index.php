@@ -1,91 +1,74 @@
 <!--
 <?
+	// set TIMEZONE
 	date_default_timezone_set('America/Los_Angeles');
+	$time = time();
 
-	function path_to_components($path){
-		$name_pieces = explode('-', basename($path), 4);
-
-		$tags = explode('$', substr($name_pieces[3], 0, -4));
-		if(count($tags)>1)
-			$name = array_shift($tags);
-		else{
-			$name = $tags[0];
-			$tags = false;
+	// read METADATA
+	$graphs = array();
+	$metadata = str_getcsv(file_get_contents('graph_list.tsv'), "\n");
+	foreach($metadata as $key => &$row){
+		$row = str_getcsv($row, "\t");
+		if($key===0)
+			continue;
+		$temp = $row;
+		$row = [];
+		foreach($temp as $key => $item)
+			$row[$metadata[0][$key]] = $item;
+		$row[timestamp] = strtotime("$row[release] 8:45:00");
+		$row[release] = explode('-', $row[release]);
+		$row[path] = "graphs/graphs_$row[name].svg";
+		$row[thumbnail] = "png/$row[name].png";
+		$row[tags] = str_getcsv($row[tags]);
+		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
+		$row[content] = false;
+		if($row[timestamp] < $time){ // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+			// echo 
+			$graphs[] = $row;
 		}
-
-		return [
-			'path' => $path,
-			'name' => $name,
-			'release_date_pieces' => [$name_pieces[0], $name_pieces[1], $name_pieces[2]],
-			'release_date' => strtotime("$name_pieces[0]-$name_pieces[1]-$name_pieces[2] 8:45:00"),
-			'thumbnail' => str_replace(['graphs/', '.svg', '$'], ['png/', '.png', '#'], $path),
-			'formatted_name' => trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $name) ) ) ) ),
-			'tags' => $tags
-		];
 	}
+	// array_shift($metadata);
 
-	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
+	array_splice($graphs, 0, $key);
 
-	// debug
-	// $archives = true;
+	// order metadata // debug: this shouldn't need to happen
+	function anti_chronological($a, $b){
+		if($a[timestamp]===$b[timestamp])
+			return 0;
+		return $a[timestamp] > $b[timestamp] ? -1 : 1;
+	}
+	usort($graphs, 'anti_chronological');
 
+	// find LATEST and CURRENT graphs
 	$latest_release = -1;
 	$initial_index = -1;
-	$files = array();
-
-	// get graphs in reverse chronological order
-	$globbed = glob("graphs/*.svg");
-	rsort( $globbed );
-
-	foreach ($globbed as $key => $file) {
-		$parsed = path_to_components($file);
-
-		// TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris) <=> (before work LA, before lunch NYC, after work Paris)
-		if($parsed[release_date] > time())
-			continue;
+	foreach ($graphs as $key => $graph){
 		if($latest_release===-1)
-			$latest_release = count($files)-1;
-
-		// LOG
-		$parsed[content] = false;
-		$files[] = $parsed;
-
-		// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
-		if($_GET['graph'] && $initial_index===-1 && $parsed[name]===$_GET['graph'])
-			$initial_index = count($files)-1;
+			$latest_release = $key;
+		if($_GET['graph'] && $initial_index===-1 && $graph[name]===$_GET['graph'])// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
+			$initial_index = $key;
 	}
-
-	// if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
-	if($initial_index===-1){
+	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
 		$initial_index = $latest_release;
 		echo "use latest release $initial_index\n";
-	} else
+	} else{
 		echo "use matched name $initial_index\n";
+	}
+	$graphs[$initial_index][content] = file_get_contents($graphs[$initial_index][path]); // load content for matched (or latest) graph
 
-	// load content for matched (or latest) graph
-	$files[$initial_index][content] = file_get_contents($files[$initial_index][path]);
-
-	$prev_page = $initial_index===$latest_release ? '/' : path_to_components($files[$initial_index-1][path])[name];
-	$next_page = $initial_index===count($files)-1 ? '/' : path_to_components($files[$initial_index+1][path])[name];
-
-	// random subtitle for H2
+	// create CONTENT bites
+	// links
+	$prev_page = $initial_index===$latest_release ? '/' : $files[$initial_index-1][name];
+	$next_page = $initial_index===count($graphs)-1 ? '/' : $files[$initial_index+1][name];
+	// h2 subtitle
 	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
   $h2 = $f_contents[rand(0, count($f_contents) - 1)];
+	// OG sharing
+	$thumbnail = $graphs[$initial_index][thumbnail];
+	$name = $graphs[$initial_index][name];
+	$formatted_name = $graphs[$initial_index][formatted_name];
 
-  // log initial page load
-  file_put_contents ('visits.log', json_encode([
-  	page => $files[$initial_index][name],
-  	date => time(),
-  	ip => $_SERVER[REMOTE_ADDR]
-  ]) . ",\n", FILE_APPEND);
-
-  // get infos for OG sharing
-  $parsed = path_to_components($files[$initial_index][path]);
-  $thumbnail = $parsed[thumbnail];
-  $name = $parsed[name];
-	$formatted_name = $parsed[formatted_name];
-
-	// grab alphabet
+	// grab ALPHABET
 	$globbed = glob("alphabet/*.svg");
 	$letters = array();
 	foreach ($globbed as $key => $file) {
@@ -100,6 +83,17 @@
 			'letter' => $letter
 		];
 	}
+
+	// log VISIT COUNT initial page load
+  file_put_contents ('visits.log', json_encode([
+  	page => $graphs[$initial_index][name],
+  	date => time(),
+  	ip => $_SERVER[REMOTE_ADDR]
+  ]) . ",\n", FILE_APPEND);
+
+	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
+	// debug
+	// $archives = true;
 ?>-->
 
 <!DOCTYPE html>
@@ -158,7 +152,7 @@
 	///////////////////
 	// PHP VARIABLES //
 	///////////////////
-	var GRAPHS = <? echo json_encode($files) . ';'; ?>
+	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
 </script>
@@ -188,10 +182,11 @@
 
 	MORE FLEXIBILITY
 	- SVG metadata stored somewhere else than in the filenames
-		- create metadata table
-		- rethink scripts to abstract metadata location
-	- rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
+		+ create metadata table
+		+ rethink scripts to abstract metadata location
+	+ rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
 	- algorithm for guessing the ERASE and MAIN paths so that illustrator exports can be used seamlessly
+		- re-layer the graphs
 	⚠ for now, spans outside the SVG tags will be ignored (#authorship)
 
 	ALLOW FOR SHARING OF IMAGES

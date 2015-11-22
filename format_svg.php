@@ -3,7 +3,9 @@
     $file_content = file_get_contents($file);
 
     $file_content = preg_replace([
-      '/([^>])(\n|\r)([\t\s]?)*/',
+      '/<\?xml.*?>/',
+      '/<!--.*?-->/',
+      '/<!DOCTYPE.*?>/',
       '/ ?stroke-linejoin="round" ?/',
       '/ ?stroke-linejoin="bevel" ?/',
       '/ ?stroke-linecap="round" ?/',
@@ -11,9 +13,9 @@
       '/ ?fill="none" ?/',
       '/ ?stroke="#(0[0-1]){3}" ?/',
       '/ ?stroke-miterlimit="10" ?/',
-      '/ +/'
+      '/ +/',
+      '/d=" M/'
     ], [
-      '$1 ',
       ' ',
       ' ',
       ' ',
@@ -21,7 +23,11 @@
       ' ',
       ' ',
       ' ',
-      ' '
+      ' ',
+      ' ',
+      ' ',
+      ' ',
+      'd="M'
     ], $file_content);
 
     file_put_contents($file, $file_content);
@@ -35,7 +41,6 @@
       '/<!--.*?-->/',
       '/<!DOCTYPE.*?>/',
       '/<svg.*?viewBox="(([0-9\.]+ ?){4})".*?>/',
-      '/([^>])(\n|\r)([\t\s]?)*/',
       '/ ?stroke-linejoin="round" ?/',
       '/ ?stroke-linejoin="bevel" ?/',
       '/ ?stroke-linecap="round" ?/',
@@ -43,13 +48,13 @@
       '/ ?fill="none" ?/',
       '/ ?stroke="#(0[0-1]){3}" ?/',
       '/ ?stroke-miterlimit="10" ?/',
-      '/ +/'
+      '/ +/',
+      '/d=" M/'
     ], [
       ' ',
       ' ',
       ' ',
       '<svg viewBox="$1">',
-      '$1 ',
       ' ',
       ' ',
       ' ',
@@ -57,7 +62,8 @@
       ' ',
       ' ',
       ' ',
-      ' '
+      ' ',
+      'd="M'
     ], $file_content);
 
     file_put_contents($file, $file_content);
