@@ -1,88 +1,91 @@
 <!--
 <?
+	// set TIMEZONE
 	date_default_timezone_set('America/Los_Angeles');
+	$time = time();
 
-	function path_to_components($path){
-		$name_pieces = explode('-', basename($path), 4);
+	// read METADATA
+	$graphs = array();
+	$metadata = str_getcsv(file_get_contents('graph_list.tsv'), "\n");
+	foreach($metadata as $key => &$row){
+		$row = str_getcsv($row, "\t");
+		if($key===0)
+			continue;
+		$temp = $row;
+		$row = [];
+		foreach($temp as $key => $item)
+			$row[$metadata[0][$key]] = $item;
+		$row[timestamp] = strtotime("$row[release] 8:45:00");
+		$row[release] = explode('-', $row[release]);
+		$row[path] = "graphs/graphs_$row[name].svg";
+		$row[thumbnail] = "png/$row[name].png";
+		$row[tags] = str_getcsv($row[tags]);
+		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
+		$row[content] = false;
+		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+			$graphs[] = $row;
+	}
 
-		$tags = explode('$', substr($name_pieces[3], 0, -4));
-		if(count($tags)>1)
-			$name = array_shift($tags);
-		else{
-			$name = $tags[0];
-			$tags = false;
-		}
+	// order graphs // debug: this shouldn't need to happen
+	function anti_chronological($a, $b){
+		if($a[timestamp]===$b[timestamp])
+			return 0;
+		return $a[timestamp] > $b[timestamp] ? -1 : 1;
+	}
+	usort($graphs, 'anti_chronological');
 
-		return [
-			'path' => $path,
-			'name' => $name,
-			'release_date_pieces' => [$name_pieces[0], $name_pieces[1], $name_pieces[2]],
-			'release_date' => strtotime("$name_pieces[0]-$name_pieces[1]-$name_pieces[2] 8:45:00"),
-			'thumbnail' => str_replace(['graphs/', '.svg', '$'], ['png/', '.png', '#'], $path),
-			'formatted_name' => trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $name) ) ) ) ),
-			'tags' => $tags
+	// try and MATCH graph to query
+	$initial_index = -1;
+	foreach ($graphs as $key => $graph){
+		if($_GET['graph'] && $initial_index===-1 && $graph[name]===$_GET['graph'])// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
+			$initial_index = $key;
+	}
+	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
+		$initial_index = 0;
+		echo "use latest release $initial_index\n";
+	} else{
+		echo "use matched name $initial_index\n";
+	}
+	$graphs[$initial_index][content] = file_get_contents($graphs[$initial_index][path]); // load content for matched (or latest) graph
+
+	// create CONTENT bites
+	// links
+	$prev_page = $initial_index===0 ? '/' : $graphs[$initial_index-1][name];
+	$next_page = $initial_index===count($graphs)-1 ? '/' : $graphs[$initial_index+1][name];
+	// h2 subtitle
+	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+  $h2 = $f_contents[rand(0, count($f_contents) - 1)];
+	// OG sharing
+	$thumbnail = $graphs[$initial_index][thumbnail];
+	$name = $graphs[$initial_index][name];
+	$formatted_name = $graphs[$initial_index][formatted_name];
+
+	// grab ALPHABET
+	$globbed = glob("alphabet/*.svg");
+	$letters = array();
+	foreach ($globbed as $key => $file) {
+		$letter = str_replace(['alphabet_', '.svg'], '', basename($file));
+		$letter = str_replace(
+			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash'],
+			['!','?',',','"',"'",'.','#','-','*','+','=','(',')','[',']','{','}','&','@','/'],
+			$letter
+		);
+		$letters[] = [
+			'content' => file_get_contents($file),
+			'letter' => $letter
 		];
 	}
 
-	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
-
-	// debug
-	// $archives = true;
-
-	$latest_release = -1;
-	$initial_index = -1;
-	$files = array();
-
-	// get graphs in reverse chronological order
-	$globbed = glob("graphs/*.svg");
-	rsort( $globbed );
-
-	foreach ($globbed as $key => $file) {
-		$parsed = path_to_components($file);
-
-		// TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris) <=> (before work LA, before lunch NYC, after work Paris)
-		if($parsed[release_date] > time())
-			continue;
-		if($latest_release===-1)
-			$latest_release = count($files)-1;
-
-		// LOG
-		$parsed[content] = false;
-		$files[] = $parsed;
-
-		// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
-		if($_GET['graph'] && $initial_index===-1 && $parsed[name]===$_GET['graph'])
-			$initial_index = count($files)-1;
-	}
-
-	// if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
-	if($initial_index===-1){
-		$initial_index = $latest_release;
-		echo "use latest release $initial_index\n";
-	} else
-		echo "use matched name $initial_index\n";
-
-	// load content for matched (or latest) graph
-	$files[$initial_index][content] = file_get_contents($files[$initial_index][path]);
-	$prev_page = $initial_index===$latest_release ? '/' : path_to_components($files[$initial_index-1][path])[name];
-	$next_page = $initial_index===count($files)-1 ? '/' : path_to_components($files[$initial_index+1][path])[name];
-
-	// random subtitle for H2
-	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
-  $h2 = $f_contents[rand(0, count($f_contents) - 1)];
-
-  // log initial page load
+	// log VISIT COUNT initial page load
   file_put_contents ('visits.log', json_encode([
-  	page => $files[$initial_index][name],
+  	page => $graphs[$initial_index][name],
   	date => time(),
   	ip => $_SERVER[REMOTE_ADDR]
   ]) . ",\n", FILE_APPEND);
 
-  // get infos for OG sharing
-  $parsed = path_to_components($files[$initial_index][path]);
-  $thumbnail = $parsed[thumbnail];
-  $name = $parsed[name];
-	$formatted_name = $parsed[formatted_name];
+	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
+	// debug
+	// $archives = true;
 ?>-->
 
 <!DOCTYPE html>
@@ -100,6 +103,23 @@
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
 	<link rel="icon" type="image/png" href="favicon.png">
 	<link href='style.css' rel='stylesheet'>
+	<style>
+		main svg path, main svg line, main svg polyline{
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-miterlimit: 10;
+			fill: none;
+		}
+		main svg path:not([stroke]), main svg line:not([stroke]), main svg polyline:not([stroke]){
+			stroke: black;
+		}
+		main svg path:not([stroke-width]), main svg line:not([stroke-width]), main svg polyline:not([stroke-width]){
+			stroke-width: 4;
+		}
+		main svg [data-type=erase]{
+			stroke-linejoin: bevel;
+		}
+	</style>
 </head>
 <aside>
 	<input type="checkbox" id="cog_check">
@@ -124,8 +144,9 @@
 	///////////////////
 	// PHP VARIABLES //
 	///////////////////
-	var GRAPHS = <? echo json_encode($files) . ';'; ?>
+	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
+	var LETTERS = <? echo json_encode($letters).';'; ?>
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
@@ -153,7 +174,12 @@
 
 	MORE FLEXIBILITY
 	- SVG metadata stored somewhere else than in the filenames
-	- rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
+		+ create metadata table
+		+ rethink scripts to abstract metadata location
+	+ rename ARTBOARDS in illustrator so that exports (and re-exports) are more straightforward
+	- algorithm for guessing the ERASE and MAIN paths so that illustrator exports can be used seamlessly
+		- re-layer the graphs
+	⚠ for now, spans outside the SVG tags will be ignored (#authorship)
 
 	ALLOW FOR SHARING OF IMAGES
 	- authorship / credits must go in a <text></text> svg element, along with the whiteboard-comics.com watermark

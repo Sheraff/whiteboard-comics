@@ -60,6 +60,15 @@ function find_needle_with_key (needle, key) {
 	return index
 }
 
+function get_DOM (data) { // debug, this is hacky: this function is used when i have no idea why a variable contains a DOM element and not a string and vice-versa.
+  if(typeof data === 'string'){
+    var el = document.createElement('div')
+    el.innerHTML = data
+    return el.firstElementChild
+  } else
+    return data
+}
+
 
 
 
@@ -71,7 +80,6 @@ function find_needle_with_key (needle, key) {
 var ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('animation_check').checked : localStorage.getItem('animate')
 var SPEED = localStorage.getItem('speed') || 4
 var SIZE_FACTOR = 1.4
-var ABORT = false
 var ERASED
 
 if(ANIMATE==="false") ANIMATE = false
@@ -90,12 +98,12 @@ if(history.state && history.state.name)
 	recovered_index = find_needle_with_key(history.state.name, 'name')
 if(recovered_index !== -1){
 	console.log('state recovered from history: asking for index ' + recovered_index + ', graph @ ' + GRAPHS[recovered_index].name)
-	refresh_svg(recovered_index)
+  load_svg(INDEX, refresh_svg.bind(undefined, recovered_index))
 } else {
 	// create history state if there is none
 	console.log('replaceState to create history state: asking for index ' + INDEX + ', graph @ ' + GRAPHS[INDEX].name)
 	window.history.replaceState({name: GRAPHS[INDEX].name}, "", GRAPHS[INDEX].name)
-	refresh_svg(INDEX)
+  load_svg(INDEX, refresh_svg.bind(undefined, INDEX))
 }
 
 function initialize () {
@@ -111,7 +119,7 @@ function initialize () {
 	var total_duration = play_svg(svg, .5)
 	if(!ANIMATE)
 		force_finish_drawing_element_svg(svg)
-	
+
 	// preload next graph
 	if(GRAPHS[INDEX+1])
 		load_svg(INDEX+1, setup_page.bind(undefined, INDEX+1))
@@ -135,7 +143,7 @@ function navigate (direction, event) {
 	var svg = document.querySelector('main svg')
 	interrupt_drawing_element_svg(svg)
 	if(ANIMATE)
-		erase(svg, 0, setup_page.bind(undefined, direction===0?0:(INDEX+direction))) 
+		erase(svg, 0, setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
 	else
 		ERASED = true
 	load_svg(direction===0?0:(INDEX+direction), setup_page.bind(undefined, direction===0?0:(INDEX+direction)))
@@ -167,7 +175,7 @@ function update_page_title () {
 
 function update_logo_colors () {
   var arrow = document.querySelectorAll('#logo path[stroke]:not([stroke="#000000"]), #logo polyline[stroke]:not([stroke="#000000"])')
-  var color = document.querySelector('main svg path[data-type="main"][stroke], main svg polyline[data-type="main"][stroke]').getAttribute('stroke')
+  var color = document.querySelector('main svg path[stroke], main svg polyline[stroke]').getAttribute('stroke')
   for (var i = 0, l = arrow.length; i < l; i++) {
     arrow[i].style.stroke = color
   }
@@ -225,7 +233,7 @@ function setup_page (index, force) {
 }
 
 // enable browser history navigation
-window.onpopstate = function (event) { 
+window.onpopstate = function (event) {
 	if(!event.state)
 		return
 	var index = -1
@@ -247,27 +255,35 @@ function refresh_svg (index) {
 	// replace old svg with new one
 	INDEX = index
   var svg = document.querySelector('main svg')
-	var div = document.createElement('div')
-	div.innerHTML = GRAPHS[INDEX].content
-	svg.parentNode.replaceChild(div.firstChild, svg)
+	svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
+  svg = document.querySelector('main svg')
 
 	// remove old authorship span (if existing) and add new one (if given)
 	var authorship = document.getElementById('authorship')
 	if(authorship)
 		authorship.parentElement.removeChild(authorship)
-	var new_authorship = div.lastElementChild
-	if(new_authorship)
-		document.querySelector('main svg').parentElement.appendChild(new_authorship)
+	if(GRAPHS[INDEX].author){
+    var span = document.createElement('span')
+    span.setAttribute('id', 'authorship')
+    span.innerHTML = GRAPHS[INDEX].credit
+    var a = document.createElement('a')
+    a.className = 'credits'
+    a.setAttribute('href', GRAPHS[INDEX].source)
+    a.setAttribute('target', '_blank')
+    a.innerHTML = GRAPHS[INDEX].author
+    span.appendChild(a)
+		svg.parentElement.appendChild(span)
+  }
 
 	// add/update date of publication
 	var pubdate = document.getElementById('pubdate')
 	if(!pubdate){
 		pubdate = document.createElement('span')
 		pubdate.id = 'pubdate'
-		document.querySelector('main svg').parentElement.appendChild(pubdate)
+		svg.parentElement.appendChild(pubdate)
 	}
-	var date_obj = new Date(GRAPHS[INDEX].release_date_pieces[1] + ' / ' + GRAPHS[INDEX].release_date_pieces[2] + ' / ' + GRAPHS[INDEX].release_date_pieces[0])
-	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release_date_pieces[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release_date_pieces[0]
+	var date_obj = new Date(GRAPHS[INDEX].release[1] + ' / ' + GRAPHS[INDEX].release[2] + ' / ' + GRAPHS[INDEX].release[0])
+	pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[INDEX].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[INDEX].release[0]
 
 	initialize()
 }
@@ -277,10 +293,8 @@ function refresh_svg (index) {
 ////////////////////
 
 function load_svg (index, callback) {
-	if(ABORT)
-		return
 	if(GRAPHS[index] && GRAPHS[index].content)
-		return callback()
+		return preprocess_svg(index, callback)
 
   var httpRequest = new XMLHttpRequest()
 	httpRequest.onreadystatechange = loaded_svg.bind(undefined, index, httpRequest, callback)
@@ -291,24 +305,144 @@ function load_svg (index, callback) {
 function loaded_svg (index, httpRequest, callback) {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
-			GRAPHS[index].content = httpRequest.responseText
-			callback()
+			GRAPHS[index].content = get_DOM(httpRequest.responseText)
+			preprocess_svg(index, callback)
 		} else {
 			setTimeout(load_svg.bind(undefined, index, callback), 1000)
 		}
 	}
 }
 
+function preprocess_svg (index, callback) {
+  if(!GRAPHS[index].is_processed){
+    console.log('preprocessing '+GRAPHS[index].name)
+    var svg = get_DOM(GRAPHS[index].content)
+    var erase = svg.removeChild(svg.getElementsByTagName('path')[0])
+    erase.setAttribute('data-type', 'erase')
+    erase.setAttribute('stroke', 'transparent')
+    svg.appendChild(erase)
+    GRAPHS[index].content = rewrite_with_paths(svg)
+    GRAPHS[index].is_processed = true
+  }
+  callback()
+}
 
-/////////////////
-// SVG LIBRARY //
-/////////////////
+
+//////////////////////////////
+// SVG FONT TO PATH LIBRARY //
+//////////////////////////////
+
+function rewrite_with_paths (svg) {
+	var texts = svg.getElementsByTagName('text')
+	for (var text_pointer = 0; text_pointer < texts.length; text_pointer++) {
+		var text = texts[text_pointer]
+
+		var tspans = text.getElementsByTagName('tspan')
+		if(tspans.length===0){
+			replace_span(text)
+		} else {
+			for (var i = 0; i < tspans.length; i++) {
+				replace_span(tspans[i])
+			}
+		}
+	}
+  return svg
+
+	function replace_span (reference_element) {
+		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
+			console.log(reference_element.childNodes)
+			return console.log('this node still has children')
+		}
+
+		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
+
+		var text_position = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
+		text_position = text_position.slice(7,-1).split(' ')
+		text_position = {
+			x: parseFloat(text_position[4]),
+			y: parseFloat(text_position[5])
+		}
+		if(is_tspan){
+				text_position.x += parseFloat(reference_element.getAttribute('x'))
+				text_position.y += parseFloat(reference_element.getAttribute('y'))
+		}
+
+		var color = reference_element.getAttribute('fill')
+		if(!color)
+			color = is_tspan ? reference_element.parentElement.getAttribute('fill') : false
+
+		var sentence = reference_element.childNodes[0].nodeValue
+		var insert_at = is_tspan ? reference_element.parentElement : reference_element
+		var char_pointer = 0
+		var x_length = 0
+		for (var char_pointer = 0; char_pointer < sentence.length; char_pointer++) {
+			if(sentence[char_pointer]===' '){
+				x_length+=10
+				continue
+			}
+
+			var letter = get_letter(sentence.charAt(char_pointer))
+			if(!letter)
+				continue
+			var el = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+			el.innerHTML = letter.content
+			var paths = el.querySelectorAll('path,line,polyline')
+			for (var i = 0; i < paths.length; i++) {
+				var x = text_position.x + x_length
+				var y = text_position.y - letter.viewbox.height + 10
+				paths[i].setAttribute('transform', 'translate(' + x + ',' + y + ')')
+				paths[i].setAttribute('data-type','writing')
+				if(color)
+					paths[i].setAttribute('stroke', color)
+				insert_at.parentNode.insertBefore(paths[i], insert_at)
+			}
+			x_length += letter.viewbox.width + .5
+		}
+		reference_element.style.display = 'none'
+	}
+
+	function get_letter(letter) {
+    letter = letter.toLowerCase()
+    letter = letter.replace('’',"'")
+		for (var i = 0; i < LETTERS.length; i++) {
+			if(LETTERS[i].letter===letter){
+        if(!LETTERS[i].viewbox)
+          LETTERS[i] = compute_letter(LETTERS[i])
+        return LETTERS[i]
+      }
+		}
+		console.log('letter "'+letter+'" not found')
+		return false
+	}
+
+  function compute_letter(letter){
+    var el = document.createElement('div')
+  	el.innerHTML = letter.content
+  	el = el.getElementsByTagName('svg')[0]
+  	var viewbox = (el.getAttribute('viewbox') || el.getAttribute('viewBox')).split(' ')
+  	letter.viewbox = {
+  		width: parseFloat(viewbox[2]),
+  		height: parseFloat(viewbox[3])
+  	}
+  	letter.content = el.innerHTML
+    return letter
+  }
+}
+
+
+///////////////////////////
+// SVG ANIMATION LIBRARY //
+///////////////////////////
 
 function erase (svg, delay, callback) {
 	if(ERASED)
 		return callback()
-
-  start_drawing_element(svg.querySelector('[data-type="erase"]'), delay, (function (callback) {
+  var erase_path = svg.querySelector('[data-type="erase"]')
+  if(!erase_path){
+    ERASED = true
+    return callback()
+  }
+  start_drawing_element(erase_path, delay, (function (callback) {
 		ERASED = true
 		callback()
 	}).bind(undefined, callback))
@@ -316,29 +450,23 @@ function erase (svg, delay, callback) {
 
 function play_svg (svg, delay, callback) {
 	// prepare
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].tagName==='text')
-				continue
-			prepare_drawing_element(elements[e])
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.tagName==='text')
+      return
+    prepare_drawing_element(element)
+  })
 
 	// launch
 	var total_duration = delay || 0
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		total_duration += .5
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].tagName==='text')
-				continue
-			if(elements[e].getAttribute('data-type')!=='erase'){
-				total_duration += start_drawing_element (elements[e], total_duration)
-			}
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.tagName==='text')
+      return
+    if(element.getAttribute('data-type')!=='erase'){
+      total_duration += start_drawing_element (element, total_duration)
+    }
+  }, function () {
+    total_duration += .5
+  })
 
 	if (callback)
 		setTimeout(callback, total_duration*1000)
@@ -347,29 +475,33 @@ function play_svg (svg, delay, callback) {
 }
 
 function interrupt_drawing_element_svg (svg) {
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			var computedStyle = window.getComputedStyle(elements[e])
-			elements[e].style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
-			elements[e].style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
-			elements[e].style.transition = 'none'
-		}
-	}
+  iterate_group(svg, function (element) {
+    var computedStyle = window.getComputedStyle(element)
+    element.style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
+    element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
+    element.style.transition = 'none'
+  })
 }
 
 function force_finish_drawing_element_svg (svg) {
-	var groups = svg.children
-	for (var g = 0, lg = groups.length; g < lg; g++) {
-		var elements = groups[g].tagName==='g' ? groups[g].children : [groups[g]]
-		for (var e = 0, le = elements.length; e < le; e++) {
-			if(elements[e].getAttribute('data-type')==='erase'){
-				elements[e].style.strokeDashoffset = elements[e].getTotalLength()
-			}
-			elements[e].style.transition = 'none'
-		}
-	}
+  iterate_group(svg, function (element) {
+    if(element.getAttribute('data-type')==='erase'){
+      element.style.strokeDashoffset = element.getTotalLength()
+    }
+    element.style.transition = 'none'
+  })
+}
+
+function iterate_group(parent, element_call, depth_call) {
+  var elements = parent.children
+  for (var e = 0, le = elements.length; e < le; e++) {
+    if(elements[e].tagName==='g'){
+      if(depth_call) depth_call()
+      iterate_group(elements[e], element_call, depth_call)
+    } else {
+      element_call(elements[e])
+    }
+  }
 }
 
 function prepare_drawing_element (element) {
@@ -380,19 +512,18 @@ function prepare_drawing_element (element) {
 
 function start_drawing_element (element, delay, callback) {
 	var length = element.getTotalLength()
-	switch(element.getAttribute('data-type')){
-		case 'main':
-			var speed_power = .6
-			var smoothing = 'ease-in-out'
-			break
-		case 'erase':
-			var speed_power = .4
-			var smoothing = 'linear'
-			break
-		default:
-			var speed_power = .25
-			var smoothing = 'ease-out'
-	}
+
+  if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
+    var speed_power = .25
+    var smoothing = 'ease-out'
+  } else if (element.getAttribute('data-type')==='erase'){
+    var speed_power = .4
+    var smoothing = 'linear'
+  } else {
+    var speed_power = .6
+    var smoothing = 'ease-in-out'
+  }
+
 	var duration = .1/SPEED*Math.pow(length, speed_power)
 
 	element.getBoundingClientRect()
