@@ -578,7 +578,7 @@ function erase (svg, delay, callback) {
 function play_svg (svg, delay, callback) {
 	// prepare
   iterate_group(svg, function (element) {
-    if(element.tagName==='text')
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
       return
     prepare_drawing_element(element)
   })
@@ -586,7 +586,7 @@ function play_svg (svg, delay, callback) {
 	// launch
 	var total_duration = delay || 0
   iterate_group(svg, function (element) {
-    if(element.tagName==='text')
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
       return
     if(element.getAttribute('data-type')!=='erase'){
       total_duration += start_drawing_element (element, total_duration)
@@ -603,6 +603,8 @@ function play_svg (svg, delay, callback) {
 
 function interrupt_drawing_element_svg (svg) {
   iterate_group(svg, function (element) {
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
+      return
     var computedStyle = window.getComputedStyle(element)
     element.style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
     element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
@@ -612,6 +614,8 @@ function interrupt_drawing_element_svg (svg) {
 
 function force_finish_drawing_element_svg (svg) {
   iterate_group(svg, function (element) {
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
+      return
     if(element.getAttribute('data-type')==='erase'){
       element.style.strokeDashoffset = element.getTotalLength()
     }
@@ -622,7 +626,7 @@ function force_finish_drawing_element_svg (svg) {
 function iterate_group(parent, element_call, depth_call) {
   var elements = parent.children
   for (var e = 0, le = elements.length; e < le; e++) {
-    if(elements[e].tagName==='g'){
+    if(elements[e].tagName.toLowerCase()==='g'){
       if(depth_call) depth_call()
       iterate_group(elements[e], element_call, depth_call)
     } else {
