@@ -6,7 +6,7 @@
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M277.3,0
 	c-34.4,28.6-58.6,69.1-67.4,113c52.5-12.6,84.9-64,129.1-95c4.7-3.3,10.2-6.6,16-5.8c0.8,24.7-14.2,46.8-28.6,66.9
 	c-19.4,27.1-38.8,54.2-58.2,81.4c-10.9,15.3-21.9,30.7-29.6,47.8c-11.4,25.7-14.8,54.3-17.2,82.3c-1.9,21.7-3.4,43.4-4.4,65.1
-	c-0.5,11.1,0.5,24.8,10.5,29.7c6.9,3.4,15.5,0.6,21.2-4.5s9.1-12.3,12.5-19.1c26.9-54.7,59.2-106.8,96.3-155.3
+	c-0.5,11.1,0.5,24.8,10.5,29.7c6.9,3.4,15.5,0.6,21.2-4.5c5.7-5.1,9.1-12.3,12.5-19.1c26.9-54.7,59.2-106.8,96.3-155.3
 	c8.5-11.1,18.3-22.7,31.8-26.2c4.1-1,9-1.1,11.9,2c2.1,2.2,2.7,5.5,2.9,8.5c0.9,16.8-7,33-17.3,46.3s-23.3,24.3-34.6,36.7
 	c-26.4,28.9-44.1,65.6-50.3,104.3c21.7,5.2,42.4-10.9,57.5-27.3c40.4-44.1,72.4-101.5,128.7-121.7c0.9,35.1-20.7,66.5-43.3,93.4
 	c-22.6,26.9-47.9,53.6-56.8,87.6c15.1,6.2,31.9,6.7,48.2,7.1c70.5,1.5,141.1,0.4,211.6-3.2c3.9-0.2,7.9-0.5,11.2-2.5
@@ -21,7 +21,7 @@
 		217.2,69.3 239.7,47.3 262.2,69.3 	"/>
 	
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="239.7" y1="47.3" x2="239.7" y2="396"/>
-	<text transform="matrix(1 0 0 1 9.062 29.6613)" font-family="'PermanentMarker'" font-size="31">things you know about</text>
+	<text transform="matrix(1 0 0 1 9.0621 29.6611)" font-family="'PermanentMarker'" font-size="31">things you know about</text>
 </g>
 <g>
 	
@@ -29,16 +29,16 @@
 		543.4,351.2 565.4,373.7 543.4,396.2 	"/>
 	
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="565.4" y1="373.7" x2="216.7" y2="373.7"/>
-	<text transform="matrix(1 0 0 1 376.0322 427.6594)" font-family="'PermanentMarker'" font-size="31">how much you know</text>
+	<text transform="matrix(1 0 0 1 376.0323 427.6592)" font-family="'PermanentMarker'" font-size="31">how much you know</text>
 </g>
 <g>
 	<path fill="none" stroke="#4C715C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M271.6,359.5
 		c2.1-46.7,24.2-92.2,59.6-122.7c14.6-12.6,31.4-22.7,44.7-36.7c19.2-20.1,29.9-47.1,35-74.4c5.1-27.3,4.8-55.4,4.5-83.2"/>
-	<text transform="matrix(1 0 0 1 435.8058 58.3264)" fill="#4C715C" font-family="'PermanentMarker'" font-size="30.7418">normal life</text>
+	<text transform="matrix(1 0 0 1 435.8058 58.3262)" fill="#4C715C" font-family="'PermanentMarker'" font-size="30.7418">normal life</text>
 </g>
 <g>
 	<path fill="none" stroke="#A35563" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M253.7,354.1
 		c4.8-67.6,37.1-132.8,88-177.6c9.4-8.3,20-16.2,32.4-18.1c21.1-3.4,40.8,11,55.3,26.6c41.9,44.9,63.4,104.7,83.7,162.6"/>
-	<text transform="matrix(1 0 0 1 511.9759 296.1555)" fill="#A35563" font-family="'PermanentMarker'" font-size="30.7418">academia</text>
+	<text transform="matrix(1 0 0 1 511.9759 296.1553)" fill="#A35563" font-family="'PermanentMarker'" font-size="30.7418">academia</text>
 </g>
 </svg>

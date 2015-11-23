@@ -21,7 +21,7 @@
 	
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		10.4,66.4 32.9,44.4 55.4,66.4 	"/>
-	<text transform="matrix(1 0 0 1 7.0923 23.3647)" font-family="'PermanentMarker'" font-size="31">perceived time before the week end</text>
+	<text transform="matrix(1 0 0 1 7.0922 23.3651)" font-family="'PermanentMarker'" font-size="31">perceived time before the week end</text>
 </g>
 <g>
 	
@@ -30,18 +30,18 @@
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		571.5,286.7 593.5,309.2 571.5,331.7 	"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="140.5" y1="301" x2="140.5" y2="317"/>
-	<text transform="matrix(1 0 0 1 73.4746 348.7344)" font-family="'PermanentMarker'" font-size="31">m</text>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="140.1" y1="301.4" x2="140.1" y2="317.4"/>
+	<text transform="matrix(1 0 0 1 73.4745 348.7343)" font-family="'PermanentMarker'" font-size="31">m</text>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="248.5" y1="301" x2="248.5" y2="317"/>
-	<text transform="matrix(1 0 0 1 184.4839 348.7344)" font-family="'PermanentMarker'" font-size="31">t</text>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="248.1" y1="301.4" x2="248.1" y2="317.4"/>
+	<text transform="matrix(1 0 0 1 184.4838 348.7343)" font-family="'PermanentMarker'" font-size="31">t</text>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="356.5" y1="301" x2="356.5" y2="317"/>
-	<text transform="matrix(1 0 0 1 289.4263 348.7344)" font-family="'PermanentMarker'" font-size="31">w</text>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="356.1" y1="301.4" x2="356.1" y2="317.4"/>
+	<text transform="matrix(1 0 0 1 289.4262 348.7343)" font-family="'PermanentMarker'" font-size="31">w</text>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="463.5" y1="301" x2="463.5" y2="317"/>
-	<text transform="matrix(1 0 0 1 401.374 348.7344)" font-family="'PermanentMarker'" font-size="31">t</text>
-	<text transform="matrix(1 0 0 1 511.0459 348.7344)" font-family="'PermanentMarker'" font-size="31">f</text>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="463.1" y1="301.4" x2="463.1" y2="317.4"/>
+	<text transform="matrix(1 0 0 1 401.374 348.7343)" font-family="'PermanentMarker'" font-size="31">t</text>
+	<text transform="matrix(1 0 0 1 511.0458 348.7343)" font-family="'PermanentMarker'" font-size="31">f</text>
 </g>
 <path fill="none" stroke="#C1172C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M78.9,85.3
 	c0,0,197.4,180.9,397.2,180.9c91.8,0,90.4-211.7,90.4-211.7"/>

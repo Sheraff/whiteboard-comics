@@ -25,7 +25,7 @@
 	
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		913,264 935,286.5 913,309 	"/>
-	<text transform="matrix(1 0 0 1 868.792 223.9991)" font-family="'PermanentMarker'" font-size="31">time</text>
+	<text transform="matrix(1 0 0 1 868.792 223.999)" font-family="'PermanentMarker'" font-size="31">time</text>
 </g>
 <g>
 	<text transform="matrix(1 0 0 1 25.1953 73.5244)" fill="#29ABE2" font-family="'PermanentMarker'" font-size="31">how much money i have</text>

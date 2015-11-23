@@ -13,7 +13,7 @@
 	c7.9,11,26.7,6.9,34.2-4.3s7-25.8,5.9-39.2s-2.5-27.8,3.9-39.7c6.4-11.9,23.8-18.8,33.7-9.6c12.2,11.3,2.1,31.6,4.9,47.9
 	c2.4,13.9,14.8,24.3,28.2,28.6c13.4,4.3,27.8,3.7,41.9,3c77.4-3.9,154.7-7.7,232.1-11.6c5.7-0.3,12.1-0.9,15.9-5.2
 	c5-5.8,2.1-15.3-3.9-20c-6-4.7-13.9-5.8-21.5-6.8c-74.8-9.5-164.4-26.5-239.2-36.1c178.6-13.7,372-19.9,550.6-33.6"/>
-<text transform="matrix(1 0 0 1 71.0088 41.6128)" font-family="'PermanentMarker'" font-size="31">estimated time until completion</text>
+<text transform="matrix(1 0 0 1 71.0087 41.613)" font-family="'PermanentMarker'" font-size="31">estimated time until completion</text>
 <g>
 	
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
@@ -26,8 +26,8 @@
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		741.5,323.5 763.5,346 741.5,368.5 	"/>
 </g>
-<text transform="matrix(1 0 0 1 363.6533 323.4707)" font-family="'PermanentMarker'" font-size="31">time spent on a project</text>
-<path fill="none" stroke="#7AC943" stroke-width="7" stroke-linecap="round" stroke-linejoin="bevel" stroke-miterlimit="10" d="
-	M37.5,221.1c14.6,20.4,47,19.3,67.7,5.2c20.8-14.1,33.4-37,47.5-57.7s32.4-41.3,57.1-45.9c29.5-5.5,58.1,13.9,77.8,36.6
-	s34.5,49.8,57.6,68.9c42.9,35.4,103.9,35.7,159.5,34.3c170.3-4.4,340.6-8.7,510.9-13.1"/>
+<text transform="matrix(1 0 0 1 363.6532 323.4709)" font-family="'PermanentMarker'" font-size="31">time spent on a project</text>
+<path fill="none" stroke="#F15A24" stroke-width="7" stroke-linecap="round" stroke-linejoin="bevel" stroke-miterlimit="10" d="
+	M37.5,221.1c14.6,20.4,47,19.3,67.7,5.2s33.4-37,47.5-57.7s32.4-41.3,57.1-45.9c29.5-5.5,58.1,13.9,77.8,36.6s34.5,49.8,57.6,68.9
+	c42.9,35.4,103.9,35.7,159.5,34.3c170.3-4.4,340.6-8.7,510.9-13.1"/>
 </svg>

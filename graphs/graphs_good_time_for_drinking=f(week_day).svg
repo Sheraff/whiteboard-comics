@@ -20,17 +20,17 @@
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		823.6,160.2 845.6,182.7 823.6,205.2 	"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="361.2" y1="175" x2="361.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="361.5" y1="175.3" x2="361.5" y2="191.3"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="438.2" y1="175" x2="438.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="438.5" y1="175.3" x2="438.5" y2="191.3"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="515.2" y1="175" x2="515.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="515.5" y1="175.3" x2="515.5" y2="191.3"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="592.2" y1="175" x2="592.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="592.5" y1="175.3" x2="592.5" y2="191.3"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="669.2" y1="175" x2="669.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="669.5" y1="175.3" x2="669.5" y2="191.3"/>
 	
-		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="746.2" y1="175" x2="746.2" y2="191"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="746.5" y1="175.3" x2="746.5" y2="191.3"/>
 </g>
 <g>
 	
@@ -38,21 +38,21 @@
 		262.4,61 284.9,39 307.4,61 	"/>
 	
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="284.7" y1="39" x2="284.7" y2="326.3"/>
-	<text transform="matrix(1 0 0 1 259.3234 25.6289)" font-family="'PermanentMarker'" font-size="31">going out drinking on a wednesday is...</text>
+	<text transform="matrix(1 0 0 1 259.3232 25.6287)" font-family="'PermanentMarker'" font-size="31">going out drinking on a wednesday is...</text>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 308.6066 222.1567)" font-family="'PermanentMarker'" font-size="31">m</text>
-	<text transform="matrix(1 0 0 1 388.8 222.1567)" font-family="'PermanentMarker'" font-size="31">t</text>
-	<text transform="matrix(1 0 0 1 462.9645 222.1567)" font-family="'PermanentMarker'" font-size="31">w</text>
-	<text transform="matrix(1 0 0 1 544.0954 222.1567)" font-family="'PermanentMarker'" font-size="31">t</text>
-	<text transform="matrix(1 0 0 1 622.9719 222.1567)" font-family="'PermanentMarker'" font-size="31">f</text>
-	<text transform="matrix(1 0 0 1 700.57 222.1567)" font-family="'PermanentMarker'" font-size="31">s</text>
-	<text transform="matrix(1 0 0 1 778.2184 222.1567)" font-family="'PermanentMarker'" font-size="31">s</text>
+	<text transform="matrix(1 0 0 1 308.6064 222.1566)" font-family="'PermanentMarker'" font-size="31">m</text>
+	<text transform="matrix(1 0 0 1 388.7998 222.1566)" font-family="'PermanentMarker'" font-size="31">t</text>
+	<text transform="matrix(1 0 0 1 462.9644 222.1566)" font-family="'PermanentMarker'" font-size="31">w</text>
+	<text transform="matrix(1 0 0 1 544.0952 222.1566)" font-family="'PermanentMarker'" font-size="31">t</text>
+	<text transform="matrix(1 0 0 1 622.9717 222.1566)" font-family="'PermanentMarker'" font-size="31">f</text>
+	<text transform="matrix(1 0 0 1 700.5698 222.1566)" font-family="'PermanentMarker'" font-size="31">s</text>
+	<text transform="matrix(1 0 0 1 778.2183 222.1566)" font-family="'PermanentMarker'" font-size="31">s</text>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 27.9865 70.9702)" font-family="'PermanentMarker'" font-size="31">a great idea !!!</text>
-	<text transform="matrix(1 0 0 1 2.6623 297.6548)" font-family="'PermanentMarker'" font-size="31">a really bad idea</text>
+	<text transform="matrix(1 0 0 1 27.9863 70.9701)" font-family="'PermanentMarker'" font-size="31">a great idea !!!</text>
+	<text transform="matrix(1 0 0 1 2.6621 297.6546)" font-family="'PermanentMarker'" font-size="31">a really bad idea</text>
 </g>
 <polyline fill="none" stroke="#F68D3D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-	284.9,183.2 515.2,61 515.2,297.7 823.3,182.7 "/>
+	285,183.2 515.5,61 515.5,297.7 823.5,182.7 "/>
 </svg>

@@ -42,8 +42,8 @@
 		149.2,357.9 197.5,374.7 197.5,283 328.5,304.2 328.5,205 492.5,233.7 492.5,120 669.5,160.2 669.5,75 	"/>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 126.1895 75.4346)" fill="#F48072" font-family="'PermanentMarker'" font-size="31">how i actually budget</text>
-	<path fill="none" stroke="#F48072" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<text transform="matrix(1 0 0 1 126.1895 75.4346)" fill="#ED1C24" font-family="'PermanentMarker'" font-size="31">how i actually budget</text>
+	<path fill="none" stroke="#ED1C24" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M149.2,381.9l64.3,22.8V313c0,0,58,79.2,131,79.2V293c0,0,23,149.7,164,149.7V329c0,0,23.9,139.2,177,139.2"/>
 </g>
 </svg>

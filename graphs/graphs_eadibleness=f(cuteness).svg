@@ -23,13 +23,6 @@
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="368.3" y1="387.4" x2="19.6" y2="387.4"/>
 </g>
 <g>
-	<g>
-		<text transform="matrix(1 0 0 1 74.197 280.0029)" font-family="'PermanentMarker'" font-size="30.7418">pigs</text>
-	</g>
-	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M89.1,363
-		c-4.7-7.3-4.5-16.8-2.1-25.2c2.4-8.3,6.9-15.9,10.6-23.7c3.7-7.9,6.7-16.4,5.7-25.1"/>
-</g>
-<g>
 	
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		346.3,364.9 368.3,387.4 346.3,409.9 	"/>
@@ -41,8 +34,20 @@
 		20.2,83 42.7,61 65.2,83 	"/>
 	<text transform="matrix(1 0 0 1 15.6465 34.0015)" font-family="'PermanentMarker'" font-size="30.7418">ethicalness of eating it</text>
 </g>
-<path fill="none" stroke="#AC4A9C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M47.8,382.3
-	c91.4-15.2,185.1-47.4,245.5-117.7c46.2-53.8,68-124,85.8-192.7"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="77.1749" y1="416.8102" x2="403.9178" y2="91.9939">
+	<stop  offset="0" style="stop-color:#BD2026"/>
+	<stop  offset="0.3564" style="stop-color:#EC1C24"/>
+	<stop  offset="0.8356" style="stop-color:#D5699F"/>
+</linearGradient>
+<path fill="none" stroke="url(#SVGID_1_)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	M47.8,382.3c91.4-15.2,185.1-47.4,245.5-117.7c46.2-53.8,68-124,85.8-192.7"/>
+<g>
+	<g>
+		<text transform="matrix(1 0 0 1 74.197 280.0029)" font-family="'PermanentMarker'" font-size="30.7418">pigs</text>
+	</g>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M89.1,363
+		c-4.7-7.3-4.5-16.8-2.1-25.2c2.4-8.3,6.9-15.9,10.6-23.7c3.7-7.9,6.7-16.4,5.7-25.1"/>
+</g>
 <g>
 	<text transform="matrix(1 0 0 1 197.0269 100.0605)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.7418">obese</tspan><tspan x="-4" y="24" font-family="'PermanentMarker'" font-size="30.7418">koala</tspan><tspan x="0.4" y="48" font-family="'PermanentMarker'" font-size="30.7418">bears</tspan></text>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M360.7,103.2
