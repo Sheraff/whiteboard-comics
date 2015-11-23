@@ -168,7 +168,6 @@ document.getElementById('animation_check').addEventListener('change', function (
 
 window.addEventListener('keydown', function (event) {
   if(event.repeat) return
-  console.log(event.keyCode)
   if(event.keyCode===37 || event.keyCode===38)
     navigate(-1, event)
   if(event.keyCode===39 || event.keyCode===40)
@@ -531,7 +530,7 @@ function rewrite_with_paths (svg) {
 
 	function get_letter(letter) {
     letter = letter.toLowerCase()
-    letter = letter.replace('’',"'")
+    letter = letter.replace(/‘/g,"'").replace(/’/g,"'").replace(/“/g,'"').replace(/”/g,'"')
 		for (var i = 0; i < LETTERS.length; i++) {
 			if(LETTERS[i].letter===letter){
         if(!LETTERS[i].viewbox)

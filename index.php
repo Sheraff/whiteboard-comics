@@ -79,6 +79,7 @@
 <style>
 	main svg{
 		max-width: 100%;
+		max-height: 100%;
 		overflow: visible;
 	}
 </style>
@@ -136,6 +137,7 @@
 
 	ROBUSTNESS
 	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
+	⚠ other solution: switch to simply copying "transform" attribute (without forgetting the x,y of tspans)
 
 	allow for og:image and page title to be shown even before release date if name matches (easier posting on facebook)
 
