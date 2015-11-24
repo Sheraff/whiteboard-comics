@@ -120,10 +120,11 @@
 
 <!-- todo
 	HARD PROBLEMS, MAJOR IMPROVEMENTS
-	ability adjust speed while drawing
-	make the archive page ajax too, with boards zooming in and out
+	- ability adjust speed while drawing
+	- make the archive page ajax too, with boards zooming in and out
 
-	KEYBOARDS CONTROLS
+	UX
+	- attract attention on the possibility to see another graph (arrows / keyboard)
 	- tab key behavior
 
 	IMPROVE MOBILE VERSION
@@ -132,8 +133,9 @@
 	- add icon for link to website
 	- is an external font necessary ?
 
-	add GitHub button
-	add Donate button
+	SOCIAL
+	- add GitHub button
+	- add Donate button
 
 	ROBUSTNESS
 	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
