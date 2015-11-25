@@ -8,7 +8,7 @@
         height: calc(100vh - 2rem);
         width: calc(70vw - 1rem);
         top: 0;
-        left: 0;
+        left: -1rem;
         box-shadow: 0 0 .7rem rgba(0, 0, 0, 0.6);
       }
       *{
@@ -78,6 +78,12 @@
       section.clicked a:not(.clicked)[data-h=bot]{
         transform: translateY(100vh);
       }
+      section.pre_clicked a:not(.clicked){
+        opacity: 0;
+      }
+      a.pre_clicked, a.pre_clicked::before{
+        transition-duration: 0s;
+      }
 
       section.clicked a:not(.clicked), section.unclicked a:not(.unclicked){
         z-index: 1;
@@ -127,8 +133,15 @@
 
       var recorded_section_height = section.getBoundingClientRect().height
 
+      // init
       section.style.height = recorded_section_height
       document.getElementById('dummy_section').style.height = recorded_section_height+'px'
+      var a_clicked = document.querySelector('a.clicked')
+      if(a_clicked){
+        var rect = a_clicked.getBoundingClientRect()
+        chase_out_cards(as, rect)
+        position_main_slide(rect)
+      }
 
       var remember_scroll = 0
       for (var i = 0; i < as.length; i++) {
@@ -136,7 +149,7 @@
           event.stopPropagation()
         	event.preventDefault()
 
-          if(this.className !== 'clicked'){
+          if(!this.classList.contains('clicked')){
             var aside_rect = aside.getBoundingClientRect()
             remember_scroll = window.scrollY
 
@@ -148,21 +161,11 @@
             this.parentNode.className = 'clicked'
 
             // position ::before
-            var sheet = document.styleSheets[0]
-            var rules = sheet.cssRules || sheet.rules
             var rect = this.getBoundingClientRect()
-            rules[0].style.top = 'calc('+(-rect.top)+'px + 1rem)'
-            rules[0].style.left = 'calc('+(-rect.left)+'px + 30vw)'
+            position_main_slide(rect)
 
             // chase out other <a>
-            for (var i = 0; i < as.length; i++) {
-              var temp_rect = as[i].getBoundingClientRect()
-              if(temp_rect.top < rect.top){
-                as[i].setAttribute('data-h', 'top')
-              } else {
-                as[i].setAttribute('data-h', 'bot')
-              }
-            }
+            chase_out_cards(as, rect)
 
             document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
             if(aside.getAttribute('data-stuck')==='fixed-top')
@@ -184,6 +187,23 @@
             place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
           }
         })
+      }
+
+      function chase_out_cards(cards, ref_rect){
+        for (var i = 0; i < cards.length; i++) {
+          var temp_rect = cards[i].getBoundingClientRect()
+          if(temp_rect.top < ref_rect.top){
+            cards[i].setAttribute('data-h', 'top')
+          } else {
+            cards[i].setAttribute('data-h', 'bot')
+          }
+        }
+      }
+      function position_main_slide(ref_rect){
+        var sheet = document.styleSheets[0]
+        var rules = sheet.cssRules || sheet.rules
+        rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
+        rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
       }
 
 
