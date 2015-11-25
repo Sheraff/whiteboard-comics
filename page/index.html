@@ -9,15 +9,16 @@
         width: calc(70vw - 1rem);
         top: 0;
         left: 0;
+        box-shadow: 0 0 .7rem rgba(0, 0, 0, 0.6);
       }
       *{
         box-sizing: border-box;
       }
       html, body{
-        height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
+        background-color: lightgrey;
       }
       #dummy_section{
         position: absolute;
@@ -26,7 +27,6 @@
         width: 100vw;
         padding-left: 30vw;
         overflow: hidden;
-        background-color: orange;
         z-index: -999;
       }
       section{
@@ -47,7 +47,6 @@
         position: absolute;
         top: 0;
         left: 0;
-        background-color: red;
       }
       a{
         position: relative;
@@ -56,7 +55,7 @@
         height: 20vw;
         width: 20vw;
         transform: translateY(0);
-        transition: transform .5s;
+        transition: transform .5s, opacity .5s;
       }
       a::before{
         content: '';
@@ -64,11 +63,14 @@
         height: 20vw;
         width: 20vw;
         background-color: white;
-        box-shadow: 0 0 1rem black;
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.4);
         position: absolute;
         top: 0;
         left: 0;
-        transition: height .5s, width .5s, top .5s, left .5s;
+        transition: height .5s, width .5s, top .5s, left .5s, box-shadow .5s;
+      }
+      section.clicked a:not(.clicked){
+        opacity: .2;
       }
       section.clicked a:not(.clicked)[data-h=top]{
         transform: translateY(-100vh);
@@ -163,10 +165,8 @@
             }
 
             document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
-            // if(aside_rect.top+aside_rect.height<window.innerHeight)
-            //   place_aside('absolute-bottom', aside_rect.top)
-            // else
-            //   place_aside('fixed-bottom')
+            if(aside.getAttribute('data-stuck')==='fixed-top')
+              window.scrollTo(0,0)
 
           } else {
             // unfix section
@@ -175,7 +175,7 @@
             // apply
             this.className = 'unclicked'
             this.parentNode.className = ''
-            setTimeout((function (el) { el.className = '' }).bind(undefined, this), 1000)
+            setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 500)
 
             // replace old scroll, keep aside in place
             var aside_rect = aside.getBoundingClientRect()
