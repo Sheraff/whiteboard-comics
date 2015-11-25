@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <style media="screen">
-      a.clicked::before{
+    <style>
+      a.clicked>div{
         height: calc(100vh - 2rem);
         width: calc(70vw - 1rem);
         top: 0;
@@ -57,8 +57,7 @@
         transform: translateY(0);
         transition: transform .5s, opacity .5s;
       }
-      a::before{
-        content: '';
+      a>div{
         display: block;
         height: 20vw;
         width: 20vw;
@@ -68,9 +67,10 @@
         top: 0;
         left: 0;
         transition: height .5s, width .5s, top .5s, left .5s, box-shadow .5s;
+        transition-delay: .25s;
       }
       section.clicked a:not(.clicked){
-        opacity: .2;
+        opacity: 0;
       }
       section.clicked a:not(.clicked)[data-h=top]{
         transform: translateY(-100vh);
@@ -78,10 +78,7 @@
       section.clicked a:not(.clicked)[data-h=bot]{
         transform: translateY(100vh);
       }
-      section.pre_clicked a:not(.clicked){
-        opacity: 0;
-      }
-      a.pre_clicked, a.pre_clicked::before{
+      a.pre_clicked, a.pre_clicked>div{
         transition-duration: 0s;
       }
 
@@ -89,13 +86,38 @@
         z-index: 1;
       }
       a{
-        z-index: 4;
+        z-index: 2;
       }
       a.clicked, a.unclicked{
+        z-index: 3;
+      }
+      a>div{
+        z-index: 4;
+      }
+      a.clicked>div, a.unclicked>div{
         z-index: 5;
       }
-      a.clicked::before, a.unclicked::before{
-        z-index: 6;
+      main{
+        height: calc(100vh - 2rem);
+        width: calc(70vw - 1rem);
+        position: fixed;
+        right: 1rem;
+        top: 1rem;
+        z-index: -1000;
+        background-color: white;
+        opacity: 0;
+        transition: z-index 0s .5s, opacity .25s;
+      }
+      section.clicked~main{
+        z-index: 1000;
+        opacity: 1;
+        transition-delay: .75s;
+      }
+      section:not(.clicked) a, section:not(.clicked) a>div{
+        transition-delay: .25s;
+      }
+      a, main{
+        text-align: center;
       }
     </style>
   </head>
@@ -109,27 +131,28 @@
     </aside>
     <div id="dummy_section"></div>
     <section>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
-      <a href="#"><span>bonjour</span></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
     </section>
     <main>
-
+      coucou
     </main>
     <script type="text/javascript">
       var aside = document.getElementsByTagName('aside')[0]
       var section = document.getElementsByTagName('section')[0]
       var as = document.getElementsByTagName('a')
+      var main = document.getElementsByTagName('main')[0]
 
       var recorded_section_height = section.getBoundingClientRect().height
 
@@ -145,50 +168,56 @@
 
       var remember_scroll = 0
       for (var i = 0; i < as.length; i++) {
-        as[i].addEventListener('click', function (event) {
-          event.stopPropagation()
-        	event.preventDefault()
-
-          if(!this.classList.contains('clicked')){
-            var aside_rect = aside.getBoundingClientRect()
-            remember_scroll = window.scrollY
-
-            // fix section
-            section.style.top = (-window.scrollY)+'px'
-
-            // apply
-            this.className = 'clicked'
-            this.parentNode.className = 'clicked'
-
-            // position ::before
-            var rect = this.getBoundingClientRect()
-            position_main_slide(rect)
-
-            // chase out other <a>
-            chase_out_cards(as, rect)
-
-            document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
-            if(aside.getAttribute('data-stuck')==='fixed-top')
-              window.scrollTo(0,0)
-
-          } else {
-            // unfix section
-            section.style.top = 0
-
-            // apply
-            this.className = 'unclicked'
-            this.parentNode.className = ''
-            setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 500)
-
-            // replace old scroll, keep aside in place
-            var aside_rect = aside.getBoundingClientRect()
-            document.getElementById('dummy_section').style.height = recorded_section_height+'px'
-            window.scrollTo(0,remember_scroll)
-            place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
-          }
-        })
+        as[i].addEventListener('click', toggle_grid_view)
       }
+      main.addEventListener('click', function (event) {
+        toggle_grid_view.bind(document.querySelector('a.clicked'))(event)
+      })
 
+      function toggle_grid_view (event) {
+        event.stopPropagation()
+        event.preventDefault()
+
+        if(!this.classList.contains('clicked')){
+          // remember stuff before applying style
+          var aside_rect = aside.getBoundingClientRect()
+          remember_scroll = window.scrollY
+
+          // fix section
+          section.style.top = (-window.scrollY)+'px'
+
+          // apply
+          this.className = 'clicked'
+          this.parentNode.className = 'clicked'
+
+          // position ::before
+          var rect = this.getBoundingClientRect()
+          position_main_slide(this, rect)
+
+          // chase out other <a>
+          chase_out_cards(as, rect)
+
+          // keep aside in place
+          document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
+          if(aside.getAttribute('data-stuck')==='fixed-top')
+            window.scrollTo(0,0)
+
+        } else {
+          // unfix section
+          section.style.top = 0
+
+          // apply
+          this.className = 'unclicked'
+          this.parentNode.className = ''
+          setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 500)
+
+          // replace old scroll, keep aside in place
+          var aside_rect = aside.getBoundingClientRect()
+          document.getElementById('dummy_section').style.height = recorded_section_height+'px'
+          window.scrollTo(0,remember_scroll)
+          place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
+        }
+      }
       function chase_out_cards(cards, ref_rect){
         for (var i = 0; i < cards.length; i++) {
           var temp_rect = cards[i].getBoundingClientRect()
@@ -199,9 +228,10 @@
           }
         }
       }
-      function position_main_slide(ref_rect){
+      function position_main_slide(target, ref_rect){
         var sheet = document.styleSheets[0]
         var rules = sheet.cssRules || sheet.rules
+        console.log(rules)
         rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
         rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
       }
