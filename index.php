@@ -175,7 +175,7 @@
 	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
-	if(ARCHIVES){
+	if(ARCHIVES){ /* TODO here SVGs aren't going through preprocess_svg */
 		var as = document.querySelectorAll('section a>div')
 		for (var i = 0; i < as.length; i++) {
 			GRAPHS[i].content = as[i].firstElementChild
@@ -335,7 +335,7 @@
 
 
 </script>
-<script language="javascript" type="text/javascript" src="script.js"></script>
+<script language="javascript" type="text/javascript" src="/script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
 </html>
 
@@ -343,7 +343,15 @@
 <!-- todo
 	HARD PROBLEMS, MAJOR IMPROVEMENTS
 	- ability adjust speed while drawing
-	- make the archive page ajax too, with boards zooming in and out
+
+	DYNAMIC ARCHIVES
+	- load extra SVGs
+		- in advance ?
+	- aside isn't resizing properly
+	- aside's scroll has an issue when transitionning
+	- TAGS
+	- transition from section>a to main
+	- when using the arrow to navigate, going to 'archives' afterwards will make the vignette zoom out to the wrong place
 
 	FLUIDITY
 	- archives' animations are super heavy

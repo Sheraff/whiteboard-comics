@@ -337,7 +337,13 @@ function refresh_svg (index) {
   if(ARCHIVES)
     unset_archives()
   var svg = document.querySelector('main svg')
-	svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
+  if(svg){
+	  svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
+  }else{
+    var coucou = get_DOM(GRAPHS[INDEX].content)
+    console.log(coucou)
+    document.getElementsByTagName('main')[0].appendChild(coucou)
+  }
   svg = document.querySelector('main svg')
   svg.parentNode.setAttribute('data-index', INDEX)
 
