@@ -9,7 +9,7 @@
         width: calc(70vw - 1rem);
         top: 0;
         left: -1rem;
-        box-shadow: 0 0 .7rem rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
       }
       *{
         box-sizing: border-box;
@@ -40,6 +40,9 @@
       section.clicked{
         position: fixed;
       }
+      section.pre_clicked{
+        visibility: hidden;
+      }
       aside{
         z-index: -10;
         min-height: 120vh;
@@ -62,12 +65,12 @@
         height: 20vw;
         width: 20vw;
         background-color: white;
-        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.5);
         position: absolute;
         top: 0;
         left: 0;
-        transition: height .5s, width .5s, top .5s, left .5s, box-shadow .5s;
-        transition-delay: .25s;
+        transition: height .5s, width .5s, top .5s, left .5s, box-shadow .25s linear, opacity .25s;
+        transition-delay: .25s, .25s, .25s, .25s, .75s, .75s;
       }
       section.clicked a:not(.clicked){
         opacity: 0;
@@ -106,18 +109,20 @@
         z-index: -1000;
         background-color: white;
         opacity: 0;
-        transition: z-index 0s .5s, opacity .25s;
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.5);
+        transition: z-index 0s .5s, opacity .25s, box-shadow .25s linear;
       }
       section.clicked~main{
         z-index: 1000;
         opacity: 1;
+        box-shadow: 0 0 .7rem rgba(0, 0, 0, 0.5);
         transition-delay: .75s;
       }
-      section:not(.clicked) a, section:not(.clicked) a>div{
+      section:not(.clicked) a{
         transition-delay: .25s;
       }
-      a, main{
-        text-align: center;
+      a.unclicked>div{
+        transition-delay: .25s, .25s, .25s, .25s, 0s, .75s;
       }
     </style>
   </head>
@@ -130,7 +135,7 @@
       <p>5Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </aside>
     <div id="dummy_section"></div>
-    <section>
+    <section class="clicked pre_clicked">
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
@@ -138,7 +143,7 @@
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
-      <a href="#"><div>coucou</div></a>
+      <a href="#" class="clicked pre_clicked"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
       <a href="#"><div>coucou</div></a>
@@ -192,7 +197,7 @@
 
           // position ::before
           var rect = this.getBoundingClientRect()
-          position_main_slide(this, rect)
+          position_main_slide(rect)
 
           // chase out other <a>
           chase_out_cards(as, rect)
@@ -209,7 +214,7 @@
           // apply
           this.className = 'unclicked'
           this.parentNode.className = ''
-          setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 500)
+          setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 1000)
 
           // replace old scroll, keep aside in place
           var aside_rect = aside.getBoundingClientRect()
@@ -228,10 +233,9 @@
           }
         }
       }
-      function position_main_slide(target, ref_rect){
+      function position_main_slide(ref_rect){
         var sheet = document.styleSheets[0]
         var rules = sheet.cssRules || sheet.rules
-        console.log(rules)
         rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
         rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
       }
