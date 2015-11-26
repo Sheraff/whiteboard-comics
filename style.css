@@ -24,6 +24,50 @@ a:visited {
 label {
   cursor: pointer;
 }
+main svg,
+section svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+main svg [data-type="erase"],
+section svg [data-type="erase"] {
+  stroke: white;
+  stroke-linejoin: bevel;
+}
+main svg text,
+section svg text {
+  fill: white;
+  font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
+}
+main svg path,
+section svg path,
+main svg line,
+section svg line,
+main svg polyline,
+section svg polyline {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+  fill: none;
+}
+main svg path:not([stroke]),
+section svg path:not([stroke]),
+main svg line:not([stroke]),
+section svg line:not([stroke]),
+main svg polyline:not([stroke]),
+section svg polyline:not([stroke]) {
+  stroke: black;
+}
+main svg path:not([stroke-width]),
+section svg path:not([stroke-width]),
+main svg line:not([stroke-width]),
+section svg line:not([stroke-width]),
+main svg polyline:not([stroke-width]),
+section svg polyline:not([stroke-width]) {
+  stroke-width: 4;
+}
 #dummy_section {
   position: absolute;
   top: 0;
@@ -79,8 +123,18 @@ section > a > div {
   position: absolute;
   top: 0;
   left: 0;
+  overflow: hidden;
   transition: height 0.5s, width 0.5s, top 0.5s, left 0.5s, box-shadow 0.25s linear, opacity 0.25s;
   transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
+}
+section > a > div svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+section > a.clicked > div {
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0);
+  height: calc(100vh  -  2rem);
+  width: calc(70vw  -  1rem);
 }
 section > a.clicked,
 section > a.unclicked {
@@ -118,40 +172,8 @@ main {
   box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
   transition: z-index 0s 0.5s, opacity 0.25s, box-shadow 0.25s linear;
 }
-main svg {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
 main svg * {
   visibility: hidden;
-}
-main svg [data-type="erase"] {
-  stroke: white;
-  stroke-linejoin: bevel;
-}
-main svg text {
-  fill: white;
-  font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
-}
-main svg path,
-main svg line,
-main svg polyline {
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10;
-  fill: none;
-}
-main svg path:not([stroke]),
-main svg line:not([stroke]),
-main svg polyline:not([stroke]) {
-  stroke: black;
-}
-main svg path:not([stroke-width]),
-main svg line:not([stroke-width]),
-main svg polyline:not([stroke-width]) {
-  stroke-width: 4;
 }
 main #overlay {
   position: absolute;
@@ -285,7 +307,7 @@ aside #blurb p:last-child::after {
 aside #menu [data-title] {
   width: 25%;
 }
-aside .archives #archives {
+aside.archives #archives {
   background-color: #eeeeee;
 }
 aside #cog_check {

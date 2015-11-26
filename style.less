@@ -29,6 +29,32 @@ a{
 label{
 	cursor: pointer;
 }
+main svg, section svg{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	[data-type="erase"]{
+		stroke: white;
+		stroke-linejoin: bevel;
+	}
+	text{
+		fill: white;
+		font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
+	}
+	path, line, polyline{
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-miterlimit: 10;
+		fill: none;
+		&:not([stroke]){
+			stroke: black;
+		}
+		&:not([stroke-width]){
+			stroke-width: 4;
+		}
+	}
+}
 
 #dummy_section{
 	position: absolute;
@@ -85,8 +111,18 @@ section{
 			position: absolute;
 			top: 0;
 			left: 0;
+			overflow: hidden;
 			transition: height @timing*2, width @timing*2, top @timing*2, left @timing*2, box-shadow @timing linear, opacity @timing;
 			transition-delay: @timing, @timing, @timing, @timing, @timing*3, @timing*3;
+			svg{
+				max-width: 90%;
+				max-height: 90%;
+			}
+		}
+		&.clicked>div{
+			box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
+			height: calc(100vh~" - "@unit*2);
+			width: calc(100vw-@aside-width~" - "@unit);
 		}
 		&.clicked, &.unclicked{
 			z-index: 3;
@@ -123,32 +159,8 @@ main{
 	box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.5);
 	transition: z-index 0s @timing*2, opacity @timing, box-shadow @timing linear;
   svg{
-    position: absolute;
-  	left: 50%;
-  	top: 50%;
-  	transform: translate(-50%, -50%);
     *{
       visibility: hidden;
-    }
-    [data-type="erase"]{
-    	stroke: white;
-    	stroke-linejoin: bevel;
-    }
-    text{
-    	fill: white;
-    	font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
-    }
-    path, line, polyline{
-    	stroke-linecap: round;
-    	stroke-linejoin: round;
-    	stroke-miterlimit: 10;
-    	fill: none;
-      &:not([stroke]){
-      	stroke: black;
-      }
-      &:not([stroke-width]){
-      	stroke-width: 4;
-      }
     }
   }
   #overlay{
@@ -289,7 +301,7 @@ aside{
 	#menu [data-title]{
 		width: 25%;
 	}
-	.archives #archives{
+	&.archives #archives{
 		background-color: rgba(238, 238, 238, 1);
 	}
 	#cog_check{
