@@ -1,0 +1,311 @@
+// out: ./style.css
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+}
+html, body{
+	width: 100%;
+	background-color: #CCCCCC;
+	font-family: 'Droid Serif', Georgia, serif;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	letter-spacing: 0.0000001em;
+}
+a{
+	text-decoration: none;
+	color: inherit;
+  &:visited{
+  	color: inherit;
+  }
+}
+label{
+	cursor: pointer;
+}
+
+main{
+  overflow: hidden;
+	position: fixed;
+	right: 1rem;
+	top: 1rem;
+	height: calc(~"100vh - 2rem");
+	width: calc(~"70vw - 1rem");
+	background-color: white;
+	box-shadow: 0 0 .5rem rgba(0,0,0,.5);
+	z-index: 10;
+  svg{
+    position: absolute;
+  	left: 50%;
+  	top: 50%;
+  	transform: translate(-50%, -50%);
+    *{
+      visibility: hidden;
+    }
+    [data-type="erase"]{
+    	stroke: white;
+    	stroke-linejoin: bevel;
+    }
+    text{
+    	fill: white;
+    	font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
+    }
+    path, line, polyline{
+    	stroke-linecap: round;
+    	stroke-linejoin: round;
+    	stroke-miterlimit: 10;
+    	fill: none;
+      &:not([stroke]){
+      	stroke: black;
+      }
+      &:not([stroke-width]){
+      	stroke-width: 4;
+      }
+    }
+  }
+  #overlay{
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%,-50%);
+  	opacity: 0;
+  }
+  #authorship, #pubdate{
+  	position: absolute;
+  	right: 1rem;
+  	bottom: 3rem;
+  	height: 1rem;
+  	color: rgba(0,0,0,.7);
+    a{
+    	text-decoration: underline;
+    }
+  }
+  #pubdate{
+  	bottom: auto;
+  	top: 1rem;
+  }
+}
+
+
+
+aside{
+	position: absolute;
+	z-index: 10;
+	left: 0;
+	top: 0;
+	min-width: 200px;
+	width: 30vw;
+	min-height: 100vh;
+  &>*{
+    display: block;
+    text-align: center;
+  }
+  a, label{
+    height: 5rem;
+    line-height: 5rem;
+    &.disabled{
+    	cursor: default;
+    	opacity: .3;
+    }
+    &:not(.disabled):hover{
+    	cursor: pointer;
+    	background-color: rgba(0,0,0,.1);
+      &.home{
+      	background-color: inherit;
+      }
+    }
+  }
+  #logo{
+  	position: relative;
+  	top: 50%;
+  	transform: translateY(-50%);
+  	padding: 1rem;
+  	width: 100%;
+    path, polyline{
+    	transition: stroke 1s ease-in 1s;
+    }
+  }
+  h2{
+  	min-height: 5rem;
+  	font-size: 1.5vw;
+  	border-bottom: solid 1px black;
+  	white-space: nowrap;
+  	font-weight: 500;
+  }
+  img{
+  	height: 1.5rem;
+  	transform: translateY(.125rem);
+    position: relative;
+  }
+  p{
+    position: relative;
+  	padding: 2rem;
+  	text-align: left;
+    line-height: 1.4;
+    &:first-of-type{
+    	border-top: solid 1px black;
+    	padding-bottom: .5rem;
+      &::before{
+      	content: '«';
+      	position: absolute;
+      	left: 1.25rem;
+      }
+    }
+    &+p{
+    	padding-top: 0;
+      &:last-of-type::after{
+      	content: ' »';
+      }
+    }
+  }
+  &>[data-title]{
+  	position: relative;
+    &:not(.disabled){
+      &::after{
+      	display: block;
+      	width: 100%;
+      	height: 0;
+      	font-size: 1rem;
+      	position: absolute;
+      	content: attr(data-title);
+      	text-align: center;
+      	top: 2rem;
+      	opacity: 0;
+      }
+      &:hover{
+        img{
+        	transform: translateY(-.5rem);
+        }
+        &::after{
+        	transform: translateY(-1rem);
+        	opacity: 1;
+        }
+        img, &::after{
+          transition: all .25s;
+        }
+      }
+    }
+  }
+  &>.nav, &>.social{
+  	display: inline-block;
+  	width: 50%;
+  	font-size: 2rem;
+  }
+  #archive, #cog, &>.social{
+  	width: 25%;
+  	font-size: 2rem;
+  	display: inline-block;
+  }
+  #next{
+  	box-shadow: 1px 0 0 black;
+  }
+  #cog:hover{
+  	background-color: rgba(238, 238, 238, .5);
+  }
+  #fb:hover{
+  	background-color: rgba(59, 89, 152, .5)
+  }
+  #rss:hover{
+  	background-color: rgba(255, 102, 0, .5);
+  }
+  #footer span#website{
+  	text-decoration: underline;
+  }
+}
+
+
+
+#cog_check{
+	display: none;
+  &:checked~#cog{
+  	background-color: #EEEEEE;
+  }
+  &:not(:checked)~#settings{
+  	height: 0rem;
+  }
+}
+#settings{
+	overflow: hidden;
+	width: 100%;
+	background-color: #EEEEEE;
+	transition: height .25s;
+	height: 10rem;
+  div{
+  	position: relative;
+  	padding: 0 1rem;
+  	text-align: left;
+  	line-height: 5rem;
+  }
+  input{
+  	position: absolute;
+  	right: 1rem;
+  	top: 2rem;
+  }
+}
+
+
+
+
+
+@media (orientation: portrait) {
+	h1, #logo, a.home:first-of-type{
+		font-size: 6.5vw;
+		width: 100vw;
+		line-height: 5rem;
+		padding: 0;
+		height: 5rem;
+	}
+	aside>.nav{
+		width: 50vw;
+		height: 5rem;
+		line-height: 5rem;
+	}
+	aside .nav img{
+		position: relative;
+		height: 8vw;
+		top: 1.5vw;
+	}
+	h2, aside>p, #cog, #pubdate, #rss, #copyright{
+		display: none;
+	}
+	main{
+		top: 10rem;
+		right: 0;
+		height: calc(~"100vh - 15rem");
+		width: 100vw;
+	}
+	aside{
+		width: 100vw;
+		min-height: 0;
+		height: 10rem;
+	}
+	aside>*{
+		float: left;
+	}
+	aside #next{
+		box-shadow: none;
+	}
+	#footer, #fb, #archive{
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		z-index: 1;
+		width: 5rem;
+	}
+	#footer{
+		width: calc(~"100% - 10rem");
+		right: 5rem;
+		background-color: darkgrey;
+	}
+	#archive{
+		right: auto;
+		left: 0;
+	}
+	aside>[data-title]:not(.disabled)::after{
+		display: none;
+	}
+	aside>[data-title]:not(.disabled):hover img{
+		transform: none;
+	}
+}
