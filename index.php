@@ -8,7 +8,7 @@
 
 	$master = $_GET['all'];
 	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
-	$archives = true; // DEBUG
+	// $archives = true; // DEBUG
 
 	require 'php_utils.php';
 
@@ -102,27 +102,52 @@
 	}
 </style>
 <noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
-</aside>
-	<input type="checkbox" id="cog_check">
-	<a class="home" href="./">
-		<? echo file_get_contents("logo.svg"); ?>
+<aside <? echo $archives ? 'class="archives"' : ''; ?>>
+	<a id="home" href="/">
+		<header>
+			<? echo file_get_contents("logo.svg"); ?>
+			<h2><? echo strtolower($h2); ?></h2>
+		</header>
 	</a>
-	<a class="home" href="./"><h2><? echo strtolower($h2); ?></h2></a>
-	<a id="prev" class="nav" href="<? echo $prev_page; ?>" data-title="previous graph"><img src="res/prev.svg"></a><a id="next" class="nav" href="<? echo $next_page; ?>" data-title="next graph"><img src="res/next.svg"></a>
-	<p id="blurb">This is a blurb I'm supposed to have written explaining how this website is insightful and funny, while still being an ironic side project.</p><p>A lot of the graphs presented on this website are about my life and relate to procrastination and poor strategic decision making regarding productivity. Sadly, they all contain a grain of personal truth. This is one of the reasons why this blurb is what it is.</p>
-	<a id="archive" href="./archives" data-title="archives"><img src="res/stack.svg"></a><label for="cog_check" id="cog" data-title="settings"><img src="res/cog.svg"></label><a class="social" id="rss" href="./rss" data-title="rss"><img src="res/rss.svg"></a><a class="social" id="fb" href="https://www.facebook.com/existentialWhiteboardComics" target="_blank" data-title="facebook"><img src="res/fb.svg"></a>
+	<nav id="nav">
+		<a id="prev" data-title="previous graph" href="<? echo $prev_page; ?>"><img src="/res/prev.svg">
+		</a><a id="next" data-title="next graph" href="<? echo $next_page; ?>"><img src="/res/next.svg"></a>
+	</nav>
+	<div id="blurb">
+		<p>This is a blurb I'm supposed to have written explaining how this website is insightful and funny, while still being an ironic side project.
+		<p>A lot of the graphs presented on this website are about my life and relate to procrastination and poor strategic decision making regarding productivity. Sadly, they all contain a grain of personal truth. This is one of the reasons why this blurb is what it is.
+	</div>
+	<input type="checkbox" id="cog_check">
+	<nav id="menu">
+		<a id="archives" data-title="archives" href="/archives"><img src="/res/stack.svg">
+		</a><label id="cog" data-title="settings" for="cog_check" <? echo ($archives?'class="disabled"':''); ?>><img src="/res/cog.svg">
+		</label><a id="rss" data-title="rss" href="/rss"><img src="/res/rss.svg">
+		</a><a id="fb" data-title="facebook" href="https://www.facebook.com/existentialWhiteboardComics" target="_blank"><img src="/res/fb.svg"></a>
+	</nav>
 	<div id="settings">
 		<label for="animation_check"><div id="animation">Drawing animation: <input id="animation_check" type="checkbox" checked></div></label>
 		<div id="speed">Adjust speed: <input id="speed_input" type="range" name="speed" value="4" min="1" max="10"></div>
 	</div>
-	<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© 2015 — </span><span id="website">florianpellet.com</span></a>
-	<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
+	<ul id="tags">
+		<input type='checkbox' id='tag_all' checked><label for='tag_all'><li><img src='/res/check.svg'><span>All</span><div><? echo count($files); ?></div></li></label>
+		<?
+			foreach ($tags_list as $tag => $count) {
+				$simple_tag = strtolower(str_replace(' ', '', $tag));
+				$name = ucwords($tag);
+				echo "<input type='checkbox' id='tag_$simple_tag'><label for='tag_$simple_tag'><li><img src='/res/check.svg'><span>$name</span><div>$count</div></li></label>";
+			}
+		?>
+	</ul>
+	<footer>
+		<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© 2015 — </span><span id="website">florianpellet.com</span></a>
+		<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
+	</footer>
 </aside>
 <div id="dummy_section"></div>
-<section <? if($archives) echo 'class="clicked pre_clicked"'; ?>>
+<section <? if(!$archives) echo 'class="clicked pre_clicked"'; ?>>
 	<?
 		foreach ($graphs as $index => $graph) {
-			echo "<a href='/$graph[name]'" . ($archives&&$index===$initial_index?' class="clicked pre_clicked" ' : '') . "><div>";
+			echo "<a href='/$graph[name]'" . (!$archives&&$index===$initial_index?' class="clicked pre_clicked" ' : '') . "><div>";
 			if($archives)
 				echo format_svg(file_get_contents($graph[path]));
 			echo "</div></a>";
@@ -136,7 +161,7 @@
 	///////////////////
 	// PHP VARIABLES //
 	///////////////////
-	var ARCHIVES = <? echo $archives . ';'; ?>
+	var ARCHIVES = <? echo ($archives?'true':'false').';'; ?>
 	var TAGS = <? echo json_encode($tags_list) . ';'; ?>
 	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
