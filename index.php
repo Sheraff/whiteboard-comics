@@ -1,6 +1,14 @@
 <!--
 <?
+	if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: http://whiteboard-comics.com");
+		exit();
+	}
+
 	$master = $_GET['all'];
+	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
+	$archives = true; // DEBUG
 
 	require 'php_utils.php';
 
@@ -10,15 +18,13 @@
 	// try and MATCH graph to query
 	$initial_index = -1;
 	foreach ($graphs as $key => $graph){
-		if($_GET['graph'] && $initial_index===-1 && $graph[name]===$_GET['graph'])// MATCH. Compare to rewriten URL, if it matches, we'll start with this one
+		if($_GET['graph'] && $graph[name]===$_GET['graph']){ // MATCH. Compare to rewriten URL, if it matches, we'll start with this one
 			$initial_index = $key;
+			break;
+		}
 	}
-	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
+	if($initial_index===-1) // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
 		$initial_index = 0;
-		echo "use latest release $initial_index\n";
-	} else{
-		echo "use matched name $initial_index\n";
-	}
 
 	// create CONTENT bites
 	// links
@@ -31,6 +37,21 @@
 	$thumbnail = $graphs[$initial_index][thumbnail];
 	$name = $graphs[$initial_index][name];
 	$formatted_name = $graphs[$initial_index][formatted_name];
+	// archives
+	$archive_text = 'Archive of ' . count($graphs) . ' fantastic graphs.';
+
+	// list all tags
+	$tags_list = [];
+	foreach ($graphs as $graph) {
+		if($graph[tags])
+			foreach ($graph[tags] as $tag) {
+				if($tags_list[$tag])
+					$tags_list[$tag]++;
+				else
+					$tags_list[$tag] = 1;
+			}
+	}
+	ksort($tags_list);
 
 	// grab ALPHABET
 	$globbed = glob("alphabet/*.svg");
@@ -55,9 +76,6 @@
   	ip => $_SERVER[REMOTE_ADDR]
   ]) . ",\n", FILE_APPEND);
 
-	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
-	// debug
-	// $archives = true;
 ?>-->
 
 <!DOCTYPE html>
@@ -67,14 +85,14 @@
 	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $formatted_name ?></title>
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed for Whiteboard Comics" href="/rss/" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="<? echo $h2; ?>">
-	<meta name="keywords" content="whiteboard,comics,thoughts,procrastination,existential,sarcasm,drawing,indexed,svg,animated,graph,graphs,graphics,time,life,image,body,work,academia">
+	<meta name="description" content="<? echo $h2 . '.' . ($archives?' '.$archive_text:''); ?>">
+	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, graph, graphs, graphics, time, life, body image, work, academia, morality, money, growing up">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
-	<meta property="og:description" content="<? echo $formatted_name . '. ' . $h2 . '.'; ?>"/>
+	<meta property="og:description" content="<? echo $archives ? $archive_text : ($formatted_name . '. ' . $h2 . '.'); ?>"/>
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
-	<link rel="icon" type="image/png" href="favicon.png">
-	<link href='style.css' rel='stylesheet'>
+	<link rel="icon" type="image/png" href="/favicon.png">
+	<link href='/style.css' rel='stylesheet'>
 </head>
 <style>
 	main svg{
@@ -84,7 +102,7 @@
 	}
 </style>
 <noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
-<aside>
+</aside>
 	<input type="checkbox" id="cog_check">
 	<a class="home" href="./">
 		<? echo file_get_contents("logo.svg"); ?>
@@ -100,18 +118,41 @@
 	<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© 2015 — </span><span id="website">florianpellet.com</span></a>
 	<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
 </aside>
+<div id="dummy_section"></div>
+<section <? if($archives) echo 'class="clicked pre_clicked"'; ?>>
+	<?
+		foreach ($graphs as $index => $graph) {
+			echo "<a href='/$graph[name]'" . ($archives&&$index===$initial_index?' class="clicked pre_clicked" ' : '') . "><div>";
+			if($archives)
+				echo format_svg(file_get_contents($graph[path]));
+			echo "</div></a>";
+		}
+	?>
+</section>
 <main>
-	<? echo format_svg(file_get_contents($graphs[$initial_index][path])); ?>
+	<? if(!$archives) echo format_svg(file_get_contents($graphs[$initial_index][path])); ?>
 </main>
 <script>
 	///////////////////
 	// PHP VARIABLES //
 	///////////////////
+	var ARCHIVES = <? echo $archives . ';'; ?>
+	var TAGS = <? echo json_encode($tags_list) . ';'; ?>
 	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
 	var main = document.getElementsByTagName('main')[0]
 	GRAPHS[INDEX].content = main.replaceChild(document.createElement('svg'), main.firstElementChild)
+
+	//////////////
+	// ARCHIVES //
+	//////////////
+
+
+
+
+
+
 </script>
 <script language="javascript" type="text/javascript" src="script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
@@ -141,7 +182,44 @@
 	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
 	⚠ other solution: switch to simply copying "transform" attribute (without forgetting the x,y of tspans)
 
-	allow for og:image and page title to be shown even before release date if name matches (easier posting on facebook)
+	SEO
+	- allow for og:image and page title to be shown even before release date if name matches exactly (easier posting on facebook)
+	- have more words on each graph (maybe a pun or a description or something)
+	- create sitemap
+	- enable caching
+	- enable gzip
+	- googlebot structured data
+
+	<script type="application/ld+json">
+		{
+		  "@context": "http://schema.org",
+		  "@type": "NewsArticle",
+		  "headline": "Article headline",
+		  "alternativeHeadline": "The headline of the Article",
+		  "image": [
+		    "thumbnail1.jpg",
+		    "thumbnail2.jpg"
+		  ],
+		  "datePublished": "2015-02-05T08:00:00+08:00",
+		  "description": "A most wonderful article",
+		  "articleBody": "The full body of the article"
+		}
+	</script>
+
+	<script type="application/ld+json">
+		{
+		  "@context" : "http://schema.org",
+		  "@type" : "Organization",
+		  "name" : "Your Organization Name",
+		  "url" : "http://www.your-site.com",
+			"logo": "http://www.example.com/images/logo.png",
+		  "sameAs" : [
+		    "http://www.facebook.com/your-profile",
+		    "http://www.twitter.com/yourProfile",
+		    "http://plus.google.com/your_profile"
+		  ]
+		}
+	</script>
 
 	DURABILITY & MAINTAINABILITY
 	- try and get valid / viewable SVG files through serving them via redirection and formatting them on the fly
