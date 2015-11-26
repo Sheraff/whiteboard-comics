@@ -112,7 +112,7 @@
           if($o != "." && $o != ".."){
               $full = $path . "/" . $o;
               if(is_dir($full)){
-                  if(!file_exists($full . "/index.php")){
+                  if(!file_exists($full . "/index.php") && !file_exists($full . "/index.html")){
                       file_put_contents($full . "/index.php", "");
                   }
                   recurse($full);
