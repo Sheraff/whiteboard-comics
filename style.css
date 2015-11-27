@@ -33,7 +33,6 @@ section svg {
 }
 main svg [data-type="erase"],
 section svg [data-type="erase"] {
-  stroke: white;
   stroke-linejoin: bevel;
 }
 main svg text,
@@ -68,6 +67,9 @@ main svg polyline:not([stroke-width]),
 section svg polyline:not([stroke-width]) {
   stroke-width: 4;
 }
+main svg [data-type="erase"] {
+  stroke: white;
+}
 #dummy_section {
   position: absolute;
   top: 0;
@@ -82,42 +84,43 @@ section {
   top: 0;
   right: 0;
   width: 70vw;
+  margin-bottom: 1rem;
+}
+section.expanded {
+  position: fixed;
   overflow: hidden;
 }
-section.clicked {
-  position: fixed;
-}
-section.clicked > a:not(.clicked) {
+section.expanded > a:not(.expanded) {
   opacity: 0;
   z-index: 1;
 }
-section.clicked > a:not(.clicked)[data-h=top] {
+section.expanded > a:not(.expanded) {
   transform: translateY(-100vh);
 }
-section.clicked > a:not(.clicked)[data-h=bot] {
+section.expanded > a.expanded ~ a:not(.expanded) {
   transform: translateY(100vh);
 }
-section.unclicked > a:not(.unclicked) {
+section.unexpanded > a:not(.unexpanded) {
   z-index: 1;
 }
-section.pre_clicked {
+section.pre_expanded {
   visibility: hidden;
 }
 section > a {
   position: relative;
   z-index: 2;
   display: inline-block;
-  margin: 1rem;
-  height: 20vw;
-  width: 20vw;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  height: calc(23.33333333vw  -  1rem);
+  width: calc(23.33333333vw  -  1rem);
   transform: translateY(0);
   transition: transform .5s, opacity .5s;
 }
 section > a > div {
-  display: block;
   z-index: 4;
-  height: 20vw;
-  width: 20vw;
+  height: 100%;
+  width: 100%;
   background-color: white;
   box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
   position: absolute;
@@ -128,33 +131,33 @@ section > a > div {
   transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
 }
 section > a > div svg {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 90%;
+  max-height: 90%;
 }
-section > a.clicked > div {
+section > a.expanded > div {
   box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0);
   height: calc(100vh  -  2rem);
   width: calc(70vw  -  1rem);
 }
-section > a.clicked,
-section > a.unclicked {
+section > a.expanded,
+section > a.unexpanded {
   z-index: 3;
 }
-section > a.clicked > div,
-section > a.unclicked > div {
+section > a.expanded > div,
+section > a.unexpanded > div {
   z-index: 5;
 }
-section > a.pre_clicked,
-section > a.pre_clicked > div {
+section > a.pre_expanded,
+section > a.pre_expanded > div {
   transition-duration: 0s;
 }
-section > a.unclicked > div {
+section > a.unexpanded > div {
   transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0s, 0.75s;
 }
-section:not(.clicked) a {
+section:not(.expanded) a {
   transition-delay: 0.25s;
 }
-section.clicked ~ main {
+section.expanded ~ main {
   z-index: 1000;
   opacity: 1;
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.5);
@@ -221,6 +224,7 @@ aside footer > a {
   vertical-align: top;
   display: inline-block;
   white-space: nowrap;
+  -webkit-transform: translateZ(0);
 }
 aside nav [data-title]:not(.disabled):hover,
 aside footer > a:not(.disabled):hover {
@@ -280,6 +284,7 @@ aside #nav {
   overflow: hidden;
   box-shadow: 0 0 0 1px black;
   height: 5rem;
+  -webkit-transform: translateZ(0);
 }
 aside #nav [data-title] {
   width: 50%;
@@ -306,9 +311,6 @@ aside #blurb p:last-child::after {
 }
 aside #menu [data-title] {
   width: 25%;
-}
-aside.archives #archives {
-  background-color: #eeeeee;
 }
 aside #cog_check {
   display: none;
@@ -357,6 +359,12 @@ aside.archives #nav {
   height: 0;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0);
 }
+aside.archives #settings {
+  height: 0;
+}
+aside.archives #archives {
+  background-color: #eeeeee;
+}
 aside:not(.archives) #tags {
   height: 0;
   padding: 0;
@@ -367,6 +375,7 @@ aside:not(.archives) #tags {
   list-style: none;
   padding: 1rem 0;
   overflow: hidden;
+  -webkit-transform: translateZ(0);
   /*min-height: calc(100vh - 25rem);*/
 }
 #tags input {

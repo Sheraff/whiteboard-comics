@@ -56,15 +56,6 @@ function find_needle_with_key (needle, key) {
 	return index
 }
 
-function get_DOM (data) { // debug, this is hacky: this function is used when i have no idea why a variable contains a DOM element and not a string and vice-versa.
-  if(typeof data === 'string'){
-    var el = document.createElement('div')
-    el.innerHTML = data
-    return el.firstElementChild
-  } else
-    return data
-}
-
 
 
 
@@ -115,7 +106,7 @@ if(ARCHIVES){
 }
 function initialize () {
 	ERASED = false
-	var svg = document.querySelector('main svg')
+	var svg = MAIN.getElementsByTagName('svg')[0]
 
 	update_link_state()
 	properly_size_svg(svg)
@@ -139,18 +130,41 @@ function initialize () {
 function unset_archives () {
 	ARCHIVES = false
 	document.getElementById('cog').className = ''
-	document.getElementsByTagName('aside')[0].className = ''
+	ASIDE.className = ''
 }
 
 function setup_archives () {
 	ARCHIVES = true
-	if(!history.state || !history.state.index || history.state.index!=='archives')
+
+  if(!history.state || !history.state.name || history.state.name!=='archives')
 		window.history.pushState({name: 'archives'}, "", '/archives')
-	document.getElementById('cog').className = 'disabled'
 
-	document.getElementsByTagName('aside')[0].className = 'archives'
+  update_page_title()
 
-  enter_grid_view ()
+  document.getElementById('cog').className = 'disabled'
+  ASIDE.className = 'archives'
+
+  // TODO: this might put a huge load on the server and load graphs in random order, maybe it's better to prioritize more recent graphs
+  var as = SECTION.getElementsByTagName('a')
+  for (var i = 0, l = as.length; i < l; i++) {
+    if(as[i].getAttribute('data-processed')!=='true'){
+      load_svg(i, (function (index) {
+        this.setAttribute('data-processed', 'true')
+        this.firstElementChild.appendChild(GRAPHS[index].content)
+        properly_size_svg(this.firstElementChild.firstElementChild)
+        post_process(this, index)
+      }).bind(as[i], i))
+    } else
+      post_process(as[i], i)
+  }
+  function post_process(a, index){
+    if(!a.firstElementChild.firstElementChild)
+      a.firstElementChild.appendChild(GRAPHS[index].content)
+    var svg = a.firstElementChild.firstElementChild
+    force_finish_drawing_element_svg(svg)
+  }
+
+  enter_grid_view()
 
   // for each <a> in <section>, if empty, load SVG
   // for each <a> in <section>, properly_size_svg
@@ -173,8 +187,8 @@ function setup_archives () {
 // INTERACTION //
 /////////////////
 
-document.querySelector('aside #logo').parentElement.addEventListener('click', navigate.bind(undefined, 0))
-document.querySelector('aside h2').parentElement.addEventListener('click', navigate.bind(undefined, 0))
+document.getElementById('logo').parentElement.addEventListener('click', navigate.bind(undefined, 0))
+ASIDE.getElementsByTagName('h2')[0].parentElement.addEventListener('click', navigate.bind(undefined, 0))
 document.getElementById('prev').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate(-1, event) } )
 document.getElementById('next').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate(1, event) } )
 document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
@@ -184,9 +198,9 @@ function navigate (direction, event) {
 	event.stopPropagation()
 	event.preventDefault()
 
-  var svg = document.querySelector('main svg')
+  var svg = MAIN.getElementsByTagName('svg')[0]
   if(svg)
-	interrupt_drawing_element_svg(svg)
+    interrupt_drawing_element_svg(svg)
 
   if(direction==='archives') // to archives
 		return setup_archives()
@@ -216,7 +230,7 @@ document.getElementById('speed_input').addEventListener('change', function (even
 document.getElementById('animation_check').addEventListener('change', function (event) {
 	ANIMATE = this.checked
 	localStorage.setItem('animate', this.checked)
-	var svg = document.querySelector('main svg')
+	var svg = MAIN.getElementsByTagName('svg')[0]
 	if(ANIMATE)
 		play_svg(svg, 0)
 	else
@@ -237,12 +251,12 @@ window.addEventListener('keydown', function (event) {
 ////////////////
 
 function update_page_title () {
-  document.title = 'Whiteboard Comics — ' + GRAPHS[INDEX].formatted_name
+  document.title = 'Whiteboard Comics — ' + (ARCHIVES ? 'Archives' : GRAPHS[INDEX].formatted_name)
 }
 
 function update_logo_colors () {
   var arrow = document.querySelectorAll('#logo path[stroke]:not([stroke="#000000"]), #logo polyline[stroke]:not([stroke="#000000"])')
-  var color = document.querySelector('main svg path[stroke], main svg polyline[stroke]').getAttribute('stroke')
+  var color = MAIN.querySelector('svg path[stroke], svg polyline[stroke]').getAttribute('stroke')
   for (var i = 0, l = arrow.length; i < l; i++) {
     arrow[i].style.stroke = color
   }
@@ -273,7 +287,7 @@ function properly_size_svg (svg) {
 	if(svg)
 		return action(svg)
 
-	var svgs = document.querySelectorAll('main svg')
+	var svgs = SECTION.querySelectorAll('svg')
 	for (var i = 0, l = svgs.length; i < l; i++) {
 	  action(svgs[i])
 	}
@@ -284,9 +298,14 @@ function properly_size_svg (svg) {
 		var viewbox = svg.getAttribute('viewBox').split(' ')
 		var parent = svg.parentElement.getBoundingClientRect()
 
-		var reference_dimension = Math.min(parent.width, parent.height)*.95
-		svg.style.width = SIZE_FACTOR * reference_dimension * viewbox[2]/1000
-		svg.style.height = SIZE_FACTOR * reference_dimension * viewbox[3]/1000
+    if(parent.width < parent.height)
+      svg.style.width = (SIZE_FACTOR * viewbox[2]/10) + '%'
+    else
+      svg.style.height = (SIZE_FACTOR * viewbox[3]/10) + '%'
+
+		// var reference_dimension = Math.min(parent.width, parent.height)*.95
+		// svg.style.width = SIZE_FACTOR * reference_dimension * viewbox[2]/1000
+		// svg.style.height = SIZE_FACTOR * reference_dimension * viewbox[3]/1000
 	}
 }
 
@@ -316,13 +335,13 @@ window.onpopstate = function (event) {
   if(event.state.name==='archives') // archives
 		return setup_archives()
 
-	var index = -1
+	var index = 0
 	if(event.state.name)
 		index = find_needle_with_key(event.state.name, 'name')
-	if(index!==-1)
-		refresh_svg(index)
+  if(ARCHIVES && event.state.name!=='archives')
+    exit_grid_view.bind(SECTION.querySelector('a:nth-child('+(index+1)+')'))()
 	else
-		refresh_svg(0)
+    refresh_svg(index)
 }
 
 // display SVG based on its index
@@ -336,16 +355,22 @@ function refresh_svg (index) {
 	INDEX = index
   if(ARCHIVES)
     unset_archives()
-  var svg = document.querySelector('main svg')
-  if(svg){
-	  svg.parentNode.replaceChild(get_DOM(GRAPHS[INDEX].content), svg)
-  }else{
-    var coucou = get_DOM(GRAPHS[INDEX].content)
-    console.log(coucou)
-    document.getElementsByTagName('main')[0].appendChild(coucou)
-  }
-  svg = document.querySelector('main svg')
+  var svg = MAIN.getElementsByTagName('svg')[0]
+  if(svg)
+	  svg.parentNode.removeChild(svg)
+  MAIN.appendChild(GRAPHS[INDEX].content.cloneNode(true))
+  svg = MAIN.getElementsByTagName('svg')[0]
   svg.parentNode.setAttribute('data-index', INDEX)
+
+  // switch vignette in the background
+  // var expanded_a = document.querySelector('section a.expanded')
+  // if(expanded_a && parseInt(expanded_a.getAttribute('data-index'), 10)!==INDEX)
+  //   expanded_a.className = ''
+  // else{
+  //   var new_expanded_a = document.querySelector('section a:nth-child('+(INDEX+1)+')')
+  //   new_expanded_a.className = 'expanded'
+  // }
+
 
 	// remove old authorship span (if existing) and add new one (if given)
 	var authorship = document.getElementById('authorship')
@@ -380,7 +405,7 @@ function refresh_svg (index) {
   if(GRAPHS[INDEX].urldata)
     set_img(svg, INDEX, GRAPHS[INDEX].urldata)
   else
-    svg_to_png(get_DOM(GRAPHS[INDEX].content), set_img.bind(undefined, svg, INDEX))
+    svg_to_png(GRAPHS[INDEX].content, set_img.bind(undefined, svg, INDEX))
   function set_img (svg, index, data){
     if(!GRAPHS[index].urldata){
       GRAPHS[index].urldata = data
@@ -393,7 +418,7 @@ function refresh_svg (index) {
     img.height = svg_rect.height
     img.width = svg_rect.width
     img.setAttribute('alt',GRAPHS[index].name+'.png')
-    document.querySelector('main').appendChild(img)
+    MAIN.appendChild(img)
     if(is_new)
       save_img_to_server(img, index)
   }
@@ -414,32 +439,36 @@ function load_svg (index, callback) {
 	httpRequest.onreadystatechange = loaded_svg.bind(undefined, index, httpRequest, callback)
 	httpRequest.open('GET', GRAPHS[index].path)
 	httpRequest.send()
-}
 
-function loaded_svg (index, httpRequest, callback) {
-	if (httpRequest.readyState === XMLHttpRequest.DONE) {
-		if (httpRequest.status === 200) {
-			GRAPHS[index].content = get_DOM(httpRequest.responseText)
-			preprocess_svg(index, callback)
-		} else {
-			setTimeout(load_svg.bind(undefined, index, callback), 1000)
-		}
-	}
-}
-
-function preprocess_svg (index, callback) {
-  if(!GRAPHS[index].is_processed){
-    console.log('preprocessing '+GRAPHS[index].name)
-    var svg = get_DOM(GRAPHS[index].content)
-    var erase = svg.removeChild(svg.getElementsByTagName('path')[0])
-    erase.setAttribute('data-type', 'erase')
-    erase.setAttribute('stroke', 'transparent')
-    svg.appendChild(erase)
-    GRAPHS[index].content = rewrite_with_paths(svg)
-    GRAPHS[index].is_processed = true
+  function loaded_svg (index, httpRequest, callback) {
+  	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+  		if (httpRequest.status === 200) {
+        var temp_div = document.createElement('div')
+        temp_div.innerHTML = httpRequest.responseText
+  			GRAPHS[index].content = temp_div.firstElementChild
+  			preprocess_svg(index, callback)
+  		} else {
+  			setTimeout(load_svg.bind(undefined, index, callback), 1000)
+  		}
+  	}
   }
-  callback()
+
+  function preprocess_svg (index, callback) {
+    if(!GRAPHS[index].is_processed){
+      console.log('preprocessing '+GRAPHS[index].name)
+      var svg = GRAPHS[index].content
+      var erase = svg.removeChild(svg.getElementsByTagName('path')[0])
+      erase.setAttribute('data-type', 'erase')
+      erase.setAttribute('stroke', 'transparent')
+      svg.appendChild(erase)
+      GRAPHS[index].content = rewrite_with_paths(svg)
+      GRAPHS[index].is_processed = true
+    }
+    callback()
+  }
 }
+
+
 
 function save_img_to_server (img, index) {
   // upload (if GRAPHS[index] doesnt already have a path to watermarked img)
@@ -450,7 +479,6 @@ function save_img_to_server (img, index) {
     request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
     request.onreadystatechange = (function (img) {
       if (request.readyState === 4 && request.status === 200){
-        console.log(request.responseText)
         GRAPHS[index].watermarked = request.responseText
         new_url_for_image(request.responseText, img)
       }
@@ -652,11 +680,7 @@ function erase (svg, delay, callback) {
 
 function play_svg (svg, delay, callback) {
 	// prepare
-  iterate_group(svg, function (element) {
-    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
-      return
-    prepare_drawing_element(element)
-  })
+  prepare_drawing_element_svg(svg)
 
 	// launch
 	var total_duration = delay || 0
@@ -693,8 +717,18 @@ function force_finish_drawing_element_svg (svg) {
       return
     if(element.getAttribute('data-type')==='erase'){
       element.style.strokeDashoffset = element.getTotalLength()
+    } else {
+      element.style.strokeDashoffset = '0'
     }
     element.style.transition = 'none'
+  })
+}
+
+function prepare_drawing_element_svg (svg) {
+  iterate_group(svg, function (element) {
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
+      return
+    prepare_drawing_element(element)
   })
 }
 

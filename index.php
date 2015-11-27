@@ -93,7 +93,7 @@
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<style>
-		section a.clicked>div{
+		section a.expanded>div{
 			top: 0;
 			left: -1rem;
 		}
@@ -153,10 +153,10 @@
 	</footer>
 </aside>
 <div id="dummy_section"></div>
-<section <? if(!$archives) echo 'class="clicked pre_clicked"'; ?>>
+<section <? if(!$archives) echo 'class="expanded pre_expanded"'; ?>>
 	<?
 		foreach ($graphs as $index => $graph) {
-			echo "<a data-index='$index' href='/$graph[name]'" . (!$archives&&$index===$initial_index?' class="clicked pre_clicked" ' : '') . "><div>";
+			echo "<a data-index='$index' href='/$graph[name]'" . (!$archives&&$index===$initial_index?' class="expanded pre_expanded" ' : '') . "><div>";
 			if($archives)
 				echo format_svg(file_get_contents($graph[path]));
 			echo "</div></a>";
@@ -175,167 +175,12 @@
 	var GRAPHS = <? echo json_encode($graphs) . ';'; ?>
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
-	if(ARCHIVES){ /* TODO here SVGs aren't going through preprocess_svg */
-		var as = document.querySelectorAll('section a>div')
-		for (var i = 0; i < as.length; i++) {
-			GRAPHS[i].content = as[i].firstElementChild
-		}
-	} else {
-		var main = document.getElementsByTagName('main')[0]
-		GRAPHS[INDEX].content = main.replaceChild(document.createElement('svg'), main.firstElementChild)
-	}
 
-	//////////////
-	// ARCHIVES //
-	//////////////
-	var aside = document.getElementsByTagName('aside')[0]
-	var section = document.getElementsByTagName('section')[0]
-	var as = document.querySelectorAll('section a')
-	var main = document.getElementsByTagName('main')[0]
-	var recorded_section_height = section.getBoundingClientRect().height
-
-	// init
-	section.style.height = recorded_section_height
-	document.getElementById('dummy_section').style.height = recorded_section_height+'px'
-	var a_clicked = document.querySelector('a.clicked')
-	if(a_clicked){
-		var rect = a_clicked.getBoundingClientRect()
-		chase_out_cards(as, rect)
-		position_main_slide(rect)
-	}
-
-	var remember_scroll = 0
-	for (var i = 0; i < as.length; i++) {
-		as[i].addEventListener('click', exit_grid_view)
-	}
-
-	function exit_grid_view (event) {
-		event.stopPropagation()
-		event.preventDefault()
-
-		// remember stuff before applying style
-		var aside_rect = aside.getBoundingClientRect()
-		remember_scroll = window.scrollY
-
-		// fix section
-		section.style.top = (-window.scrollY)+'px'
-
-		// apply
-		this.className = 'clicked'
-		this.parentNode.className = 'clicked'
-
-		// position ::before
-		var rect = this.getBoundingClientRect()
-		position_main_slide(rect)
-
-		// chase out other <a>
-		chase_out_cards(as, rect)
-
-		// keep aside in place
-		document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
-		if(aside.getAttribute('data-stuck')==='fixed-top')
-			window.scrollTo(0,0)
-
-		setup_page(parseInt(this.getAttribute('data-index'), 10), true)
-	}
-
-	function enter_grid_view() {
-		// unfix section
-		section.style.top = 0
-
-		// apply
-		var clicked_a = document.querySelector('section a.clicked')
-		if(clicked_a){
-			clicked_a.className = 'unclicked'
-			clicked_a.parentNode.className = ''
-			setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, clicked_a), 1000)
-		}
-
-		// replace old scroll, keep aside in place
-		var aside_rect = aside.getBoundingClientRect()
-		document.getElementById('dummy_section').style.height = recorded_section_height+'px'
-		window.scrollTo(0,remember_scroll)
-		place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
-	}
-
-	function chase_out_cards(cards, ref_rect){
-		for (var i = 0; i < cards.length; i++) {
-			var temp_rect = cards[i].getBoundingClientRect()
-			if(temp_rect.top < ref_rect.top){
-				cards[i].setAttribute('data-h', 'top')
-			} else {
-				cards[i].setAttribute('data-h', 'bot')
-			}
-		}
-	}
-	function position_main_slide(ref_rect){
-		var sheet = document.styleSheets[0]
-		var rules = sheet.cssRules || sheet.rules
-		rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
-		rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
-	}
-
-
-	// sticky sidebar
-	var scrolled, old_scrollY = 0
-	window.addEventListener('scroll', function (event) {
-		scrolled = true
-	});
-	function place_aside(position, top){
-		switch (position) {
-			case 'absolute-top':
-				aside.setAttribute('data-stuck', 'absolute-top')
-				aside.style.top = window.scrollY+'px'
-				aside.style.bottom = 'auto'
-				aside.style.position = 'absolute'
-				break;
-			case 'fixed-bottom':
-				aside.setAttribute('data-stuck', 'fixed-bottom')
-				aside.style.top = 'auto'
-				aside.style.bottom = 0
-				aside.style.position = 'fixed'
-				break;
-			case 'absolute-bottom':
-				aside.setAttribute('data-stuck', 'absolute-bottom')
-				aside.style.top = (window.scrollY+top)+'px'
-				aside.style.bottom = 'auto'
-				aside.style.position = 'absolute'
-				break
-			case 'fixed-top':
-				aside.setAttribute('data-stuck', 'fixed-top')
-				aside.style.top = 0
-				aside.style.bottom = 'auto'
-				aside.style.position = 'fixed'
-				break;
-		}
-	}
-	(function sticky_aside() {
-		if(scrolled){
-			var diff = window.scrollY - old_scrollY
-			var aside_rect = aside.getBoundingClientRect()
-			if(diff>0){
-				if(aside.getAttribute('data-stuck')==='fixed-top'){
-					place_aside('absolute-top')
-				} else if(aside_rect.bottom <= window.innerHeight){
-					place_aside('fixed-bottom')
-				}
-			} else if (diff<0){
-				if(aside.getAttribute('data-stuck')==='fixed-bottom'){
-					place_aside('absolute-bottom', aside_rect.top)
-				} else if(aside_rect.top >= 0){
-					place_aside('fixed-top')
-				}
-			}
-			scrolled = false
-			old_scrollY = window.scrollY
-		}
-		window.requestAnimationFrame(sticky_aside)
-	})()
 
 
 
 </script>
-<script language="javascript" type="text/javascript" src="/script.js"></script>
+<script language="javascript" type="text/javascript" src="/script2.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
 </html>
 
