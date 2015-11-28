@@ -4,7 +4,7 @@
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>whiteboard-comics.com/archives</loc>
+    <loc>http://whiteboard-comics.com/archives</loc>
     <changefreq>weekly</changefreq>
   </url>
 <?

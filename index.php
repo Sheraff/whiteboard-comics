@@ -195,13 +195,13 @@
 
 
 
-<!-- todo
+<!-- TODO
 	HARD PROBLEMS, MAJOR IMPROVEMENTS
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
 
 	STYLE
 	- make h2 as big as possible depending on content
-	- smooth scrolling (
+	- smooth scrolling
 		- for setup_archives()
 		- for filter() only if vignettes are animated when added / removed
 
@@ -238,9 +238,7 @@
 	SEO
 	- allow for og:image and page title to be shown even before release date if name matches exactly (easier posting on facebook)
 	- have more words on each graph (maybe a pun or a description or something)
-	- create sitemap
 	- enable caching
-	- enable gzip
 
 
 
