@@ -176,7 +176,6 @@
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
 
 	STYLE
-	- prettier aside transition (from GRAPHS to ARCHIVES)
 	- make h2 as big as possible depending on content
 	- smooth scrolling (
 		- for setup_archives()
@@ -188,7 +187,7 @@
 	- if possible, try and use .getBoundingClientRect() less often
 
 	UX
-	- attract attention on the possibility to see another graph (arrows / keyboard)
+	- attract attention to the possibility to see another graph (arrows / keyboard)
 	- tab key behavior
 
 	IMPROVE MOBILE VERSION
