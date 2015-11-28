@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+SITEMAP: http://whiteboard-comics.com/sitemap.xml
