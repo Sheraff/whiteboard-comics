@@ -5,6 +5,7 @@ RewriteRule ^/?archives/?$ /?archives=true
 RewriteRule ^chapon$ index.php?all=true
 RewriteRule ^([^/]*\))$ index.php?graph=$1
 RewriteRule ^graphs/(.*)$ svg.php?graph=$1
+RewriteRule ^sitemap(/)?(\.xml)?$ sitemap/index.php
 
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>

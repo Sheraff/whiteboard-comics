@@ -8,7 +8,6 @@
 
 	$master = $_GET['all'];
 	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
-	// $archives = true; // DEBUG
 
 	require 'php_utils.php';
 
@@ -23,22 +22,16 @@
 			break;
 		}
 	}
-	if($initial_index===-1) // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
+	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
 		$initial_index = 0;
+	}
 
 	// create CONTENT bites
-	// links
-	$prev_page = $initial_index===0 ? '/' : $graphs[$initial_index-1][name];
-	$next_page = $initial_index===count($graphs)-1 ? '/' : $graphs[$initial_index+1][name];
-	// h2 subtitle
-	$f_contents = file("subtitles.txt", FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
-  $h2 = $f_contents[rand(0, count($f_contents) - 1)];
-	// OG sharing
-	$thumbnail = $graphs[$initial_index][thumbnail];
-	$name = $graphs[$initial_index][name];
-	$formatted_name = $graphs[$initial_index][formatted_name];
-	// archives
+	$bites = extra_content($initial_index, $graphs);
+
+	// not item specific content bites
 	$archive_text = 'Archive of ' . count($graphs) . ' fantastic graphs.';
+	$base = ($_SERVER[HTTPS]?'https':'http').'://'.$_SERVER[HTTP_HOST];
 
 	// list all tags
 	$tags_list = [];
@@ -82,15 +75,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 	<meta charset="utf-8">
-	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $formatted_name ?></title>
+	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name] ?></title>
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed for Whiteboard Comics" href="/rss/" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="<? echo $h2 . '.' . ($archives?' '.$archive_text:''); ?>">
+	<meta name="description" content="<? echo ($archives?$archive_text:$bites[description]); ?>">
 	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, graph, graphs, graphics, time, life, body image, work, academia, morality, money, growing up">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
-	<meta property="og:description" content="<? echo $archives ? $archive_text : ($formatted_name . '. ' . $h2 . '.'); ?>"/>
-	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $thumbnail; ?>"/>
+	<meta property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
+	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>"/>
+	<base href="<? echo $base; ?>">
+	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
+	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<style>
 		section a.expanded>div{
@@ -100,17 +96,17 @@
 	</style>
 	<link href='/style.css' rel='stylesheet'>
 </head>
-<noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
+<noscript><img src="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
 <aside <? echo $archives ? 'class="archives"' : ''; ?>>
 	<a id="home" href="/">
 		<header>
 			<? echo file_get_contents("logo.svg"); ?>
-			<h2><? echo strtolower($h2); ?></h2>
+			<h2><? echo strtolower($bites[h2]); ?></h2>
 		</header>
 	</a>
 	<nav id="nav">
-		<a id="prev" data-title="previous graph" href="<? echo $prev_page; ?>"><img src="/res/prev.svg">
-		</a><a id="next" data-title="next graph" href="<? echo $next_page; ?>"><img src="/res/next.svg"></a>
+		<a id="prev" data-title="previous graph" href="<? echo $bites[prev_page]; ?>"><img src="/res/prev.svg">
+		</a><a id="next" data-title="next graph" href="<? echo $bites[next_page]; ?>"><img src="/res/next.svg"></a>
 	</nav>
 	<div id="blurb">
 		<p>This is a blurb I'm supposed to have written explaining how this website is insightful and funny, while still being an ironic side project.
@@ -120,7 +116,7 @@
 	<nav id="menu">
 		<a id="archives" data-title="archives" href="/archives"><img src="/res/stack.svg">
 		</a><label id="cog" data-title="settings" for="cog_check" <? echo ($archives?'class="disabled"':''); ?>><img src="/res/cog.svg">
-		</label><a id="rss" data-title="rss" href="/rss"><img src="/res/rss.svg">
+		</label><a id="rss" data-title="rss" href="/rss" target="_blank"><img src="/res/rss.svg">
 		</a><a id="fb" data-title="facebook" href="https://www.facebook.com/existentialWhiteboardComics" target="_blank"><img src="/res/fb.svg"></a>
 	</nav>
 	<div id="settings">
@@ -168,7 +164,35 @@
 </script>
 <script language="javascript" type="text/javascript" src="/script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+<? if(!$archives) { ?>
+	<script type="application/ld+json">
+		{
+			"@context" : "http://schema.org",
+			"@type" : "NewsArticle",
+			"headline" : "<? echo $graphs[$initial_index][formatted_name]; ?>",
+			"image" : [
+				"<? echo $graphs[$initial_index][$graphs[$initial_index][watermarked] ? 'watermarked' : 'thumbnail']; ?>",
+				"<? echo $graphs[$initial_index][path]; ?>"
+			],
+			"datePublished" : "<? echo date('c', $graphs[$initial_index][timestamp]); ?>",
+			"description" : "<? echo $bites[description]; ?>"
+		}
+	</script>
+<?}?>
+<script type="application/ld+json">
+	{
+		"@context" : "http://schema.org",
+		"@type" : "Organization",
+		"name" : "Whiteboard Comics",
+		"url" : "http://whiteboard-comics.com",
+		"logo": "http://whiteboard-comics.com/logo-full.png",
+		"sameAs" : [
+			"https://www.facebook.com/existentialWhiteboardComics"
+		]
+	}
+</script>
 </html>
+
 
 
 <!-- todo
@@ -217,38 +241,7 @@
 	- create sitemap
 	- enable caching
 	- enable gzip
-	- googlebot structured data
 
-	<script type="application/ld+json">
-		{
-		  "@context": "http://schema.org",
-		  "@type": "NewsArticle",
-		  "headline": "Article headline",
-		  "alternativeHeadline": "The headline of the Article",
-		  "image": [
-		    "thumbnail1.jpg",
-		    "thumbnail2.jpg"
-		  ],
-		  "datePublished": "2015-02-05T08:00:00+08:00",
-		  "description": "A most wonderful article",
-		  "articleBody": "The full body of the article"
-		}
-	</script>
-
-	<script type="application/ld+json">
-		{
-		  "@context" : "http://schema.org",
-		  "@type" : "Organization",
-		  "name" : "Your Organization Name",
-		  "url" : "http://www.your-site.com",
-			"logo": "http://www.example.com/images/logo.png",
-		  "sameAs" : [
-		    "http://www.facebook.com/your-profile",
-		    "http://www.twitter.com/yourProfile",
-		    "http://plus.google.com/your_profile"
-		  ]
-		}
-	</script>
 
 
  -->
