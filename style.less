@@ -4,6 +4,8 @@
 @unit: 1rem;
 @timing: .25s;
 
+@items-per-row-in-grid: 3;
+
 @main-width: 100vw - @aside-width;
 
 * {
@@ -116,8 +118,8 @@ section{
 		display: inline-block;
 		margin-top: @unit;
 		margin-right: @unit;
-		height: calc(@main-width/3~" - "@unit);
-		width: calc(@main-width/3~" - "@unit);
+		height: calc(@main-width/@items-per-row-in-grid~" - "@unit);
+		width: calc(@main-width/@items-per-row-in-grid~" - "@unit);
 		transform: translateY(0);
 		transition: transform @timing*2, opacity @timing*2;
 		&>div{
