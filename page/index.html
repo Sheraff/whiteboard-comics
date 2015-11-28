@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      a.clicked>div{
+        height: calc(100vh - 2rem);
+        width: calc(70vw - 1rem);
+        top: 0;
+        left: -1rem;
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
+      }
+      *{
+        box-sizing: border-box;
+      }
+      html, body{
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: lightgrey;
+      }
+      #dummy_section{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        padding-left: 30vw;
+        overflow: hidden;
+        z-index: -999;
+      }
+      section{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        padding-left: 30vw;
+        overflow: hidden;
+      }
+      section.clicked{
+        position: fixed;
+      }
+      section.pre_clicked{
+        visibility: hidden;
+      }
+      aside{
+        z-index: -10;
+        min-height: 120vh;
+        width: 30vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      a{
+        position: relative;
+        display: inline-block;
+        margin: 1rem;
+        height: 20vw;
+        width: 20vw;
+        transform: translateY(0);
+        transition: transform .5s, opacity .5s;
+      }
+      a>div{
+        display: block;
+        height: 20vw;
+        width: 20vw;
+        background-color: white;
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: height .5s, width .5s, top .5s, left .5s, box-shadow .25s linear, opacity .25s;
+        transition-delay: .25s, .25s, .25s, .25s, .75s, .75s;
+      }
+      section.clicked a:not(.clicked){
+        opacity: 0;
+      }
+      section.clicked a:not(.clicked)[data-h=top]{
+        transform: translateY(-100vh);
+      }
+      section.clicked a:not(.clicked)[data-h=bot]{
+        transform: translateY(100vh);
+      }
+      a.pre_clicked, a.pre_clicked>div{
+        transition-duration: 0s;
+      }
+
+      section.clicked a:not(.clicked), section.unclicked a:not(.unclicked){
+        z-index: 1;
+      }
+      a{
+        z-index: 2;
+      }
+      a.clicked, a.unclicked{
+        z-index: 3;
+      }
+      a>div{
+        z-index: 4;
+      }
+      a.clicked>div, a.unclicked>div{
+        z-index: 5;
+      }
+      main{
+        height: calc(100vh - 2rem);
+        width: calc(70vw - 1rem);
+        position: fixed;
+        right: 1rem;
+        top: 1rem;
+        z-index: -1000;
+        background-color: white;
+        opacity: 0;
+        box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.5);
+        transition: z-index 0s .5s, opacity .25s, box-shadow .25s linear;
+      }
+      section.clicked~main{
+        z-index: 1000;
+        opacity: 1;
+        box-shadow: 0 0 .7rem rgba(0, 0, 0, 0.5);
+        transition-delay: .75s;
+      }
+      section:not(.clicked) a{
+        transition-delay: .25s;
+      }
+      a.unclicked>div{
+        transition-delay: .25s, .25s, .25s, .25s, 0s, .75s;
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <p>1Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>2Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>3Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>4Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>5Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </aside>
+    <div id="dummy_section"></div>
+    <section class="clicked pre_clicked">
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#" class="clicked pre_clicked"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+      <a href="#"><div>coucou</div></a>
+    </section>
+    <main>
+      coucou
+    </main>
+    <script type="text/javascript">
+      var aside = document.getElementsByTagName('aside')[0]
+      var section = document.getElementsByTagName('section')[0]
+      var as = document.getElementsByTagName('a')
+      var main = document.getElementsByTagName('main')[0]
+
+      var recorded_section_height = section.getBoundingClientRect().height
+
+      // init
+      section.style.height = recorded_section_height
+      document.getElementById('dummy_section').style.height = recorded_section_height+'px'
+      var a_clicked = document.querySelector('a.clicked')
+      if(a_clicked){
+        var rect = a_clicked.getBoundingClientRect()
+        chase_out_cards(as, rect)
+        position_main_slide(rect)
+      }
+
+      var remember_scroll = 0
+      for (var i = 0; i < as.length; i++) {
+        as[i].addEventListener('click', toggle_grid_view)
+      }
+      main.addEventListener('click', function (event) {
+        toggle_grid_view.bind(document.querySelector('a.clicked'))(event)
+      })
+
+      function toggle_grid_view (event) {
+        event.stopPropagation()
+        event.preventDefault()
+
+        if(!this.classList.contains('clicked')){
+          // remember stuff before applying style
+          var aside_rect = aside.getBoundingClientRect()
+          remember_scroll = window.scrollY
+
+          // fix section
+          section.style.top = (-window.scrollY)+'px'
+
+          // apply
+          this.className = 'clicked'
+          this.parentNode.className = 'clicked'
+
+          // position ::before
+          var rect = this.getBoundingClientRect()
+          position_main_slide(rect)
+
+          // chase out other <a>
+          chase_out_cards(as, rect)
+
+          // keep aside in place
+          document.getElementById('dummy_section').style.height = aside.getBoundingClientRect().height+'px'
+          if(aside.getAttribute('data-stuck')==='fixed-top')
+            window.scrollTo(0,0)
+
+        } else {
+          // unfix section
+          section.style.top = 0
+
+          // apply
+          this.className = 'unclicked'
+          this.parentNode.className = ''
+          setTimeout((function (el) { if(el.className==='unclicked') el.className = '' }).bind(undefined, this), 1000)
+
+          // replace old scroll, keep aside in place
+          var aside_rect = aside.getBoundingClientRect()
+          document.getElementById('dummy_section').style.height = recorded_section_height+'px'
+          window.scrollTo(0,remember_scroll)
+          place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
+        }
+      }
+      function chase_out_cards(cards, ref_rect){
+        for (var i = 0; i < cards.length; i++) {
+          var temp_rect = cards[i].getBoundingClientRect()
+          if(temp_rect.top < ref_rect.top){
+            cards[i].setAttribute('data-h', 'top')
+          } else {
+            cards[i].setAttribute('data-h', 'bot')
+          }
+        }
+      }
+      function position_main_slide(ref_rect){
+        var sheet = document.styleSheets[0]
+        var rules = sheet.cssRules || sheet.rules
+        rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
+        rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
+      }
+
+
+      // sticky sidebar
+      var scrolled, old_scrollY = 0
+      window.addEventListener('scroll', function (event) {
+        scrolled = true
+      });
+      function place_aside(position, top){
+        switch (position) {
+          case 'absolute-top':
+            aside.setAttribute('data-stuck', 'absolute-top')
+            aside.style.top = window.scrollY+'px'
+            aside.style.bottom = 'auto'
+            aside.style.position = 'absolute'
+            break;
+          case 'fixed-bottom':
+            aside.setAttribute('data-stuck', 'fixed-bottom')
+            aside.style.top = 'auto'
+            aside.style.bottom = 0
+            aside.style.position = 'fixed'
+            break;
+          case 'absolute-bottom':
+            aside.setAttribute('data-stuck', 'absolute-bottom')
+            aside.style.top = (window.scrollY+top)+'px'
+            aside.style.bottom = 'auto'
+            aside.style.position = 'absolute'
+            break
+          case 'fixed-top':
+            aside.setAttribute('data-stuck', 'fixed-top')
+            aside.style.top = 0
+            aside.style.bottom = 'auto'
+            aside.style.position = 'fixed'
+            break;
+        }
+      }
+      (function sticky_aside() {
+        if(scrolled){
+          var diff = window.scrollY - old_scrollY
+          var aside_rect = aside.getBoundingClientRect()
+          if(diff>0){
+            if(aside.getAttribute('data-stuck')==='fixed-top'){
+              place_aside('absolute-top')
+            } else if(aside_rect.bottom <= window.innerHeight){
+              place_aside('fixed-bottom')
+            }
+          } else if (diff<0){
+            if(aside.getAttribute('data-stuck')==='fixed-bottom'){
+              place_aside('absolute-bottom', aside_rect.top)
+            } else if(aside_rect.top >= 0){
+              place_aside('fixed-top')
+            }
+          }
+          scrolled = false
+          old_scrollY = window.scrollY
+        }
+        window.requestAnimationFrame(sticky_aside)
+      })()
+    </script>
+  </body>
+</html>

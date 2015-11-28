@@ -1,316 +1,522 @@
 * {
-	margin: 0;
-	padding: 0;
-	border: none;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
 }
-html, body{
-	width: 100%;
-	background-color: #CCCCCC;
-	font-family: 'Droid Serif', Georgia, serif;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	letter-spacing: 0.0000001em;
+html,
+body {
+  width: 100%;
+  background-color: #D9D2CC;
+  font-family: 'Droid Serif', Georgia, serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.0000001em;
 }
-main svg{
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+a {
+  text-decoration: none;
+  color: inherit;
 }
-main svg *{
-	visibility: hidden;
+a:visited {
+  color: inherit;
 }
-main svg [data-type="erase"]{
-	stroke: white;
-	stroke-linejoin: bevel;
+label {
+  cursor: pointer;
 }
-main svg text{
-	fill: white;
-	font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
+main svg,
+section svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
-main svg path, main svg line, main svg polyline{
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	stroke-miterlimit: 10;
-	fill: none;
+main svg [data-type="erase"],
+section svg [data-type="erase"] {
+  stroke-linejoin: bevel;
 }
-main svg path:not([stroke]), main svg line:not([stroke]), main svg polyline:not([stroke]){
-	stroke: black;
+main svg text,
+section svg text {
+  fill: white;
+  font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
 }
-main svg path:not([stroke-width]), main svg line:not([stroke-width]), main svg polyline:not([stroke-width]){
-	stroke-width: 4;
+main svg path,
+section svg path,
+main svg line,
+section svg line,
+main svg polyline,
+section svg polyline {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+  fill: none;
 }
-
-#logo{
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-	padding: 1rem;
-	width: 100%;
+main svg path:not([stroke]),
+section svg path:not([stroke]),
+main svg line:not([stroke]),
+section svg line:not([stroke]),
+main svg polyline:not([stroke]),
+section svg polyline:not([stroke]) {
+  stroke: black;
 }
-h1{
-	font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
-	font-weight : bold;
-	text-align: center;
-	font-size: 5vw;
+main svg path:not([stroke-width]),
+section svg path:not([stroke-width]),
+main svg line:not([stroke-width]),
+section svg line:not([stroke-width]),
+main svg polyline:not([stroke-width]),
+section svg polyline:not([stroke-width]) {
+  stroke-width: 4;
 }
-main{
-	overflow: hidden;
-	position: fixed;
-	right: 1rem;
-	top: 1rem;
-	height: calc(100vh - 2rem);
-	width: calc(70vw - 1rem);
-	background-color: white;
-	box-shadow: 0 0 .5rem rgba(0,0,0,.5);
-	z-index: 10;
+main svg {
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
 }
-aside{
-	position: absolute;
-	z-index: 10;
-	left: 0;
-	top: 0;
-	min-width: 200px;
-	width: 30vw;
-	min-height: 100vh;
+main svg [data-type="erase"] {
+  stroke: white;
 }
-aside>*{
-	display: block;
-	text-align: center;
+section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70vw;
+  min-height: 100vh;
+  margin-bottom: 1rem;
 }
-h1, a, label{
-	height: 5rem;
-	line-height: 5rem;
+section.noanimation,
+section.noanimation > a,
+section.noanimation > a > div {
+  transition-duration: 0s;
+  transition-delay: 0s;
 }
-h2{
-	min-height: 5rem;
-	font-size: 1.5vw;
-	border-bottom: solid 1px black;
-	white-space: nowrap;
-	font-weight: 500;
+section.expanded {
+  position: fixed;
+  overflow: hidden;
 }
-aside img{
-	height: 1.5rem;
-	transform: translateY(.125rem);
+section.expanded > a:not(.expanded) {
+  opacity: 0;
+  z-index: 1;
 }
-a{
-	text-decoration: none;
-	color: inherit;
+section.expanded > a:not(.expanded) {
+  transform: translateY(-100vh);
 }
-a:visited{
-	color: inherit;
+section.expanded > a.expanded ~ a:not(.expanded) {
+  transform: translateY(100vh);
 }
-#footer span#website{
-	text-decoration: underline;
+section.unexpanded > a:not(.unexpanded) {
+  z-index: 1;
 }
-a.home:not(.disabled):hover{
-	background-color: inherit;
+section.pre_expanded {
+  visibility: hidden;
 }
-aside>.nav, aside>.social{
-	display: inline-block;
-	width: 50%;
-	font-size: 2rem;
+section:not(.expanded) > a:not(.expanded):not(.unexpanded) > div {
+  transition: transform 0.125s ease-out, box-shadow 0.125s ease-out;
+  transition-delay: 0;
 }
-#archive, #cog, aside>.social{
-	width: 25%;
-	font-size: 2rem;
-	display: inline-block;
+section:not(.expanded) > a:not(.expanded):not(.unexpanded):hover > div {
+  transform: scale(1.05);
+  box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
 }
-aside #next{
-	box-shadow: 1px 0 0 black;
+section > a {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  height: calc(23.33333333vw  -  1rem);
+  width: calc(23.33333333vw  -  1rem);
+  transform: translateY(0);
+  transition: transform 0.5s, opacity 0.5s;
 }
-aside>a:not(.disabled):hover, aside>label:not(.disabled):hover{
-	cursor: pointer;
-	background-color: rgba(0,0,0,.1);
+section > a > div {
+  z-index: 4;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transition: height 0.5s, width 0.5s, top 0.5s, left 0.5s, box-shadow 0.25s linear, opacity 0.25s;
+  transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
 }
-aside>a.disabled{
-	cursor: default;
-	opacity: .3;
+section > a > div svg {
+  max-width: 90%;
+  max-height: 90%;
 }
-aside>p{
-	padding: 2rem;
-	text-align: left;
+section > a.expanded > div {
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0);
+  height: calc(100vh  -  2rem);
+  width: calc(70vw  -  1rem);
 }
-#cog:hover{
-	background-color: rgba(238, 238, 238, .5);
+section > a.expanded,
+section > a.unexpanded {
+  z-index: 3;
 }
-#fb:hover{
-	background-color: rgba(59, 89, 152, .5)
+section > a.expanded > div,
+section > a.unexpanded > div {
+  z-index: 5;
 }
-#rss:hover{
-	background-color: rgba(255, 102, 0, .5);
+section > a.pre_expanded,
+section > a.pre_expanded > div {
+  transition-duration: 0s;
 }
-#archive img, #cog img{
-	position: relative;
+section > a.unexpanded > div {
+  transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0s, 0.75s;
 }
-aside>[data-title]{
-	position: relative;
+section:not(.expanded) a {
+  transition-delay: 0.25s;
 }
-aside>[data-title]:not(.disabled):hover img{
-	transform: translateY(-.5rem);
+section.expanded ~ main {
+  z-index: 1000;
+  opacity: 1;
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.5);
+  transition-delay: 0.75s;
 }
-aside>[data-title]:not(.disabled)::after{
-	display: block;
-	width: 100%;
-	height: 0;
-	font-size: 1rem;
-	position: absolute;
-	content: attr(data-title);
-	text-align: center;
-	top: 2rem;
-	opacity: 0;
+main {
+  overflow: hidden;
+  height: calc(100vh -  2rem);
+  width: calc(70vw  -  1rem);
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: -1000;
+  background-color: white;
+  opacity: 0;
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
+  transition: z-index 0s 0.5s, opacity 0.25s, box-shadow 0.25s linear;
 }
-aside>[data-title]:not(.disabled):hover::after{
-	transform: translateY(-1rem);
-	opacity: 1;
+main svg * {
+  visibility: hidden;
 }
-aside>[data-title] img, aside>[data-title]::after{
-	transition: all .25s;
+main #overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
 }
-p:first-of-type{
-	border-top: solid 1px black;
-	padding-bottom: .5rem;
+main #authorship,
+main #pubdate {
+  position: absolute;
+  right: 1rem;
+  height: 1rem;
+  color: rgba(0, 0, 0, 0.7);
 }
-p+p{
-	padding-top: 0;
+main #authorship a,
+main #pubdate a {
+  text-decoration: underline;
 }
-
-
-
-
-#cog_check{
-	display: none;
+main #authorship {
+  bottom: 1rem;
 }
-#settings{
-	overflow: hidden;
-	width: 100%;
-	background-color: #EEEEEE;
-	transition: height .25s;
-	height: 10rem;
+main #pubdate {
+  top: 1rem;
 }
-#cog_check:checked~#cog{
-	background-color: #EEEEEE;
+aside {
+  position: absolute;
+  z-index: -10;
+  left: 0;
+  top: 0;
+  width: 30vw;
+  min-height: 100vh;
+  text-align: center;
 }
-#cog_check:not(:checked)~#settings{
-	height: 0rem;
+aside > * {
+  display: block;
+  text-align: center;
 }
-#settings div{
-	position: relative;
-	padding: 0 1rem;
-	text-align: left;
-	line-height: 5rem;
+aside nav [data-title],
+aside footer > a {
+  position: relative;
+  height: 5rem;
+  line-height: 5rem;
+  overflow: hidden;
+  vertical-align: top;
+  display: inline-block;
+  white-space: nowrap;
+  -webkit-transform: translateZ(0);
 }
-#settings input{
-	position: absolute;
-	right: 1rem;
-	top: 2rem;
+aside nav [data-title]:not(.disabled):hover,
+aside footer > a:not(.disabled):hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
 }
-label[for="animation_check"]{
-	cursor: pointer;
+aside nav [data-title] {
+  font-size: 2rem;
 }
-
-#authorship, #pubdate{
-	position: absolute;
-	right: 1rem;
-	bottom: 3rem;
-	height: 1rem;
-	color: rgba(0,0,0,.7);
+aside nav [data-title] img {
+  height: 1.5rem;
 }
-#pubdate{
-	bottom: auto;
-	top: 1rem;
+aside nav [data-title] img,
+aside nav [data-title]::after {
+  transition: all 0.25s;
 }
-#authorship a{
-	text-decoration: underline;
+aside nav [data-title].disabled {
+  cursor: default;
+  opacity: .3;
 }
-#blurb{
-	position: relative;
+aside nav [data-title]:not(.disabled):hover img {
+  transform: translateY(-0.5rem);
 }
-#blurb::before{
-	content: '«';
-	position: absolute;
-	left: 1.25rem;
+aside nav [data-title]:not(.disabled):hover::after {
+  transform: translateY(-1rem);
+  opacity: 1;
 }
-#blurb+p::after{
-	content: ' »';
+aside nav [data-title]:not(.disabled)::after {
+  display: block;
+  width: 100%;
+  height: 0;
+  font-size: 1rem;
+  position: absolute;
+  content: attr(data-title);
+  text-align: center;
+  top: 2rem;
+  opacity: 0;
 }
-#blurb, #blurb+p{
-	line-height: 1.4;
+aside #logo {
+  width: 100%;
+  height: auto;
+  padding: 5px;
+  max-height: 5rem;
 }
-
-#logo path, #logo polyline{
-	transition: stroke 1s ease-in 1s;
+aside #logo path,
+aside #logo polyline {
+  transition: stroke 1s ease-in 1s;
 }
-
-#overlay{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	opacity: 0;
+aside h2 {
+  height: 5rem;
+  line-height: 5rem;
+  font-size: 1.5vw;
+  white-space: nowrap;
+  font-weight: 400;
 }
-
-
+aside #nav {
+  overflow: hidden;
+  box-shadow: inset 0 1px black, inset 0 -1px black;
+  height: 5rem;
+  -webkit-transform: translateZ(0);
+}
+aside #nav [data-title] {
+  width: 50%;
+}
+aside #blurb {
+  padding: 0 2rem;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+aside #blurb p {
+  text-align: left;
+  line-height: 1.45;
+  position: relative;
+}
+aside #blurb p:not(:last-child) {
+  padding-bottom: 0.5rem;
+}
+aside #blurb p:first-child::before {
+  content: '«';
+  position: absolute;
+  left: -0.75rem;
+}
+aside #blurb p:last-child::after {
+  content: ' »';
+}
+aside #menu [data-title] {
+  width: 25%;
+}
+aside #cog_check {
+  display: none;
+}
+aside #cog_check:checked ~ nav #cog {
+  background-color: #EEEEEE;
+}
+aside #cog_check:not(:checked) ~ nav #cog:hover {
+  background-color: rgba(238, 238, 238, 0.5);
+}
+aside #cog_check:not(:checked) ~ #settings {
+  height: 0;
+}
+aside #cog:hover {
+  background-color: rgba(238, 238, 238, 0.5);
+}
+aside #fb:hover {
+  background-color: rgba(59, 89, 152, 0.5);
+}
+aside #rss:hover {
+  background-color: rgba(255, 102, 0, 0.5);
+}
+aside #settings {
+  overflow: hidden;
+  width: 100%;
+  background-color: #EEEEEE;
+  height: 10rem;
+  transition: height 0.25s;
+}
+aside #settings div {
+  position: relative;
+  padding: 0 1rem;
+  text-align: left;
+  line-height: 5rem;
+}
+aside #settings input {
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
+}
+aside #menu {
+  margin-top: 0;
+}
+aside.archives #blurb:not(.unarchived) {
+  height: 0;
+}
+aside.archives #blurb:not(.unarchived) ~ #menu {
+  margin-top: -3rem;
+}
+aside.archives #nav {
+  height: 0;
+}
+aside.archives #settings {
+  height: 0;
+}
+aside.archives #archives {
+  background-color: #eeeeee;
+}
+aside:not(.archives) #tags {
+  height: 0;
+  padding: 0;
+}
+#tags {
+  background-color: #EEEEEE;
+  text-align: left;
+  list-style: none;
+  padding: 1rem 0;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  /*min-height: calc(100vh - 25rem);*/
+}
+#tags input {
+  display: none;
+}
+#tags li {
+  position: relative;
+  padding: 0 2rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  cursor: pointer;
+}
+#tags li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#tags li div {
+  float: right;
+  font-size: .9em;
+  color: rgba(0, 0, 0, 0.5);
+}
+#tags span {
+  position: absolute;
+}
+#tags img {
+  position: absolute;
+  top: 0.2rem;
+  left: -1rem;
+  height: 1.5rem;
+  opacity: 0;
+}
+#tags img,
+#tags span {
+  transition: all 0.25s;
+}
+#tags input:checked + label img {
+  opacity: 1;
+  transform: translateX(2.5rem);
+}
+#tags input:checked + label span {
+  transform: translateX(1.5rem);
+}
+footer > a {
+  width: 100%;
+}
+#footer span#website {
+  text-decoration: underline;
+}
+#blurb,
+#nav,
+#tags,
+#menu {
+  transform: translate3d(0, 0, 0);
+  transition: all 0.75s;
+}
 @media (orientation: portrait) {
-	h1, #logo, a.home:first-of-type{
-		font-size: 6.5vw;
-		width: 100vw;
-		line-height: 5rem;
-		padding: 0;
-		height: 5rem;
-	}
-	aside>.nav{
-		width: 50vw;
-		height: 5rem;
-		line-height: 5rem;
-	}
-	aside .nav img{
-		position: relative;
-		height: 8vw;
-		top: 1.5vw;
-	}
-	h2, aside>p, #cog, #pubdate, #rss, #copyright{
-		display: none;
-	}
-	main{
-		top: 10rem;
-		right: 0;
-		height: calc(100vh - 15rem);
-		width: 100vw;
-	}
-	aside{
-		width: 100vw;
-		min-height: 0;
-		height: 10rem;
-	}
-	aside>*{
-		float: left;
-	}
-	aside #next{
-		box-shadow: none;
-	}
-	#footer, #fb, #archive{
-		position: fixed;
-		bottom: 0;
-		right: 0;
-		z-index: 1;
-		width: 5rem;
-	}
-	#footer{
-		width: calc(100% - 10rem);
-		right: 5rem;
-		background-color: darkgrey;
-	}
-	#archive{
-		right: auto;
-		left: 0;
-	}
-	aside>[data-title]:not(.disabled)::after{
-		display: none;
-	}
-	aside>[data-title]:not(.disabled):hover img{
-		transform: none;
-	}
+  h1,
+  #logo,
+  a.home:first-of-type {
+    font-size: 6.5vw;
+    width: 100vw;
+    line-height: 5rem;
+    padding: 0;
+    height: 5rem;
+  }
+  aside > .nav {
+    width: 50vw;
+    height: 5rem;
+    line-height: 5rem;
+  }
+  aside .nav img {
+    position: relative;
+    height: 8vw;
+    top: 1.5vw;
+  }
+  h2,
+  aside > p,
+  #cog,
+  #pubdate,
+  #rss,
+  #copyright {
+    display: none;
+  }
+  main {
+    top: 10rem;
+    right: 0;
+    height: calc(100vh - 15rem);
+    width: 100vw;
+  }
+  aside {
+    width: 100vw;
+    min-height: 0;
+    height: 10rem;
+  }
+  aside > * {
+    float: left;
+  }
+  aside #next {
+    box-shadow: none;
+  }
+  #footer,
+  #fb,
+  #archive {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    width: 5rem;
+  }
+  #footer {
+    width: calc(100% - 10rem);
+    right: 5rem;
+    background-color: darkgrey;
+  }
+  #archive {
+    right: auto;
+    left: 0;
+  }
+  aside > [data-title]:not(.disabled)::after {
+    display: none;
+  }
+  aside > [data-title]:not(.disabled):hover img {
+    transform: none;
+  }
 }
