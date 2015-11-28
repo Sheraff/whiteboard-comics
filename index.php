@@ -166,7 +166,7 @@
 	var LETTERS = <? echo json_encode($letters).';'; ?>
 
 </script>
-<script language="javascript" type="text/javascript" src="/script2.js"></script>
+<script language="javascript" type="text/javascript" src="/script.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
 </html>
 
