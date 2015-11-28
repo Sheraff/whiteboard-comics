@@ -5,6 +5,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>whiteboard-comics.com/archives</loc>
+    <changefreq>weekly</changefreq>
   </url>
 <?
   require '../php_utils.php';
