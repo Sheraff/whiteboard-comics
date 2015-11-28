@@ -17,7 +17,7 @@ release	name	tags	author	source	credit
 2016-01-11	total_happiness=f(number_of_kids)	morality	SMBC comics	http://www.smbc-comics.com/?id=2569	Inspired by
 2016-01-18	rejection_of_authority,confidence_in_small_sample=f(age)	morality,growing up	SMBC comics	http://www.smbc-comics.com/?id=2692	By
 2016-01-25	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
-2016-02-01	law_adoption=f(avg_preference,elite_preference)	morality	Gilens & Page	https://scholar.princeton.edu/sites/default/files/mgilens/files/gilens_and_page_2014_-testing_theories_of_american_politics.doc.pdf	From Princeton (2014),
+2016-02-01	law_adoption=f(avg_preference,elite_preference)	morality,academia	Gilens & Page	https://scholar.princeton.edu/sites/default/files/mgilens/files/gilens_and_page_2014_-testing_theories_of_american_politics.doc.pdf	From Princeton (2014),
 2016-02-08	pizzas_eaten=f(exercise,sitting)	body image,productivity
 2016-02-15	eadibleness=f(cuteness)	morality,miscellaneous	SMBC comics	http://www.smbc-comics.com/?id=2393	By
 2016-02-22	perceived_complexity_of_society=f(age)	morality,growing up	SMBC comics	http://www.smbc-comics.com/?id=2868	By
@@ -30,7 +30,7 @@ release	name	tags	author	source	credit
 2016-04-11	sweat,care=f(time)	body image	Chaz Hutton	https://instagram.com/p/7CpK8rm9ew	Original idea by
 2016-04-18	procrastination=f(fulfillment)	productivity,morality	Indexed	http://thisisindexed.com/2006/08/	By
 2016-04-25	desire_for_money=f(money_owned)	money,morality
-2016-05-02	work_in_theory,work_in_reality=f(time)	work life,productifity	xkcd	https://xkcd.com/1319/	From
+2016-05-02	work_in_theory,work_in_reality=f(time)	work life,productivity	xkcd	https://xkcd.com/1319/	From
 2016-05-09	happiness,expectations=f(time)	morality
 2016-05-16	sleep_ability=f(tiredness)	productivity,miscellaneous
 2016-05-23	wages,enjoyment=f(money)	money,work life,morality

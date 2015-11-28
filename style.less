@@ -131,11 +131,17 @@ section{
 			transform: translate3d(0, 0, 0);
 			transition: height @timing*2, width @timing*2, top @timing*2, left @timing*2, box-shadow @timing linear, opacity @timing;
 			transition-delay: @timing, @timing, @timing, @timing, @timing*3, @timing*3;
+			&>*{
+				transition: opacity @timing*2 @timing;
+			}
 		}
 		&.expanded>div{
 			box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
 			height: calc(100vh~" - "@unit*2);
 			width: calc(@main-width~" - "@unit);
+			&>*{
+				opacity: 0;
+			}
 		}
 		&.expanded, &.unexpanded{
 			z-index: 3;
