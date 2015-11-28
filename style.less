@@ -38,6 +38,8 @@ main svg, section svg{
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
+	max-width: 90%;
+	max-height: 90%;
 	[data-type="erase"]{
 		stroke-linejoin: bevel;
 	}
@@ -56,14 +58,6 @@ main svg, section svg{
 		&:not([stroke-width]){
 			stroke-width: 4;
 		}
-	}
-}
-main svg{
-	max-width: 90%;
-	max-height: 90%;
-	overflow: hidden;
-	[data-type="erase"]{
-		stroke: white;
 	}
 }
 section{
@@ -137,10 +131,6 @@ section{
 			transform: translate3d(0, 0, 0);
 			transition: height @timing*2, width @timing*2, top @timing*2, left @timing*2, box-shadow @timing linear, opacity @timing;
 			transition-delay: @timing, @timing, @timing, @timing, @timing*3, @timing*3;
-			svg{
-				max-width: 90%;
-				max-height: 90%;
-			}
 		}
 		&.expanded>div{
 			box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
@@ -187,6 +177,9 @@ main{
     *{
       visibility: hidden;
     }
+		[data-type="erase"]{
+			stroke: white;
+		}
   }
   #overlay{
   	position: absolute;

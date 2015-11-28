@@ -30,6 +30,8 @@ section svg {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  max-width: 90%;
+  max-height: 90%;
 }
 main svg [data-type="erase"],
 section svg [data-type="erase"] {
@@ -66,14 +68,6 @@ section svg line:not([stroke-width]),
 main svg polyline:not([stroke-width]),
 section svg polyline:not([stroke-width]) {
   stroke-width: 4;
-}
-main svg {
-  max-width: 90%;
-  max-height: 90%;
-  overflow: hidden;
-}
-main svg [data-type="erase"] {
-  stroke: white;
 }
 section {
   position: absolute;
@@ -144,10 +138,6 @@ section > a > div {
   transition: height 0.5s, width 0.5s, top 0.5s, left 0.5s, box-shadow 0.25s linear, opacity 0.25s;
   transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
 }
-section > a > div svg {
-  max-width: 90%;
-  max-height: 90%;
-}
 section > a.expanded > div {
   box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0);
   height: calc(100vh  -  2rem);
@@ -192,6 +182,9 @@ main {
 }
 main svg * {
   visibility: hidden;
+}
+main svg [data-type="erase"] {
+  stroke: white;
 }
 main #overlay {
   position: absolute;
