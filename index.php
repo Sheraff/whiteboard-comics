@@ -226,7 +226,6 @@
 
 	ROBUSTNESS
 	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
-	⚠ other solution: switch to simply copying "transform" attribute (without forgetting the x,y of tspans)
 
 	DURABILITY & MAINTAINABILITY
 	- write readme so that the process is clear

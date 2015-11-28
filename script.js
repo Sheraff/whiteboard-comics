@@ -795,7 +795,7 @@ function rewrite_with_paths (svg) {
 	}
   return svg
 
-	function replace_span (reference_element) {
+  function replace_span (reference_element) {
 		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
 			console.log(reference_element.childNodes)
 			return console.log('this node still has children')
@@ -803,16 +803,18 @@ function rewrite_with_paths (svg) {
 
 		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
 
-		var text_position = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
-		text_position = text_position.slice(7,-1).split(' ')
-		text_position = {
-			x: parseFloat(text_position[4]),
-			y: parseFloat(text_position[5])
-		}
+		var text_transform = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
 		if(is_tspan){
-				text_position.x += parseFloat(reference_element.getAttribute('x'))
-				text_position.y += parseFloat(reference_element.getAttribute('y'))
-		}
+      var tspan_position = {
+        x: parseFloat(reference_element.getAttribute('x')),
+        y: parseFloat(reference_element.getAttribute('y'))
+      }
+		} else {
+      var tspan_position = {
+        x: 0,
+        y: 0
+      }
+    }
 
 		var color = reference_element.getAttribute('fill')
 		if(!color)
@@ -835,9 +837,9 @@ function rewrite_with_paths (svg) {
 			el.innerHTML = letter.content
 			var paths = el.querySelectorAll('path,line,polyline')
 			for (var i = 0; i < paths.length; i++) {
-				var x = text_position.x + x_length
-				var y = text_position.y - letter.viewbox.height + 10
-				paths[i].setAttribute('transform', 'translate(' + x + ',' + y + ')')
+				var x = tspan_position.x + x_length
+				var y = tspan_position.y - letter.viewbox.height + 10
+				paths[i].setAttribute('transform', text_transform+' translate(' + x + ',' + y + ')')
 				paths[i].setAttribute('data-type','writing')
 				if(color)
 					paths[i].setAttribute('stroke', color)
