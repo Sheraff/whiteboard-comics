@@ -75,12 +75,12 @@ SECTION = document.getElementsByTagName('section')[0]
 AS = SECTION.getElementsByTagName('a')
 TAGS_CHECK = document.getElementById('tags').getElementsByTagName('input')
 
-// GRID LAYOUT
-var recorded_section_height = SECTION.getBoundingClientRect().height
-var remember_scroll = 0
-
 // STICKY ASIDE
+var remember_scroll = 0
 var scrolled, old_scrollY = 0
+var cached_inner_height = window.innerHeight
+var base_height_on_aside = true
+var aside_rect, section_rect
 
 //////////
 // INIT //
@@ -103,18 +103,23 @@ if(ARCHIVES){
 
 // ATTACH LISTENERS
 for (var i = 0; i < AS.length; i++) { AS[i].addEventListener('click', navigate.bind(undefined, i)) }
-document.getElementById('logo').parentElement.addEventListener('click', navigate.bind(undefined, 0))
-ASIDE.getElementsByTagName('h2')[0].parentElement.addEventListener('click', navigate.bind(undefined, 0))
+document.getElementById('home').addEventListener('click', navigate.bind(undefined, 0))
 document.getElementById('prev').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('prev', event) } )
 document.getElementById('next').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('next', event) } )
 document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
 document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault(); scrollTo(0,0)} navigate('archives', event) } )
 document.getElementById('speed_input').addEventListener('change', function (event) { SPEED = this.value; localStorage.setItem('speed', this.value) })
-window.addEventListener('resize', function () { properly_size_svg() })
 window.addEventListener('scroll', function (event) { scrolled = true })
 window.requestAnimationFrame(sticky_aside)
-
 for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('change', filter) }
+
+window.addEventListener('resize', function () {
+  cached_inner_height = window.innerHeight
+
+  properly_size_svg()
+
+  sizes_have_changed(false, true)
+})
 
 document.getElementById('animation_check').addEventListener('change', function (event) {
 	ANIMATE = this.checked
@@ -169,19 +174,24 @@ else{
   }
 }
 
+var currently_loading_index
 function setup_graph (index) {
   var index = index || 0
+  if(!ARCHIVES && index === currently_loading_index){
+    console.log('will not setup graph: asking for #'+index+' and already loading/showing #'+currently_loading_index);
+    return
+  }
+  currently_loading_index = index
   console.log('setting up graph #'+index)
 
   if(ARCHIVES){
     console.log('graph setup from ARCHIVES mode')
 
+    // remember stuff before applying style
+		remember_scroll = window.scrollY
+
     ASIDE.className = ''
     document.getElementById('cog').className = ''
-
-    // remember stuff before applying style
-		var aside_rect = ASIDE.getBoundingClientRect()
-		remember_scroll = window.scrollY
 
     // fix section
 		SECTION.style.top = (-window.scrollY)+'px'
@@ -195,14 +205,14 @@ function setup_graph (index) {
 		position_main_slide(as_rect)
 
 		// keep aside in place
-		document.getElementById('dummy_section').style.height = aside_rect.height+'px'
-		if(ASIDE.getAttribute('data-stuck')==='fixed-top')
-			window.scrollTo(0,0)
-    place_aside('absolute-top')
+    ARCHIVES = false
+    sizes_have_changed(true, true)
 
     then(index)
   } else {
     console.log('graph setup from GRAPHS mode')
+    ARCHIVES = false
+
     // switch vignette in background
     SECTION.classList.add('noanimation')
     AS[INDEX].className = ''
@@ -216,7 +226,7 @@ function setup_graph (index) {
     if(svg){
       interrupt_drawing_element_svg(svg)
       erase(svg, 0, (function (index) {
-        MAIN.removeChild(this)
+        // MAIN.removeChild(this)
         erased = true
         console.log('cloned graph #'+INDEX+' erased');
         if(loaded)
@@ -237,9 +247,15 @@ function setup_graph (index) {
   function then(index) {
     console.log('graph #'+index+' setup, second part')
     MAIN.innerHTML = ''
+    MAIN.setAttribute('data-index', index)
+
+    // animate svg
     var svg = GRAPHS[index].content.cloneNode(true)
     MAIN.appendChild(svg)
-    MAIN.setAttribute('data-index', index)
+    prepare_drawing_element_svg(svg)
+    var total_duration = play_svg(svg, .5)
+    if(!ANIMATE)
+      force_finish_drawing_element_svg(svg)
 
     // authorship
   	if(GRAPHS[index].author){
@@ -252,7 +268,7 @@ function setup_graph (index) {
       a.setAttribute('target', '_blank')
       a.innerHTML = GRAPHS[index].author
       span.appendChild(a)
-  		MAIN.appendChild(span)
+		  MAIN.appendChild(span)
     }
 
     // release date
@@ -263,33 +279,27 @@ function setup_graph (index) {
     MAIN.appendChild(pubdate)
 
     // png
-    if(GRAPHS.watermark_is_loaded)
-      put_overlay_image(GRAPHS[index].watermark)
+    if(GRAPHS[index].watermark_is_loaded)
+      put_overlay_image(index, GRAPHS[index].watermarked)
     else if (GRAPHS[index].urldata)
-      put_overlay_image(GRAPHS[index].urldata, index)
-    else
-      svg_to_png(GRAPHS[index].content, set_img.bind(undefined, index))
+      set_img_from_urldata(index, GRAPHS[index].urldata)
+    else{
+      var img = new Image()
+      MAIN.appendChild(img)
+      svg_to_png(GRAPHS[index].content, (set_img_from_urldata).bind(undefined, index, img))
+    }
 
     // misc
+    INDEX = index
     rewrite_url(GRAPHS[index].name)
     update_page_title(GRAPHS[index].formatted_name)
     update_link_state(index)
   	properly_size_svg(svg)
   	update_logo_colors()
 
-    // animate svg
-    prepare_drawing_element_svg(svg)
-  	var total_duration = play_svg(svg, .5)
-  	if(!ANIMATE)
-  		force_finish_drawing_element_svg(svg)
-
-    // FLAGS
-    ARCHIVES = false
-    INDEX = index
-
     // preload
-    if(GRAPHS[INDEX+1])
-      load_svg(INDEX+1)
+    if(GRAPHS[index+1])
+      load_svg(index+1)
   }
 }
 
@@ -318,30 +328,29 @@ function setup_archives (from_index) {
   // unfix section
   SECTION.style.top = 0
   // apply styles to section
-  var expanded_a = SECTION.querySelector('a.expanded')
-  if(expanded_a){
-    expanded_a.className = 'unexpanded'
-    expanded_a.parentNode.className = ''
-    setTimeout((function (el) { if(el.className==='unexpanded') el.className = '' }).bind(undefined, expanded_a), 1000)
+  var expanded_as = SECTION.querySelectorAll('a.expanded')
+  if(expanded_as.length>0){
+    expanded_as[0].parentNode.className = ''
+    for (var i = 0, l = expanded_as.length; i < l; i++) {
+      expanded_as[i].className = 'unexpanded'
+      setTimeout((function (el) { if(el.className==='unexpanded') el.className = '' }).bind(undefined, expanded_as[i]), 1000)
+    }
   }
   // replace old scroll, keep aside in place
-  var aside_rect = ASIDE.getBoundingClientRect()
-  document.getElementById('dummy_section').style.height = recorded_section_height+'px'
-  window.scrollTo(0,remember_scroll)
-  place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0, true)
-
-  // FLAGS
   ARCHIVES = true
+  sizes_have_changed(true, true)
+  window.scrollTo(0,remember_scroll)
+
 }
 
 function filter (event){
   var selected = []
 
-  // sort out tags themselves
+  // sort out tags themselves (which ones are checked, if none check "all", if "all" check none)
   var all_checked = this===TAGS_CHECK[0]
   for (var i = 1; i < TAGS_CHECK.length; i++) {
     if(!all_checked && TAGS_CHECK[i].checked)
-      selected.push(i)
+      selected.push(i-1)
     else
       TAGS_CHECK[i].checked = false
   }
@@ -349,8 +358,6 @@ function filter (event){
     TAGS_CHECK[0].checked = true
   else
     TAGS_CHECK[0].checked = false
-
-  // update counts
 
   // find which graphs match the selected tags
   var ins = [], outs = []
@@ -369,13 +376,14 @@ function filter (event){
       outs.push(i)
   }
 
-  // remove unfitting graphs
+  // remove unfitting graphs // TODO: remove with style / animation ?
   for (var i = 0; i < AS.length; i++) {
     if(ins.indexOf(i)!==-1)
       AS[i].style.display = 'inline-block'
     else
       AS[i].style.display = 'none'
   }
+  sizes_have_changed(false, true)
 
   // update counts
   var temp_tags = {}
@@ -387,13 +395,14 @@ function filter (event){
         temp_tags[GRAPHS[ins[i]].tags[j]] = 1
     }
   }
-  for (var i = 1; i < tag_list.length; i++) {
-    var counter = document.getElementById('tags').querySelector('label[for='+TAGS_CHECK[i].getAttribute('id')+'] div')
+  for (var i = 0; i < tag_list.length; i++) {
+    var counter = document.getElementById('tags').querySelector('label[for='+TAGS_CHECK[i+1].getAttribute('id')+'] div')
     if(temp_tags[tag_list[i]])
       counter.innerHTML = temp_tags[tag_list[i]]
     else
       counter.innerHTML = 0
   }
+
 }
 
 function navigate (direction, event) {
@@ -401,8 +410,7 @@ function navigate (direction, event) {
 	event.preventDefault()
 
   console.log('navigate to '+direction)
-
-  var svg = MAIN.getElementsByTagName('svg')[0]
+  // console.log('------------'+(INDEX-1))
 
   if(direction==='archives') // to archives
 		return setup_archives(INDEX)
@@ -416,9 +424,43 @@ function navigate (direction, event) {
   console.log('wrong navigation instructions')
 }
 
+function sizes_have_changed(aside_changed, section_changed) {
+  // ARCHIVES flag should be properly set before calling this function
+  var current_aside_rect = ASIDE.getBoundingClientRect()
+  if(ARCHIVES){
+    if(aside_changed)
+      aside_rect = get_rect_post_anim(ASIDE)
+    if(section_changed)
+      section_rect = get_rect_post_anim(SECTION)
+  }
+  var old_base_height_on_aside = base_height_on_aside
+  base_height_on_aside = !ARCHIVES || (aside_rect.height > section_rect.height)
+  console.log('height is now based on '+(base_height_on_aside?'aside':'section'));
+  if(base_height_on_aside != old_base_height_on_aside)
+    if(base_height_on_aside){
+      ASIDE.setAttribute('data-stuck', 'absolute-top')
+      ASIDE.style.top = '0px'
+      ASIDE.style.bottom = 'auto'
+      ASIDE.style.position = 'absolute'
+      if(current_aside_rect.top<0)
+        window.scrollTo(0, -current_aside_rect.top)
+    } else {
+      ASIDE.setAttribute('data-stuck', 'absolute-top')
+      ASIDE.style.top = (window.scrollY+current_aside_rect.top)+'px'
+      ASIDE.style.bottom = 'auto'
+      ASIDE.style.position = 'absolute'
+    }
+  function get_rect_post_anim(el){
+    var el_clone = el.cloneNode(true)
+    el.parentElement.insertBefore(el_clone, el)
+    var rect = el_clone.getBoundingClientRect()
+    el.parentElement.removeChild(el_clone)
+    return rect
+  }
+}
 
 function place_aside(position, top, force){
-  if(force || ARCHIVES)
+  if(force || !base_height_on_aside)
     switch (position) {
       case 'absolute-top':
         ASIDE.setAttribute('data-stuck', 'absolute-top')
@@ -454,7 +496,7 @@ function sticky_aside() {
     if(diff>0){
       if(ASIDE.getAttribute('data-stuck')==='fixed-top'){
         place_aside('absolute-top')
-      } else if(aside_rect.bottom <= window.innerHeight){
+      } else if(aside_rect.bottom <= cached_inner_height){
         place_aside('fixed-bottom')
       }
     } else if (diff<0){
@@ -590,9 +632,9 @@ function properly_size_svg (svg) {
 		var parent = svg.parentElement.getBoundingClientRect()
 
     if(parent.width < parent.height)
-      svg.style.width = (SIZE_FACTOR * viewbox[2]/10) + '%'
+      svg.style.width = (.9 * SIZE_FACTOR * viewbox[2]/10) + '%'
     else
-      svg.style.height = (SIZE_FACTOR * viewbox[3]/10) + '%'
+      svg.style.height = (.9 * SIZE_FACTOR * viewbox[3]/10) + '%'
 	}
 }
 
@@ -601,48 +643,55 @@ function properly_size_svg (svg) {
 // SVG TO PNG LIBRARY //
 ////////////////////////
 
-function set_img (index, data){
-  if(!GRAPHS[index].urldata){
-    GRAPHS[index].urldata = data
-    var is_new = true
+function set_img_from_urldata (index, urldata, img) {
+  if(img){
+    var temp = img
+    img = urldata
+    urldata = img
   }
-  var img = put_overlay_image(data, index)
-  if(is_new)
+  var img = put_overlay_image(index, urldata, img)
+  if(GRAPHS[index].watermarked)
+    load_watermark_from_server(img, index)
+  else
     save_img_to_server(img, index)
 }
-function put_overlay_image(url, index){
-  var img = document.getElementById('overlay')
-  if(!img){
-    img = new Image()
-    img.setAttribute('id', 'overlay')
-    var svg_rect = MAIN.getElementsByTagName('svg')[0].getBoundingClientRect()
-    img.height = svg_rect.height
-    img.width = svg_rect.width
-    img.setAttribute('alt',GRAPHS[index||INDEX].name+'.png')
+function put_overlay_image(index, url, pre_img){
+  img = pre_img || new Image()
+  img.setAttribute('id', 'overlay')
+  var svg_rect = MAIN.getElementsByTagName('svg')[0].getBoundingClientRect()
+  img.height = svg_rect.height
+  img.width = svg_rect.width
+  img.setAttribute('alt',GRAPHS[index].name+'.png')
+  if(!pre_img)
     MAIN.appendChild(img)
-  }
   img.src = url
   return img
 }
+function load_watermark_from_server (img, index) {
+  console.log('loading watermarked img for #'+index+' from server')
+  var temp_img = new Image()
+  temp_img.onload = (function (img, temp_img) {
+    GRAPHS[index].watermark_is_loaded = true
+    img.src = temp_img.src
+  }).bind(undefined, img, temp_img)
+  temp_img.src = GRAPHS[index].watermarked
+}
 function save_img_to_server (img, index) {
+  console.log('uploading img for #'+index+' to server')
   var params = "dataURL=" + encodeURIComponent(img.src)
   var request = new XMLHttpRequest();
   request.open("POST", "/save_img.php?name="+GRAPHS[index].name, true);
   request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
-  request.onreadystatechange = (function (img) {
+  request.onreadystatechange = (function (img, index, request) {
     if (request.readyState === 4 && request.status === 200){
       GRAPHS[index].watermarked = request.responseText
-      var temp_img = new Image()
-      temp_img.onload = (function (img, temp_img) {
-        GRAPHS[index].watermark_is_loaded = true
-        img.src = temp_img.src
-      }).bind(undefined, img, temp_img)
-      temp_img.src = request.responseText
+      load_watermark_from_server(img, index, request)
     }
-  }).bind(undefined, img)
+  }).bind(undefined, img, index)
   request.send(params)
 }
 function svg_to_png (svg, callback) {
+  console.log('converting SVG to PNG')
   // clone
   var clone_svg = svg.cloneNode(true)
   force_finish_drawing_element_svg(clone_svg)
@@ -692,9 +741,9 @@ function svg_to_png (svg, callback) {
     canvas.setAttribute('height', dimensions.height)
     var ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height)
-    var png = ctx.canvas.toDataURL('image/png')
-    callback(png)
-    DOMURL.revokeObjectURL(png)
+    var png_data_url = ctx.canvas.toDataURL('image/png')
+    callback(png_data_url)
+    DOMURL.revokeObjectURL(png_data_url)
   }).bind(undefined, img, dimensions, callback)
   img.src = url
 }

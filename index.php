@@ -100,13 +100,6 @@
 	</style>
 	<link href='/style.css' rel='stylesheet'>
 </head>
-<style>
-	main svg{
-		max-width: 100%;
-		max-height: 100%;
-		overflow: visible;
-	}
-</style>
 <noscript><img src="http://whiteboard-comics.com/<? echo $thumbnail; ?>" alt="<? echo $formatted_name; ?>" /></noscript>
 <aside <? echo $archives ? 'class="archives"' : ''; ?>>
 	<a id="home" href="/">
@@ -149,7 +142,6 @@
 		<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
 	</footer>
 </aside>
-<div id="dummy_section"></div>
 <section <? if(!$archives) echo 'class="expanded pre_expanded"'; ?>>
 	<?
 		foreach ($graphs as $index => $graph) {
@@ -181,19 +173,19 @@
 
 <!-- todo
 	HARD PROBLEMS, MAJOR IMPROVEMENTS
-	- ability adjust speed while drawing
+	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
 
-	DYNAMIC ARCHIVES
-	- aside isn't resizing properly
-	- aside's scroll has an issue when transitionning
-
-	TAGS
-	- resize #dummy_section after filtering to avoid having too much scroll
-	- last tag isn't counted properly
+	STYLE
+	- prettier aside transition (from GRAPHS to ARCHIVES)
+	- make h2 as big as possible depending on content
+	- smooth scrolling (
+		- for setup_archives()
+		- for filter() only if vignettes are animated when added / removed
 
 	FLUIDITY
-	- archives' animations are super heavy
+	- archives' animations are super heavy // NOTE: they arent that heavy
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
+	- if possible, try and use .getBoundingClientRect() less often
 
 	UX
 	- attract attention on the possibility to see another graph (arrows / keyboard)
@@ -214,8 +206,6 @@
 	⚠ other solution: switch to simply copying "transform" attribute (without forgetting the x,y of tspans)
 
 	DURABILITY & MAINTAINABILITY
-	- try and get valid / viewable SVG files through serving them via redirection and formatting them on the fly
-	- some php is repeated across files => should be centralized
 	- write readme so that the process is clear
 		- groups in AI for timing
 		- above/below in AI for scenario
