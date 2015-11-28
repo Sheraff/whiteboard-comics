@@ -9,7 +9,7 @@
     return $a[timestamp] > $b[timestamp] ? -1 : 1;
   }
 
-  function read_metadata($master, $dir='.'){
+  function read_metadata($master, $dir='.', $name=''){
     $time = time();
     $graphs = array();
     $metadata = str_getcsv(file_get_contents("$dir/graph_list.tsv"), "\n");
@@ -31,7 +31,7 @@
       $row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
       $row[content] = false;
 
-      if(file_exists("$dir/$row[path]") && ($row[timestamp] < $time || $master)) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+      if(file_exists("$dir/$row[path]") && ($row[name]===$name || $row[timestamp] < $time || $master)) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
         $graphs[] = $row;
     }
     // order graphs // debug: this shouldn't need to happen

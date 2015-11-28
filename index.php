@@ -12,7 +12,7 @@
 	require 'php_utils.php';
 
 	// read METADATA
-	$graphs = read_metadata($master);
+	$graphs = read_metadata($master, '.', $_GET['graph']?$_GET['graph']:'');
 
 	// try and MATCH graph to query
 	$initial_index = -1;
@@ -235,7 +235,6 @@
 		- run format_svg.php to pre-process svg
 
 	SEO
-	- allow for og:image and page title to be shown even before release date if name matches exactly (easier posting on facebook)
 	- have more words on each graph (maybe a pun or a description or something)
 	- enable caching
 
