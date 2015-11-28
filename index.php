@@ -135,7 +135,7 @@
 		<div id="speed">Adjust speed: <input id="speed_input" type="range" name="speed" value="4" min="1" max="10"></div>
 	</div>
 	<ul id="tags">
-		<input type='checkbox' id='tag_all' checked><label for='tag_all'><li><img src='/res/check.svg'><span>All</span><div><? echo count($files); ?></div></li></label>
+		<input type='checkbox' id='tag_all' checked><label for='tag_all'><li><img src='/res/check.svg'><span>All</span><div><? echo count($graphs); ?></div></li></label>
 		<?
 			foreach ($tags_list as $tag => $count) {
 				$simple_tag = strtolower(str_replace(' ', '', $tag));
@@ -143,9 +143,6 @@
 				echo "<input type='checkbox' id='tag_$simple_tag'><label for='tag_$simple_tag'><li><img src='/res/check.svg'><span>$name</span><div>$count</div></li></label>";
 			}
 		?>
-		<input type='checkbox' id='tag_simple_tag'><label for='tag_simple_tag'><li><img src='/res/check.svg'><span>test</span><div>0</div></li></label>
-		<input type='checkbox' id='tag_simple_tag'><label for='tag_simple_tag'><li><img src='/res/check.svg'><span>test</span><div>0</div></li></label>
-		<input type='checkbox' id='tag_simple_tag'><label for='tag_simple_tag'><li><img src='/res/check.svg'><span>test</span><div>0</div></li></label>
 	</ul>
 	<footer>
 		<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© 2015 — </span><span id="website">florianpellet.com</span></a>
@@ -176,9 +173,6 @@
 	var INDEX = <? echo $initial_index . ';'; ?>
 	var LETTERS = <? echo json_encode($letters).';'; ?>
 
-
-
-
 </script>
 <script language="javascript" type="text/javascript" src="/script2.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
@@ -190,16 +184,16 @@
 	- ability adjust speed while drawing
 
 	DYNAMIC ARCHIVES
-	- load extra SVGs
-		- in advance ?
 	- aside isn't resizing properly
 	- aside's scroll has an issue when transitionning
-	- TAGS
-	- transition from section>a to main
-	- when using the arrow to navigate, going to 'archives' afterwards will make the vignette zoom out to the wrong place
+
+	TAGS
+	- resize #dummy_section after filtering to avoid having too much scroll
+	- last tag isn't counted properly
 
 	FLUIDITY
 	- archives' animations are super heavy
+	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 
 	UX
 	- attract attention on the possibility to see another graph (arrows / keyboard)

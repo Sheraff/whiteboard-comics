@@ -84,7 +84,14 @@ section {
   top: 0;
   right: 0;
   width: 70vw;
+  min-height: 100vh;
   margin-bottom: 1rem;
+}
+section.noanimation,
+section.noanimation > a,
+section.noanimation > a > div {
+  transition-duration: 0s;
+  transition-delay: 0s;
 }
 section.expanded {
   position: fixed;
@@ -106,6 +113,14 @@ section.unexpanded > a:not(.unexpanded) {
 section.pre_expanded {
   visibility: hidden;
 }
+section:not(.expanded) > a:not(.expanded):not(.unexpanded) > div {
+  transition: transform 0.125s ease-out, box-shadow 0.125s ease-out;
+  transition-delay: 0;
+}
+section:not(.expanded) > a:not(.expanded):not(.unexpanded):hover > div {
+  transform: scale(1.05);
+  box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
 section > a {
   position: relative;
   z-index: 2;
@@ -115,7 +130,7 @@ section > a {
   height: calc(23.33333333vw  -  1rem);
   width: calc(23.33333333vw  -  1rem);
   transform: translateY(0);
-  transition: transform .5s, opacity .5s;
+  transition: transform 0.5s, opacity 0.5s;
 }
 section > a > div {
   z-index: 4;
@@ -127,6 +142,9 @@ section > a > div {
   top: 0;
   left: 0;
   overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  transform: translate3d(0, 0, 0);
   transition: height 0.5s, width 0.5s, top 0.5s, left 0.5s, box-shadow 0.25s linear, opacity 0.25s;
   transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
 }
@@ -164,6 +182,7 @@ section.expanded ~ main {
   transition-delay: 0.75s;
 }
 main {
+  overflow: hidden;
   height: calc(100vh -  2rem);
   width: calc(70vw  -  1rem);
   position: fixed;
@@ -304,7 +323,7 @@ aside #blurb p:not(:last-child) {
 aside #blurb p:first-child::before {
   content: '«';
   position: absolute;
-  left: -75rem;
+  left: -0.75rem;
 }
 aside #blurb p:last-child::after {
   content: ' »';

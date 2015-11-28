@@ -62,18 +62,18 @@ function find_needle_with_key (needle, key) {
 /////////////
 
 // STATE, SETTINGS, POLYFILLS, ...
-var ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('animation_check').checked : localStorage.getItem('animate')
-var SPEED = localStorage.getItem('speed') || 4
-var SIZE_FACTOR = 1.4
-var ERASED
-var SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
-var DOMURL = self.URL || self.webkitURL || self
+ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('animation_check').checked : localStorage.getItem('animate')
+SPEED = localStorage.getItem('speed') || 4
+SIZE_FACTOR = 1.4
+SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
+DOMURL = self.URL || self.webkitURL || self
 
 // DOM
-var ASIDE = document.getElementsByTagName('aside')[0]
-var MAIN = document.getElementsByTagName('main')[0]
-var SECTION = document.getElementsByTagName('section')[0]
-var AS = SECTION.getElementsByTagName('a')
+ASIDE = document.getElementsByTagName('aside')[0]
+MAIN = document.getElementsByTagName('main')[0]
+SECTION = document.getElementsByTagName('section')[0]
+AS = SECTION.getElementsByTagName('a')
+TAGS_CHECK = document.getElementById('tags').getElementsByTagName('input')
 
 // GRID LAYOUT
 var recorded_section_height = SECTION.getBoundingClientRect().height
@@ -98,7 +98,7 @@ if(ARCHIVES){
     GRAPHS[i].content = AS[i].firstElementChild.removeChild(AS[i].firstElementChild.firstElementChild)
   }
 } else {
-  GRAPHS[INDEX].content = MAIN.replaceChild(document.createElement('svg'), MAIN.firstElementChild)
+  GRAPHS[INDEX].content = MAIN.removeChild(MAIN.firstElementChild)
 }
 
 // ATTACH LISTENERS
@@ -113,6 +113,8 @@ document.getElementById('speed_input').addEventListener('change', function (even
 window.addEventListener('resize', function () { properly_size_svg() })
 window.addEventListener('scroll', function (event) { scrolled = true })
 window.requestAnimationFrame(sticky_aside)
+
+for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('change', filter) }
 
 document.getElementById('animation_check').addEventListener('change', function (event) {
 	ANIMATE = this.checked
@@ -150,11 +152,22 @@ window.onpopstate = function (event) {
 
 
 
-
+console.log('Entering site @ '+window.location.pathname);
 if(ARCHIVES)
   setup_archives()
-else
-  setup_graph()
+else{
+  var recovered_index = -1;
+  if(history.state && history.state.name)
+    recovered_index = find_needle_with_key(history.state.name, 'name')
+  if(recovered_index !== -1){
+    console.log('state recovered from history: asking for graph #' + recovered_index + ': @ ' + GRAPHS[recovered_index].name)
+    setup_graph(recovered_index)
+  } else {
+    console.log('creating history state: asking for graph #' + INDEX + ': @ ' + GRAPHS[INDEX].name)
+    window.history.replaceState({name: GRAPHS[INDEX].name}, "", GRAPHS[INDEX].name)
+    setup_graph(INDEX)
+  }
+}
 
 function setup_graph (index) {
   var index = index || 0
@@ -178,41 +191,51 @@ function setup_graph (index) {
 		AS[index].parentNode.className = 'expanded'
 
 		// position ::before
-		var rect = AS[index].getBoundingClientRect()
-		position_main_slide(rect)
+		var as_rect = AS[index].getBoundingClientRect()
+		position_main_slide(as_rect)
 
 		// keep aside in place
-		document.getElementById('dummy_section').style.height = ASIDE.getBoundingClientRect().height+'px'
+		document.getElementById('dummy_section').style.height = aside_rect.height+'px'
 		if(ASIDE.getAttribute('data-stuck')==='fixed-top')
 			window.scrollTo(0,0)
+    place_aside('absolute-top')
 
     then(index)
   } else {
     console.log('graph setup from GRAPHS mode')
+    // switch vignette in background
+    SECTION.classList.add('noanimation')
+    AS[INDEX].className = ''
+    AS[index].className = 'expanded'
+    var as_rect = AS[index].getBoundingClientRect()
+		position_main_slide(as_rect)
+
     // simulaneously LOAD next svg and ERASE current one
     var erased, loaded
-    var svg = MAIN.getElementsByTagName('svg')
+    var svg = MAIN.getElementsByTagName('svg')[0]
     if(svg){
-      svg = svg[0]
       interrupt_drawing_element_svg(svg)
       erase(svg, 0, (function (index) {
         MAIN.removeChild(this)
         erased = true
+        console.log('cloned graph #'+INDEX+' erased');
         if(loaded)
           then(index)
       }).bind(svg, index))
     } else {
+      console.log('no svg found, considering svg already erased');
       erased = true
     }
     load_svg(index, function(index){
       loaded = true
+      console.log('graph #'+index+' loaded');
       if(erased)
         then(index)
     })
   }
 
   function then(index) {
-    console.log('graph setup, second part')
+    console.log('graph #'+index+' setup, second part')
     MAIN.innerHTML = ''
     var svg = GRAPHS[index].content.cloneNode(true)
     MAIN.appendChild(svg)
@@ -271,8 +294,8 @@ function setup_graph (index) {
 }
 
 function setup_archives (from_index) {
-  console.log('setting up archives: index='+from_index)
   var from_index = from_index || 0
+  console.log('setting up archives from #'+from_index)
 
   rewrite_url('archives')
   update_page_title('Archives')
@@ -285,7 +308,7 @@ function setup_archives (from_index) {
       then(index)
   }
   function then(index){
-    force_finish_drawing_element_svg(MAIN.getElementsByTagName('svg')[0])
+    force_finish_drawing_element_svg(GRAPHS[index].content)
   }
 
   // LAYOUT
@@ -305,10 +328,72 @@ function setup_archives (from_index) {
   var aside_rect = ASIDE.getBoundingClientRect()
   document.getElementById('dummy_section').style.height = recorded_section_height+'px'
   window.scrollTo(0,remember_scroll)
-  place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0)
+  place_aside('absolute-bottom', window.scrollY+aside_rect.top>0 ? aside_rect.top : 0, true)
 
   // FLAGS
   ARCHIVES = true
+}
+
+function filter (event){
+  var selected = []
+
+  // sort out tags themselves
+  var all_checked = this===TAGS_CHECK[0]
+  for (var i = 1; i < TAGS_CHECK.length; i++) {
+    if(!all_checked && TAGS_CHECK[i].checked)
+      selected.push(i)
+    else
+      TAGS_CHECK[i].checked = false
+  }
+  if(selected.length===0)
+    TAGS_CHECK[0].checked = true
+  else
+    TAGS_CHECK[0].checked = false
+
+  // update counts
+
+  // find which graphs match the selected tags
+  var ins = [], outs = []
+  var tag_list = Object.keys(TAGS)
+  for (var i = 0; i < GRAPHS.length; i++) {
+    var good = true
+    for (var j = 0; j < selected.length; j++) {
+      if(GRAPHS[i].tags.indexOf(tag_list[selected[j]])===-1){
+          good = false
+          break
+      }
+    }
+    if(good)
+      ins.push(i)
+    else
+      outs.push(i)
+  }
+
+  // remove unfitting graphs
+  for (var i = 0; i < AS.length; i++) {
+    if(ins.indexOf(i)!==-1)
+      AS[i].style.display = 'inline-block'
+    else
+      AS[i].style.display = 'none'
+  }
+
+  // update counts
+  var temp_tags = {}
+  for (var i = 0; i < ins.length; i++) {
+    for (var j = 0; j < GRAPHS[ins[i]].tags.length; j++) {
+      if(temp_tags[GRAPHS[ins[i]].tags[j]])
+        temp_tags[GRAPHS[ins[i]].tags[j]]++
+      else
+        temp_tags[GRAPHS[ins[i]].tags[j]] = 1
+    }
+  }
+  for (var i = 1; i < tag_list.length; i++) {
+    var counter = document.getElementById('tags').querySelector('label[for='+TAGS_CHECK[i].getAttribute('id')+'] div')
+    if(temp_tags[tag_list[i]])
+      counter.innerHTML = temp_tags[tag_list[i]]
+    else
+      counter.innerHTML = 0
+  }
 }
 
 function navigate (direction, event) {
@@ -318,8 +403,6 @@ function navigate (direction, event) {
   console.log('navigate to '+direction)
 
   var svg = MAIN.getElementsByTagName('svg')[0]
-  if(!ARCHIVES && svg)
-    interrupt_drawing_element_svg(svg)
 
   if(direction==='archives') // to archives
 		return setup_archives(INDEX)
@@ -334,33 +417,34 @@ function navigate (direction, event) {
 }
 
 
-function place_aside(position, top){
-  switch (position) {
-    case 'absolute-top':
-      ASIDE.setAttribute('data-stuck', 'absolute-top')
-      ASIDE.style.top = window.scrollY+'px'
-      ASIDE.style.bottom = 'auto'
-      ASIDE.style.position = 'absolute'
-      break;
-    case 'fixed-bottom':
-      ASIDE.setAttribute('data-stuck', 'fixed-bottom')
-      ASIDE.style.top = 'auto'
-      ASIDE.style.bottom = 0
-      ASIDE.style.position = 'fixed'
-      break;
-    case 'absolute-bottom':
-      ASIDE.setAttribute('data-stuck', 'absolute-bottom')
-      ASIDE.style.top = (window.scrollY+top)+'px'
-      ASIDE.style.bottom = 'auto'
-      ASIDE.style.position = 'absolute'
-      break
-    case 'fixed-top':
-      ASIDE.setAttribute('data-stuck', 'fixed-top')
-      ASIDE.style.top = 0
-      ASIDE.style.bottom = 'auto'
-      ASIDE.style.position = 'fixed'
-      break;
-  }
+function place_aside(position, top, force){
+  if(force || ARCHIVES)
+    switch (position) {
+      case 'absolute-top':
+        ASIDE.setAttribute('data-stuck', 'absolute-top')
+        ASIDE.style.top = window.scrollY+'px'
+        ASIDE.style.bottom = 'auto'
+        ASIDE.style.position = 'absolute'
+        break;
+      case 'fixed-bottom':
+        ASIDE.setAttribute('data-stuck', 'fixed-bottom')
+        ASIDE.style.top = 'auto'
+        ASIDE.style.bottom = 0
+        ASIDE.style.position = 'fixed'
+        break;
+      case 'absolute-bottom':
+        ASIDE.setAttribute('data-stuck', 'absolute-bottom')
+        ASIDE.style.top = (window.scrollY+top)+'px'
+        ASIDE.style.bottom = 'auto'
+        ASIDE.style.position = 'absolute'
+        break
+      case 'fixed-top':
+        ASIDE.setAttribute('data-stuck', 'fixed-top')
+        ASIDE.style.top = 0
+        ASIDE.style.bottom = 'auto'
+        ASIDE.style.position = 'fixed'
+        break;
+    }
 }
 
 function sticky_aside() {
@@ -722,17 +806,10 @@ function rewrite_with_paths (svg) {
 ///////////////////////////
 
 function erase (svg, delay, callback) {
-	if(ERASED)
-		return callback()
   var erase_path = svg.querySelector('[data-type="erase"]')
-  if(!erase_path){
-    ERASED = true
+  if(!erase_path)
     return callback()
-  }
-  start_drawing_element(erase_path, delay, (function (callback) {
-		ERASED = true
-		callback()
-	}).bind(undefined, callback))
+  start_drawing_element(erase_path, delay, callback)
 }
 
 function play_svg (svg, delay, callback) {
@@ -824,7 +901,7 @@ function start_drawing_element (element, delay, callback) {
 
 	var duration = .1/SPEED*Math.pow(length, speed_power)
 
-	element.getBoundingClientRect()
+	element.getBoundingClientRect() // TODO: this might need to be uncommented to trigger something (like a recalculation of some sorts)
 	element.style.transition = 'stroke-dashoffset ' + duration + 's ' + smoothing + ' ' + delay + 's'
 	element.style.strokeDashoffset = '0'
 	element.style.visibility = 'visible'
