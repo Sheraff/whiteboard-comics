@@ -305,7 +305,8 @@ aside #nav [data-title] {
   width: 50%;
 }
 aside #blurb {
-  padding: 1.5rem 2rem;
+  padding: 0 2rem;
+  margin: 1.5rem 0;
   overflow: hidden;
 }
 aside #blurb p {
@@ -352,8 +353,8 @@ aside #settings {
   overflow: hidden;
   width: 100%;
   background-color: #EEEEEE;
-  transition: height .25s;
   height: 10rem;
+  transition: height 0.25s;
 }
 aside #settings div {
   position: relative;
@@ -366,13 +367,17 @@ aside #settings input {
   right: 1rem;
   top: 2rem;
 }
-aside.archives #blurb {
+aside #menu {
+  margin-top: 0;
+}
+aside.archives #blurb:not(.unarchived) {
   height: 0;
-  padding: 0 2rem;
+}
+aside.archives #blurb:not(.unarchived) ~ #menu {
+  margin-top: -3rem;
 }
 aside.archives #nav {
   height: 0;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0);
 }
 aside.archives #settings {
   height: 0;
@@ -440,8 +445,10 @@ footer > a {
 }
 #blurb,
 #nav,
-#tags {
-  transition: all 0.5s 0.25s;
+#tags,
+#menu {
+  transform: translate3d(0, 0, 0);
+  transition: all 0.75s;
 }
 @media (orientation: portrait) {
   h1,

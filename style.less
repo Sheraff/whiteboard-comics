@@ -303,7 +303,8 @@ aside{
 	}
 
 	#blurb{
-		padding: @unit*1.5 @unit*2;
+		padding: 0 @unit*2;
+		margin: @unit*1.5 0;
 		overflow: hidden;
 		p{
 			text-align: left;
@@ -351,8 +352,8 @@ aside{
 		overflow: hidden;
 		width: 100%;
 		background-color: #EEEEEE;
-		transition: height .25s;
 		height: 10rem;
+		transition: height @timing;
 		div{
 			position: relative;
 			padding: 0 @unit;
@@ -365,14 +366,18 @@ aside{
 			top: @unit*2;
 		}
 	}
+	#menu{
+		margin-top: 0;
+	}
 	&.archives{
-		#blurb{
+		#blurb:not(.unarchived){
 			height: 0;
-			padding: 0 @unit*2;
+			&~#menu{
+				margin-top: -@unit*3;
+			}
 		}
 		#nav{
 			height: 0;
-			box-shadow: 0 0 0 1px rgba(0,0,0,0);
 		}
 		#settings{
 			height: 0;
@@ -446,8 +451,9 @@ footer>a{
 	text-decoration: underline;
 }
 
-#blurb, #nav, #tags{
-	transition: all @timing*2 @timing;
+#blurb, #nav, #tags, #menu{
+	transform: translate3d(0, 0, 0);
+	transition: all @timing*3;
 }
 
 

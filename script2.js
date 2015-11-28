@@ -115,9 +115,9 @@ for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('ch
 
 window.addEventListener('resize', function () {
   cached_inner_height = window.innerHeight
-
+  resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+  resize_el_height(document.getElementById('tags'), ARCHIVES)
   properly_size_svg()
-
   sizes_have_changed(false, true)
 })
 
@@ -161,6 +161,8 @@ console.log('Entering site @ '+window.location.pathname);
 if(ARCHIVES)
   setup_archives()
 else{
+  resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+  resize_el_height(document.getElementById('tags'), ARCHIVES)
   var recovered_index = -1;
   if(history.state && history.state.name)
     recovered_index = find_needle_with_key(history.state.name, 'name')
@@ -206,6 +208,8 @@ function setup_graph (index) {
 
 		// keep aside in place
     ARCHIVES = false
+    resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+    resize_el_height(document.getElementById('tags'), ARCHIVES)
     sizes_have_changed(true, true)
 
     then(index)
@@ -286,7 +290,7 @@ function setup_graph (index) {
     else{
       var img = new Image()
       MAIN.appendChild(img)
-      svg_to_png(GRAPHS[index].content, (set_img_from_urldata).bind(undefined, index, img))
+      svg_to_png(GRAPHS[index].content, set_img_from_urldata.bind(undefined, index, img))
     }
 
     // misc
@@ -338,6 +342,8 @@ function setup_archives (from_index) {
   }
   // replace old scroll, keep aside in place
   ARCHIVES = true
+  resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+  resize_el_height(document.getElementById('tags'), ARCHIVES)
   sizes_have_changed(true, true)
   window.scrollTo(0,remember_scroll)
 
@@ -410,7 +416,6 @@ function navigate (direction, event) {
 	event.preventDefault()
 
   console.log('navigate to '+direction)
-  // console.log('------------'+(INDEX-1))
 
   if(direction==='archives') // to archives
 		return setup_archives(INDEX)
@@ -450,14 +455,15 @@ function sizes_have_changed(aside_changed, section_changed) {
       ASIDE.style.bottom = 'auto'
       ASIDE.style.position = 'absolute'
     }
-  function get_rect_post_anim(el){
-    var el_clone = el.cloneNode(true)
-    el.parentElement.insertBefore(el_clone, el)
-    var rect = el_clone.getBoundingClientRect()
-    el.parentElement.removeChild(el_clone)
-    return rect
-  }
+    function get_rect_post_anim(el){
+      var el_clone = el.cloneNode(true)
+      el.parentElement.insertBefore(el_clone, el)
+      var rect = el_clone.getBoundingClientRect()
+      el.parentElement.removeChild(el_clone)
+      return rect
+    }
 }
+
 
 function place_aside(position, top, force){
   if(force || !base_height_on_aside)
@@ -516,6 +522,19 @@ function sticky_aside() {
 // TWEAKS NEEDED ON PAGE CHANGE //
 //////////////////////////////////
 // includes styling, updating links, url rewriting, title update
+
+function resize_el_height (el, test) {
+  if(test){
+    var el_clone = el.cloneNode(true)
+    el_clone.style.height = 'auto'
+    el.parentElement.insertBefore(el_clone, el)
+    var rect = el_clone.getBoundingClientRect()
+    el.parentElement.removeChild(el_clone)
+    el.style.height = rect.height+'px'
+  }else{
+    el.style.height = 0+'px'
+  }
+}
 
 function position_main_slide(ref_rect){
   var sheet = document.styleSheets[0]
@@ -639,17 +658,24 @@ function properly_size_svg (svg) {
 }
 
 
+if(false){
+  if(GRAPHS[index].watermark_is_loaded)
+    put_overlay_image(index, GRAPHS[index].watermarked)
+  else if (GRAPHS[index].urldata)
+    set_img_from_urldata(index, GRAPHS[index].urldata)
+  else{
+    var img = new Image()
+    MAIN.appendChild(img)
+    svg_to_png(GRAPHS[index].content, set_img_from_urldata.bind(undefined, index, img))
+  }
+}
+
 ////////////////////////
 // SVG TO PNG LIBRARY //
 ////////////////////////
 
 function set_img_from_urldata (index, urldata, img) {
-  if(img){
-    var temp = img
-    img = urldata
-    urldata = img
-  }
-  var img = put_overlay_image(index, urldata, img)
+  var img = put_overlay_image(index, img?img:urldata, img?urldata:undefined)
   if(GRAPHS[index].watermarked)
     load_watermark_from_server(img, index)
   else
@@ -684,10 +710,11 @@ function save_img_to_server (img, index) {
   request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
   request.onreadystatechange = (function (img, index, request) {
     if (request.readyState === 4 && request.status === 200){
+      console.log('img for #'+index+' sucessfuly uploaded @ '+request.responseText)
       GRAPHS[index].watermarked = request.responseText
-      load_watermark_from_server(img, index, request)
+      load_watermark_from_server(img, index)
     }
-  }).bind(undefined, img, index)
+  }).bind(undefined, img, index, request)
   request.send(params)
 }
 function svg_to_png (svg, callback) {
