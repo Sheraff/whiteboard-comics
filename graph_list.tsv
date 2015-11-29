@@ -14,7 +14,7 @@ release	name	tags	author	source	credit
 2015-12-21	money_earned,money_desired=f(time)	money,growing up
 2015-12-28	partying_late,waking_up_early=f(age)	growing up	Chaz Hutton	https://instagram.com/p/7cpzvSm9Xv	By
 2016-01-04	money_left,money_perceived=f(evening_weekend)	money	Chaz Hutton	https://instagram.com/p/9DptAhm9bq	Original idea by
-2016-01-11	total_happiness=f(number_of_kids)	morality	SMBC comics	http://www.smbc-comics.com/?id=2569	Inspired by
+2016-01-11	total_happiness=f(number_of_kids)	morality,relationships	SMBC comics	http://www.smbc-comics.com/?id=2569	Inspired by
 2016-01-18	rejection_of_authority,confidence_in_small_sample=f(age)	morality,growing up	SMBC comics	http://www.smbc-comics.com/?id=2692	By
 2016-01-25	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
 2016-02-01	law_adoption=f(avg_preference,elite_preference)	morality,academia	Gilens & Page	https://scholar.princeton.edu/sites/default/files/mgilens/files/gilens_and_page_2014_-testing_theories_of_american_politics.doc.pdf	From Princeton (2014),
@@ -31,7 +31,7 @@ release	name	tags	author	source	credit
 2016-04-18	procrastination=f(fulfillment)	productivity,morality	Indexed	http://thisisindexed.com/2006/08/	By
 2016-04-25	desire_for_money=f(money_owned)	money,morality
 2016-05-02	work_in_theory,work_in_reality=f(time)	work life,productivity	xkcd	https://xkcd.com/1319/	From
-2016-05-09	happiness,expectations=f(time)	morality
+2016-05-09	happiness,expectations=f(time)	morality,growing up,relationships
 2016-05-16	sleep_ability=f(tiredness)	productivity,miscellaneous
 2016-05-23	wages,enjoyment=f(money)	money,work life,morality
 2016-05-30	getting_back_to_work=f(length_of_vacation)	work life,productivity	Justin Boyd	http://ilovecharts.tumblr.com/justinboyd	By
@@ -43,4 +43,8 @@ release	name	tags	author	source	credit
 2016-07-11	shame=f(lie_size)	morality
 2016-07-18	actual_good=f(for_your_own_good)	morality,work life,growing up
 2016-07-25	sources_of_stress=f(age)	morality,growing up	SMBC comics	http://ilovecharts.tumblr.com/weinersmiths	By
-2016-08-01	frame_of_reference,perceived_competence=f(competence)	morality			
+2016-08-01	frame_of_reference,perceived_competence=f(competence)	morality
+2016-08-08	graphs_homesickness=f(wanderlust)	morality,miscellaneous
+2016-08-15	graphs_idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
+2016-08-22	graphs_life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
+2016-08-29	graphs_luck_necessary=f(distance_from_norm).s	work life,growing up
