@@ -44,7 +44,7 @@ release	name	tags	author	source	credit
 2016-07-18	actual_good=f(for_your_own_good)	morality,work life,growing up
 2016-07-25	sources_of_stress=f(age)	morality,growing up	SMBC comics	http://ilovecharts.tumblr.com/weinersmiths	By
 2016-08-01	frame_of_reference,perceived_competence=f(competence)	morality
-2016-08-08	graphs_homesickness=f(wanderlust)	morality,miscellaneous
-2016-08-15	graphs_idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
-2016-08-22	graphs_life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
-2016-08-29	graphs_luck_necessary=f(distance_from_norm)	work life,growing up
+2016-08-08	homesickness=f(wanderlust)	morality,miscellaneous
+2016-08-15	idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
+2016-08-22	life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
+2016-08-29	luck_necessary=f(distance_from_norm)	work life,growing up
