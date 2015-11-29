@@ -206,7 +206,7 @@
 		- for filter() only if vignettes are animated when added / removed
 
 	FLUIDITY
-	- archives' animations are super heavy // NOTE: they arent that heavy
+	- switch vignette zoom-ins and zoom-outs to "transform"
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 	- if possible, try and use .getBoundingClientRect() less often
 

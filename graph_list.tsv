@@ -8,7 +8,7 @@ release	name	tags	author	source	credit
 2015-11-09	quantity_of_subjects=f(quantity_of_knowledge)	academia	PhD Comics	http://www.phdcomics.com/comics/archive.php?comicid=1056	Inspired by
 2015-11-16	productivity=f(population)	productivity
 2015-11-23	perceived_week_length=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/8nqZ4Pm9Qz	Inspired by
-2015-11-30	specialness=f(population)	morality	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
+2015-11-29	specialness=f(population)	morality	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
 2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life
 2015-12-14	time_cost=f(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by
 2015-12-21	money_earned,money_desired=f(time)	money,growing up
