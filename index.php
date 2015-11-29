@@ -79,7 +79,7 @@
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed for Whiteboard Comics" href="/rss/" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="<? echo ($archives?$archive_text:$bites[description]); ?>">
-	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, graph, graphs, graphics, time, life, body image, work, academia, morality, money, growing up">
+	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, charts, plots, graph, graphs, graphics, time, life, <? echo implode(', ', array_keys($tags_list)); ?>">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
 	<meta property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>

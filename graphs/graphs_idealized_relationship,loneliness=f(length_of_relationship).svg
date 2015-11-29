@@ -20,14 +20,6 @@
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="27.8" y1="95.6" x2="27.8" y2="356.3"/>
 </g>
 <g>
-	<path fill="none" stroke="#221F1F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M403.5,395.5c0.6,9.3-5.6,18.4-13.9,22.6c-8.3,4.3-18.4,4.2-27.4,1.4c-8.9-2.8-16.8-8.2-24-14.3c-6-5.1-11.8-10.8-18.8-14.4
-		c-7.1-3.6-16-4.8-22.7-0.6"/>
-	<path fill="none" stroke="#221F1F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M392.3,402.7c4.1-2.7,8.2-5.4,12.3-8.1c2.1,4.5,4.3,8.9,6.4,13.4"/>
-	<text transform="matrix(1 0 0 1 138.7363 401.6696)" fill="#221F1F" font-family="'PermanentMarker'" font-size="31">break-up</text>
-</g>
-<g>
 	
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		630,303.2 652,325.7 630,348.2 	"/>
@@ -42,6 +34,14 @@
 <path fill="none" stroke="#4A2661" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M37.1,212.4c60.2-16.5,123.8-30.5,183.4-10.7c40.1,13.3,75.7,41.3,105.9,74.7c30.2,33.3,55.7,72,80.9,110.5
 	c1.1-74.4,11.8-213.8,12.9-288.2c35.1,48.2,156.4,74.2,209.8,62.2"/>
+<g>
+	<path fill="none" stroke="#221F1F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M403.5,395.5c0.6,9.3-5.6,18.4-13.9,22.6c-8.3,4.3-18.4,4.2-27.4,1.4c-8.9-2.8-16.8-8.2-24-14.3c-6-5.1-11.8-10.8-18.8-14.4
+		c-7.1-3.6-16-4.8-22.7-0.6"/>
+	<path fill="none" stroke="#221F1F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M392.3,402.7c4.1-2.7,8.2-5.4,12.3-8.1c2.1,4.5,4.3,8.9,6.4,13.4"/>
+	<text transform="matrix(1 0 0 1 138.7363 401.6696)" fill="#221F1F" font-family="'PermanentMarker'" font-size="31">break-up</text>
+</g>
 <text transform="matrix(1 0 0 1 5.313 24.1672)" fill="#085C56" font-family="'PermanentMarker'" font-size="31">existential loneliness</text>
 <path fill="none" stroke="#085C56" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M37.4,225.9c17.3,28.2,42.5,44.4,72.9,57.4s63.3,19.2,96.1,23.8c63.8,8.8,128.4,11.8,192.7,8.8c2.6-76.3,8.2-168.9,10.9-245.3

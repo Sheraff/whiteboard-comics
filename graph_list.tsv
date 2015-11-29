@@ -48,3 +48,17 @@ release	name	tags	author	source	credit
 2016-08-15	idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
 2016-08-22	life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
 2016-08-29	luck_necessary=f(distance_from_norm)	work life,growing up
+2016-09-05	relationships=f(reciprocity_of_care)	relationships,morality	Indexed	http://thisisindexed.com/wp-content/uploads/2014/03/card4074-380x235.jpg	Ispired by
+2016-09-12	moral_offset=f(good_deeds,bad_behavior)	morality	Indexed	http://thisisindexed.com/2013/09/is-non-participation-ethical/	Inspired by
+2016-09-19	cruelty=f(honesty)	morality,relationships	Indexed	http://thisisindexed.com/2014/07/true-excuse/	By
+2016-09-26	life_satisfaction=f(success,time)	morality,work life,growing up
+2016-10-03	deception_potential=f(desire,temptation)	relationships,miscellaneous,morality,body image	Indexed	http://thisisindexed.com/wp-content/uploads/2014/08/card4402-380x231.jpg	Inspired by
+2016-10-10	sadness=f(time_investment)	relationships,miscellaneous	Indexed	http://thisisindexed.com/2014/07/leave-wanting/	Inspired by
+2016-10-17	good_for_you=f(digestion_duration)	morality,body image,miscellaneous	Indexed	http://thisisindexed.com/2015/06/something-to-chew-on/	Inspired by
+2016-10-24	naps=f(age)	miscellaneous,growing up
+2016-10-31	enjoyment_of_sex=f(attractiveness)	relationships,growing up,miscellaneous	Reddit	https://www.reddit.com/r/funnycharts/comments/27x7cd/sex_enjoyment_xpost_from_rexpectationvsreality/	Found on
+2016-11-07	okayness=f(time)	morality,miscellaneous,relationships	doghousediaries	http://thedoghousediaries.com/4935	Inspired by
+2016-11-14	clothes=f(looks,fit,comfort)	miscellaneous
+2016-11-21	reasons_to_be_in_a_relationship=f(age)	relationships,growing up,morality	
+2016-11-28	comfort_in_own_skin=f(portion_control)	body image	Indexed	http://thisisindexed.com	By
+2016-12-05	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By

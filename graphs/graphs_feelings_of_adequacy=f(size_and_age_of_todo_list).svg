@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 460.7 352" enable-background="new 0 0 460.7 352" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M87.2,0
+	C75,87.7,61.4,182.9,49.2,270.6c-3.2,22.7-6,47.2,4.9,67.3c25.1-59.6,41.3-123,47.7-187.3c2.9-29.2,4-59.4,15.9-86.3
+	s37.7-50.2,67.1-48.5c13.3,110.1-60,214.8-56.8,325.6c11.7,7.1,27.8-0.1,35.2-11.7c7.3-11.6,8.3-25.9,9.4-39.6
+	c6.8-86,26.6-171,58.4-251.2c3.5-8.9,7.3-18,13.7-25.1s15.8-12.3,25.3-11c7.6,112.5,1.4,225.9-18.6,336.8
+	c10.4,12.3,31.7,8.5,42.6-3.5c10.8-12,14-28.8,16.7-44.7c16.2-95.2,32.4-190.3,48.5-285.5c8.8,1.4,15.8,8.8,19.2,17
+	c3.4,8.3,3.9,17.4,4.5,26.3c3.7,54.2,11.9,108.1,12.9,162.4c0.9,45-3.2,90.1-12.2,134.2c23.4,6.4,50.3-4,63.4-24.5"/>
+<g>
+	
+		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="87.2" y1="64.5" x2="87.2" y2="276.5"/>
+	
+		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="64.7" y1="254" x2="392.3" y2="254"/>
+	
+		<polyline fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		64.7,86.5 87.2,64.5 109.7,86.5 	"/>
+	
+		<polyline fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		370.3,231.5 392.3,254 370.3,276.5 	"/>
+</g>
+<text transform="matrix(1 0 0 1 51.23 315.2282)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31"># of items on todo list</tspan><tspan x="-46.9" y="30" font-family="'PermanentMarker'" font-size="31">× how long they’ve been on it</tspan></text>
+<text transform="matrix(1 0 0 1 54.5293 22.7432)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">how much i feel i have</tspan><tspan x="15.5" y="30" font-family="'PermanentMarker'" font-size="31">control over my life</tspan></text>
+<path fill="none" stroke="#9B8579" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	M105.8,104.8c83.2,38.9,163.9,83,241.8,131.7"/>
+</svg>
