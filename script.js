@@ -290,7 +290,7 @@ function setup_graph (index) {
     else{
       var img = new Image()
       MAIN.appendChild(img)
-      svg_to_png(GRAPHS[index].content, set_img_from_urldata.bind(undefined, index, img))
+      svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
     }
 
     // misc
@@ -666,7 +666,7 @@ if(false){
   else{
     var img = new Image()
     MAIN.appendChild(img)
-    svg_to_png(GRAPHS[index].content, set_img_from_urldata.bind(undefined, index, img))
+    svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
   }
 }
 
@@ -717,10 +717,10 @@ function save_img_to_server (img, index) {
   }).bind(undefined, img, index, request)
   request.send(params)
 }
-function svg_to_png (svg, callback) {
+function svg_to_png (index, callback) {
   console.log('converting SVG to PNG')
   // clone
-  var clone_svg = svg.cloneNode(true)
+  var clone_svg = GRAPHS[index].content.cloneNode(true)
   force_finish_drawing_element_svg(clone_svg)
 
   // style // debug, this should come from .css or from getComputedStyle
@@ -743,7 +743,7 @@ function svg_to_png (svg, callback) {
 
   // add watermark on bottom left
   var text = document.createElementNS(SVG_NAMESPACE, 'text')
-  text.innerHTML = 'whiteboard-comics.com' + (GRAPHS[INDEX].author ? (' & ' + GRAPHS[INDEX].author) : '')
+  text.innerHTML = 'whiteboard-comics.com' + (GRAPHS[index].author ? (' & ' + GRAPHS[index].author) : '')
   text.setAttribute('id', 'watermark')
   text.style.fontFamily = "'Droid Serif', Georgia, serif"
   text.style.opacity = .8

@@ -47,4 +47,4 @@ release	name	tags	author	source	credit
 2016-08-08	graphs_homesickness=f(wanderlust)	morality,miscellaneous
 2016-08-15	graphs_idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
 2016-08-22	graphs_life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
-2016-08-29	graphs_luck_necessary=f(distance_from_norm).s	work life,growing up
+2016-08-29	graphs_luck_necessary=f(distance_from_norm)	work life,growing up
