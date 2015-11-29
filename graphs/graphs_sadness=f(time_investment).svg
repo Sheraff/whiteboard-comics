@@ -3,12 +3,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 365 420" enable-background="new 0 0 365 420" xml:space="preserve">
-<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M133.5,19.2
-	c-20.3-5.2-41.4-10.4-62-6.5S31,32.2,29.3,53.1c-1.3,16.2,8.4,31.3,19,43.6c32,37.2,76.9,63,125.1,72c48.2,9,99.4,1.1,142.7-22
-	c12.5,4.3,16.2,21.8,9.7,33.3c-6.6,11.5-19.9,17.4-32.9,19.7c-13,2.3-26.4,1.8-39.4,4.3c-13,2.5-26.2,8.7-32.5,20.3
-	c-8.3,15.5-1,35.4,11.4,47.8s28.9,19.6,44.1,28.4c39.3,22.6,71.3,57.8,90.2,99c-55.3,0.3-110.6,0.5-165.9,0.8
-	c-16.3,0.1-34.7-0.6-45.9-12.5c-12.2-12.9-10.3-34.5-0.7-49.3s25.3-24.6,40.5-33.9c-10-20.7-40.4-22.4-60.2-10.8
-	c-19.8,11.6-32.6,31.8-48.3,48.6s-38.1,31.2-60.3,25.6c-4.1-115.1-8.1-230.2-12.2-345.3"/>
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M305.1,83.9
+	C284.8,78.7,92.1,8.7,71.5,12.6S31,32.2,29.3,53.1c-1.3,16.2,8.4,31.3,19,43.6c32,37.2,79.3,51.6,127.5,60.6
+	c48.2,9,97,12.5,140.2-10.6c12.5,4.3,25.2,23.1,18.7,34.6c-6.6,11.5-0.7,45.7-13.7,48c-13,2.3-43.7-2.5-56.7,0
+	c-13,2.5-37.1-16.7-43.4-5c-8.3,15.5-1,35.4,11.4,47.8s28.9,19.6,44.1,28.4c39.3,22.6,71.3,57.8,90.2,99
+	c-55.3,0.3-110.6,0.5-165.9,0.8c-16.3,0.1-34.7-0.6-45.9-12.5c-12.2-12.9-10.3-34.5-0.7-49.3s25.3-24.6,40.5-33.9
+	c-10-20.7-44.8-44.9-64.6-33.3c-19.8,11.6-28.2,54.3-43.9,71.1s-38.1,31.2-60.3,25.6c-4.1-115.1-8.1-230.2-12.2-345.3"/>
 <g>
 	
 		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="356.7" y1="361" x2="8.1" y2="361"/>
@@ -28,23 +28,23 @@
 	<text transform="matrix(1 0 0 1 4.4029 23.0189)" fill="#010101" font-family="'PermanentMarker'" font-size="31">sadness</text>
 </g>
 <path fill="none" stroke="#27AAE1" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M42.9,75c88.6,86.8,173.5,177.4,254.5,271.4"/>
+	M42.9,346.5C131.5,259.7,216.5,169.1,297.4,75"/>
 <g>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M218,246.5c-5.8,1.2-11.2,4.4-15,9"/>
+		M190.9,196.8c-5.8,1.2-11.2,4.4-15,9"/>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M205.7,242.3c4.1,4.4,8.2,8.8,12.3,13.2"/>
+		M178.6,192.6c4.1,4.4,8.2,8.8,12.3,13.2"/>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M212.5,234.9c-1.8-4.4,0.3-9.5,3.4-13.1c3.1-3.6,7.1-6.3,10.1-10c4.3-5.2,6.3-12.1,5.4-18.8s-4.5-12.9-9.9-16.8"/>
+		M202.6,203.4c4.7-0.6,9.1,2.8,11.8,6.7c2.7,3.9,4.3,8.5,7,12.4c3.9,5.5,10.1,9.2,16.7,10.1c6.6,0.9,13.6-1,18.8-5.2"/>
 </g>
-<text transform="matrix(1 0 0 1 177.3925 167.0001)" font-family="'PermanentMarker'" font-size="31">good books</text>
+<text transform="matrix(1 0 0 1 264.3925 218.056)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">good</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="31">books</tspan></text>
 <g>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M291.9,325.9c-5.6,5-11.3,10.1-16.9,15.1"/>
+		M293.2,83.9c-5.6,5-11.3,10.1-16.9,15.1"/>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M279.1,326.9c4.7,3.8,8.8,8.4,11.9,13.6"/>
+		M280.3,84.9c4.7,3.8,8.8,8.4,11.9,13.6"/>
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M259.2,337c-13.9-4-28.6-0.4-42.9,2.1s-30.1,3.2-41.8-5.3"/>
+		M260.5,95c-13.9-4-28.6-0.4-42.9,2.1c-14.2,2.4-30.1,3.2-41.8-5.3"/>
 </g>
-<text transform="matrix(1 0 0 1 64.4999 312.0001)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">insecure</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="31">people</tspan></text>
+<text transform="matrix(1 0 0 1 62.4987 76.9338)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">insecure</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="31">people</tspan></text>
 </svg>

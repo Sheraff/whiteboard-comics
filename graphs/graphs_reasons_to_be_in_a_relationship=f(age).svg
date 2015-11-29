@@ -2,45 +2,47 @@
 <!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 650 484" enable-background="new 0 0 650 484" xml:space="preserve">
-<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M47.6-3.9
-	c-16.2,34.8-25.2,73-26.2,111.4c45.9-30.6,89.1-65.1,129.2-103c0.6,35.4,1.2,70.8,1.9,106.1c20.8,3.1,39-12.9,53.9-27.8
-	c32.7-32.6,65.3-65.1,98-97.7c2.9,22.2,6.1,45.1,17.7,64.2s34,33.6,55.9,28.8c33.5-7.3,45.2-51.4,75.7-67.2
-	c14.9-7.7,32.5-7.7,49.3-7.5c40.2,0.5,80.4,1,120.6,1.6c-19,36.2-58.7,60.5-99.5,61.1c-12.3,0.2-25-1.6-36.6,2.5
-	c-11.6,4-21.6,16.7-17.2,28.2c3.2,8.3,12.2,12.6,20.6,15.5c23,7.9,47.5,11.6,71.9,10.7c30.2,111.7,37.2,229.7,20.6,344.2
-	c-17.9-24-37.1-49.1-64.8-60.5c-38.6-15.9-87.9,2.8-106.3,40.2c-49.3,6.6-103.1,12.3-145.6-13.6c-19.4-11.9-34.9-29.6-54.9-40.5
-	C177.9,374.4,133,379,103.9,404c-10.8,9.2-19.4,20.8-30.8,29.2c-11.4,8.5-27,13.4-39.7,7.2C14.5,431.1,13.5,405,15.2,384
-	c7.2-86,14.4-172.1,21.5-258.1c20-1.7,40.7-0.3,59.1,7.8c18.4,8.1,34.1,23.8,38.8,43.3c9.3,38.8-25.4,78.7-14.2,117
-	c26.9-1.4,52.7-15.9,68-38c8.4-12.2,13.7-26.4,21.6-38.9c7.9-12.5,19.8-24,34.5-25.7c22.8-2.7,41.6,18.5,50.1,39.8
-	c13,32.7-13.6,80.8-28,112.9c20.3-1.3,63.8-25.2,76.2-41.3c12.3-16.2,20.5-35.1,30.9-52.6c31.3-52.7,83.6-92.6,142.8-108.7
-	c6.5,52.6,5.6,106.1-2.8,158.5c-4,24.9-13.2,53.7-37.3,61.3c-15.2,4.8-32.1-1.1-44.5-11.1c-12.4-10,17.1-84,8.6-97.5"/>
+	 viewBox="0 0 800.1 484" enable-background="new 0 0 800.1 484" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M633.4,252.5
+	c7.7,13.5-19.1,87.5-7.8,97.5c11.3,10,26.7,15.9,40.5,11.1c21.9-7.6,30.3-36.3,34-61.3c7.6-52.4,8.5-105.9,2.5-158.5
+	c-53.9,16.1-101.6,56-130.1,108.7c-9.5,17.5-16.9,36.4-28.2,52.6c-11.2,16.2-50.9,40-69.4,41.3c13.1-32.1,37.4-80.2,25.5-112.9
+	c-7.8-21.3-24.9-42.5-45.7-39.8c-13.4,1.7-24.2,13.2-31.5,25.7c-7.2,12.5-12,26.7-19.7,38.9c-13.9,22.1-37.5,36.6-61.9,38
+	c-10.2-38.2,21.5-78.2,12.9-117c-4.3-19.5-18.6-35.2-35.4-43.3c-16.7-8.1-35.6-9.5-53.8-7.8c-6.5,86-13.1,172.1-19.6,258.1
+	c-1.6,21-0.7,47.2,16.5,56.5c11.6,6.2,25.8,1.3,36.2-7.2c10.4-8.5,18.2-20,28-29.2c26.6-25,67.5-29.6,98.2-11.2
+	c18.2,10.9,32.3,28.6,50,40.5c38.7,25.9,87.7,20.2,132.7,13.6c16.8-37.4,61.7-56.1,96.9-40.2c25.2,11.4,42.8,36.5,59.1,60.5
+	c15.1-114.5,8.7-232.5-18.8-344.2c-22.2,0.8-44.5-2.8-65.5-10.7c-7.7-2.9-15.9-7.2-18.8-15.5c-4-11.5,5.1-24.2,15.7-28.2
+	c10.6-4,22.2-2.3,33.4-2.5c37.2-0.6,73.4-25,90.7-61.1c-36.6-0.5-73.3-1-109.9-1.6c-15.3-0.2-31.3-0.3-44.9,7.5
+	c-27.8,15.8-38.4,59.9-69,67.2c-19.9,4.8-40.3-9.7-50.9-28.8c-10.6-19.1-13.5-42-16.2-64.2c-29.8,32.6-59.5,65.1-89.3,97.7
+	c-13.5,14.8-30.2,30.9-49.1,27.8c-0.6-35.4-1.1-70.8-1.7-106.1c-36.5,37.9-75.9,72.4-117.7,103c0.9-38.4,9.1-76.6,23.9-111.4
+	c0,0-15.3,226.7-76.3,254S0,253.9,0,253.9"/>
 <g>
 	
-		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="616.1" y1="424" x2="10.1" y2="424"/>
+		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="795.4" y1="424" x2="240.6" y2="424"/>
 	
-		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="33.1" y1="97.7" x2="33.1" y2="446.4"/>
+		<line fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="263.7" y1="97.7" x2="263.7" y2="446.4"/>
 </g>
 <g>
 	
 		<polyline fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		594.1,401.5 616.1,424 594.1,446.5 	"/>
-	<text transform="matrix(1 0 0 1 561.6681 478.0167)" fill="#010101" font-family="'PermanentMarker'" font-size="31">age</text>
+		773.4,401.5 795.4,424 773.4,446.5 	"/>
+	<text transform="matrix(1 0 0 1 740.9941 478.0167)" fill="#010101" font-family="'PermanentMarker'" font-size="31">age</text>
 </g>
 <g>
 	
 		<polyline fill="none" stroke="#010101" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		10.6,119.7 33.1,97.7 55.6,119.7 	"/>
-	<g>
-		<text transform="matrix(1 0 0 1 6.0001 83.4422)" fill="#EC008C" font-family="'PermanentMarker'" font-size="31">discovering love, sex &amp; selflessness</text>
-	</g>
+		241.2,119.7 263.7,97.7 286.2,119.7 	"/>
+	<text transform="matrix(1 0 0 1 4.3437 261.2825)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">reasons to be in</tspan><tspan x="29.5" y="30" font-family="'PermanentMarker'" font-size="31">a relationship</tspan></text>
+</g>
+<g>
+	<text transform="matrix(1 0 0 1 236.5593 83.4422)" fill="#EC008C" font-family="'PermanentMarker'" font-size="31">discovering love, sex &amp; selflessness</text>
 </g>
 <path fill="none" stroke="#EC008C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M46.3,147.5c55.4-15.1,116.4-8.6,167.5,17.7c38,19.5,69.7,49.1,100.9,78.2c30.8,28.7,61.6,57.5,92.4,86.2
-	c24.5,22.9,49.4,46,78.8,62.1c29.4,16.1,64.3,24.7,96.8,16.4"/>
-<text transform="matrix(1 0 0 1 6.4029 53.8148)" fill="#DB442E" font-family="'PermanentMarker'" font-size="31">loneliness, sex &amp; guilt</text>
+	M276.4,147.5c49.9-15.1,104.7-8.6,150.6,17.7c34.1,19.5,62.7,49.1,90.8,78.2c27.7,28.7,55.4,57.5,83.1,86.2
+	c22,22.9,44.4,46,70.8,62.1c26.4,16.1,57.9,24.7,87.1,16.4"/>
+<text transform="matrix(1 0 0 1 236.9621 53.8148)" fill="#DB442E" font-family="'PermanentMarker'" font-size="31">loneliness, sex &amp; guilt</text>
 <path fill="none" stroke="#DB442E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M41.8,412.2c96.2-6.9,190-45.2,263.5-107.6c44.9-38.2,82.3-84.8,128.7-121.2s106.2-62.5,163.7-49.6"/>
-<text transform="matrix(1 0 0 1 6.4027 24.8133)" fill="#009444" font-family="'PermanentMarker'" font-size="31">validity of reasons to be in a relationship</text>
+	M272.3,412.2c86.5-6.9,170.8-45.2,237-107.6c40.4-38.2,74-84.8,115.7-121.2s95.5-62.5,147.2-49.6"/>
+<text transform="matrix(1 0 0 1 236.9619 24.8133)" fill="#009444" font-family="'PermanentMarker'" font-size="31">validity of reasons</text>
 <path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M53.9,249c93.3-18.3,188.5,18.6,283.6,18c92.9-0.6,184.9-36.9,276.7-23.1"/>
+	M283.2,249c83.9-18.3,169.5,18.6,255.1,18c83.5-0.6,166.3-36.9,248.9-23.1"/>
 </svg>
