@@ -788,14 +788,19 @@ function rewrite_with_paths (svg) {
 		if(tspans.length===0){
 			replace_span(text)
 		} else {
+      var is_text_long = 0
+      for (var i = 0; i < tspans.length; i++) {
+				is_text_long += tspans[i].childNodes[0].nodeValue.length
+			}
+      is_text_long = is_text_long > 40
 			for (var i = 0; i < tspans.length; i++) {
-				replace_span(tspans[i])
+				replace_span(tspans[i], is_text_long)
 			}
 		}
 	}
   return svg
 
-  function replace_span (reference_element) {
+  function replace_span (reference_element, is_text_long) {
 		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
 			console.log(reference_element.childNodes)
 			return console.log('this node still has children')
@@ -840,7 +845,9 @@ function rewrite_with_paths (svg) {
 				var x = tspan_position.x + x_length
 				var y = tspan_position.y - letter.viewbox.height + 10
 				paths[i].setAttribute('transform', text_transform+' translate(' + x + ',' + y + ')')
-				paths[i].setAttribute('data-type','writing')
+				paths[i].setAttribute('data-type', 'writing')
+        if(is_text_long)
+          paths[i].setAttribute('data-long-writing', true)
 				if(color)
 					paths[i].setAttribute('stroke', color)
 				insert_at.parentNode.insertBefore(paths[i], insert_at)
@@ -967,7 +974,7 @@ function start_drawing_element (element, delay, callback) {
 	var length = element.getTotalLength()
 
   if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
-    var speed_power = .25
+    var speed_power = element.getAttribute('data-long-writing') ? .1 : .25
     var smoothing = 'ease-out'
   } else if (element.getAttribute('data-type')==='erase'){
     var speed_power = .4
