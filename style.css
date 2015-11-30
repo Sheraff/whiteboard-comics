@@ -305,8 +305,7 @@ aside #nav [data-title] {
   width: 50%;
 }
 aside #blurb {
-  padding: 0 2rem;
-  margin: 1.5rem 0;
+  padding: 1.5rem 2rem;
   overflow: hidden;
 }
 aside #blurb p {
@@ -324,6 +323,9 @@ aside #blurb p:first-child::before {
 }
 aside #blurb p:last-child::after {
   content: ' »';
+}
+aside #menu {
+  background-color: #D9D2CC;
 }
 aside #menu [data-title] {
   width: 25%;

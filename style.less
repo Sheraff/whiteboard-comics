@@ -8,6 +8,8 @@
 
 @main-width: 100vw - @aside-width;
 
+@main-bg-color: #D9D2CC;
+
 * {
 	margin: 0;
 	padding: 0;
@@ -16,7 +18,7 @@
 }
 html, body{
 	width: 100%;
-	background-color: #D9D2CC;
+	background-color: @main-bg-color;
 	font-family: 'Droid Serif', Georgia, serif;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: subpixel-antialiased;
@@ -305,8 +307,8 @@ aside{
 	}
 
 	#blurb{
-		padding: 0 @unit*2;
-		margin: @unit*1.5 0;
+		padding: @unit*1.5 @unit*2;
+		// margin: @unit*1.5 0;
 		overflow: hidden;
 		p{
 			text-align: left;
@@ -326,9 +328,12 @@ aside{
 		}
 	}
 
-	#menu [data-title]{
-		width: 25%;
-	}
+	#menu{
+		background-color: @main-bg-color;
+		[data-title]{
+			width: 25%;
+		}
+	} 
 	#cog_check{
 		display: none;
 		&:checked~nav #cog{

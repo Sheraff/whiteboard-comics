@@ -196,8 +196,9 @@
 
 
 <!-- TODO
-	HARD PROBLEMS, MAJOR IMPROVEMENTS
+	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
+	- distinguish "verbose" graphs from "simple" graphs, make long <text> of "verbose" graphs write faster
 
 	STYLE
 	- make h2 as big as possible depending on content
