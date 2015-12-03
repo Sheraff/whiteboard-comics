@@ -366,7 +366,7 @@ function setup_archives (from_index) {
   // LOAD SVGS
   for (var index = 0, l = AS.length; index < l; index++) {
     if(!GRAPHS[index].is_processed)
-      setTimeout(load_svg.bind(undefined, index, then),500+index)
+      setTimeout(load_svg.bind(undefined, index, then),100*index)
     else
       then(index)
   }
@@ -673,9 +673,9 @@ function load_svg (index, callback, increment) {
       erase.setAttribute('data-type', 'erase')
       erase.setAttribute('stroke', 'transparent')
       GRAPHS[index].content.appendChild(erase)
+      AS[index].firstElementChild.appendChild(GRAPHS[index].content)
       GRAPHS[index].content = rewrite_with_paths(GRAPHS[index].content)
       GRAPHS[index].is_processed = true
-      AS[index].firstElementChild.appendChild(GRAPHS[index].content)
       properly_size_svg(GRAPHS[index].content)
     }
     if(callback) callback(index)
@@ -828,13 +828,12 @@ function svg_to_png (index, callback) {
 //////////////////////////////
 
 function rewrite_with_paths (svg) {
+  // document.body.appendChild(svg)
 	var texts = svg.getElementsByTagName('text')
 	for (var text_pointer = 0; text_pointer < texts.length; text_pointer++) {
-		var text = texts[text_pointer]
-
-		var tspans = text.getElementsByTagName('tspan')
+		var tspans = texts[text_pointer].getElementsByTagName('tspan')
 		if(tspans.length===0){
-			replace_span(text)
+			replace_span(texts[text_pointer])
 		} else {
       var is_text_long = 0
       for (var i = 0; i < tspans.length; i++) {
@@ -846,6 +845,7 @@ function rewrite_with_paths (svg) {
 			}
 		}
 	}
+  // document.body.removeChild(svg)
   return svg
 
   function replace_span (reference_element, is_text_long) {
@@ -857,17 +857,6 @@ function rewrite_with_paths (svg) {
 		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
 
 		var text_transform = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
-		if(is_tspan){
-      var tspan_position = {
-        x: parseFloat(reference_element.getAttribute('x')),
-        y: parseFloat(reference_element.getAttribute('y'))
-      }
-		} else {
-      var tspan_position = {
-        x: 0,
-        y: 0
-      }
-    }
 
 		var color = reference_element.getAttribute('fill')
 		if(!color)
@@ -875,24 +864,18 @@ function rewrite_with_paths (svg) {
 
 		var sentence = reference_element.childNodes[0].nodeValue
 		var insert_at = is_tspan ? reference_element.parentElement : reference_element
-		var char_pointer = 0
-		var x_length = 0
 		for (var char_pointer = 0; char_pointer < sentence.length; char_pointer++) {
-			if(sentence[char_pointer]===' '){
-				x_length+=10
+			if(sentence[char_pointer]===' ')
 				continue
-			}
-
 			var letter = get_letter(sentence.charAt(char_pointer))
 			if(!letter)
 				continue
+      var letter_pos = reference_element.getStartPositionOfChar(char_pointer)
 			var el = document.createElementNS(SVG_NAMESPACE, 'g')
 			el.innerHTML = letter.content
 			var paths = el.querySelectorAll('path,line,polyline')
 			for (var i = 0; i < paths.length; i++) {
-				var x = tspan_position.x + x_length
-				var y = tspan_position.y - letter.viewbox.height + 10
-				paths[i].setAttribute('transform', text_transform+' translate(' + x + ',' + y + ')')
+				paths[i].setAttribute('transform', text_transform+' translate(' + letter_pos.x + ',' + (letter_pos.y - letter.viewbox.height + 10) + ')')
 				paths[i].setAttribute('data-type', 'writing')
         if(is_text_long)
           paths[i].setAttribute('data-long-writing', true)
@@ -900,7 +883,6 @@ function rewrite_with_paths (svg) {
 					paths[i].setAttribute('stroke', color)
 				insert_at.parentNode.insertBefore(paths[i], insert_at)
 			}
-			x_length += letter.viewbox.width + .5
 		}
 		reference_element.style.display = 'none'
 	}
