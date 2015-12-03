@@ -61,12 +61,12 @@
 <g>
 	<text transform="matrix(1 0 0 1 235.4502 45.0783)" font-family="'PermanentMarker'" font-size="30.74">life satisfaction =</text>
 	<g>
-		<text transform="matrix(1 0 0 1 547.6421 23.476)" fill="#00A99D" font-family="'PermanentMarker'" font-size="30.74">power</text>
+		<text transform="matrix(1 0 0 1 547.6421 25.4774)" fill="#00A99D" font-family="'PermanentMarker'" font-size="30.74">power</text>
 	</g>
-	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M527.4,37.4c44.7-0.6,89.3-1.2,134-1.8"/>
 	<g>
-		<text transform="matrix(1 0 0 1 478.1768 74.3739)" fill="#D4145A" font-family="'PermanentMarker'" font-size="30.74">responsibilities</text>
+		<text transform="matrix(1 0 0 1 478.1768 72.3725)" fill="#D4145A" font-family="'PermanentMarker'" font-size="30.74">responsibilities</text>
 	</g>
 </g>
 <g>

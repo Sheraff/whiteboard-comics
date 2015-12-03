@@ -33,9 +33,15 @@
 	<text transform="matrix(1 0 0 1 422.0029 256.5415)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">how good i think</tspan><tspan x="0" y="37.2" font-family="'PermanentMarker'" font-size="31">people are at something</tspan></text>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 242.0913 156.7456)" fill="#0071BC" font-family="'PermanentMarker'" font-size="31">how good i actually am</text>
+	<text transform="matrix(1 0 0 1 344.0864 156.7456)" fill="#0071BC" font-family="'PermanentMarker'" font-size="31">how good i actually am</text>
 </g>
-<path fill="none" stroke="#0071BC" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M220,266c14-5,30-24,24-39
-	c-15-36-55-3-62,19c-20,59,70,81,99,32c22-36,1-65-34-80c-23-10-63-20-83-1c-17,16-21,52-20,74c3,38,40,67,76,75
-	c69,16,127-61,128-125c2-80-110-125-178-117c-72,9-81,98-78,157c3,62,54,104,113,113c76,11,148-36,178-106"/>
+<path fill="none" stroke="#0071BC" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M220,266
+	c13.3-4.8,28.1-20.9,24.9-36c-2.7-12.9-14.6-21.4-27.4-18.1c-23,5.9-41.2,32.3-38,55.8c2.9,21.6,23.3,34.3,43.4,36.8
+	c22.7,2.8,46-6.5,58.1-26.5c8.2-13.6,12-29.7,5.8-44.8c-5.9-14.3-18.8-24.7-32.2-31.6c-13.8-7.2-29.4-12.1-44.8-14.3
+	c-14.6-2.1-31.7-1.7-43.8,8c-11.9,9.6-16.9,26.1-19.5,40.6c-2.7,14.8-4.4,31.6-0.5,46.3c8.6,32.5,40.4,55.5,71.7,63.2
+	c30.3,7.5,60.1-2.7,83-23.2c22.9-20.6,39-49.5,45-79.7c5.4-27.1,0.9-53.5-15.9-75.8c-16.5-21.9-40.9-37.2-66-47.6
+	c-25.1-10.3-52.6-16.5-79.8-16.1c-26.5,0.4-50.4,9.8-66.3,31.7c-15.7,21.6-21.9,49-24.6,75.1c-1.4,13.3-1.8,26.7-1.5,40
+	c0.3,15.2,1.8,30,7.1,44.3c10.8,29.4,34.2,52.3,62,66c29.7,14.6,63.8,18.9,96.3,12.5c29.6-5.8,57.2-20.1,79.7-40.2"/>
+<path fill="none" stroke="#0071BC" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	M322.6,332c6.1-1.4,12.1-2.7,18.2-4.1c0.6,5.6,1.2,11.2,1.8,16.8"/>
 </svg>

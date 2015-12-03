@@ -62,8 +62,7 @@ release	name	tags	author	source	credit
 2016-11-21	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
 2016-11-28	reasons_to_be_in_a_relationship=f(age)	relationships,growing up,morality
 2016-12-05	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By
-2016-12-12	someone_else=f(you)	morality
-2016-12-19	depression=f(stressors)	morality	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
+2016-12-19	depression=f(stressors)	morality,academia	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
 2016-12-19	pain_felt=f(emotions_expressed)	morality,relationships	Indexed	http://thisisindexed.com/2015/01/strong-silent-type-desperately-needs-hug/	By
 2016-12-19	insomnia,dreams=f(thoughts)	productivity,miscellaneous
 2016-12-19	story_truth=f(times_the_story_is_told)	academia,miscellaneous	Indexed	http://thisisindexed.com/2008/01/telephone-for-you/	Inspired by
@@ -76,3 +75,4 @@ release	name	tags	author	source	credit
 2016-12-19	crime,poverty,housing,taxes,education=f(crime,poverty,housing,taxes,education)	miscellaneous,morality	Indexed	http://thisisindexed.com/2010/10/why-zip-codes-have-connotations/	By
 2016-12-19	happiness=f(seasons)	morality
 2016-12-19	shame=f(commonality_of_problem)	morality	Indexed	http://thisisindexed.com/2011/09/how-empathy-happens/	By
+2016-12-19	income,expenses=f(materialism)	money,morality			

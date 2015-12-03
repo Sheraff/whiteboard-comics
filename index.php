@@ -190,8 +190,6 @@
 
 
 <!-- TODO
-	BUGS
-	- cruelty=f(honesty) makes the logo black
 
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
@@ -204,37 +202,31 @@
 		- for filter() only if vignettes are animated when added / removed
 
 	FLUIDITY
-	- switch vignette zoom-ins and zoom-outs to "transform"
+	- animate ASIDE with "transform"
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 	- if possible, try and use .getBoundingClientRect() less often
+	- loading is heavy when opening archives for the first time (with many graphs released)
 
 	UX
 	- attract attention to the possibility to see another graph (arrows / keyboard)
 	- tab key behavior
 
 	IMPROVE MOBILE VERSION
-	- remove self promo in footer
-	- add settings
-	- add icon for link to website
-	- is an external font necessary ?
 
 	SOCIAL
 	- add GitHub button
 	- add Donate button
-
-	ROBUSTNESS
-	- switch character positionning to SVG method getStartPositionOfChar() (instead of my in-house hack)
 
 	DURABILITY & MAINTAINABILITY
 	- write readme so that the process is clear
 		- groups in AI for timing
 		- above/below in AI for scenario
 		- rename artboards in AI for streamlining exports
-		- run format_svg.php to pre-process svg
 
 	SEO
 	- have more words on each graph (maybe a pun or a description or something)
 	- enable caching
+	- enable gzip
 
 
 

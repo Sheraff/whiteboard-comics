@@ -41,8 +41,8 @@
 	<text transform="matrix(1 0 0 1 202.968 221.8628)" font-family="'PermanentMarker'" font-size="30.74">individual happiness</text>
 	<text transform="matrix(1 0 0 1 176.468 258.4341)" font-family="'PermanentMarker'" font-size="30.74">× population</text>
 	<text transform="matrix(1 0 0 1 171.468 296.2678)" font-family="'PermanentMarker'" font-size="30.74">= why kids make you happ</text>
-	<path fill="none" stroke="#C1272D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M416.7,300.9c17.9-9.6,35.9-19.2,53.8-28.8"/>
-	<text transform="matrix(1 0 0 1 550.0164 296.2678)" font-family="'PermanentMarker'" font-size="31">iness</text>
+	<path fill="none" stroke="#FFFFFF" stroke-width="38" stroke-linejoin="round" stroke-miterlimit="10" d="M426.1,296.3
+		c17.9-9.6,130.7-8.3,148.7-17.9"/>
+	<text transform="matrix(1 0 0 1 428.6104 296.2681)" font-family="'PermanentMarker'" font-size="31">happiness</text>
 </g>
 </svg>
