@@ -31,11 +31,13 @@
 			431.8,56.4 454.3,34.4 476.8,56.4 		"/>
 	</g>
 	<g>
-		<text transform="matrix(1 0 0 1 371.3337 24.3824)" fill="#D41C5C" font-family="'PermanentMarker'" font-size="30.74">satisfaction</text>
 		<g>
-			<text transform="matrix(1 0 0 1 500.6984 164.658)" fill="#00A99D" font-family="'PermanentMarker'" font-size="30.74">success</text>
+			<text transform="matrix(1 0 0 1 371.3337 24.3824)" fill="#87C663" font-family="'PermanentMarker'" font-size="30.74">satisfaction</text>
 		</g>
-		<path fill="none" stroke="#D41C5C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M548.8,66.5
+		<g>
+			<text transform="matrix(1 0 0 1 500.6984 164.658)" fill="#FBCC34" font-family="'PermanentMarker'" font-size="30.74">success</text>
+		</g>
+		<path fill="none" stroke="#87C663" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M548.8,66.5
 			c-35.8,5.6-69.7,23-95,48.9c-25.4,25.9-42.2,60-47.1,95.9"/>
 	</g>
 </g>
@@ -53,9 +55,9 @@
 			12.8,56.4 35.3,34.4 57.8,56.4 		"/>
 	</g>
 	<g>
-		<text transform="matrix(1 0 0 1 7.8386 24.3824)" fill="#00A99D" font-family="'PermanentMarker'" font-size="30.74">success</text>
+		<text transform="matrix(1 0 0 1 7.8386 24.3824)" fill="#FBCC34" font-family="'PermanentMarker'" font-size="30.74">success</text>
 		<text transform="matrix(1 0 0 1 224.5392 79.0164)" fill="#010101" font-family="'PermanentMarker'" font-size="30.74">time</text>
-		<path fill="none" stroke="#00A99D" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M41.2,118.5
+		<path fill="none" stroke="#FBCC34" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M41.2,118.5
 			c4.9-8.3,9.9-16.5,14.8-24.8c4.1-6.8,9.9-14.6,17.9-13.8c7.5,0.8,11.7,8.8,14.6,15.7c4.1,9.7,8.1,19.4,12.2,29.1
 			c3.2,7.6,7.1,15.9,14.7,19c10.6,4.3,22.4-4.1,27.8-14.2s6.8-21.8,11.8-32.1c3.6-7.3,9.8-14.1,17.9-14.7
 			c11-0.7,19.1,10.3,22.6,20.7c3.6,10.4,5.4,22.2,13.3,29.8c6.5,6.2,16.7,8.2,25.1,5.1c8.4-3.2,14.7-11.4,15.5-20.4"/>
@@ -77,10 +79,10 @@
 	</g>
 	<g>
 		<g>
-			<text transform="matrix(1 0 0 1 64.8367 225.9332)" fill="#D41C5C" font-family="'PermanentMarker'" font-size="30.74">life satisfaction</text>
+			<text transform="matrix(1 0 0 1 64.8367 225.9332)" fill="#87C663" font-family="'PermanentMarker'" font-size="30.74">life satisfaction</text>
 		</g>
 	</g>
-	<path fill="none" stroke="#D41C5C" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M43.3,331.9
+	<path fill="none" stroke="#87C663" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M43.3,331.9
 		c17.2-29.8,63.4-37.3,89.1-14.5c12.1,10.8,19.2,26,27.9,39.7s20.7,27,36.8,29.7c35,5.9,60.8-40.3,96.2-39
 		c24.3,0.9,41.3,23.3,55.3,43.1c14,19.8,33.1,41.3,57.3,39c16.9-1.6,30.5-14.8,47-18.9c23-5.8,47.4,7.7,61.6,26.7
 		c14.2,19,20.4,42.6,26.2,65.6"/>

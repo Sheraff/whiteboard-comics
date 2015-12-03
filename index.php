@@ -196,6 +196,9 @@
 
 
 <!-- TODO
+	BUGS
+	- cruelty=f(honesty) makes the logo black
+
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
 	- distinguish "verbose" graphs from "simple" graphs, make long <text> of "verbose" graphs write faster

@@ -22,12 +22,12 @@
 		355.7,335 377.7,357.5 355.7,380 	"/>
 </g>
 <text transform="matrix(1 0 0 1 2.0097 415.3077)" fill="#010101" font-family="'PermanentMarker'" font-size="31">attractiveness of partner</text>
-<text transform="matrix(1 0 0 1 10.0708 56.2899)" fill="#DA1C5C" font-family="'PermanentMarker'" font-size="31">expected enjoyment of sex</text>
-<path fill="none" stroke="#DA1C5C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 10.0708 56.2899)" fill="#C4005B" font-family="'PermanentMarker'" font-size="31">expected enjoyment of sex</text>
+<path fill="none" stroke="#C4005B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M48.4,345.2c67.9-6.4,133.7-34.2,185.6-78.5s89.7-104.8,106.7-170.9"/>
 <g>
-	<text transform="matrix(1 0 0 1 10.0698 24.9185)" fill="#F15A29" font-family="'PermanentMarker'" font-size="31">actual enjoyment of sex</text>
+	<text transform="matrix(1 0 0 1 10.0698 24.9185)" fill="#F0BEB4" font-family="'PermanentMarker'" font-size="31">actual enjoyment of sex</text>
 </g>
-<path fill="none" stroke="#F15A29" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#F0BEB4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M48.2,117.6c108.5-7.4,217.5-7.5,326.1-0.3"/>
 </svg>

@@ -46,7 +46,7 @@ release	name	tags	author	source	credit
 2016-08-01	sources_of_stress=f(age)	morality,growing up	SMBC comics	http://ilovecharts.tumblr.com/weinersmiths	By
 2016-08-08	frame_of_reference,perceived_competence=f(competence)	morality
 2016-08-15	homesickness=f(wanderlust)	morality,miscellaneous
-2016-08-22	sadness=f(time_investment)	relationships,miscellaneous	Indexed	http://thisisindexed.com/2014/07/leave-wanting/	Inspired by
+2016-08-22	sadness=f(time_investment)	relationships,miscellaneous	Indexed	http://thisisindexed.com/2014/07/leave-wanting/	Misinterpretation of
 2016-08-29	idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
 2016-09-05	life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
 2016-09-12	luck_necessary=f(distance_from_norm)	work life,growing up
@@ -62,4 +62,17 @@ release	name	tags	author	source	credit
 2016-11-21	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
 2016-11-28	reasons_to_be_in_a_relationship=f(age)	relationships,growing up,morality
 2016-12-05	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By
-2016-12-12	someone_else=f(you)	morality			
+2016-12-12	someone_else=f(you)	morality
+2016-12-19	depression=f(stressors)	morality	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
+2016-12-19	pain_felt=f(emotions_expressed)	morality,relationships	Indexed	http://thisisindexed.com/2015/01/strong-silent-type-desperately-needs-hug/	By
+2016-12-19	insomnia,dreams=f(thoughts)	productivity,miscellaneous
+2016-12-19	story_truth=f(times_the_story_is_told)	academia,miscellaneous	Indexed	http://thisisindexed.com/2008/01/telephone-for-you/	Inspired by
+2016-12-19	screwups=f(excuses)	relationships,morality
+2016-12-19	body_image=f(persons_worth)	body image,morality,relationships
+2016-12-19	frustration=f(missed_life_changing_culture)	morality,miscellaneous
+2016-12-19	spoken_words=f(comfort)	morality,relationships	Indexed	http://thisisindexed.com/2011/11/not-all-silences-are-awkward/	By
+2016-12-19	making_a_mistake,fixing_a_mistake=f(length_of_relationship)	relationships,morality	Indexed	http://thisisindexed.com/2010/08/oh-fudge/	Inspired by
+2016-12-19	altruistic_love=f(self_love)	relationships,morality	Indexed	http://thisisindexed.com/2010/07/narcissus-and-medea-are-lonely/	By
+2016-12-19	crime,poverty,housing,taxes,education=f(crime,poverty,housing,taxes,education)	miscellaneous,morality	Indexed	http://thisisindexed.com/2010/10/why-zip-codes-have-connotations/	By
+2016-12-19	happiness=f(seasons)	morality
+2016-12-19	shame=f(commonality_of_problem)	morality	Indexed	http://thisisindexed.com/2011/09/how-empathy-happens/	By

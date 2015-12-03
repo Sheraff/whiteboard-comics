@@ -23,6 +23,6 @@
 </g>
 <text transform="matrix(1 0 0 1 51.23 315.2282)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31"># of items on todo list</tspan><tspan x="-46.9" y="30" font-family="'PermanentMarker'" font-size="31">× how long they’ve been on it</tspan></text>
 <text transform="matrix(1 0 0 1 54.5293 22.7432)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="31">how much i feel i have</tspan><tspan x="15.5" y="30" font-family="'PermanentMarker'" font-size="31">control over my life</tspan></text>
-<path fill="none" stroke="#9B8579" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#C9AC68" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M105.8,104.8c83.2,38.9,163.9,83,241.8,131.7"/>
 </svg>

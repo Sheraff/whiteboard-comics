@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 360.7 418" enable-background="new 0 0 360.7 418" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M3.8,38.1
+	c-1.8,4-3.6,8-5.4,12C26.1,28.3,53.9,6.5,81.6-15.2C61.9,20.8,42.1,56.9,22.3,93c28.7,4.6,55.2-15.4,75.8-35.9s41.5-44.1,70-49.7
+	C159.6,30,151,52.5,142.5,75c49.1-13.6,88.1-50,124.9-85.2C254,22.3,249.7,58.4,255.1,93.1c-63.1,23.6-134.7,23.4-197.7-0.4
+	C36,155.6,33.3,223.2,30.8,289.6c-1.8,48-3.6,96.1-5.4,144.1c107.9-41.7,222.8-65.1,338.4-68.8c4.1-14.8-9.7-29.6-24.7-33
+	s-30.5,1.1-45.6,4.2c-57,11.9-117.8,4.7-170.5-20.1c-16.4-7.7-34.1-20.9-32.8-38.9c1.5-19.8,24.2-29.6,43.2-35.2
+	c73.3-21.5,146.7-43,220-64.5"/>
+<g>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="19.7" y1="365.2" x2="323.9" y2="365.2"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="42.2" y1="387.7" x2="42.2" y2="98"/>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		19.7,120 42.2,98 64.7,120 	"/>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		301.9,342.7 323.9,365.2 301.9,387.7 	"/>
+</g>
+<text transform="matrix(1 0 0 1 -8.284505e-02 416.8385)" font-family="'PermanentMarker'" font-size="31">length of relationship</text>
+<text transform="matrix(1 0 0 1 13.6632 24.9093)" font-family="'PermanentMarker'" font-size="31">time it takes to...</text>
+<text transform="matrix(1 0 0 1 13.6632 54.8332)" fill="#E5BD48" font-family="'PermanentMarker'" font-size="31">make a big mistake</text>
+<path fill="none" stroke="#E5BD48" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	M50.6,133.7c0,36.9,1.1,75.6,15,107.9s36.4,58.1,62.5,71.8c29.2,15.3,61.5,15.4,92.9,15.4c39.2-0.1,78.5-0.2,117.7-0.2"/>
+<text transform="matrix(1 0 0 1 13.6634 84.7569)" fill="#009444" font-family="'PermanentMarker'" font-size="31">fix a big mistake</text>
+<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	M55.7,264c22.3-29.4,48.5-16,78.5-20.4c24.6-3.6,33.7-24.8,55.6-32.2c22.6-7.7,46.9,13.2,68-2.8c18.3-20.3,47.4-35.7,75.4-28.9"/>
+</svg>
