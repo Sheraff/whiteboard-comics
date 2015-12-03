@@ -136,16 +136,15 @@ section > a > div {
   -webkit-backface-visibility: hidden;
   -webkit-perspective: 1000;
   transform: translate3d(0, 0, 0);
-  transition: height 0.5s, width 0.5s, top 0.5s, left 0.5s, box-shadow 0.25s linear, opacity 0.25s;
-  transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0.75s, 0.75s;
+  transition: transform 0.5s, box-shadow 0.5s linear, opacity 0.25s;
+  transition-delay: 0.25s, 0.25s, 0.75s;
+  will-change: transform, box-shadow, opacity;
 }
 section > a > div > * {
   transition: opacity 0.5s 0.25s;
 }
 section > a.expanded > div {
-  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0);
-  height: calc(100vh  -  2rem);
-  width: calc(70vw  -  1rem);
+  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0);
 }
 section > a.expanded > div > * {
   opacity: 0;
@@ -161,9 +160,6 @@ section > a.unexpanded > div {
 section > a.pre_expanded,
 section > a.pre_expanded > div {
   transition-duration: 0s;
-}
-section > a.unexpanded > div {
-  transition-delay: 0.25s, 0.25s, 0.25s, 0.25s, 0s, 0.75s;
 }
 section:not(.expanded) a {
   transition-delay: 0.25s;
@@ -326,6 +322,7 @@ aside #blurb p:last-child::after {
 }
 aside #menu {
   background-color: #D9D2CC;
+  will-change: margin-top;
 }
 aside #menu [data-title] {
   width: 25%;
@@ -449,6 +446,7 @@ footer > a {
 #nav,
 #tags,
 #menu {
+  will-change: height;
   transform: translate3d(0, 0, 0);
   transition: all 0.75s;
 }

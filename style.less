@@ -132,16 +132,15 @@ section{
 			-webkit-backface-visibility: hidden;
 			-webkit-perspective: 1000;
 			transform: translate3d(0, 0, 0);
-			transition: height @timing*2, width @timing*2, top @timing*2, left @timing*2, box-shadow @timing linear, opacity @timing;
-			transition-delay: @timing, @timing, @timing, @timing, @timing*3, @timing*3;
+			transition: transform @timing*2, box-shadow @timing*2 linear, opacity @timing;
+			transition-delay: @timing, @timing, @timing*3;
+			will-change: transform, box-shadow, opacity;
 			&>*{
 				transition: opacity @timing*2 @timing;
 			}
 		}
 		&.expanded>div{
-			box-shadow: 0 0 .4rem rgba(0, 0, 0, 0);
-			height: calc(100vh~" - "@unit*2);
-			width: calc(@main-width~" - "@unit);
+			box-shadow: 0 0 .1rem rgba(0, 0, 0, 0);
 			&>*{
 				opacity: 0;
 			}
@@ -154,9 +153,6 @@ section{
 		}
 		&.pre_expanded, &.pre_expanded>div{
 			transition-duration: 0s;
-		}
-		&.unexpanded>div{
-			transition-delay: @timing, @timing, @timing, @timing, 0s, @timing*3;
 		}
 	}
 	&:not(.expanded) a{
@@ -330,10 +326,11 @@ aside{
 
 	#menu{
 		background-color: @main-bg-color;
+		will-change: margin-top;
 		[data-title]{
 			width: 25%;
 		}
-	} 
+	}
 	#cog_check{
 		display: none;
 		&:checked~nav #cog{
@@ -459,6 +456,7 @@ footer>a{
 }
 
 #blurb, #nav, #tags, #menu{
+	will-change: height;
 	transform: translate3d(0, 0, 0);
 	transition: all @timing*3;
 }

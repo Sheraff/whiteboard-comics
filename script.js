@@ -45,6 +45,45 @@ Date.prototype.getDatePostfix = function () {
 	}
 }
 
+CSSStyleSheet.prototype.setRule = function (selector, rule) {
+  var rules = this.cssRules || this.rules
+  for (var i = 0, l = rules.length; i < l; i++) {
+    if(rules[i].selectorText.toLowerCase()===selector.toLowerCase()){
+      console.log('complementing existing rule for "'+selector+'"')
+      for (var attribute in rule) {
+        if(rule.hasOwnProperty(attribute)){
+          rules[i].style[toCssAttribute(attribute)] = rule[attribute]
+        }
+      }
+      break
+    }
+  }
+  if(i===l){
+    console.log('creating new rule for "'+selector+'"')
+    var str_rule = ''
+    for (var attribute in rule) {
+      if(rule.hasOwnProperty(attribute)){
+        str_rule += toCssAttribute(attribute)+':'+rule[attribute]+';'
+      }
+    }
+    this.insertRule(selector + '{'+str_rule+'}', rules.length)
+  }
+  function toCssAttribute(attribute) {
+    return attribute.replace(/[A-Z]/, '-$&', 'g').toLowerCase()
+  }
+}
+
+function getUnitInPixels (unit) {
+  var div = document.createElement('div')
+  div.style.height = '1'+unit
+  div.style.visibility = 'hidden'
+  div.style.position = 'fixed'
+  document.body.appendChild(div)
+  var height = div.getBoundingClientRect().height
+  document.body.removeChild(div)
+  return height
+}
+
 function find_needle_with_key (needle, key) {
 	var index = -1
   for (var i = 0, l = GRAPHS.length; i < l; i++) {
@@ -75,10 +114,15 @@ SECTION = document.getElementsByTagName('section')[0]
 AS = SECTION.getElementsByTagName('a')
 TAGS_CHECK = document.getElementById('tags').getElementsByTagName('input')
 
+// STYLE
+var REM = getUnitInPixels('rem')
+var SHEET = document.createElement('style'); SHEET.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(SHEET); SHEET = SHEET.styleSheet || SHEET.sheet
+
 // STICKY ASIDE
 var remember_scroll = 0
 var scrolled, old_scrollY = 0
 var cached_inner_height = window.innerHeight
+var cached_inner_width = window.innerWidth
 var base_height_on_aside = true
 var aside_rect, section_rect
 
@@ -107,7 +151,7 @@ document.getElementById('home').addEventListener('click', navigate.bind(undefine
 document.getElementById('prev').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('prev', event) } )
 document.getElementById('next').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('next', event) } )
 document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
-document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault(); scrollTo(0,0)} navigate('archives', event) } )
+document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault();} navigate('archives', event) } )
 document.getElementById('speed_input').addEventListener('change', function (event) { SPEED = this.value; localStorage.setItem('speed', this.value) })
 window.addEventListener('scroll', function (event) { scrolled = true })
 window.requestAnimationFrame(sticky_aside)
@@ -115,6 +159,7 @@ for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('ch
 
 window.addEventListener('resize', function () {
   cached_inner_height = window.innerHeight
+  cached_inner_width = window.innerWidth
   resize_el_height(document.getElementById('blurb'), !ARCHIVES)
   resize_el_height(document.getElementById('tags'), ARCHIVES)
   properly_size_svg()
@@ -156,6 +201,10 @@ window.onpopstate = function (event) {
 
 
 
+
+////////////
+// SCRIPT //
+////////////
 
 console.log('Entering site @ '+window.location.pathname);
 if(ARCHIVES)
@@ -317,7 +366,7 @@ function setup_archives (from_index) {
   // LOAD SVGS
   for (var index = 0, l = AS.length; index < l; index++) {
     if(!GRAPHS[index].is_processed)
-      load_svg(index, then)
+      setTimeout(load_svg.bind(undefined, index, then),500+index)
     else
       then(index)
   }
@@ -537,10 +586,9 @@ function resize_el_height (el, test) {
 }
 
 function position_main_slide(ref_rect){
-  var sheet = document.styleSheets[0]
-  var rules = sheet.cssRules || sheet.rules
-  rules[0].style.top = 'calc('+(-ref_rect.top)+'px + 1rem)'
-  rules[0].style.left = 'calc('+(-ref_rect.left)+'px + 30vw)'
+  SHEET.setRule('section a.expanded > div',{
+    transform: 'translate(calc(65vw - '+(ref_rect.left + (ref_rect.width+REM)/2)+'px), calc(50vh - '+(ref_rect.top + ref_rect.height/2)+'px)) scale('+((.7 * cached_inner_width - REM)/ref_rect.width)+', '+((cached_inner_height - 2*REM)/ref_rect.height)+')'
+  })
 }
 
 function update_logo_colors () {

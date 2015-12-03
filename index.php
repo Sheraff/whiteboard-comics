@@ -88,12 +88,6 @@
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
 	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>
 	<link rel="icon" type="image/png" href="/favicon.png">
-	<style>
-		section a.expanded>div{
-			top: 0;
-			left: -1rem;
-		}
-	</style>
 	<link href='/style.css' rel='stylesheet'>
 </head>
 <noscript><img src="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
