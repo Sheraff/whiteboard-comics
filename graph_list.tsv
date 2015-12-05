@@ -76,3 +76,9 @@ release	name	tags	author	source	credit
 2016-12-19	happiness=f(seasons)	morality
 2016-12-19	shame=f(commonality_of_problem)	morality	Indexed	http://thisisindexed.com/2011/09/how-empathy-happens/	By
 2016-12-19	income,expenses=f(materialism)	money,morality			
+2016-12-19	potential_breakup_harm,happiness=f(length_of_relationship)	relationships,morality			
+2016-12-20	feel_bad→set_goals→obsess	morality	Behavior Gap		Original idea by
+2016-12-20	possessions≠possessed	morality,money	Behavior Gap		By
+2016-12-20	present>future	morality,growing up	Behavior Gap		By
+2016-12-20	productivity=f(alternatives)	productivity	Behavior Gap		By
+2016-12-20	underconfidence≠overconfidence	morality	Behavior Gap		By
