@@ -1,11 +1,11 @@
 AddType image/svg+xml .svg .svgz
 
 RewriteEngine on
-RewriteRule ^/?archives/?$ /?archives=true
-RewriteRule ^chapon$ index.php?all=true
-RewriteRule ^([^/]*\))$ index.php?graph=$1
-RewriteRule ^graphs/(.*)$ svg.php?graph=$1
-RewriteRule ^sitemap(/)?(\.xml)?$ sitemap/index.php
+RewriteRule ^/?archives/?$ /?archives=true [L,NC]
+RewriteRule ^chapon$ index.php?all=true [L,NC]
+RewriteRule ^graphs/(.*)$ svg.php?graph=$1 [L,NC]
+RewriteRule ^sitemap(/)?(\.xml)?$ sitemap/index.php [L,NC]
+RewriteRule ^([^\.]*)$ index.php?graph=$1 [NC]
 
 ## EXPIRES CACHING ##
 # <IfModule mod_expires.c>
