@@ -82,6 +82,11 @@
 	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, charts, plots, graph, graphs, graphics, time, life, <? echo implode(', ', array_keys($tags_list)); ?>">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
+	<meta property="article:author" content="https://facebook.com/florian.pellet" />
+	<meta property="article:author:first_name" content="Florian" />
+	<meta property="article:author:last_name" content="Pellet" />
+	<meta property="article:tag" content="<? echo $archives ? '' : implode('"/><meta property="article:tag" content="', $graphs[$initial_index][tags]); ?>"/>
+  <meta property="article:published_time" content="<? echo date('c',$graphs[$initial_index][timestamp]); ?>" />
 	<meta property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
 	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>"/>
 	<base href="<? echo $base; ?>">
