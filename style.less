@@ -43,9 +43,6 @@ main svg, section svg{
 	max-width: 90%;
 	max-height: 90%;
 	overflow: visible;
-	[data-type="erase"]{
-		stroke-linejoin: bevel;
-	}
 	text{
 		fill: white;
 		font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', Arial;
@@ -61,6 +58,10 @@ main svg, section svg{
 		&:not([stroke-width]){
 			stroke-width: 4;
 		}
+	}
+	[data-type="erase"], [stroke='#FFFFFF']{
+		stroke-linejoin: bevel;
+		stroke-linecap: butt;
 	}
 }
 section{

@@ -34,10 +34,6 @@ section svg {
   max-height: 90%;
   overflow: visible;
 }
-main svg [data-type="erase"],
-section svg [data-type="erase"] {
-  stroke-linejoin: bevel;
-}
 main svg text,
 section svg text {
   fill: white;
@@ -69,6 +65,13 @@ section svg line:not([stroke-width]),
 main svg polyline:not([stroke-width]),
 section svg polyline:not([stroke-width]) {
   stroke-width: 4;
+}
+main svg [data-type="erase"],
+section svg [data-type="erase"],
+main svg [stroke='#FFFFFF'],
+section svg [stroke='#FFFFFF'] {
+  stroke-linejoin: bevel;
+  stroke-linecap: butt;
 }
 section {
   position: absolute;
