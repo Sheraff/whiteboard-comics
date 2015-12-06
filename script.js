@@ -351,8 +351,10 @@ function setup_graph (index) {
   	update_logo_colors()
 
     // preload
-    if(GRAPHS[index+1])
+    if(GRAPHS[index+1] && !GRAPHS[index+1].is_processed)
       load_svg(index+1)
+    else if(GRAPHS[index-1] && !GRAPHS[index-1].is_processed)
+      load_svg(index-1)
   }
 }
 
