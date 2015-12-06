@@ -959,6 +959,7 @@ function interrupt_drawing_element_svg (svg) {
     var computedStyle = window.getComputedStyle(element)
     element.style.strokeDasharray = computedStyle.getPropertyValue('stroke-dasharray')
     element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
+    element.style.opacity = computedStyle.getPropertyValue('opacity')
     element.style.transition = 'none'
   })
 }
@@ -973,6 +974,7 @@ function force_finish_drawing_element_svg (svg) {
       element.style.strokeDashoffset = '0'
     }
     element.style.transition = 'none'
+    element.style.opacity = '1'
   })
 }
 
@@ -1000,6 +1002,7 @@ function prepare_drawing_element (element) {
   var length = element.getTotalLength()
 	element.style.strokeDasharray = length + ' ' + length
 	element.style.strokeDashoffset = length
+  element.style.opacity = '0'
 }
 
 function start_drawing_element (element, delay, callback) {
@@ -1019,9 +1022,10 @@ function start_drawing_element (element, delay, callback) {
 	var duration = .1/SPEED*Math.pow(length, speed_power)
 
 	element.getBoundingClientRect() // TODO: this might need to be uncommented to trigger something (like a recalculation of some sorts)
-	element.style.transition = 'stroke-dashoffset ' + duration + 's ' + smoothing + ' ' + delay + 's'
+	element.style.transition = 'stroke-dashoffset ' + duration + 's ' + smoothing + ' ' + delay + 's, opacity 0s '+ delay + 's'
 	element.style.strokeDashoffset = '0'
 	element.style.visibility = 'visible'
+  element.style.opacity = '1'
 
 	if (callback)
 		setTimeout(callback, (delay+duration)*1000)
