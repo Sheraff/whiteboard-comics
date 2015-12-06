@@ -38,7 +38,7 @@
 		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" x1="765.1" y1="491.9" x2="765.1" y2="513.9"/>
 	<text transform="matrix(1 0 0 1 696.2751 544.9575)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74">alarm</tspan><tspan x="6.6" y="30" font-family="'PermanentMarker'" font-size="30.74">clock</tspan><tspan x="15.6" y="60" font-family="'PermanentMarker'" font-size="30.74">rings</tspan></text>
 </g>
-<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 38.9985 411.0044)" font-family="'PermanentMarker'" font-size="30.74">thoughts</text>
+<text transform="matrix(0 -1 1 0 38.9985 411.0044)" font-family="'PermanentMarker'" font-size="30.74">thoughts</text>
 <text transform="matrix(1 0 0 1 30.61 155.1821)" fill="#626CB2" font-family="'PermanentMarker'" font-size="30.74">item #1 to #4 on todo-list</text>
 <path fill="none" stroke="#626CB2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M75.3,496.3c49.6-25.2,88.5-70.6,105.8-123.4c6.2-19,9.8-39,18.4-57c8.7-18,23.9-34.5,43.6-37.7c25.5-4.2,49.5,14.8,62.8,36.9

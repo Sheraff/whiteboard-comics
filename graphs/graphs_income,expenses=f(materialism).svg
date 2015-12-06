@@ -7,13 +7,13 @@
 	c-12,7.6-24.4,15.6-31.2,28.1S8.9,64.8,21,72.2c9,5.5,21,3.4,30.1-2s16.1-13.6,23.7-21C100.3,24.8,134.1,9.3,169.2,6
 	c-7.6,14.7,2.4,34,17.5,40.7c15.1,6.7,33,3.3,48-3.8c14.9-7.1,27.9-17.7,42.1-26.2c14.2-8.5,30.5-15.1,47-12.9
 	c15.7,2.1,29.2,11.8,42,21.3c10.3,7.6,20.6,15.3,30.9,22.9c8.6,6.4,17.9,13.6,20.5,24c4.6,18.5-13.6,35.4-14.2,54.5
-	c-0.8,22.6,24.5,39.1,47.1,37.6c22.6-1.5,42.3-15.2,60.7-28.4c12.2,18.2-0.9,43.6-18.9,56s-40.4,17.3-58.5,29.5
-	c-31.8,21.5-45.3,61.3-52.6,98.9c-9.3,47.6-11.9,96.5-7.9,144.9c-8.1,14.7-31.3,11.7-43.8,0.4s-19.4-27.7-31.8-39
+	c-0.8,22.6,24.5,39.1,47.1,37.6c22.6-1.5,42.3-15.2,60.7-28.4c12.2,18.2-0.9,43.6-18.9,56c-18.1,12.3-40.4,17.3-58.5,29.5
+	c-31.8,21.5-45.3,61.3-52.6,98.9c-9.3,47.6-11.9,96.5-7.9,144.9c-8.1,14.7-31.3,11.7-43.8,0.4c-12.5-11.3-19.4-27.7-31.8-39
 	s-35.6-14.6-43.8,0.1c-4.7,8.4-2.3,18.9-1.4,28.5c0.9,9.6-1.3,21.5-10.4,24.9c-7.3,2.8-15.6-1.7-20.4-7.9
 	c-4.8-6.2-7.2-13.8-10.9-20.7c-13.9-25.6-44.9-38.1-74-38.2s-57.2,10-84.9,19.3c-10.4,3.5-23.7,6.3-31-1.9c-4.9-5.5-4.8-13.6-4.4-21
 	c2.8-55.2,5.5-110.4,8.3-165.6c1.2-23.7,2.4-47.4,3.5-71c1-19.2,2.1-39,10.4-56.4C47.6,96.7,66,81.9,86.5,73.8s43-9.9,64.9-8.7
-	c10.9,0.6,22,2,31.6,7.2c9.6,5.2,17.4,14.8,17.7,25.7c0.4,15.8-13.9,27.4-25.3,38.3S153.8,165,163,177.8c8.4,11.6,27.2,9.4,38.2,0.2
-	c11-9.2,16.8-22.9,24.8-34.8c30.4-45.3,97.8-60.5,144.7-32.8c17,10.1,32.4,29.2,26.5,48.1c-3.4,11.1-13.6,19.1-24.6,23.2
+	c10.9,0.6,22,2,31.6,7.2s17.4,14.8,17.7,25.7c0.4,15.8-13.9,27.4-25.3,38.3S153.8,165,163,177.8c8.4,11.6,27.2,9.4,38.2,0.2
+	s16.8-22.9,24.8-34.8c30.4-45.3,97.8-60.5,144.7-32.8c17,10.1,32.4,29.2,26.5,48.1c-3.4,11.1-13.6,19.1-24.6,23.2
 	c-10.9,4.1-22.8,4.9-34.4,6.2C205.4,203.4,84.4,296.9,36.1,421.7"/>
 <g>
 	
@@ -27,11 +27,11 @@
 		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
 		375.7,403.2 397.7,425.7 375.7,448.2 	"/>
 </g>
-<text transform="matrix(1 0 0 1 220.1559 475.559)" font-family="'PermanentMarker'" font-size="30.74">materialism</text>
-<text transform="matrix(1 0 0 1 7.3248 57.5133)" fill="#CA974D" font-family="'PermanentMarker'" font-size="30.74">how much your life costs</text>
+<text transform="matrix(1 0 0 1 220.156 475.5591)" font-family="'PermanentMarker'" font-size="30.74">materialism</text>
+<text transform="matrix(1 0 0 1 7.325 57.5134)" fill="#CA974D" font-family="'PermanentMarker'" font-size="30.74">how much your life costs</text>
 <path fill="none" stroke="#CA974D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M42.9,418.9c70.2,0,160.8,4,221.6-22c173.3-77,151.4-250,153-369"/>
-<text transform="matrix(1 0 0 1 7.1295 27.5072)" fill="#6EC066" font-family="'PermanentMarker'" font-size="30.74">how much money you have</text>
+<text transform="matrix(1 0 0 1 7.1296 27.5073)" fill="#6EC066" font-family="'PermanentMarker'" font-size="30.74">how much money you have</text>
 <path fill="none" stroke="#6EC066" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M42.9,418.9c22.1-34.5,38.3-73.8,63.9-105.4c32.4-40.3,65.6-67.1,109.9-91.1c71.6-38.3,144-53.7,222.3-66.1
 	c29-4.8,57.9-11.5,86.9-14.4"/>
@@ -39,7 +39,7 @@
 	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M318.4,106.3
 		c16.2,0,32.3,0,48.5,0c6.2,0,13.3,0.4,17.1,5.3c5.6,7.2-0.3,17.7,1.4,26.7c1.4,7.6,9.2,13.4,16.9,12.8"/>
 	<g>
-		<text transform="matrix(1 0 0 1 184.234 113.2199)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74">point of</tspan><tspan x="-54.8" y="30" font-family="'PermanentMarker'" font-size="30.74">neverending</tspan><tspan x="-51.3" y="60" font-family="'PermanentMarker'" font-size="30.74">frustration</tspan></text>
+		<text transform="matrix(1 0 0 1 184.2341 113.22)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74">point of</tspan><tspan x="-54.8" y="30" font-family="'PermanentMarker'" font-size="30.74">neverending</tspan><tspan x="-51.3" y="60" font-family="'PermanentMarker'" font-size="30.74">frustration</tspan></text>
 	</g>
 </g>
 </svg>
