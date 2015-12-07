@@ -314,12 +314,12 @@ function setup_graph (index) {
   	if(GRAPHS[index].author){
       var span = document.createElement('span')
       span.setAttribute('id', 'authorship')
-      span.innerHTML = GRAPHS[index].credit + ' '
+      span.textContent = GRAPHS[index].credit + ' '
       var a = document.createElement('a')
       a.className = 'credits'
       a.setAttribute('href', GRAPHS[index].source)
       a.setAttribute('target', '_blank')
-      a.innerHTML = GRAPHS[index].author
+      a.textContent = GRAPHS[index].author
       span.appendChild(a)
 		  MAIN.appendChild(span)
     }
@@ -328,7 +328,7 @@ function setup_graph (index) {
     var date_obj = new Date(GRAPHS[index].release[1] + ' / ' + GRAPHS[index].release[2] + ' / ' + GRAPHS[index].release[0])
     var pubdate = document.createElement('span')
     pubdate.id = 'pubdate'
-    pubdate.innerHTML = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[index].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[index].release[0]
+    pubdate.textContent = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[index].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[index].release[0]
     MAIN.appendChild(pubdate)
 
     // png
@@ -455,9 +455,9 @@ function filter (event){
   for (var i = 0; i < tag_list.length; i++) {
     var counter = document.getElementById('tags').querySelector('label[for='+TAGS_CHECK[i+1].getAttribute('id')+'] div')
     if(temp_tags[tag_list[i]])
-      counter.innerHTML = temp_tags[tag_list[i]]
+      counter.textContent = temp_tags[tag_list[i]]
     else
-      counter.innerHTML = 0
+      counter.textContent = 0
   }
 
 }
@@ -793,7 +793,7 @@ function svg_to_png (index, callback) {
 
   // add watermark on bottom left
   var text = document.createElementNS(SVG_NAMESPACE, 'text')
-  text.innerHTML = 'whiteboard-comics.com' + (GRAPHS[index].author ? (' & ' + GRAPHS[index].author) : '')
+  text.textContent = 'whiteboard-comics.com' + (GRAPHS[index].author ? (' & ' + GRAPHS[index].author) : '')
   text.setAttribute('id', 'watermark')
   text.style.fontFamily = "'Droid Serif', Georgia, serif"
   text.style.opacity = .8
