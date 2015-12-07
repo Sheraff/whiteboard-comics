@@ -75,7 +75,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 	<meta charset="utf-8">
-	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name] ?></title>
+	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?></title>
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed for Whiteboard Comics" href="/rss/" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="<? echo ($archives?$archive_text:$bites[description]); ?>">
@@ -87,8 +87,10 @@
 	<meta property="article:author:last_name" content="Pellet" />
 	<meta property="article:tag" content="<? echo $archives ? '' : implode('"/><meta property="article:tag" content="', $graphs[$initial_index][tags]); ?>"/>
   <meta property="article:published_time" content="<? echo date('c',$graphs[$initial_index][timestamp]); ?>" />
-	<meta property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
-	<meta property="og:image" content="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>"/>
+	<meta name="twitter:description" property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
+	<meta name="twitter:image" property="og:image" content="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>"/>
+	<meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $graphs[$initial_index][name]; ?>"/>
+	<meta name="twitter:title" property="og:title" content="Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?>"/>
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
 	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>
@@ -195,6 +197,8 @@
 
 
 <!-- TODO
+	BUGS
+	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
 
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
