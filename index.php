@@ -52,8 +52,8 @@
 	foreach ($globbed as $key => $file) {
 		$letter = str_replace(['alphabet_', '.svg'], '', basename($file));
 		$letter = str_replace(
-			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash'],
-			['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/'],
+			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash','percent'],
+			['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/','%'],
 			$letter
 		);
 		$letters[] = [
@@ -77,7 +77,7 @@
 	<meta charset="utf-8">
 	<title>Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?></title>
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed for Whiteboard Comics" href="/rss/" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 	<meta name="description" content="<? echo ($archives?$archive_text:$bites[description]); ?>">
 	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, charts, plots, graph, graphs, graphics, time, life, <? echo implode(', ', array_keys($tags_list)); ?>">
 	<meta name="author" content="Florian Pellet">
