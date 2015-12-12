@@ -118,6 +118,13 @@ TAGS_CHECK = document.getElementById('tags').getElementsByTagName('input')
 var REM = getUnitInPixels('rem')
 var SHEET = document.createElement('style'); SHEET.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(SHEET); SHEET = SHEET.styleSheet || SHEET.sheet
 
+// LOGO
+LOGO_ARROW_PATH = document.getElementById('arrowpath')
+LOGO_ARROW_HEAD = document.getElementById('arrowhead')
+var logo_full_path_length = LOGO_ARROW_PATH.getTotalLength()
+var logo_body_length = 157.75
+LOGO_ARROW_PATH.style.strokeDasharray = logo_body_length + ' ' + logo_body_length*3
+
 // STICKY ASIDE
 var remember_scroll = 0
 var scrolled, old_scrollY = 0
@@ -261,6 +268,7 @@ function setup_graph (index) {
     resize_el_height(document.getElementById('tags'), ARCHIVES)
     sizes_have_changed(true, true)
 
+    update_logo_colors(index)
     then(index)
   } else {
     console.log('graph setup from GRAPHS mode')
@@ -291,6 +299,7 @@ function setup_graph (index) {
     }
     load_svg(index, function(index){
       loaded = true
+      update_logo_colors(index)
       console.log('graph #'+index+' loaded');
       if(erased)
         then(index)
@@ -348,7 +357,6 @@ function setup_graph (index) {
     update_page_title(GRAPHS[index].formatted_name)
     update_link_state(index)
   	properly_size_svg(svg)
-  	update_logo_colors()
 
     // preload
     if(GRAPHS[index+1] && !GRAPHS[index+1].is_processed)
@@ -467,6 +475,8 @@ function navigate (direction, event) {
 	event.preventDefault()
 
   console.log('navigate to '+direction)
+
+  logo_start_moving()
 
   if(direction==='archives') // to archives
 		return setup_archives(INDEX)
@@ -593,12 +603,10 @@ function position_main_slide(ref_rect){
   })
 }
 
-function update_logo_colors () {
-  var arrow = document.querySelectorAll('#logo path[stroke]:not([stroke="#000000"]), #logo polyline[stroke]:not([stroke="#000000"])')
-  var color = MAIN.querySelector('svg path[stroke], svg polyline[stroke]').getAttribute('stroke')
-  for (var i = 0, l = arrow.length; i < l; i++) {
-    arrow[i].style.stroke = color
-  }
+function update_logo_colors (index) {
+  var color = GRAPHS[index].content.querySelector('svg path[stroke], svg polyline[stroke]').getAttribute('stroke')
+  LOGO_ARROW_PATH.style.stroke = color
+  LOGO_ARROW_HEAD.style.stroke = color
 }
 
 function update_link_state (index) {
@@ -1031,4 +1039,35 @@ function start_drawing_element (element, delay, callback) {
 		setTimeout(callback, (delay+duration)*1000)
 
   return duration
+}
+
+
+////////////////////////
+// LOGO SVG ANIMATION //
+////////////////////////
+
+var ANIMATING_LOGO
+function logo_start_moving () {
+  if(!ANIMATING_LOGO){
+    ANIMATING_LOGO = true
+    window.requestAnimationFrame(logo_move_along.bind(undefined, 1000, -1))
+  }
+}
+function logo_move_along (duration, origin, timestamp) {
+  if(origin===-1)
+    origin = timestamp
+
+  var delta = timestamp - origin
+  if(delta > duration)
+    delta = duration
+
+  var ratio = delta / duration
+
+  var point = LOGO_ARROW_PATH.getPointAtLength(ratio * logo_full_path_length)
+  LOGO_ARROW_HEAD.style.transform = 'translate('+(point.x - 149.8)+'px, '+(point.y - 6)+'px)'
+  LOGO_ARROW_PATH.style.strokeDashoffset = logo_body_length - (1+ratio) * logo_full_path_length
+  if(delta<duration)
+    window.requestAnimationFrame(logo_move_along.bind(undefined, duration, origin))
+  else
+    ANIMATING_LOGO = false
 }

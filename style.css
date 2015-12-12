@@ -282,10 +282,11 @@ aside #logo {
   height: auto;
   padding: 5px;
   max-height: 5rem;
+  overflow: visible;
 }
 aside #logo path,
 aside #logo polyline {
-  transition: stroke 1s ease-in 1s;
+  transition: stroke 1s ease-in;
 }
 aside h2 {
   height: 5rem;
