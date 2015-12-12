@@ -214,7 +214,6 @@
 	- animate ASIDE with "transform"
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 	- if possible, try and use .getBoundingClientRect() less often
-	- loading is heavy when opening archives for the first time (with many graphs released) ⇒ only load visible vignettes (+ margin)
 
 	UX
 	- attract attention to the possibility to see another graph (arrows / keyboard)

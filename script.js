@@ -133,6 +133,10 @@ var cached_inner_width = window.innerWidth
 var base_height_on_aside = true
 var aside_rect, section_rect
 
+// LOADING AS BASED ON SCROLL
+var loading_as = {}
+for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = -1 }
+
 //////////
 // INIT //
 //////////
@@ -195,7 +199,8 @@ window.onpopstate = function (event) {
 	if(!event.state) // invalid
 		return
 
-    console.log('new state poped: name='+event.state.name)
+  console.log('new state poped: name='+event.state.name)
+  logo_start_moving()
 
   if(event.state.name==='archives') // archives
 		return setup_archives()
@@ -379,17 +384,6 @@ function setup_archives (from_index) {
   rewrite_url('archives')
   update_page_title('Archives')
 
-  // LOAD SVGS
-  for (var index = 0, l = AS.length; index < l; index++) {
-    if(!GRAPHS[index].is_processed)
-      setTimeout(load_svg.bind(undefined, index, then),100*index)
-    else
-      then(index)
-  }
-  function then(index){
-    force_finish_drawing_element_svg(GRAPHS[index].content)
-  }
-
   // LAYOUT
   // apply styles to aside
   ASIDE.className = 'archives'
@@ -412,6 +406,37 @@ function setup_archives (from_index) {
   sizes_have_changed(true, true)
   window.scrollTo(0,remember_scroll)
 
+  // LOAD SVGS
+  check_each_vignette_for_loading_position(undefined, true)
+  window.requestAnimationFrame(which_vignette_should_load)
+}
+
+function which_vignette_should_load (timestamp) {
+  if(!ARCHIVES)
+    return
+  check_each_vignette_for_loading_position(timestamp)
+  window.requestAnimationFrame(which_vignette_should_load)
+}
+function check_each_vignette_for_loading_position(timestamp, force){
+  var margin = cached_inner_height / 2
+  var loading_window = [
+    window.scrollY - margin,
+    window.scrollY + cached_inner_height + margin
+  ]
+  for (var i = 0, l = AS.length; i < l; i++) {
+    if(GRAPHS[i].is_processed)
+      delete loading_as[i]
+    else if(AS[i].offsetTop > loading_window[0] && AS[i].offsetTop < loading_window[1]){
+      if(loading_as[i]){
+        if(!force && loading_as[i]===-1){
+          loading_as[i] = timestamp
+        }else if(force || timestamp - loading_as[i] > 300){
+          delete loading_as[i]
+          load_svg(i)
+        }
+      }
+    }
+  }
 }
 
 function filter (event){
@@ -494,7 +519,7 @@ function navigate (direction, event) {
   console.log('wrong navigation instructions')
 }
 
-function sizes_have_changed(aside_changed, section_changed) {
+function sizes_have_changed (aside_changed, section_changed) {
   // ARCHIVES flag should be properly set before calling this function
   var current_aside_rect = ASIDE.getBoundingClientRect()
   if(ARCHIVES){
@@ -588,8 +613,8 @@ function sticky_aside() {
 //////////////////////////////////
 // includes styling, updating links, url rewriting, title update
 
-function resize_el_height (el, test) {
-  if(test){
+function resize_el_height (el, flag) {
+  if(flag){
     var el_clone = el.cloneNode(true)
     el_clone.style.height = 'auto'
     el.parentElement.insertBefore(el_clone, el)
@@ -650,37 +675,50 @@ function update_page_title (title) {
 ///////////////////////////
 
 function load_svg (index, callback, increment) {
+  // deal with multiple loading requests for the same graph
+  if(GRAPHS[index].being_loaded && !GRAPHS[index].is_processed){
+    console.warn('graph #'+index+' was already requested, queing up callbacks')
+    GRAPHS[index].loading_callbacks.push(callback)
+    return
+  }
+  GRAPHS[index].being_loaded = true
+  GRAPHS[index].loading_callbacks = callback ? [callback] : []
+  // skip loading if already loaded
 	if(GRAPHS[index] && GRAPHS[index].content)
-		return preprocess_svg(index, callback)
+		return preprocess_svg(index)
 
   console.log('loading graph #'+index)
 
   var increment = typeof increment === 'undefined' ? 0 : increment
 
   var httpRequest = new XMLHttpRequest()
-	httpRequest.onreadystatechange = loaded_svg.bind(undefined, index, httpRequest, callback, increment)
+	httpRequest.onreadystatechange = loaded_svg.bind(undefined, index, httpRequest, increment)
 	httpRequest.open('GET', GRAPHS[index].path)
 	httpRequest.send()
 
-  function loaded_svg (index, httpRequest, callback, increment) {
+  function loaded_svg (index, httpRequest, increment) {
   	if (httpRequest.readyState === XMLHttpRequest.DONE) {
   		if (httpRequest.status === 200) {
         var temp_div = document.createElement('div')
         temp_div.innerHTML = httpRequest.responseText
   			GRAPHS[index].content = temp_div.firstElementChild
-  			preprocess_svg(index, callback)
+  			preprocess_svg(index)
   		} else {
         if(increment < 10)
-  			  setTimeout(load_svg.bind(undefined, index, callback, increment+1), 1000)
+  			  setTimeout(load_svg.bind(undefined, index, undefined, increment+1), 1000)
         else{
-          console.log('couldnt load graph '+index+' after 10 trials, giving up.')
-          if(callback) callback(false)
+          console.log('couldnt load graph '+index+' after '+increment+' trials, giving up.')
+          for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
+            GRAPHS[index].loading_callbacks[i](false)
+          }
+          GRAPHS[index].being_loaded = false
+          delete GRAPHS[index].loading_callbacks
         }
   		}
   	}
   }
 
-  function preprocess_svg (index, callback) {
+  function preprocess_svg (index) {
     if(!GRAPHS[index].is_processed){
       console.log('preprocessing graph #'+index)
       var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.getElementsByTagName('path')[0])
@@ -692,7 +730,11 @@ function load_svg (index, callback, increment) {
       GRAPHS[index].is_processed = true
       properly_size_svg(GRAPHS[index].content)
     }
-    if(callback) callback(index)
+    for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
+      GRAPHS[index].loading_callbacks[i](index)
+    }
+    GRAPHS[index].being_loaded = false
+    delete GRAPHS[index].loading_callbacks
   }
 }
 
