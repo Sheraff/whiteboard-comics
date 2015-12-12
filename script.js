@@ -1050,7 +1050,7 @@ var ANIMATING_LOGO
 function logo_start_moving () {
   if(!ANIMATING_LOGO){
     ANIMATING_LOGO = true
-    window.requestAnimationFrame(logo_move_along.bind(undefined, 1000, -1))
+    window.requestAnimationFrame(logo_move_along.bind(undefined, 1250, -1))
   }
 }
 function logo_move_along (duration, origin, timestamp) {

@@ -286,7 +286,7 @@ aside #logo {
 }
 aside #logo path,
 aside #logo polyline {
-  transition: stroke 1s ease-in;
+  transition: stroke 1.25s ease-in;
 }
 aside h2 {
   height: 5rem;
