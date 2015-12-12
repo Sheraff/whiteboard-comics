@@ -139,9 +139,26 @@ var aside_rect, section_rect
 var loading_as = {}
 for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = {requested: false} }
 
+
 //////////
 // INIT //
 //////////
+
+// LOAD FONTS
+WebFontConfig = {
+  google: { families: [ 'Droid+Serif::latin' ] },
+  active: function() {
+    resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+    resize_el_height(document.getElementById('tags'), ARCHIVES)
+    sizes_have_changed(false, true)
+  },
+}
+var wf = document.createElement('script')
+wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'
+wf.type = 'text/javascript'
+wf.async = 'true'
+var s = document.getElementsByTagName('script')[0]
+s.parentNode.insertBefore(wf, s)
 
 // COMPUTE & APPLY data from localStorage
 if(ANIMATE==='false') ANIMATE = false
