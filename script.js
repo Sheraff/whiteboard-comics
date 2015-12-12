@@ -106,6 +106,7 @@ SPEED = localStorage.getItem('speed') || 4
 SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
+MAX_SIMULTANEOUS_SVG_REQUESTS = 4
 
 // DOM
 ASIDE = document.getElementsByTagName('aside')[0]
@@ -135,7 +136,7 @@ var aside_rect, section_rect
 
 // LOADING AS BASED ON SCROLL
 var loading_as = {}
-for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = -1 }
+for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = {requested: false} }
 
 //////////
 // INIT //
@@ -164,7 +165,10 @@ document.getElementById('next').addEventListener('click', function(event) { if(t
 document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
 document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault();} navigate('archives', event) } )
 document.getElementById('speed_input').addEventListener('change', function (event) { SPEED = this.value; localStorage.setItem('speed', this.value) })
-window.addEventListener('scroll', function (event) { scrolled = true })
+window.addEventListener('scroll', function (event) {
+  which_vignette_should_load()
+  scrolled = true
+})
 window.requestAnimationFrame(sticky_aside)
 for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('change', filter) }
 
@@ -174,6 +178,7 @@ window.addEventListener('resize', function () {
   resize_el_height(document.getElementById('blurb'), !ARCHIVES)
   resize_el_height(document.getElementById('tags'), ARCHIVES)
   properly_size_svg()
+  which_vignette_should_load()
   sizes_have_changed(false, true)
 })
 
@@ -274,11 +279,15 @@ function setup_graph (index) {
     resize_el_height(document.getElementById('tags'), ARCHIVES)
     sizes_have_changed(true, true)
 
-    update_logo_colors(index)
-    rewrite_url(GRAPHS[index].name)
-    update_page_title(GRAPHS[index].formatted_name)
-    update_link_state(index)
-    then(index)
+    load_svg(index, function(index){
+      if(currently_loading_index!==index)
+        return
+      update_logo_colors(index)
+      rewrite_url(GRAPHS[index].name)
+      update_page_title(GRAPHS[index].formatted_name)
+      console.log('graph #'+index+' loaded');
+      then(index)
+    })
   } else {
     console.log('graph setup from GRAPHS mode')
     ARCHIVES = false
@@ -307,6 +316,8 @@ function setup_graph (index) {
       erased = true
     }
     load_svg(index, function(index){
+      if(currently_loading_index!==index)
+        return
       loaded = true
       update_logo_colors(index)
       rewrite_url(GRAPHS[index].name)
@@ -318,6 +329,8 @@ function setup_graph (index) {
   }
 
   function then(index) {
+    if(currently_loading_index!==index)
+      return
     console.log('graph #'+index+' setup, second part')
     MAIN.innerHTML = ''
     MAIN.setAttribute('data-index', index)
@@ -377,6 +390,9 @@ function setup_graph (index) {
 }
 
 function setup_archives (from_index) {
+  if(currently_loading_index==='archives')
+    return
+  currently_loading_index = 'archives'
   var from_index = from_index || 0
   console.log('setting up archives from #'+from_index)
 
@@ -407,36 +423,45 @@ function setup_archives (from_index) {
   window.scrollTo(0,remember_scroll)
 
   // LOAD SVGS
-  check_each_vignette_for_loading_position(undefined, true)
-  window.requestAnimationFrame(which_vignette_should_load)
+  check_each_vignette_for_loading_position(true)
 }
 
-function which_vignette_should_load (timestamp) {
+var which_vignette_should_load_id
+function which_vignette_should_load () {
   if(!ARCHIVES)
     return
-  check_each_vignette_for_loading_position(timestamp)
-  window.requestAnimationFrame(which_vignette_should_load)
+  if(which_vignette_should_load_id)
+    window.cancelAnimationFrame(which_vignette_should_load_id)
+  which_vignette_should_load_id = window.requestAnimationFrame(check_each_vignette_for_loading_position)
 }
-function check_each_vignette_for_loading_position(timestamp, force){
+function check_each_vignette_for_loading_position(force){
   var margin = cached_inner_height / 2
   var loading_window = [
     window.scrollY - margin,
     window.scrollY + cached_inner_height + margin
   ]
   for (var i = 0, l = AS.length; i < l; i++) {
-    if(GRAPHS[i].is_processed)
+    if(GRAPHS[i].is_processed || GRAPHS[i].being_loaded)
       delete loading_as[i]
-    else if(AS[i].offsetTop > loading_window[0] && AS[i].offsetTop < loading_window[1]){
-      if(loading_as[i]){
-        if(!force && loading_as[i]===-1){
-          loading_as[i] = timestamp
-        }else if(force || timestamp - loading_as[i] > 300){
-          delete loading_as[i]
-          load_svg(i)
+    else if(loading_as[i] && !loading_as[i].hidden && !loading_as[i].requested && a_is_in_window(i, loading_window)){
+      loading_as[i].requested = true
+      setTimeout((function(index, margin){
+        var loading_window = [
+          window.scrollY - margin,
+          window.scrollY + cached_inner_height + margin
+        ]
+        if(loading_as[index] && !loading_as[index].hidden && a_is_in_window(index, loading_window)){
+          delete loading_as[index]
+          load_svg(index)
+        } else if(loading_as[index]){
+          loading_as[index].requested = false
         }
-      }
+      }).bind(undefined, i, margin), 300)
     }
   }
+}
+function a_is_in_window (i, loading_window) {
+  return (AS[i].offsetTop > loading_window[0] && AS[i].offsetTop < loading_window[1])
 }
 
 function filter (event){
@@ -474,11 +499,17 @@ function filter (event){
 
   // remove unfitting graphs // TODO: remove with style / animation ?
   for (var i = 0; i < AS.length; i++) {
-    if(ins.indexOf(i)!==-1)
+    if(ins.indexOf(i)!==-1){
+      if(loading_as[i])
+        loading_as[i].hidden = false
       AS[i].style.display = 'inline-block'
-    else
+    }else{
+      if(loading_as[i])
+        loading_as[i].hidden = true
       AS[i].style.display = 'none'
+    }
   }
+  which_vignette_should_load()
   sizes_have_changed(false, true)
 
   // update counts
@@ -674,6 +705,7 @@ function update_page_title (title) {
 // AJAX & PRE-PROCESSING //
 ///////////////////////////
 
+var svg_loading_queue = []
 function load_svg (index, callback, increment) {
   // deal with multiple loading requests for the same graph
   if(GRAPHS[index].being_loaded && !GRAPHS[index].is_processed){
@@ -686,6 +718,22 @@ function load_svg (index, callback, increment) {
   // skip loading if already loaded
 	if(GRAPHS[index] && GRAPHS[index].content)
 		return preprocess_svg(index)
+
+  if(!svg_loading_queue){
+    svg_loading_queue = []
+  }
+  if(svg_loading_queue.length<MAX_SIMULTANEOUS_SVG_REQUESTS){
+    svg_loading_queue.push(index)
+  }
+  var index_in_queue = svg_loading_queue.indexOf(index)
+  if(index_in_queue===-1) {
+    svg_loading_queue.push(index)
+    GRAPHS[index].being_loaded = false
+    console.log('queueing #'+index)
+    return
+  } else if (index_in_queue >= MAX_SIMULTANEOUS_SVG_REQUESTS) {
+    return
+  }
 
   console.log('loading graph #'+index)
 
@@ -707,9 +755,10 @@ function load_svg (index, callback, increment) {
         if(increment < 10)
   			  setTimeout(load_svg.bind(undefined, index, undefined, increment+1), 1000)
         else{
-          console.log('couldnt load graph '+index+' after '+increment+' trials, giving up.')
+          console.warn('couldnt load graph '+index+' after '+increment+' trials, giving up.')
           for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
-            GRAPHS[index].loading_callbacks[i](false)
+            if(GRAPHS[index].loading_callbacks[i])
+              GRAPHS[index].loading_callbacks[i](false)
           }
           GRAPHS[index].being_loaded = false
           delete GRAPHS[index].loading_callbacks
@@ -721,7 +770,7 @@ function load_svg (index, callback, increment) {
   function preprocess_svg (index) {
     if(!GRAPHS[index].is_processed){
       console.log('preprocessing graph #'+index)
-      var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.getElementsByTagName('path')[0])
+      var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.querySelector('path[stroke="#FFFFFF"]'))
       erase.setAttribute('data-type', 'erase')
       erase.setAttribute('stroke', 'transparent')
       GRAPHS[index].content.appendChild(erase)
@@ -731,10 +780,14 @@ function load_svg (index, callback, increment) {
       properly_size_svg(GRAPHS[index].content)
     }
     for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
-      GRAPHS[index].loading_callbacks[i](index)
+      if(GRAPHS[index].loading_callbacks[i])
+        GRAPHS[index].loading_callbacks[i](index)
     }
     GRAPHS[index].being_loaded = false
     delete GRAPHS[index].loading_callbacks
+    svg_loading_queue.shift()
+    if(svg_loading_queue.length>=MAX_SIMULTANEOUS_SVG_REQUESTS)
+      load_svg(svg_loading_queue[MAX_SIMULTANEOUS_SVG_REQUESTS-1])
   }
 }
 
@@ -907,7 +960,7 @@ function rewrite_with_paths (svg) {
   function replace_span (reference_element, is_text_long) {
 		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
 			console.log(reference_element.childNodes)
-			return console.log('this node still has children')
+			return console.warn('this node still has children')
 		}
 
 		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
@@ -953,7 +1006,7 @@ function rewrite_with_paths (svg) {
         return LETTERS[i]
       }
 		}
-		console.log('letter "'+letter+'" not found')
+		console.warn('letter "'+letter+'" not found')
 		return false
 	}
 
