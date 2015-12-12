@@ -107,7 +107,7 @@ SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = false
+LOGGING = true
 
 // DOM
 ASIDE = document.getElementsByTagName('aside')[0]
@@ -737,16 +737,20 @@ function load_svg (index, callback, increment) {
   }
   GRAPHS[index].being_loaded = true
   GRAPHS[index].loading_callbacks = callback ? [callback] : []
-  // skip loading if already loaded
-	if(GRAPHS[index] && GRAPHS[index].content)
-		return preprocess_svg(index)
 
+  // create queue and add `index` to it
   if(!svg_loading_queue){
     svg_loading_queue = []
   }
   if(svg_loading_queue.length<MAX_SIMULTANEOUS_SVG_REQUESTS){
     svg_loading_queue.push(index)
   }
+
+  // skip loading if already loaded
+	if(GRAPHS[index] && GRAPHS[index].content)
+		return preprocess_svg(index)
+
+  // return if already in queue or MAX_SIMULTANEOUS_SVG_REQUESTS reached
   var index_in_queue = svg_loading_queue.indexOf(index)
   if(index_in_queue===-1) {
     svg_loading_queue.push(index)
