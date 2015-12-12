@@ -236,10 +236,11 @@ var currently_loading_index
 function setup_graph (index) {
   var index = index || 0
   if(!ARCHIVES && index === currently_loading_index){
-    console.log('will not setup graph: asking for #'+index+' and already loading/showing #'+currently_loading_index);
+    console.warn('will not setup graph: asking for #'+index+' and already loading/showing #'+currently_loading_index);
     return
   }
   currently_loading_index = index
+  logo_start_moving()
   console.log('setting up graph #'+index)
 
   if(ARCHIVES){
@@ -269,6 +270,9 @@ function setup_graph (index) {
     sizes_have_changed(true, true)
 
     update_logo_colors(index)
+    rewrite_url(GRAPHS[index].name)
+    update_page_title(GRAPHS[index].formatted_name)
+    update_link_state(index)
     then(index)
   } else {
     console.log('graph setup from GRAPHS mode')
@@ -300,6 +304,8 @@ function setup_graph (index) {
     load_svg(index, function(index){
       loaded = true
       update_logo_colors(index)
+      rewrite_url(GRAPHS[index].name)
+      update_page_title(GRAPHS[index].formatted_name)
       console.log('graph #'+index+' loaded');
       if(erased)
         then(index)
@@ -353,10 +359,9 @@ function setup_graph (index) {
 
     // misc
     INDEX = index
-    rewrite_url(GRAPHS[index].name)
-    update_page_title(GRAPHS[index].formatted_name)
-    update_link_state(index)
   	properly_size_svg(svg)
+    update_link_state(index)
+    currently_loading_index = false
 
     // preload
     if(GRAPHS[index+1] && !GRAPHS[index+1].is_processed)
@@ -370,6 +375,7 @@ function setup_archives (from_index) {
   var from_index = from_index || 0
   console.log('setting up archives from #'+from_index)
 
+  logo_start_moving()
   rewrite_url('archives')
   update_page_title('Archives')
 
@@ -475,8 +481,6 @@ function navigate (direction, event) {
 	event.preventDefault()
 
   console.log('navigate to '+direction)
-
-  logo_start_moving()
 
   if(direction==='archives') // to archives
 		return setup_archives(INDEX)
