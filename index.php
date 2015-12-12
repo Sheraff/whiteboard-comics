@@ -115,7 +115,7 @@
 	</div>
 	<input type="checkbox" id="cog_check">
 	<nav id="menu">
-		<a id="archives" data-title="archives" href="/archives"><img src="/res/stack.svg">
+		<a id="archives" data-title="archives" href="/archives"><img src="/res/blocks.svg">
 		</a><label id="cog" data-title="settings" for="cog_check" <? echo ($archives?'class="disabled"':''); ?>><img src="/res/cog.svg">
 		</label><a id="rss" data-title="rss" href="/rss" target="_blank"><img src="/res/rss.svg">
 		</a><a id="fb" data-title="facebook" href="https://www.facebook.com/existentialWhiteboardComics" target="_blank"><img src="/res/fb.svg"></a>
@@ -214,7 +214,7 @@
 	- animate ASIDE with "transform"
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 	- if possible, try and use .getBoundingClientRect() less often
-	- loading is heavy when opening archives for the first time (with many graphs released)
+	- loading is heavy when opening archives for the first time (with many graphs released) ⇒ only load visible vignettes (+ margin)
 
 	UX
 	- attract attention to the possibility to see another graph (arrows / keyboard)

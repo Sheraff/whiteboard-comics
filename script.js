@@ -483,9 +483,9 @@ function navigate (direction, event) {
   console.log('navigate to '+direction)
 
   if(direction==='archives') // to archives
-		return setup_archives(INDEX)
+		return ARCHIVES ? setup_graph(INDEX) : setup_archives(INDEX)
   if(typeof direction === 'number') // to specific graph
-    return setup_graph(direction)
+    return direction===INDEX && !ARCHIVES ? false : setup_graph(direction)
   if(direction==='prev' && GRAPHS[INDEX-1]) // to previous graph
     return setup_graph(INDEX-1)
   if(direction==='next' && GRAPHS[INDEX+1]) // to previous graph
