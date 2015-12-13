@@ -107,7 +107,7 @@ SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = true
+LOGGING = false
 
 // DOM
 ASIDE = document.getElementsByTagName('aside')[0]
@@ -267,8 +267,9 @@ function setup_graph (index) {
     if(LOGGING) console.warn('will not setup graph: asking for #'+index+' and already loading/showing #'+currently_loading_index);
     return
   }
+  if (typeof currently_loading_index !== 'undefined')
+    logo_start_moving()
   currently_loading_index = index
-  logo_start_moving()
   if(LOGGING) console.log('setting up graph #'+index)
 
   if(ARCHIVES){
@@ -414,7 +415,8 @@ function setup_archives (from_index) {
   var from_index = from_index || 0
   if(LOGGING) console.log('setting up archives from #'+from_index)
 
-  logo_start_moving()
+  if(!ARCHIVES)
+    logo_start_moving()
   rewrite_url('archives')
   update_page_title('Archives')
 
