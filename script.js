@@ -107,7 +107,7 @@ SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = false
+LOGGING = true
 
 // DOM
 ASIDE = document.getElementsByTagName('aside')[0]
@@ -139,9 +139,26 @@ var aside_rect, section_rect
 var loading_as = {}
 for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = {requested: false} }
 
+
 //////////
 // INIT //
 //////////
+
+// LOAD FONTS
+WebFontConfig = {
+  google: { families: [ 'Droid+Serif::latin' ] },
+  active: function() {
+    resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+    resize_el_height(document.getElementById('tags'), ARCHIVES)
+    sizes_have_changed(false, true)
+  },
+}
+var wf = document.createElement('script')
+wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'
+wf.type = 'text/javascript'
+wf.async = 'true'
+var s = document.getElementsByTagName('script')[0]
+s.parentNode.insertBefore(wf, s)
 
 // COMPUTE & APPLY data from localStorage
 if(ANIMATE==='false') ANIMATE = false
@@ -720,16 +737,20 @@ function load_svg (index, callback, increment) {
   }
   GRAPHS[index].being_loaded = true
   GRAPHS[index].loading_callbacks = callback ? [callback] : []
-  // skip loading if already loaded
-	if(GRAPHS[index] && GRAPHS[index].content)
-		return preprocess_svg(index)
 
+  // create queue and add `index` to it
   if(!svg_loading_queue){
     svg_loading_queue = []
   }
   if(svg_loading_queue.length<MAX_SIMULTANEOUS_SVG_REQUESTS){
     svg_loading_queue.push(index)
   }
+
+  // skip loading if already loaded
+	if(GRAPHS[index] && GRAPHS[index].content)
+		return preprocess_svg(index)
+
+  // return if already in queue or MAX_SIMULTANEOUS_SVG_REQUESTS reached
   var index_in_queue = svg_loading_queue.indexOf(index)
   if(index_in_queue===-1) {
     svg_loading_queue.push(index)
