@@ -31,11 +31,15 @@
       $row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
       $row[content] = false;
 
-      if(file_exists("$dir/$row[path]") && ($row[name]===$name || $row[timestamp] < $time || $master)) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
+      if(file_exists("$dir/$row[path]") && ($row[name]===$name || $row[timestamp] < $time || $master)){ // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
         $graphs[] = $row;
+      }
     }
     // order graphs // debug: this shouldn't need to happen
     usort($graphs, 'anti_chronological');
+    foreach ($graphs as $id => &$graph) {
+      $graph[id] = $id;
+    }
     return $graphs;
   }
 
@@ -76,6 +80,7 @@
 			'/ ?stroke="#(0[0-1]){3}" ?/',
 			'/ ?fill="#(0[0-1]){3}" ?/',
 			'/ ?stroke-miterlimit="10" ?/',
+      '/PermanentMarker/',
 			'/ +/',
 			'/d=" M/'
 		], [
@@ -90,6 +95,7 @@
 			' ',
 			' ',
 			' ',
+      "Permanent Marker', 'PermanentMarker",
 			' ',
 			'd="M'
 		], $string);
