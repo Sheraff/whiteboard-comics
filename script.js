@@ -102,12 +102,14 @@ function find_needle_with_key (needle, key) {
 
 // STATE, SETTINGS, POLYFILLS, ...
 ANIMATE = localStorage.getItem('animate')===null ? document.getElementById('animation_check').checked : localStorage.getItem('animate')
-SPEED = localStorage.getItem('speed') || 4
+SPEED = localStorage.getItem('speed') || 5
 SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = false
+LOGGING = true
+FONT_LOADED = false
+FIRST_LANDING = true
 
 // DOM
 ASIDE = document.getElementsByTagName('aside')[0]
@@ -146,13 +148,30 @@ for (var i = 0, l = AS.length; i < l; i++) { loading_as[i] = {requested: false} 
 
 // LOAD FONTS
 WebFontConfig = {
-  google: { families: [ 'Droid+Serif::latin' ] },
-  active: function() {
-    resize_el_height(document.getElementById('blurb'), !ARCHIVES)
-    resize_el_height(document.getElementById('tags'), ARCHIVES)
-    sizes_have_changed(false, true)
+  google: { families: [ 'Droid+Serif::latin', 'Permanent+Marker::latin' ] },
+  fontactive: function(familyName) {
+    if(familyName==='Droid Serif'){
+      resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+      resize_el_height(document.getElementById('tags'), ARCHIVES)
+      sizes_have_changed(false, true)
+    } else if (familyName==='Permanent Marker') {
+      FONT_LOADED = true
+      if(FIRST_LANDING)
+        intermediateprocess_svg(currently_loading_index)
+      else for (var i = 0, l = GRAPHS.length; i < l; i++) {
+        if(GRAPHS[i].is_processed){
+          if(LOGGING) console.log('graph #'+i+' being reprocessed after font load')
+          var old_writing = GRAPHS[i].content.querySelectorAll('[data-type=writing]')
+          for (var j = 0, k = old_writing.length; j < k; j++) {
+            old_writing[j].parentElement.removeChild(old_writing[j])
+          }
+          try_to_rewrite_with_paths(GRAPHS[i], true)
+        }
+      }
+    }
   },
 }
+
 var wf = document.createElement('script')
 wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'
 wf.type = 'text/javascript'
@@ -195,7 +214,7 @@ window.addEventListener('resize', function () {
   cached_inner_width = window.innerWidth
   resize_el_height(document.getElementById('blurb'), !ARCHIVES)
   resize_el_height(document.getElementById('tags'), ARCHIVES)
-  properly_size_svg()
+  // properly_size_svg()
   which_vignette_should_load()
   sizes_have_changed(false, true)
 })
@@ -309,7 +328,6 @@ function setup_graph (index) {
     })
   } else {
     if(LOGGING) console.log('graph setup from GRAPHS mode')
-    ARCHIVES = false
 
     // switch vignette in background
     SECTION.classList.add('noanimation')
@@ -334,7 +352,9 @@ function setup_graph (index) {
       if(LOGGING) console.log('no svg found, considering svg already erased');
       erased = true
     }
-    load_svg(index, function(index){
+    load_svg(index, post_load.bind(undefined, index))
+
+    function post_load(index) {
       if(currently_loading_index!==index)
         return
       loaded = true
@@ -344,13 +364,13 @@ function setup_graph (index) {
       if(LOGGING) console.log('graph #'+index+' loaded');
       if(erased)
         then(index)
-    })
+    }
   }
 
   function then(index) {
     if(currently_loading_index!==index)
       return
-    if(LOGGING) console.log('graph #'+index+' setup, second part')
+    if(LOGGING) console.log('cloning #'+index+' processed '+(GRAPHS[index].nofont?'without':'with')+' font')
     MAIN.innerHTML = ''
     MAIN.setAttribute('data-index', index)
 
@@ -396,7 +416,7 @@ function setup_graph (index) {
 
     // misc
     INDEX = index
-  	properly_size_svg(svg)
+  	// properly_size_svg(svg)
     update_link_state(index)
     currently_loading_index = false
 
@@ -409,6 +429,7 @@ function setup_graph (index) {
 }
 
 function setup_archives (from_index) {
+  FIRST_LANDING = false
   if(currently_loading_index==='archives')
     return
   currently_loading_index = 'archives'
@@ -803,20 +824,38 @@ function load_svg (index, callback, increment) {
       erase.setAttribute('stroke', 'transparent')
       GRAPHS[index].content.appendChild(erase)
       AS[index].firstElementChild.appendChild(GRAPHS[index].content)
-      GRAPHS[index].content = rewrite_with_paths(GRAPHS[index].content)
-      GRAPHS[index].is_processed = true
-      properly_size_svg(GRAPHS[index].content)
+      if(FIRST_LANDING)
+        setTimeout((function(index){
+          if(FIRST_LANDING)
+            intermediateprocess_svg(index)
+        }).bind(undefined, index), 750)
+      else
+        intermediateprocess_svg(index)
+    } else {
+      postprocess_svg(index)
     }
-    for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
-      if(GRAPHS[index].loading_callbacks[i])
-        GRAPHS[index].loading_callbacks[i](index)
-    }
-    GRAPHS[index].being_loaded = false
-    delete GRAPHS[index].loading_callbacks
-    svg_loading_queue.shift()
-    if(svg_loading_queue.length>=MAX_SIMULTANEOUS_SVG_REQUESTS)
-      load_svg(svg_loading_queue[MAX_SIMULTANEOUS_SVG_REQUESTS-1])
   }
+}
+
+function intermediateprocess_svg (index) {
+  FIRST_LANDING = false
+  try_to_rewrite_with_paths(GRAPHS[index], FONT_LOADED, (function(index){
+    GRAPHS[index].is_processed = true
+    properly_size_svg(GRAPHS[index].content)
+    postprocess_svg(index)
+  }).bind(undefined, index))
+}
+
+function postprocess_svg (index) {
+  for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
+    if(GRAPHS[index].loading_callbacks[i])
+      GRAPHS[index].loading_callbacks[i](index)
+  }
+  GRAPHS[index].being_loaded = false
+  delete GRAPHS[index].loading_callbacks
+  svg_loading_queue.shift()
+  if(svg_loading_queue.length>=MAX_SIMULTANEOUS_SVG_REQUESTS)
+    load_svg(svg_loading_queue[MAX_SIMULTANEOUS_SVG_REQUESTS-1])
 }
 
 function properly_size_svg (svg) {
@@ -833,7 +872,7 @@ function properly_size_svg (svg) {
 		if(!svg || !svg.getAttribute || !svg.getAttribute('viewBox'))
 			return
 		var viewbox = svg.getAttribute('viewBox').split(' ')
-		var parent = svg.parentElement.getBoundingClientRect()
+		var parent = svg.getBoundingClientRect()
 
     if(parent.width < parent.height)
       svg.style.width = (.9 * SIZE_FACTOR * viewbox[2]/10) + '%'
@@ -888,11 +927,11 @@ function load_watermark_from_server (img, index) {
   temp_img.src = GRAPHS[index].watermarked
 }
 function save_img_to_server (img, index) {
-  if(LOGGING) console.log('uploading img for #'+index+' to server')
-  var params = "dataURL=" + encodeURIComponent(img.src)
+  if(LOGGING) console.log('uploading img for #'+index+' to server, '+(GRAPHS[index].nofont?'wont':'will')+' save image')
+  var params = 'dataURL=' + encodeURIComponent(img.src)
   var request = new XMLHttpRequest();
-  request.open("POST", "/save_img.php?name="+GRAPHS[index].name, true);
-  request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+  request.open('POST', '/save_img.php?name='+GRAPHS[index].name+'&nosave='+(GRAPHS[index].nofont?'true':'false'), true);
+  request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
   request.onreadystatechange = (function (img, index, request) {
     if (request.readyState === 4 && request.status === 200){
       if(LOGGING) console.log('img for #'+index+' sucessfuly uploaded @ '+request.responseText)
@@ -964,13 +1003,31 @@ function svg_to_png (index, callback) {
 // SVG FONT TO PATH LIBRARY //
 //////////////////////////////
 
-function rewrite_with_paths (svg) {
-  // document.body.appendChild(svg)
+function try_to_rewrite_with_paths (graph, font_loaded, callback) {
+  if(graph.nofont!==false){
+    try{
+      rewrite_with_paths (graph.content, font_loaded)
+      graph.nofont = !font_loaded
+    } catch (e) {
+      try{
+        rewrite_with_paths (graph.content, false)
+      } catch (e) {
+        console.warn('shit happens')
+      }
+      graph.nofont = true
+    }
+  }
+  if(LOGGING) console.log('rewriting #'+graph.id+' '+(font_loaded?'with':'without')+' font loaded, '+(graph.nofont?'didnt':'did')+' use font')
+  if(callback)
+    callback()
+}
+
+function rewrite_with_paths (svg, font_loaded) {
 	var texts = svg.getElementsByTagName('text')
 	for (var text_pointer = 0; text_pointer < texts.length; text_pointer++) {
 		var tspans = texts[text_pointer].getElementsByTagName('tspan')
 		if(tspans.length===0){
-			replace_span(texts[text_pointer])
+			replace_span(texts[text_pointer], font_loaded)
 		} else {
       var is_text_long = 0
       for (var i = 0; i < tspans.length; i++) {
@@ -978,14 +1035,12 @@ function rewrite_with_paths (svg) {
 			}
       is_text_long = is_text_long > 40
 			for (var i = 0; i < tspans.length; i++) {
-				replace_span(tspans[i], is_text_long)
+				replace_span(tspans[i], font_loaded, is_text_long)
 			}
 		}
 	}
-  // document.body.removeChild(svg)
-  return svg
 
-  function replace_span (reference_element, is_text_long) {
+  function replace_span (reference_element, font_loaded, is_text_long) {
 		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
 			if(LOGGING) console.log(reference_element.childNodes)
       if(LOGGING) console.warn('this node still has children')
@@ -993,6 +1048,21 @@ function rewrite_with_paths (svg) {
 		}
 
 		var is_tspan = reference_element.tagName.toLowerCase()==='tspan'
+
+    if(!font_loaded){
+		  var x_length = 0
+      if(is_tspan){
+        var tspan_position = {
+          x: parseFloat(reference_element.getAttribute('x')),
+          y: parseFloat(reference_element.getAttribute('y'))
+        }
+  		} else {
+        var tspan_position = {
+          x: 0,
+          y: 0
+        }
+      }
+    }
 
 		var text_transform = is_tspan ? reference_element.parentElement.getAttribute('transform') : reference_element.getAttribute('transform')
 
@@ -1003,17 +1073,27 @@ function rewrite_with_paths (svg) {
 		var sentence = reference_element.childNodes[0].nodeValue
 		var insert_at = is_tspan ? reference_element.parentElement : reference_element
 		for (var char_pointer = 0; char_pointer < sentence.length; char_pointer++) {
-			if(sentence[char_pointer]===' ')
+			if(sentence[char_pointer]===' '){
+        if(!font_loaded)
+          x_length+=10
 				continue
+      }
 			var letter = get_letter(sentence.charAt(char_pointer))
 			if(!letter)
 				continue
-      var letter_pos = reference_element.getStartPositionOfChar(char_pointer)
+      if(font_loaded)
+        var letter_pos = reference_element.getStartPositionOfChar(char_pointer)
 			var el = document.createElementNS(SVG_NAMESPACE, 'g')
-			el.innerHTML = letter.content
+			el.innerHTML = letter.content // TODO: replace with appendChild ?
 			var paths = el.querySelectorAll('path,line,polyline')
 			for (var i = 0; i < paths.length; i++) {
-				paths[i].setAttribute('transform', text_transform+' translate(' + letter_pos.x + ',' + (letter_pos.y - letter.viewbox.height + 10) + ')')
+        if(!font_loaded){
+          var x = tspan_position.x + x_length + 2
+    			var y = tspan_position.y - letter.viewbox.height + 10
+    			paths[i].setAttribute('transform', text_transform+' translate(' + x + ',' + y + ')')
+        } else {
+          paths[i].setAttribute('transform', text_transform+' translate(' + letter_pos.x + ',' + (letter_pos.y - letter.viewbox.height + 10) + ')')
+        }
 				paths[i].setAttribute('data-type', 'writing')
         if(is_text_long)
           paths[i].setAttribute('data-long-writing', true)
@@ -1021,6 +1101,8 @@ function rewrite_with_paths (svg) {
 					paths[i].setAttribute('stroke', color)
 				insert_at.parentNode.insertBefore(paths[i], insert_at)
 			}
+      if(!font_loaded)
+        x_length += letter.viewbox.width + .5
 		}
 		reference_element.style.display = 'none'
 	}
