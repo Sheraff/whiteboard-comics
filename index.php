@@ -198,6 +198,7 @@
 <!-- TODO
 	BUGS
 	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
+	- figure out why rewrite_with_paths() works the first time but never the second
 
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
