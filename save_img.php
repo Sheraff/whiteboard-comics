@@ -9,6 +9,6 @@
   file_put_contents($filename, $decodedData);
   echo $filename;
 
-  if(!$nosave && file_exists("png/$name-nokern.png"))
-    unlink("png/$name-nokern.png");
+  // if(!$nosave && file_exists("png/$name-nokern.png"))
+  //   unlink("png/$name-nokern.png");
 ?>
