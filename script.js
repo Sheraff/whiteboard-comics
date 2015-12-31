@@ -107,7 +107,7 @@ SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = true
+LOGGING = false
 FONT_LOADED = false
 FIRST_LANDING = true
 
@@ -245,7 +245,7 @@ window.onpopstate = function (event) {
   logo_start_moving()
 
   if(event.state.name==='archives') // archives
-		return setup_archives()
+		return setup_archives(INDEX)
 
 	var index = -1
 	if(event.state.name)
@@ -331,6 +331,7 @@ function setup_graph (index) {
 
     // switch vignette in background
     SECTION.classList.add('noanimation')
+    // SECTION.querySelector('a.expanded').className = '' // TODO: does this solve the problem of having an expanded vignette div in the background when clicking repeatdly on Next or Prev ?
     AS[INDEX].className = ''
     AS[index].className = 'expanded'
     var as_rect = AS[index].getBoundingClientRect()
@@ -481,15 +482,16 @@ function check_each_vignette_for_loading_position(force){
     window.scrollY - margin,
     window.scrollY + cached_inner_height + margin
   ]
+  var vignette_load_count = 0
   for (var i = 0, l = AS.length; i < l; i++) {
     if(GRAPHS[i].is_processed || GRAPHS[i].being_loaded)
       delete loading_as[i]
     else if(loading_as[i] && !loading_as[i].hidden && !loading_as[i].requested && a_is_in_window(i, loading_window)){
       loading_as[i].requested = true
-      if(force) {
+      if(force===true) {
         delete loading_as[i]
         load_svg(i)
-      } else
+      } else {
         setTimeout((function(index, margin){
           var loading_window = [
             window.scrollY - margin,
@@ -502,6 +504,7 @@ function check_each_vignette_for_loading_position(force){
             loading_as[index].requested = false
           }
         }).bind(undefined, i, margin), 300)
+      }
     }
   }
 }
@@ -819,7 +822,7 @@ function load_svg (index, callback, increment) {
   function preprocess_svg (index) {
     if(!GRAPHS[index].is_processed){
       if(LOGGING) console.log('preprocessing graph #'+index)
-      var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.querySelector('path[stroke="#FFFFFF"]'))
+      var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.querySelector('[stroke="#FFFFFF"]'))
       erase.setAttribute('data-type', 'erase')
       erase.setAttribute('stroke', 'transparent')
       GRAPHS[index].content.appendChild(erase)
@@ -1010,9 +1013,18 @@ function try_to_rewrite_with_paths (graph, font_loaded, callback) {
       graph.nofont = !font_loaded
     } catch (e) {
       try{
+        console.warn('couldnt rewrite #'+graph.id+' with font, removing previous attempt')
+        var messed_up_writings = graph.content.querySelectorAll('[data-type=writing]')
+        for (var i = 0, l = messed_up_writings.length; i < l; i++) {
+          messed_up_writings[i].parentNode.removeChild(messed_up_writings[i])
+        }
         rewrite_with_paths (graph.content, false)
       } catch (e) {
-        console.warn('shit happens')
+        console.warn('couldnt rewrite #'+graph.id+' at all. this is a big problem. -------------------')
+        var messed_up_writings = graph.content.querySelectorAll('[data-type=writing]')
+        for (var i = 0, l = messed_up_writings.length; i < l; i++) {
+          messed_up_writings[i].parentNode.removeChild(messed_up_writings[i])
+        }
       }
       graph.nofont = true
     }
@@ -1073,14 +1085,16 @@ function rewrite_with_paths (svg, font_loaded) {
 		var sentence = reference_element.childNodes[0].nodeValue
 		var insert_at = is_tspan ? reference_element.parentElement : reference_element
 		for (var char_pointer = 0; char_pointer < sentence.length; char_pointer++) {
-			if(sentence[char_pointer]===' '){
+			if(sentence.charAt(char_pointer)===' '){
         if(!font_loaded)
           x_length+=10
 				continue
       }
 			var letter = get_letter(sentence.charAt(char_pointer))
-			if(!letter)
+			if(!letter){
+        console.warn('There is no letter \''+sentence.charAt(char_pointer)+'\' in the alphabet.')
 				continue
+      }
       if(font_loaded)
         var letter_pos = reference_element.getStartPositionOfChar(char_pointer)
 			var el = document.createElementNS(SVG_NAMESPACE, 'g')
