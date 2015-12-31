@@ -1,5 +1,4 @@
-<!--
-<?
+<!-- ♡ <?
 	if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: http://whiteboard-comics.com");
@@ -214,6 +213,7 @@
 	- animate ASIDE with "transform"
 	- enable hardware acceleration (through CSS hacks) // TODO: done but could be done better
 	- if possible, try and use .getBoundingClientRect() less often
+	- load archives faster
 
 	UX
 	- attract attention to the possibility to see another graph (arrows / keyboard)
