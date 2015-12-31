@@ -11,7 +11,7 @@ release	name	tags	author	source	credit
 2015-11-29	specialness=f(population)	morality	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
 2015-12-06	fear→hate→violence	morality,politics			
 2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life
-2015-12-14	time_cost=f(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by
+2015-12-14	time_cost×(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by
 2015-12-21	money_earned,money_desired=f(time)	money,growing up
 2015-12-28	partying_late,waking_up_early=f(age)	growing up	Chaz Hutton	https://instagram.com/p/7cpzvSm9Xv	By
 2016-01-04	feel_bad→set_goals→obsess	morality	Behavior Gap	http://bucks.blogs.nytimes.com/2012/07/30/one-key-to-happiness-let-go-of-some-long-term-goals/	Original idea by
@@ -22,7 +22,7 @@ release	name	tags	author	source	credit
 2016-02-08	pizzas_eaten=f(exercise,sitting)	body image,productivity
 2016-02-15	perceived_complexity_of_society=f(age)	politics,growing up,morality	SMBC comics	http://www.smbc-comics.com/?id=2868	By
 2016-02-22	toothpaste=f(time)	miscellaneous	Chaz Hutton	https://instagram.com/p/7MvBu_m9QW/	By
-2016-02-29	panic_stages=f(time)	productivity
+2016-02-29	efficiency→stress→panic	productivity
 2016-03-07	moral_offset=f(good_deeds,bad_behavior)	morality	Indexed	http://thisisindexed.com/2013/09/is-non-participation-ethical/	Inspired by
 2016-03-14	shaving_efforts=f(beard_length)	miscellaneous,productivity	Maxime Escouboue	https://www.facebook.com/maxime.escouboue	From his brightest moment,
 2016-03-21	planed_budget,actual_budget=f(time)	money	Chaz Hutton	https://instagram.com/p/7XGvB7G9YJ	By
@@ -41,7 +41,7 @@ release	name	tags	author	source	credit
 2016-06-20	getting_back_to_work=f(length_of_vacation)	work life,productivity	Justin Boyd	http://ilovecharts.tumblr.com/justinboyd	By
 2016-06-27	forward_planning=f(age)	growing up
 2016-07-04	planned_finance,actual_finance=f(time)	money,growing up
-2016-07-11	clothes_cycle=f(weeks)	miscellaneous,growing up	xkcd	https://xkcd.com/1066/	Original idea by
+2016-07-11	clothes_worn→in_basket→washed→in_closet	miscellaneous,growing up	xkcd	https://xkcd.com/1066/	Original idea by
 2016-07-18	adult_feel=f(adulthood)	growing up
 2016-07-25	patience=f(time_invested)	miscellaneous
 2016-08-01	shame=f(lie_size)	morality
@@ -64,7 +64,7 @@ release	name	tags	author	source	credit
 2016-11-28	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
 2016-12-05	reasons_to_be_in_a_relationship=f(age)	relationships,growing up,morality
 2016-12-12	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By
-2016-12-19	depression=f(stressors)	morality,academia	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
+2016-12-19	negativity→stressors→depression	morality,academia	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
 2016-12-26	pain_felt=f(emotions_expressed)	morality,relationships	Indexed	http://thisisindexed.com/2015/01/strong-silent-type-desperately-needs-hug/	By
 2017-01-02	insomnia,dreams=f(thoughts)	productivity,miscellaneous
 2017-01-09	story_truth=f(times_the_story_is_told)	academia,miscellaneous	Indexed	http://thisisindexed.com/2008/01/telephone-for-you/	Inspired by
@@ -84,3 +84,8 @@ release	name	tags	author	source	credit
 2017-04-17	income,expenses=f(materialism)	money,morality,politics
 2017-04-24	underconfidence≠overconfidence	morality	Behavior Gap	http://www.behaviorgap.com/even-smart-people-need-help-handling-money-emotion/	By
 2015-12-11	population_awareness=f(importance)	politics,miscellaneous			
+2017-05-01	(being)⋂(aspiration)=worth	morality,growing up			
+2017-05-08	envisioned_happiness=f(happiness)	morality			
+2017-05-15	estimated_knowledge=f(knowledge,estimated_ignorance)	academia,miscellaneous			
+2017-05-22	shyness≠situational_timidity	morality			
+2017-05-29	worth×(foresight,regrets)	morality,money			
