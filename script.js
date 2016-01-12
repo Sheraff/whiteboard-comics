@@ -1,3 +1,41 @@
+/////////////////////////
+// ERROR LOG TO SERVER //
+/////////////////////////
+
+window.onerror = function(event) {
+  console.log('caught an error')
+
+  var report = {
+    error: event,
+    navigator: {
+      name: navigator.appName,
+      vendor: navigator.vendor,
+      version: navigator.appVersion,
+      codename: navigator.appCodeName,
+      platform: navigator.platform
+    },
+    window: {
+      width: window.screen.width,
+      height: window.screen.height,
+      maxwidth: window.screen.availWidth,
+      maxheight: window.screen.availHeight
+    }
+  }
+
+  var request = new XMLHttpRequest()
+  request.open('POST', '/error_log.php', true)
+  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+  request.onreadystatechange = (function (request) {
+    if (request.readyState === 4 && request.status !== 200){
+      console.warn('couldnt send error report to server')
+    }
+  }).bind(undefined, request)
+  request.send(JSON.stringify(report))
+
+  return true
+}
+
+
 ///////////////////////
 // UTILS + POLYFILLS //
 ///////////////////////
@@ -1219,8 +1257,10 @@ function prepare_drawing_element_svg (svg) {
 }
 
 function iterate_group(parent, element_call, depth_call) {
-  var elements = parent.children
+  var elements = parent.children || parent.childNodes // parent.children won't work on some oldre versions of safari
   for (var e = 0, le = elements.length; e < le; e++) {
+    if (elements[e].nodeType === 3) // childNodes also returns text nodes, this ignores them
+      continue
     if(elements[e].tagName.toLowerCase()==='g'){
       if(depth_call) depth_call()
       iterate_group(elements[e], element_call, depth_call)
