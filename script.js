@@ -2,11 +2,46 @@
 // ERROR LOG TO SERVER //
 /////////////////////////
 
-window.onerror = function(event) {
-  console.log('caught an error')
+SEND_LOG = true
+SEND_WARNING = true
 
+server_and_console = {
+  warn: function (message) {
+    if(LOGGING) console.warn(message)
+    if(SEND_WARNING) log({
+      type: 'warning',
+      log: message
+    })
+    this.full_log += 'WARNING: '+message+"\n"
+  },
+  log: function (message) {
+    if(LOGGING) console.log(message)
+    this.full_log += message+"\n"
+  },
+  full_log: ''
+}
+
+window.onerror = function(event) {
+  log({
+    type: 'error',
+    log: event
+  })
+  server_and_console.full_log += 'ERROR: '+event+"\n"
+  return true
+}
+
+window.onbeforeunload = function(event) {
+  if(SEND_LOG && server_and_console.full_log !== '')
+    log({
+      type: 'log',
+      log: server_and_console.full_log
+    })
+}
+
+var sessionTS = Date.now()
+function log (message) {
   var report = {
-    error: event,
+    message: message,
     navigator: {
       name: navigator.appName,
       vendor: navigator.vendor,
@@ -23,16 +58,14 @@ window.onerror = function(event) {
   }
 
   var request = new XMLHttpRequest()
-  request.open('POST', '/error_log.php', true)
+  request.open('POST', '/error_log.php?ts='+sessionTS, true)
   request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
   request.onreadystatechange = (function (request) {
     if (request.readyState === 4 && request.status !== 200){
-      console.warn('couldnt send error report to server')
+      if(LOGGING) console.warn('couldnt send error report to server')
     }
   }).bind(undefined, request)
   request.send(JSON.stringify(report))
-
-  return true
 }
 
 
@@ -87,7 +120,7 @@ CSSStyleSheet.prototype.setRule = function (selector, rule) {
   var rules = this.cssRules || this.rules
   for (var i = 0, l = rules.length; i < l; i++) {
     if(rules[i].selectorText.toLowerCase()===selector.toLowerCase()){
-      if(LOGGING) console.log('complementing existing rule for "'+selector+'"')
+      server_and_console.log('complementing existing rule for "'+selector+'"')
       for (var attribute in rule) {
         if(rule.hasOwnProperty(attribute)){
           rules[i].style[toCssAttribute(attribute)] = rule[attribute]
@@ -97,7 +130,7 @@ CSSStyleSheet.prototype.setRule = function (selector, rule) {
     }
   }
   if(i===l){
-    if(LOGGING) console.log('creating new rule for "'+selector+'"')
+    server_and_console.log('creating new rule for "'+selector+'"')
     var str_rule = ''
     for (var attribute in rule) {
       if(rule.hasOwnProperty(attribute)){
@@ -198,7 +231,7 @@ WebFontConfig = {
         intermediateprocess_svg(currently_loading_index)
       else for (var i = 0, l = GRAPHS.length; i < l; i++) {
         if(GRAPHS[i].is_processed){
-          if(LOGGING) console.log('graph #'+i+' being reprocessed after font load')
+          server_and_console.log('graph #'+i+' being reprocessed after font load')
           var old_writing = GRAPHS[i].content.querySelectorAll('[data-type=writing]')
           for (var j = 0, k = old_writing.length; j < k; j++) {
             old_writing[j].parentElement.removeChild(old_writing[j])
@@ -279,7 +312,7 @@ window.onpopstate = function (event) {
 	if(!event.state) // invalid
 		return
 
-  if(LOGGING) console.log('new state poped: name='+event.state.name)
+  server_and_console.log('new state poped: name='+event.state.name)
   logo_start_moving()
 
   if(event.state.name==='archives') // archives
@@ -298,7 +331,7 @@ window.onpopstate = function (event) {
 // SCRIPT //
 ////////////
 
-if(LOGGING) console.log('Entering site @ '+window.location.pathname);
+server_and_console.log('Entering site @ '+window.location.pathname);
 if(ARCHIVES)
   setup_archives()
 else{
@@ -308,10 +341,10 @@ else{
   if(history.state && history.state.name)
     recovered_index = find_needle_with_key(history.state.name, 'name')
   if(recovered_index !== -1){
-    if(LOGGING) console.log('state recovered from history: asking for graph #' + recovered_index + ': @ ' + GRAPHS[recovered_index].name)
+    server_and_console.log('state recovered from history: asking for graph #' + recovered_index + ': @ ' + GRAPHS[recovered_index].name)
     setup_graph(recovered_index)
   } else {
-    if(LOGGING) console.log('creating history state: asking for graph #' + INDEX + ': @ ' + GRAPHS[INDEX].name)
+    server_and_console.log('creating history state: asking for graph #' + INDEX + ': @ ' + GRAPHS[INDEX].name)
     window.history.replaceState({name: GRAPHS[INDEX].name}, "", GRAPHS[INDEX].name)
     setup_graph(INDEX)
   }
@@ -321,16 +354,16 @@ var currently_loading_index
 function setup_graph (index) {
   var index = index || 0
   if(!ARCHIVES && index === currently_loading_index){
-    if(LOGGING) console.warn('will not setup graph: asking for #'+index+' and already loading/showing #'+currently_loading_index);
+    server_and_console.warn('will not setup graph: asking for #'+index+' ('+GRAPHS[index].formatted_name+') and already loading/showing #'+currently_loading_index+' ('+GRAPHS[currently_loading_index].formatted_name+') (INDEX is #'+INDEX+': '+GRAPHS[INDEX].formatted_name+')');
     return
   }
   if (typeof currently_loading_index !== 'undefined')
     logo_start_moving()
   currently_loading_index = index
-  if(LOGGING) console.log('setting up graph #'+index)
+  server_and_console.log('setting up graph #'+index)
 
   if(ARCHIVES){
-    if(LOGGING) console.log('graph setup from ARCHIVES mode')
+    server_and_console.log('graph setup from ARCHIVES mode')
 
     // remember stuff before applying style
 		remember_scroll = window.scrollY
@@ -361,11 +394,11 @@ function setup_graph (index) {
       update_logo_colors(index)
       rewrite_url(GRAPHS[index].name)
       update_page_title(GRAPHS[index].formatted_name)
-      if(LOGGING) console.log('graph #'+index+' loaded');
+      server_and_console.log('graph #'+index+' loaded (coming back from ARCHIVES)');
       then(index)
     })
   } else {
-    if(LOGGING) console.log('graph setup from GRAPHS mode')
+    server_and_console.log('graph setup from GRAPHS mode')
 
     // switch vignette in background
     SECTION.classList.add('noanimation')
@@ -383,33 +416,32 @@ function setup_graph (index) {
       erase(svg, 0, (function (index) {
         // MAIN.removeChild(this)
         erased = true
-        if(LOGGING) console.log('cloned graph #'+INDEX+' erased');
+        server_and_console.log('cloned graph #'+INDEX+' erased');
         if(loaded)
           then(index)
       }).bind(svg, index))
     } else {
-      if(LOGGING) console.log('no svg found, considering svg already erased');
+      server_and_console.log('no svg found, considering svg already erased');
       erased = true
     }
-    load_svg(index, post_load.bind(undefined, index))
 
-    function post_load(index) {
+    load_svg(index, (function (index) {
       if(currently_loading_index!==index)
         return
       loaded = true
       update_logo_colors(index)
       rewrite_url(GRAPHS[index].name)
       update_page_title(GRAPHS[index].formatted_name)
-      if(LOGGING) console.log('graph #'+index+' loaded');
+      server_and_console.log('graph #'+index+' loaded');
       if(erased)
         then(index)
-    }
+    }).bind(undefined, index))
   }
 
   function then(index) {
     if(currently_loading_index!==index)
       return
-    if(LOGGING) console.log('cloning #'+index+' processed '+(GRAPHS[index].nofont?'without':'with')+' font')
+    server_and_console.log('cloning #'+index+' processed '+(GRAPHS[index].nofont?'without':'with')+' font')
     MAIN.innerHTML = ''
     MAIN.setAttribute('data-index', index)
 
@@ -473,7 +505,7 @@ function setup_archives (from_index) {
     return
   currently_loading_index = 'archives'
   var from_index = from_index || 0
-  if(LOGGING) console.log('setting up archives from #'+from_index)
+  server_and_console.log('setting up archives from #'+from_index)
 
   if(!ARCHIVES)
     logo_start_moving()
@@ -622,7 +654,7 @@ function navigate (direction, event) {
 	event.stopPropagation()
 	event.preventDefault()
 
-  if(LOGGING) console.log('navigate to '+direction)
+  server_and_console.log('navigate to '+direction)
 
   if(direction==='archives') // to archives
 		return ARCHIVES ? setup_graph(INDEX) : setup_archives(INDEX)
@@ -633,7 +665,7 @@ function navigate (direction, event) {
   if(direction==='next' && GRAPHS[INDEX+1]) // to previous graph
     return setup_graph(INDEX+1)
 
-  if(LOGGING) console.log('wrong navigation instructions')
+  server_and_console.log('wrong navigation instructions')
 }
 
 function sizes_have_changed (aside_changed, section_changed) {
@@ -647,7 +679,7 @@ function sizes_have_changed (aside_changed, section_changed) {
   }
   var old_base_height_on_aside = base_height_on_aside
   base_height_on_aside = !ARCHIVES || (aside_rect.height > section_rect.height)
-  if(LOGGING) console.log('height is now based on '+(base_height_on_aside?'aside':'section'));
+  server_and_console.log('height is now based on '+(base_height_on_aside?'aside':'section'));
   if(base_height_on_aside != old_base_height_on_aside)
     if(base_height_on_aside){
       ASIDE.setAttribute('data-stuck', 'absolute-top')
@@ -795,7 +827,7 @@ var svg_loading_queue = []
 function load_svg (index, callback, increment) {
   // deal with multiple loading requests for the same graph
   if(GRAPHS[index].being_loaded && !GRAPHS[index].is_processed){
-    if(LOGGING) console.warn('graph #'+index+' was already requested, queing up callbacks')
+    server_and_console.warn('graph #'+index+' ('+GRAPHS[index].formatted_name+') was already requested, queing up callbacks')
     GRAPHS[index].loading_callbacks.push(callback)
     return
   }
@@ -819,13 +851,13 @@ function load_svg (index, callback, increment) {
   if(index_in_queue===-1) {
     svg_loading_queue.push(index)
     GRAPHS[index].being_loaded = false
-    if(LOGGING) console.log('queueing #'+index)
+    server_and_console.log('queueing #'+index)
     return
   } else if (index_in_queue >= MAX_SIMULTANEOUS_SVG_REQUESTS) {
     return
   }
 
-  if(LOGGING) console.log('loading graph #'+index)
+  server_and_console.log('loading graph #'+index)
 
   var increment = typeof increment === 'undefined' ? 0 : increment
 
@@ -845,7 +877,7 @@ function load_svg (index, callback, increment) {
         if(increment < 10)
   			  setTimeout(load_svg.bind(undefined, index, undefined, increment+1), 1000)
         else{
-          if(LOGGING) console.warn('couldnt load graph '+index+' after '+increment+' trials, giving up.')
+          server_and_console.warn('couldnt load graph '+index+' ('+GRAPHS[index].formatted_name+') after '+increment+' trials, giving up.')
           for (var i = 0, l = GRAPHS[index].loading_callbacks.length; i < l; i++) {
             if(GRAPHS[index].loading_callbacks[i])
               GRAPHS[index].loading_callbacks[i](false)
@@ -859,7 +891,7 @@ function load_svg (index, callback, increment) {
 
   function preprocess_svg (index) {
     if(!GRAPHS[index].is_processed){
-      if(LOGGING) console.log('preprocessing graph #'+index)
+      server_and_console.log('preprocessing graph #'+index)
       var erase = GRAPHS[index].content.removeChild(GRAPHS[index].content.querySelector('[stroke="#FFFFFF"]'))
       erase.setAttribute('data-type', 'erase')
       erase.setAttribute('stroke', 'transparent')
@@ -959,7 +991,7 @@ function put_overlay_image(index, url, pre_img){
   return img
 }
 function load_watermark_from_server (img, index) {
-  if(LOGGING) console.log('loading watermarked img for #'+index+' from server')
+  server_and_console.log('loading watermarked img for #'+index+' from server')
   var temp_img = new Image()
   temp_img.onload = (function (img, temp_img) {
     GRAPHS[index].watermark_is_loaded = true
@@ -968,14 +1000,14 @@ function load_watermark_from_server (img, index) {
   temp_img.src = GRAPHS[index].watermarked
 }
 function save_img_to_server (img, index) {
-  if(LOGGING) console.log('uploading img for #'+index+' to server, '+(GRAPHS[index].nofont?'wont':'will')+' save image')
+  server_and_console.log('uploading img for #'+index+' to server, '+(GRAPHS[index].nofont?'wont':'will')+' save image')
   var params = 'dataURL=' + encodeURIComponent(img.src)
   var request = new XMLHttpRequest();
   request.open('POST', '/save_img.php?name='+GRAPHS[index].name+'&nosave='+(GRAPHS[index].nofont?'true':'false'), true);
   request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
   request.onreadystatechange = (function (img, index, request) {
     if (request.readyState === 4 && request.status === 200){
-      if(LOGGING) console.log('img for #'+index+' sucessfuly uploaded @ '+request.responseText)
+      server_and_console.log('img for #'+index+' sucessfuly uploaded @ '+request.responseText)
       GRAPHS[index].watermarked = request.responseText
       load_watermark_from_server(img, index)
     }
@@ -983,7 +1015,7 @@ function save_img_to_server (img, index) {
   request.send(params)
 }
 function svg_to_png (index, callback) {
-  if(LOGGING) console.log('converting SVG to PNG')
+  server_and_console.log('converting SVG to PNG')
   // clone
   var clone_svg = GRAPHS[index].content.cloneNode(true)
   force_finish_drawing_element_svg(clone_svg)
@@ -1054,14 +1086,14 @@ function try_to_rewrite_with_paths (graph, font_loaded, callback) {
       graph.nofont = !font_loaded
     } catch (e) {
       try{
-        console.warn('couldnt rewrite #'+graph.id+' with font, removing previous attempt')
+        server_and_console.warn('couldnt rewrite #'+graph.id+' with font, removing previous attempt ('+graph.formatted_name+')')
         var messed_up_writings = graph.content.querySelectorAll('[data-type=writing]')
         for (var i = 0, l = messed_up_writings.length; i < l; i++) {
           messed_up_writings[i].parentNode.removeChild(messed_up_writings[i])
         }
         rewrite_with_paths (graph.content, false)
       } catch (e) {
-        console.warn('couldnt rewrite #'+graph.id+' at all. this is a big problem. -------------------')
+        server_and_console.warn('couldnt rewrite #'+graph.id+' at all. this is a big problem. ('+graph.formatted_name+')')
         var messed_up_writings = graph.content.querySelectorAll('[data-type=writing]')
         for (var i = 0, l = messed_up_writings.length; i < l; i++) {
           messed_up_writings[i].parentNode.removeChild(messed_up_writings[i])
@@ -1070,7 +1102,7 @@ function try_to_rewrite_with_paths (graph, font_loaded, callback) {
       graph.nofont = true
     }
   }
-  if(LOGGING) console.log('rewriting #'+graph.id+' '+(font_loaded?'with':'without')+' font loaded, '+(graph.nofont?'didnt':'did')+' use font')
+  server_and_console.log('rewriting #'+graph.id+' '+(font_loaded?'with':'without')+' font loaded, '+(graph.nofont?'didnt':'did')+' use font')
   if(callback)
     callback()
 }
@@ -1095,8 +1127,8 @@ function rewrite_with_paths (svg, font_loaded) {
 
   function replace_span (reference_element, font_loaded, is_text_long) {
 		if(reference_element.childNodes.length>1 || reference_element.childNodes[0].nodeType!==3){
-			if(LOGGING) console.log(reference_element.childNodes)
-      if(LOGGING) console.warn('this node still has children')
+			server_and_console.log(reference_element.childNodes)
+      server_and_console.warn('this node still has children')
 			return
 		}
 
@@ -1133,7 +1165,7 @@ function rewrite_with_paths (svg, font_loaded) {
       }
 			var letter = get_letter(sentence.charAt(char_pointer))
 			if(!letter){
-        console.warn('There is no letter \''+sentence.charAt(char_pointer)+'\' in the alphabet.')
+        server_and_console.warn('There is no letter \''+sentence.charAt(char_pointer)+'\' in the alphabet.')
 				continue
       }
       if(font_loaded)
@@ -1172,7 +1204,7 @@ function rewrite_with_paths (svg, font_loaded) {
         return LETTERS[i]
       }
 		}
-		if(LOGGING) console.warn('letter "'+letter+'" not found')
+		server_and_console.warn('letter "'+letter+'" not found')
 		return false
 	}
 
@@ -1203,7 +1235,7 @@ function erase (svg, delay, callback) {
 }
 
 function play_svg (svg, delay, callback) {
-  if(LOGGING) console.log('playing MAIN svg')
+  server_and_console.log('playing MAIN svg')
 	// prepare
   prepare_drawing_element_svg(svg)
 
