@@ -12,13 +12,13 @@ server_and_console = {
       type: 'warning',
       log: message
     })
-    this.full_log += 'WARNING: '+message+"\n"
+    this.full_log.push('WARNING: '+message)
   },
   log: function (message) {
     if(LOGGING) console.log(message)
-    this.full_log += message+"\n"
+    this.full_log.push(message)
   },
-  full_log: '',
+  full_log: [],
   navigation: []
 }
 
@@ -27,12 +27,12 @@ window.onerror = function(event) {
     type: 'error',
     log: event
   })
-  server_and_console.full_log += 'ERROR: '+event+"\n"
+  server_and_console.full_log.push('ERROR: '+event)
   return true
 }
 
 window.onbeforeunload = function(event) {
-  if(SEND_LOG && server_and_console.full_log !== '')
+  if(SEND_LOG && server_and_console.full_log.length!==0)
     log({
       type: 'log',
       history: server_and_console.navigation,
