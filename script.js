@@ -18,7 +18,8 @@ server_and_console = {
     if(LOGGING) console.log(message)
     this.full_log += message+"\n"
   },
-  full_log: ''
+  full_log: '',
+  navigation: []
 }
 
 window.onerror = function(event) {
@@ -34,6 +35,7 @@ window.onbeforeunload = function(event) {
   if(SEND_LOG && server_and_console.full_log !== '')
     log({
       type: 'log',
+      history: server_and_console.navigation,
       log: server_and_console.full_log
     })
 }
@@ -361,6 +363,7 @@ function setup_graph (index) {
     logo_start_moving()
   currently_loading_index = index
   server_and_console.log('setting up graph #'+index)
+  server_and_console.navigation.push(GRAPHS[index].name)
 
   if(ARCHIVES){
     server_and_console.log('graph setup from ARCHIVES mode')
@@ -506,6 +509,7 @@ function setup_archives (from_index) {
   currently_loading_index = 'archives'
   var from_index = from_index || 0
   server_and_console.log('setting up archives from #'+from_index)
+  server_and_console.navigation.push('ARCHIVES')
 
   if(!ARCHIVES)
     logo_start_moving()
