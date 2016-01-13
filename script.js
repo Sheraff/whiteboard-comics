@@ -2,16 +2,19 @@
 // ERROR LOG TO SERVER //
 /////////////////////////
 
-SEND_LOG = true
+SEND_LOG = false
 SEND_WARNING = true
 
 server_and_console = {
   warn: function (message) {
     if(LOGGING) console.warn(message)
-    if(SEND_WARNING) log({
-      type: 'warning',
-      log: message
-    })
+    if(SEND_WARNING){
+      log({
+        type: 'warning',
+        log: message
+      })
+      SEND_LOG = true
+    }
     this.full_log.push('WARNING: '+message)
   },
   log: function (message) {
@@ -28,6 +31,7 @@ window.onerror = function(event) {
     log: event
   })
   server_and_console.full_log.push('ERROR: '+event)
+  SEND_LOG = true
   return true
 }
 
