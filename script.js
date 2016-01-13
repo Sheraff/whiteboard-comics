@@ -1026,7 +1026,10 @@ function svg_to_png (index, callback) {
   }
   var img = new Image()
   var svg_blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'})
-  var url = DOMURL.createObjectURL(svg_blob)
+  if(DOMURL.createObjectURL)
+    var url = DOMURL.createObjectURL(svg_blob)
+  else
+    var url = URL.createObjectURL(svg_blob)
   img.onload = (function(img, dimensions, callback) {
     var canvas = document.createElement('canvas')
     canvas.setAttribute('width', dimensions.width)

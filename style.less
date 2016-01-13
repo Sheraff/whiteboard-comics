@@ -4,7 +4,7 @@
 @unit: 1rem;
 @timing: .25s;
 
-@items-per-row-in-grid: 4;
+@items-per-row-in-grid: 3;
 
 @main-width: 100vw - @aside-width;
 
@@ -39,6 +39,7 @@ main svg, section svg{
 	position: absolute;
 	left: 50%;
 	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	max-width: 90%;
 	max-height: 90%;
@@ -105,6 +106,7 @@ section{
 		}
 		&:hover{
 			&>div{
+				-webkit-transform: scale(1.05);
 				transform: scale(1.05);
 				box-shadow: .5rem .5rem .5rem rgba(0, 0, 0, 0.3);
 			}
@@ -191,6 +193,7 @@ main{
   	position: absolute;
   	top: 50%;
   	left: 50%;
+		-webkit-transform: translate(-50%,-50%);
   	transform: translate(-50%,-50%);
   	opacity: 0;
   }
@@ -254,9 +257,11 @@ aside{
 		&:not(.disabled){
 			&:hover{
 				img{
+					-webkit-transform: translateY(-@unit/2);
 					transform: translateY(-@unit/2);
 				}
 				&::after{
+					-webkit-transform: translateY(-@unit);
 					transform: translateY(-@unit);
 					opacity: 1;
 				}
@@ -442,9 +447,11 @@ aside{
 	input:checked+label{
 		img{
 			opacity: 1;
+			-webkit-transform: translateX(@unit*2.5);
 			transform: translateX(@unit*2.5);
 		}
 		span{
+			-webkit-transform: translateX(@unit*1.5);
 			transform: translateX(@unit*1.5);
 		}
 	}
