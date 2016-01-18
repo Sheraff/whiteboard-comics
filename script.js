@@ -963,17 +963,6 @@ function properly_size_svg (svg) {
 }
 
 
-if(false){
-  if(GRAPHS[index].watermark_is_loaded)
-    put_overlay_image(index, GRAPHS[index].watermarked)
-  else if (GRAPHS[index].urldata)
-    set_img_from_urldata(index, GRAPHS[index].urldata)
-  else{
-    var img = new Image()
-    MAIN.appendChild(img)
-    svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
-  }
-}
 
 ////////////////////////
 // SVG TO PNG LIBRARY //
