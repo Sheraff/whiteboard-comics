@@ -198,6 +198,9 @@
 	BUGS
 	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
 	- figure out why rewrite_with_paths() works the first time but never the second
+	- older versions of Safari won't display text at all
+		- fix this ?
+		- fallback to just "typing" the letters one at a time ?
 
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
