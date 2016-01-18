@@ -125,8 +125,8 @@ section > a {
   display: inline-block;
   margin-top: 1rem;
   margin-right: 1rem;
-  height: calc(23.33333333vw  -  1rem);
-  width: calc(23.33333333vw  -  1rem);
+  height: calc(17.5vw  -  1rem);
+  width: calc(17.5vw  -  1rem);
   transform: translateY(0);
   transition: transform 0.5s, opacity 0.5s;
 }
