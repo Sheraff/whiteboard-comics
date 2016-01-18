@@ -489,7 +489,12 @@ function setup_graph (index) {
     else{
       var img = new Image()
       MAIN.appendChild(img)
-      svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
+      if(DOMURL.createObjectURL)
+        svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
+      else if(GRAPHS[index].watermarked)
+        load_watermark_from_server(img, index)
+      else
+        server_and_console.warn('there isnt going to be an img overlay for this one: #'+index+' ('+GRAPHS[index].formatted_name+')')
     }
 
     // misc
