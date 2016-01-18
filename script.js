@@ -1052,19 +1052,16 @@ function svg_to_png (index, callback) {
   text.setAttribute('transform', 'translate(5,'+(viewbox[3]-5)+')')
   clone_svg.setAttribute('viewBox', viewbox.join(' '))
 
-  // create SVG => XML => BLOB url => canvas => data => png
+  // create SVG => XML (img.src) => canvas => data => png
   var svgString = new XMLSerializer().serializeToString(clone_svg)
   var dimensions = {
     width: 800,
     height: 800/viewbox[2]*viewbox[3]
   }
+
+  // this avoids creating an unnecessary BLOB, method found here: http://stackoverflow.com/questions/27619555/image-onload-not-working-with-img-and-blob
   var img = new Image()
-  var svg_blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'})
-  if(DOMURL.createObjectURL)
-    var url = DOMURL.createObjectURL(svg_blob)
-  else
-    var url = URL.createObjectURL(svg_blob)
-  img.onload = (function(img, dimensions, callback) {
+  img.addEventListener('load', (function (img, dimensions, callback) {
     var canvas = document.createElement('canvas')
     canvas.setAttribute('width', dimensions.width)
     canvas.setAttribute('height', dimensions.height)
@@ -1073,8 +1070,8 @@ function svg_to_png (index, callback) {
     var png_data_url = ctx.canvas.toDataURL('image/png')
     callback(png_data_url)
     DOMURL.revokeObjectURL(png_data_url)
-  }).bind(undefined, img, dimensions, callback)
-  img.src = url
+  }).bind(undefined, img, dimensions, callback))
+  img.src = 'data:image/svg+xml;utf8,' + svgString
 }
 
 //////////////////////////////
