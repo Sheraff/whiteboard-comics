@@ -211,6 +211,7 @@
 	- smooth scrolling
 		- for setup_archives()
 		- for filter() only if vignettes are animated when added / removed
+	- scale SVG while transitionning from vignette to full whiteboard so that they don't get deformed
 
 	FLUIDITY
 	- animate ASIDE with "transform"
