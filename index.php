@@ -195,6 +195,9 @@
 
 
 <!-- TODO
+	IMPROVEMENTS
+	- simplify alphabet before dumping in json (in index.php), remove unnecessary SVG clutter
+
 	BUGS
 	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
 	- figure out why rewrite_with_paths() works the first time but never the second
