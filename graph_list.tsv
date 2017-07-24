@@ -3,18 +3,18 @@ release	name	tags	author	source	credit
 2015-09-16	productivity=f(time)	productivity,work life
 2015-10-02	care_for_look=f(fat)	body image
 2015-10-16	time_of_the_day=f(energy,distractions)	productivity,work life
-2015-10-29	goodness=f(witnesses)	morality
+2015-10-29	goodness=f(witnesses)	morality,depression
 2015-11-03	good_time_for_drinking=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/9aj9a8m9fm	Original idea by
 2015-11-09	quantity_of_subjects=f(quantity_of_knowledge)	academia	PhD Comics	http://www.phdcomics.com/comics/archive.php?comicid=1056	Inspired by
 2015-11-16	productivity=f(population)	productivity
 2015-11-23	perceived_week_length=f(week_day)	work life	Chaz Hutton	https://instagram.com/p/8nqZ4Pm9Qz	Inspired by
-2015-11-29	specialness=f(population)	morality	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
-2015-12-06	fear→hate→violence	morality,politics			
-2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life
+2015-11-29	specialness=f(population)	morality,ecology	SMBC comics	http://smbc-comics.com/index.php?id=1246	From
+2015-12-06	fear→hate→violence	morality,politics
+2015-12-07	skill=f(peoples_skills,own_skills)	morality,work life,depression
 2015-12-14	time_cost×(strategies,decision_making)	productivity	xkcd	https://xkcd.com/1445/	Original idea by
 2015-12-21	money_earned,money_desired=f(time)	money,growing up
 2015-12-28	partying_late,waking_up_early=f(age)	growing up	Chaz Hutton	https://instagram.com/p/7cpzvSm9Xv	By
-2016-01-03	feel_bad→set_goals→obsess	morality	Behavior Gap	http://bucks.blogs.nytimes.com/2012/07/30/one-key-to-happiness-let-go-of-some-long-term-goals/	Original idea by
+2016-01-03	feel_bad→set_goals→obsess	morality,depression	Behavior Gap	http://bucks.blogs.nytimes.com/2012/07/30/one-key-to-happiness-let-go-of-some-long-term-goals/	Original idea by
 2016-01-11	money_left,money_perceived=f(evening_weekend)	money	Chaz Hutton	https://instagram.com/p/9DptAhm9bq	Original idea by
 2016-01-18	total_happiness=f(number_of_kids)	morality,relationships	SMBC comics	http://www.smbc-comics.com/?id=2569	Inspired by
 2016-01-25	relationships=f(reciprocity_of_care)	relationships,morality	Indexed	http://thisisindexed.com/wp-content/uploads/2014/03/card4074-380x235.jpg	Inspired by
@@ -22,8 +22,8 @@ release	name	tags	author	source	credit
 2016-02-08	pizzas_eaten=f(exercise,sitting)	body image,productivity
 2016-02-15	perceived_complexity_of_society=f(age)	politics,growing up,morality	SMBC comics	http://www.smbc-comics.com/?id=2868	By
 2016-02-22	toothpaste=f(time)	miscellaneous	Chaz Hutton	https://instagram.com/p/7MvBu_m9QW/	By
-2016-02-29	efficiency→stress→panic	productivity
-2016-03-07	moral_offset=f(good_deeds,bad_behavior)	morality	Indexed	http://thisisindexed.com/2013/09/is-non-participation-ethical/	Inspired by
+2016-02-29	efficiency→stress→panic	productivity,depression
+2016-03-07	moral_offset=f(good_deeds,bad_behavior)	morality,ecology	Indexed	http://thisisindexed.com/2013/09/is-non-participation-ethical/	Inspired by
 2016-03-14	shaving_efforts=f(beard_length)	miscellaneous,productivity	Maxime Escouboue	https://www.facebook.com/maxime.escouboue	From his brightest moment,
 2016-03-21	planed_budget,actual_budget=f(time)	money	Chaz Hutton	https://instagram.com/p/7XGvB7G9YJ	By
 2016-03-28	estimated_completion=f(time_invested)	productivity
@@ -34,10 +34,10 @@ release	name	tags	author	source	credit
 2016-05-02	procrastination=f(fulfillment)	productivity,morality	Indexed	http://thisisindexed.com/2006/08/	By
 2016-05-09	desire_for_money=f(money_owned)	money,morality
 2016-05-16	work_in_theory,work_in_reality=f(time)	work life,productivity	xkcd	https://xkcd.com/1319/	From
-2016-05-23	happiness,expectations=f(time)	morality,growing up,relationships
+2016-05-23	happiness,expectations=f(time)	morality,growing up,relationships,depression
 2016-05-30	sleep_ability=f(tiredness)	productivity,miscellaneous
 2016-06-06	wages,enjoyment=f(money)	money,work life,morality,politics
-2016-06-13	eadibleness=f(cuteness)	morality,miscellaneous	SMBC comics	http://www.smbc-comics.com/?id=2393	Total opposite of
+2016-06-13	eadibleness=f(cuteness)	morality,ecology,miscellaneous	SMBC comics	http://www.smbc-comics.com/?id=2393	Total opposite of
 2016-06-20	getting_back_to_work=f(length_of_vacation)	work life,productivity	Justin Boyd	http://ilovecharts.tumblr.com/justinboyd	By
 2016-06-27	forward_planning=f(age)	growing up
 2016-07-04	planned_finance,actual_finance=f(time)	money,growing up
@@ -47,10 +47,10 @@ release	name	tags	author	source	credit
 2016-08-01	shame=f(lie_size)	morality
 2016-08-08	actual_good=f(for_your_own_good)	morality,work life,growing up
 2016-08-15	sources_of_stress=f(age)	morality,growing up	SMBC comics	http://ilovecharts.tumblr.com/weinersmiths	By
-2016-08-22	frame_of_reference,perceived_competence=f(competence)	morality
+2016-08-22	frame_of_reference,perceived_competence=f(competence)	morality,depression
 2016-08-29	homesickness=f(wanderlust)	morality,miscellaneous
-2016-09-05	sadness=f(time_investment)	relationships,miscellaneous	Indexed	http://thisisindexed.com/2014/07/leave-wanting/	Misinterpretation of
-2016-09-12	idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up
+2016-09-05	sadness=f(time_investment)	relationships,depression,miscellaneous	Indexed	http://thisisindexed.com/2014/07/leave-wanting/	Misinterpretation of
+2016-09-12	idealized_relationship,loneliness=f(length_of_relationship)	relationships,growing up,depression
 2016-09-19	life_satisfaction=f(power,responsibilities,age)	growing up,morality	SMBC comics	http://www.smbc-comics.com/index.php?id=3928	Original idea by
 2016-09-26	luck_necessary=f(distance_from_norm)	work life,growing up,politics
 2016-10-03	cruelty=f(honesty)	morality,relationships	Indexed	http://thisisindexed.com/2014/07/true-excuse/	By
@@ -59,17 +59,17 @@ release	name	tags	author	source	credit
 2016-10-24	deception_potential=f(desire,temptation)	relationships,miscellaneous,morality,body image	Indexed	http://thisisindexed.com/wp-content/uploads/2014/08/card4402-380x231.jpg	Inspired by
 2016-10-31	naps=f(age)	miscellaneous,growing up
 2016-11-07	enjoyment_of_sex=f(attractiveness)	relationships,growing up,miscellaneous	Reddit	https://www.reddit.com/r/funnycharts/comments/27x7cd/sex_enjoyment_xpost_from_rexpectationvsreality/	Found on
-2016-11-14	okayness=f(time)	morality,miscellaneous,relationships	doghousediaries	http://thedoghousediaries.com/4935	Inspired by
+2016-11-14	okayness=f(time)	morality,miscellaneous,relationships,depression	doghousediaries	http://thedoghousediaries.com/4935	Inspired by
 2016-11-21	clothes=f(looks,fit,comfort)	miscellaneous
 2016-11-28	shame=f(nb_of_chopsticks)	body image,morality,miscellaneous	SMBC comics	http://smbc-comics.com/index.php?id=3695	From personal experience and from
 2016-12-05	reasons_to_be_in_a_relationship=f(age)	relationships,growing up,morality
-2016-12-12	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By
+2016-12-12	feelings_of_adequacy=f(size_and_age_of_todo_list)	productivity,depression	Indexed	http://thisisindexed.com/2015/05/and-the-list-never-stops-growing/	By
 2016-12-19	negativity→stressors→depression	morality,academia	Wittenborn et al. (2015)	http://dx.doi.org/10.1017/S0033291715002044	Simplified from
-2016-12-26	pain_felt=f(emotions_expressed)	morality,relationships	Indexed	http://thisisindexed.com/2015/01/strong-silent-type-desperately-needs-hug/	By
+2016-12-26	pain_felt=f(emotions_expressed)	morality,relationships,depression	Indexed	http://thisisindexed.com/2015/01/strong-silent-type-desperately-needs-hug/	By
 2017-01-02	insomnia,dreams=f(thoughts)	productivity,miscellaneous
 2017-01-09	story_truth=f(times_the_story_is_told)	academia,miscellaneous	Indexed	http://thisisindexed.com/2008/01/telephone-for-you/	Inspired by
 2017-01-16	screwups=f(excuses)	relationships,morality,politics
-2017-01-23	body_image=f(persons_worth)	body image,morality,relationships
+2017-01-23	body_image=f(persons_worth)	body image,morality,relationships,depression
 2017-01-30	good_for_you=f(digestion_duration)	morality,body image,miscellaneous	Indexed	http://thisisindexed.com/2015/06/something-to-chew-on/	Inspired by
 2017-02-06	frustration=f(missed_life_changing_culture)	morality,miscellaneous
 2017-02-13	spoken_words=f(comfort)	morality,relationships	Indexed	http://thisisindexed.com/2011/11/not-all-silences-are-awkward/	By
@@ -77,15 +77,68 @@ release	name	tags	author	source	credit
 2017-02-27	potential_breakup_harm,happiness=f(length_of_relationship)	relationships,morality
 2017-03-06	making_a_mistake,fixing_a_mistake=f(length_of_relationship)	relationships,morality	Indexed	http://thisisindexed.com/2010/08/oh-fudge/	Inspired by
 2017-03-13	present>future	morality,growing up,politics	Behavior Gap	http://www.nytimes.com/2014/04/21/your-money/household-budgeting/with-planning-out-of-the-way-time-to-enjoy-the-moment.html	By
-2017-03-20	altruistic_love=f(self_love)	relationships,morality	Indexed	http://thisisindexed.com/2010/07/narcissus-and-medea-are-lonely/	By
+2017-03-20	altruistic_love=f(self_love)	relationships,morality,depression	Indexed	http://thisisindexed.com/2010/07/narcissus-and-medea-are-lonely/	By
 2017-03-27	crime,poverty,housing,taxes,education=f(crime,poverty,housing,taxes,education)	miscellaneous,morality	Indexed	http://thisisindexed.com/2010/10/why-zip-codes-have-connotations/	By
-2017-04-03	happiness=f(seasons)	morality
-2017-04-10	shame=f(commonality_of_problem)	morality	Indexed	http://thisisindexed.com/2011/09/how-empathy-happens/	By
+2017-04-03	happiness=f(seasons)	morality,depression
+2017-04-10	shame=f(commonality_of_problem)	morality,depression	Indexed	http://thisisindexed.com/2011/09/how-empathy-happens/	By
 2017-04-17	income,expenses=f(materialism)	money,morality,politics
 2017-04-24	underconfidence≠overconfidence	morality	Behavior Gap	http://www.behaviorgap.com/even-smart-people-need-help-handling-money-emotion/	By
-2015-12-11	population_awareness=f(importance)	politics,miscellaneous			
-2017-05-01	(being)⋂(aspiration)=worth	morality,growing up			
-2017-05-08	envisioned_happiness=f(happiness)	morality			
-2017-05-15	estimated_knowledge=f(knowledge,estimated_ignorance)	academia,miscellaneous			
-2017-05-22	shyness≠situational_timidity	morality			
-2017-05-29	worth×(foresight,regrets)	morality,money			
+2015-12-11	population_awareness=f(importance)	politics,ecology,miscellaneous
+2017-05-01	(being)⋂(aspiration)=worth	morality,growing up,depression
+2017-05-08	envisioned_happiness=f(happiness)	morality,depression
+2017-05-15	estimated_knowledge=f(knowledge,estimated_ignorance)	academia,miscellaneous
+2017-05-22	shyness≠situational_timidity	morality
+2017-05-29	worth×(foresight,regrets)	morality,money
+2017-06-05	my_life=f(global_warming)	ecology,politics,miscellaneous
+2017-07-17	(want)∩(have)=∅	morality,money
+2017-07-24	romanticization=f(breakup_delta)	relationships
+2017-07-31	action×(honesty,slyness)	morality,miscellaneous
+2017-08-07	risk=f(normality)	growing up,miscellaneous
+2017-08-14	repairability=f(knowledge)	morality,miscellaneous	Indexed	http://thisisindexed.com/2016/11/lets-look-hood/	Original idea by
+2017-08-21	(desire)∩(ability)=ideal_relationship	relationships,morality
+2017-08-28	guess→act	growing up,morality	Behavior Gap	https://www.behaviorgap.com/reality-based-financial-planning-introduction/	By
+2017-09-04	(truth)∩(offense)=complications	politics,morality,miscellaneous	Ad Hoc Comics	http://adhoccomics.com/2017/03/22/offensivetrue/	By
+2017-09-11	listening>talking	relationships,morality
+2017-09-18	happiness→happiness	morality,depression			
+2017-09-25	be_lucky→make_luck→no_luck→no_point	morality,growing up,depression			
+2017-10-02	enjoyability=f(predictability)	miscellaneous			
+2017-10-09	understanding=f(time)	growing up			
+2017-10-16	year_duration=f(age)	growing up,miscellaneous			
+2017-10-23	(knowledge)∩(anger)	politics,miscellaneous			
+2017-10-30	lies=f(age)	morality,growing up			
+2017-11-06	wellness=f(expression)	depression			
+2017-11-13	(working)∪(sleeping)∪(eating)≠𝝮	productivity,work life			
+2017-11-20	depth_of_conversations=f(age)	growing up			
+2017-11-27	feelings_intensity=f(time)	relationships			
+2017-12-04	conversation=f(awkwardness)	relationships			
+2017-12-11	depth=f(cynicism)	morality			
+2017-12-18	wellness=f(expectations)	morality,depression			
+2017-12-25	time_spent=f(age)	growing up,work life,miscellaneous	American time use survey (2003 - 2015)	https://www.bls.gov/charts/american-time-use/activity-by-age.htm	Data from
+2018-01-01	stuff_to_pack=f(time)	miscellaneous	Chaz Hutton	https://www.instagram.com/p/82ZdjLm9X5	Inspired by
+2018-01-08	interlocutors=f(personal_issues)	depression,relationships	Indexed	https://medium.com/personal-growth/how-you-ll-surive-6d9fdcb3f91a	Original idea by
+2018-01-15	worth=f(doability)	depression,work life,morality			
+2018-01-22	faith_in_humanity=f(time)	politics,miscellaneous			
+2018-01-29	inequality=f(GDP)	academia,money,miscellaneous			
+2018-02-05	warmth=f(thightness)	morality,miscellaneous	Indexed	http://thisisindexed.com/2017/02/lonely-people-hang-threads/	By
+2018-02-12	action×(honesty,sneakiness)	miscellaneous			
+2018-02-19	productivity=f(focus)	productivity,work life	xkcd	https://xkcd.com/1796/	Inspired by
+2018-02-26	skill,meticulousness=f(time)	productivity,morality			
+2018-03-05	responsibilities,hangovers=f(age)	growing up,miscellaneous	CHaz Hutton	https://www.instagram.com/p/__tqCFG9aK/?taken-by=instachaaz&hl=en	By
+2018-03-12	negativity→stressors→depression	depression,academia			
+2018-03-19	(yours)∩(mine)=jealousy	relationships,morality			
+2018-03-26	(identity)∩(actions)=reputation	morality			
+2018-04-02	behavior=f(risk)	morality,miscellaneous			
+2018-04-09	rapes=f(porn)	miscellaneous,academia	Ferguson (2009)	http://christopherjferguson.com/pornography.pdf	Extremely simplified from
+2018-04-16	alternative_facts=f(data)	academia,miscellaneous	PhD Comics	http://phdcomics.com/comics/archive.php?comicid=1921	By
+2018-04-23	barriers=f(intimacy)	relationships			
+2018-04-30	(humanity)∩(perfection)=∅	morality	Indexed	http://thisisindexed.com/2017/01/but-we-still-try/	Reinterpretation of
+2018-05-07	excitement=f(delivery)	miscellaneous	Chaz Hutton	https://www.instagram.com/p/BDGR6C2m9cl	By
+2018-05-14	conviction=f(time)	academia			
+2018-05-21	attractiveness=f(age,gender)	relationships,body image,growing up	OKCupid	https://theblog.okcupid.com/the-case-for-an-older-woman-99d8cabacdf5	Data from
+2018-05-28	memory_loss=f(repetition)	academia			
+2018-06-04	incentives=f(age)	growing up,miscellaneous			
+2018-06-11	selfishness→independance→isolation	depression,morality,relationships			
+2018-06-18	(life_expectancy)×(natural_wonders)	ecology,academia			
+2018-06-25	ability=f(denial)	depression	Indexed	http://thisisindexed.com/2016/12/oh-god-true/	By
+2018-07-02	worldly_love=f(knowledge)	ecology,politics			
+					

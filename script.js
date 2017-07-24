@@ -272,62 +272,64 @@ if(ARCHIVES){
 }
 
 // ATTACH LISTENERS
-for (var i = 0; i < AS.length; i++) { AS[i].addEventListener('click', navigate.bind(undefined, i)) }
-document.getElementById('home').addEventListener('click', navigate.bind(undefined, 0))
-document.getElementById('prev').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('prev', event) } )
-document.getElementById('next').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('next', event) } )
-document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
-document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault();} navigate('archives', event) } )
-document.getElementById('speed_input').addEventListener('change', function (event) { SPEED = this.value; localStorage.setItem('speed', this.value) })
-window.addEventListener('scroll', function (event) {
-  which_vignette_should_load()
-  scrolled = true
-})
-window.requestAnimationFrame(sticky_aside)
-for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('change', filter) }
+function add_all_event_listeners () {
+  for (var i = 0; i < AS.length; i++) { AS[i].addEventListener('click', navigate.bind(undefined, i)) }
+  document.getElementById('home').addEventListener('click', navigate.bind(undefined, 0))
+  document.getElementById('prev').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('prev', event) } )
+  document.getElementById('next').addEventListener('click', function(event) { if(this.classList.contains('disabled')) { event.stopPropagation(); event.preventDefault(); return} navigate('next', event) } )
+  document.getElementById('cog').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation();event.preventDefault();return} } )
+  document.getElementById('archives').addEventListener('click', function (event) { if(ARCHIVES){event.stopPropagation(); event.preventDefault();} navigate('archives', event) } )
+  document.getElementById('speed_input').addEventListener('change', function (event) { SPEED = this.value; localStorage.setItem('speed', this.value) })
+  window.addEventListener('scroll', function (event) {
+    which_vignette_should_load()
+    scrolled = true
+  })
+  window.requestAnimationFrame(sticky_aside)
+  for (var i = 0; i < TAGS_CHECK.length; i++) { TAGS_CHECK[i].addEventListener('change', filter) }
 
-window.addEventListener('resize', function () {
-  cached_inner_height = window.innerHeight
-  cached_inner_width = window.innerWidth
-  resize_el_height(document.getElementById('blurb'), !ARCHIVES)
-  resize_el_height(document.getElementById('tags'), ARCHIVES)
-  // properly_size_svg()
-  which_vignette_should_load()
-  sizes_have_changed(false, true)
-})
+  window.addEventListener('resize', function () {
+    cached_inner_height = window.innerHeight
+    cached_inner_width = window.innerWidth
+    resize_el_height(document.getElementById('blurb'), !ARCHIVES)
+    resize_el_height(document.getElementById('tags'), ARCHIVES)
+    // properly_size_svg()
+    which_vignette_should_load()
+    sizes_have_changed(false, true)
+  })
 
-document.getElementById('animation_check').addEventListener('change', function (event) {
-	ANIMATE = this.checked
-	localStorage.setItem('animate', this.checked)
-	var svg = MAIN.getElementsByTagName('svg')[0]
-	if(ANIMATE)
-		play_svg(svg, 0)
-	else
-		force_finish_drawing_element_svg(svg)
-})
+  document.getElementById('animation_check').addEventListener('change', function (event) {
+    ANIMATE = this.checked
+    localStorage.setItem('animate', this.checked)
+    var svg = MAIN.getElementsByTagName('svg')[0]
+    if(ANIMATE)
+      play_svg(svg, 0)
+    else
+      force_finish_drawing_element_svg(svg)
+  })
 
-window.addEventListener('keydown', function (event) {
-  if(event.repeat) return
-  if(event.keyCode===37 || event.keyCode===38)
-    navigate('prev', event)
-  if(event.keyCode===39 || event.keyCode===40)
-    navigate('next', event)
-})
+  window.addEventListener('keydown', function (event) {
+    if(event.repeat) return
+    if(event.keyCode===37 || event.keyCode===38)
+      navigate('prev', event)
+    if(event.keyCode===39 || event.keyCode===40)
+      navigate('next', event)
+  })
 
-window.onpopstate = function (event) {
-	if(!event.state) // invalid
-		return
+  window.onpopstate = function (event) {
+    if(!event.state) // invalid
+      return
 
-  server_and_console.log('new state poped: name='+event.state.name)
-  logo_start_moving()
+    server_and_console.log('new state poped: name='+event.state.name)
+    logo_start_moving()
 
-  if(event.state.name==='archives') // archives
-		return setup_archives(INDEX)
+    if(event.state.name==='archives') // archives
+      return setup_archives(INDEX)
 
-	var index = -1
-	if(event.state.name)
-		index = find_needle_with_key(event.state.name, 'name')
-  setup_graph(index===-1?0:index)
+    var index = -1
+    if(event.state.name)
+      index = find_needle_with_key(event.state.name, 'name')
+    setup_graph(index===-1?0:index)
+  }
 }
 
 
@@ -337,6 +339,7 @@ window.onpopstate = function (event) {
 // SCRIPT //
 ////////////
 
+add_all_event_listeners()
 server_and_console.log('Entering site @ '+window.location.pathname);
 if(ARCHIVES)
   setup_archives()

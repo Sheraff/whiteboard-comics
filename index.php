@@ -51,8 +51,8 @@
 	foreach ($globbed as $key => $file) {
 		$letter = str_replace(['alphabet_', '.svg'], '', basename($file));
 		$letter = str_replace(
-			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash','percent'],
-			['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/','%'],
+			['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash','percent','colon'],
+			['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/','%',':'],
 			$letter
 		);
 		$letters[] = [
@@ -134,8 +134,8 @@
 		?>
 	</ul>
 	<footer>
-		<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© 2015 — </span><span id="website">florianpellet.com</span></a>
-		<a id="contact" href="mailto:fpellet@ensc.fr" target="_blank">Do you have an idea for this site?</a>
+		<a id="footer" href="http://florianpellet.com" target="_blank"><span id="copyright">© <? echo date("Y"); ?> — </span><span id="website">florianpellet.com</span></a>
+		<a id="contact" href="mailto:contact@whiteboard-comics.com" target="_blank">Do you have an idea for this site?</a>
 	</footer>
 </aside>
 <section <? if(!$archives) echo 'class="expanded pre_expanded"'; ?>>
@@ -195,15 +195,9 @@
 
 
 <!-- TODO
-	IMPROVEMENTS
-	- simplify alphabet before dumping in json (in index.php), remove unnecessary SVG clutter
-
 	BUGS
 	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
 	- figure out why rewrite_with_paths() works the first time but never the second
-	- older versions of Safari won't display text at all
-		- fix this ?
-		- fallback to just "typing" the letters one at a time ?
 
 	SVG ANIMATION
 	- ability to adjust speed while drawing (will greatly improve the affordance of the speed control bar)
@@ -214,7 +208,6 @@
 	- smooth scrolling
 		- for setup_archives()
 		- for filter() only if vignettes are animated when added / removed
-	- scale SVG while transitionning from vignette to full whiteboard so that they don't get deformed
 
 	FLUIDITY
 	- animate ASIDE with "transform"
