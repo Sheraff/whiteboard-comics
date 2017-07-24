@@ -1,0 +1,48 @@
+{
+  "message": [{
+    "type": "warning",
+    "log": "couldnt rewrite #0 with font, removing previous attempt (Relationships = F ( Reciprocity of care ))"
+  }, {
+    "type": "log",
+    "history": ["relationships=f(reciprocity_of_care)"],
+    "log": ["Entering site @ \/relationships=f(reciprocity_of_care)",
+      "state recovered from history: asking for graph #0: @ relationships=f(reciprocity_of_care)",
+      "setting up graph #0", "graph setup from GRAPHS mode",
+      "creating new rule for \"section a.expanded > div\"",
+      "no svg found, considering svg already erased",
+      "preprocessing graph #0",
+      "rewriting #0 without font loaded, didnt use font",
+      "graph #0 loaded", "cloning #0 processed without font",
+      "playing MAIN svg", "converting SVG to PNG", "loading graph #1",
+      "height is now based on aside",
+      "graph #0 being reprocessed after font load",
+      "WARNING: couldnt rewrite #0 with font, removing previous attempt (Relationships = F ( Reciprocity of care ))",
+      "rewriting #0 with font loaded, didnt use font",
+      "preprocessing graph #1",
+      "rewriting #1 with font loaded, did use font",
+      "loading watermarked img for #0 from server",
+      "height is now based on aside", "navigate to prev",
+      "wrong navigation instructions"
+    ]
+  }],
+  "navigator": {
+    "name": "Netscape",
+    "vendor": "Google Inc.",
+    "version": "5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/47.0.2526.111 Safari\/537.36",
+    "codename": "Mozilla",
+    "platform": "MacIntel"
+  },
+  "window": {
+    "width": 1280,
+    "height": 800,
+    "maxwidth": 1280,
+    "maxheight": 773
+  },
+  "php": {
+    "browser": null,
+    "parent": null,
+    "platform": null
+  },
+  "ip": "129.199.81.215",
+  "ts": 1453286065
+}

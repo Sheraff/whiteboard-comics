@@ -1,0 +1,26 @@
+{
+  "message": [{
+    "type": "warning",
+    "log": "couldnt rewrite #0 with font, removing previous attempt (Total happiness = F ( Number of kids ))"
+  }],
+  "navigator": {
+    "name": "Netscape",
+    "vendor": "Google Inc.",
+    "version": "5.0 (Windows NT 10.0; WOW64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/47.0.2526.106 Safari\/537.36",
+    "codename": "Mozilla",
+    "platform": "Win32"
+  },
+  "window": {
+    "width": 1920,
+    "height": 1080,
+    "maxwidth": 1920,
+    "maxheight": 1050
+  },
+  "php": {
+    "browser": null,
+    "parent": null,
+    "platform": null
+  },
+  "ip": "89.92.64.146",
+  "ts": 1453140699
+}

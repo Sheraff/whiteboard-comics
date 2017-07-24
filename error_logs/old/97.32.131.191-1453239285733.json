@@ -1,0 +1,26 @@
+{
+  "message": [{
+    "type": "warning",
+    "log": "couldnt rewrite #1 with font, removing previous attempt (Money left, Money perceived = F ( Evening weekend ))"
+  }],
+  "navigator": {
+    "name": "Netscape",
+    "vendor": "Google Inc.",
+    "version": "5.0 (Linux; Android 4.1.2; LGL39C Build\/JZO54K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/40.0.2214.89 Mobile Safari\/537.36",
+    "codename": "Mozilla",
+    "platform": "Linux armv7l"
+  },
+  "window": {
+    "width": 320,
+    "height": 480,
+    "maxwidth": 320,
+    "maxheight": 480
+  },
+  "php": {
+    "browser": null,
+    "parent": null,
+    "platform": null
+  },
+  "ip": "97.32.131.191",
+  "ts": 1453239278
+}

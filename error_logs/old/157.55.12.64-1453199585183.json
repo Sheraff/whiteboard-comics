@@ -1,0 +1,29 @@
+{
+  "message": [{
+    "type": "error",
+    "log": "TypeError: undefined is not a function (evaluating 'window.requestAnimationFrame(sticky_aside)')"
+  }, {
+    "type": "error",
+    "log": "TypeError: undefined is not an object (evaluating 'graph.nofont')"
+  }],
+  "navigator": {
+    "name": "Netscape",
+    "vendor": "Apple Computer, Inc.",
+    "version": "5.0 (Windows NT 6.1; WOW64) AppleWebKit\/534+ (KHTML, like Gecko) BingPreview\/1.0b",
+    "codename": "Mozilla",
+    "platform": "Win32"
+  },
+  "window": {
+    "width": 1024,
+    "height": 768,
+    "maxwidth": 1024,
+    "maxheight": 768
+  },
+  "php": {
+    "browser": null,
+    "parent": null,
+    "platform": null
+  },
+  "ip": "157.55.12.64",
+  "ts": 1453199590
+}

@@ -1,0 +1,45 @@
+{
+  "message": [{
+    "type": "warning",
+    "log": "couldnt rewrite #0 with font, removing previous attempt (Total happiness = F ( Number of kids ))"
+  }, {
+    "type": "log",
+    "history": ["total_happiness=f(number_of_kids)"],
+    "log": ["Entering site @ \/total_happiness=f(number_of_kids)",
+      "creating history state: asking for graph #0: @ total_happiness=f(number_of_kids)",
+      "setting up graph #0", "graph setup from GRAPHS mode",
+      "creating new rule for \"section a.expanded > div\"",
+      "no svg found, considering svg already erased",
+      "preprocessing graph #0",
+      "rewriting #0 without font loaded, didnt use font",
+      "graph #0 loaded", "cloning #0 processed without font",
+      "playing MAIN svg", "converting SVG to PNG", "loading graph #1",
+      "height is now based on aside",
+      "graph #0 being reprocessed after font load",
+      "WARNING: couldnt rewrite #0 with font, removing previous attempt (Total happiness = F ( Number of kids ))",
+      "rewriting #0 with font loaded, didnt use font",
+      "preprocessing graph #1",
+      "rewriting #1 with font loaded, did use font"
+    ]
+  }],
+  "navigator": {
+    "name": "Netscape",
+    "vendor": "",
+    "version": "5.0 (Windows)",
+    "codename": "Mozilla",
+    "platform": "Win32"
+  },
+  "window": {
+    "width": 1366,
+    "height": 768,
+    "maxwidth": 1304,
+    "maxheight": 768
+  },
+  "php": {
+    "browser": null,
+    "parent": null,
+    "platform": null
+  },
+  "ip": "90.5.61.163",
+  "ts": 1453137010
+}
