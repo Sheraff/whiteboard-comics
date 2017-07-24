@@ -16,12 +16,12 @@
 	// try and MATCH graph to query
 	$initial_index = -1;
 	foreach ($graphs as $key => $graph){
-		if($_GET['graph'] && $graph[name]===$_GET['graph']){ // MATCH. Compare to rewriten URL, if it matches, we'll start with this one
+		if($_GET['graph'] && $graph[name]===$_GET['graph']){ // MATCH. Compare to rewritten URL, if it matches, we'll start with this one
 			$initial_index = $key;
 			break;
 		}
 	}
-	if($initial_index===-1){ // if none matched the rewrited URL (or if URL wasn't rewrited), start with the latest one
+	if($initial_index===-1){ // if none matched the rewritten URL (or if URL wasn't rewritten), start with the latest one
 		$initial_index = 0;
 	}
 
