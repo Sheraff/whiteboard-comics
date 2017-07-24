@@ -1233,7 +1233,7 @@ function erase (svg, delay, callback) {
   var erase_path = svg.querySelector('[data-type="erase"]')
   if(!erase_path)
     return callback()
-  start_drawing_element(erase_path, delay, callback)
+  start_drawing_element(erase_path, delay, true, callback)
 }
 
 function play_svg (svg, delay, callback) {
@@ -1242,21 +1242,26 @@ function play_svg (svg, delay, callback) {
   prepare_drawing_element_svg(svg)
 
 	// launch
-	var total_duration = delay || 0
-  iterate_group(svg, function (element) {
-    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
-      return
-    if(element.getAttribute('data-type')!=='erase'){
-      total_duration += start_drawing_element (element, total_duration)
-    }
-  }, function () {
-    total_duration += .5
-  })
+	var total_duration = (delay || 0) + get_svg_anim_duration(svg, true)
 
 	if (callback)
 		setTimeout(callback, total_duration*1000)
 
 	return total_duration
+}
+
+function get_svg_anim_duration (svg, start) {
+  duration = 0
+  iterate_group(svg, function (element) {
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
+      return
+    if(element.getAttribute('data-type')!=='erase'){
+      duration += start_drawing_element (element, duration, start)
+    }
+  }, function () {
+    duration += .5
+  })
+  return duration
 }
 
 function interrupt_drawing_element_svg (svg) {
@@ -1282,6 +1287,41 @@ function force_finish_drawing_element_svg (svg) {
     }
     element.style.transition = 'none'
     element.style.opacity = '1'
+  })
+}
+
+function force_svg_animation_percent (svg, percent) {
+  // reset
+  prepare_drawing_element_svg(svg)
+
+  // calculate time advancement
+  var total_duration = get_svg_anim_duration(svg, false)
+  var current_time = percent * total_duration
+  var element_starts_at = 0
+
+  iterate_group(svg, function (element) {
+    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
+      return
+    if(element.getAttribute('data-type')==='erase'){
+      element.style.strokeDashoffset = element.getTotalLength()
+    } else {
+      var element_duration = get_element_anim_duration(element)
+      if(element_starts_at < current_time){
+        element.style.opacity = '1'
+        if(element_starts_at + element_duration < current_time){
+          // draw entirely
+          element.style.strokeDashoffset = '0'
+        } else {
+          // draw partially
+          var element_length = element.getTotalLength()
+          element.style.strokeDashoffset = element_length - (current_time - element_starts_at) / element_duration * element_length
+        }
+      }
+      element_starts_at += element_duration
+    }
+    element.style.transition = 'none'
+  }, function () {
+    element_starts_at += .5
   })
 }
 
@@ -1314,32 +1354,47 @@ function prepare_drawing_element (element) {
   element.style.opacity = '0'
 }
 
-function start_drawing_element (element, delay, callback) {
-	var length = element.getTotalLength()
+function start_drawing_element (element, delay, start, callback) {
+  var duration = get_element_anim_duration(element)
 
-  if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
-    var speed_power = element.getAttribute('data-long-writing') ? .1 : .25
-    var smoothing = 'ease-out'
-  } else if (element.getAttribute('data-type')==='erase'){
-    var speed_power = .4
-    var smoothing = 'linear'
-  } else {
-    var speed_power = .6
-    var smoothing = 'ease-in-out'
+  if(start){
+  	element.getBoundingClientRect() // TODO: this might need to be uncommented to trigger something (like a recalculation of some sorts)
+  	element.style.transition = 'stroke-dashoffset ' + duration + 's ' + get_element_smoothing_type(element) + ' ' + delay + 's, opacity 0s '+ delay + 's'
+  	element.style.strokeDashoffset = '0'
+  	element.style.visibility = 'visible'
+    element.style.opacity = '1'
   }
-
-	var duration = .1/SPEED*Math.pow(length, speed_power)
-
-	element.getBoundingClientRect() // TODO: this might need to be uncommented to trigger something (like a recalculation of some sorts)
-	element.style.transition = 'stroke-dashoffset ' + duration + 's ' + smoothing + ' ' + delay + 's, opacity 0s '+ delay + 's'
-	element.style.strokeDashoffset = '0'
-	element.style.visibility = 'visible'
-  element.style.opacity = '1'
 
 	if (callback)
 		setTimeout(callback, (delay+duration)*1000)
 
   return duration
+}
+
+function get_element_anim_duration (element) {
+  var length = element.getTotalLength()
+
+  if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
+    var speed_power = element.getAttribute('data-long-writing') ? .1 : .25
+  } else if (element.getAttribute('data-type')==='erase'){
+    var speed_power = .4
+  } else {
+    var speed_power = .6
+  }
+
+  return .1/SPEED*Math.pow(length, speed_power)
+}
+
+function get_element_smoothing_type (element) {
+  if(element.getAttribute('data-type')==='writing' || !element.getAttribute('stroke')){
+    var smoothing = 'ease-out'
+  } else if (element.getAttribute('data-type')==='erase'){
+    var smoothing = 'linear'
+  } else {
+    var smoothing = 'ease-in-out'
+  }
+
+  return smoothing
 }
 
 
