@@ -3,6 +3,7 @@ AddType image/svg+xml .svg .svgz
 RewriteEngine on
 RewriteRule ^/?archives/?$ /?archives=true [L,NC]
 RewriteRule ^chapon$ index.php?all=true [L,NC]
+RewriteRule ^rss(/)?$ rss/index.php [L,NC]
 RewriteRule ^graphs/(.*)$ svg.php?graph=$1 [L,NC]
 RewriteRule ^sitemap(/)?(\.xml)?$ sitemap/index.php [L,NC]
 RewriteRule ^([^\.]*)$ index.php?graph=$1 [NC]
