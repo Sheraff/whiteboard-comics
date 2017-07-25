@@ -92,7 +92,7 @@
 <aside <? echo $archives ? 'class="archives"' : ''; ?>>
 	<a id="home" href="/">
 		<header>
-			<? echo file_get_contents("logo.svg"); ?>
+			<? echo file_get_contents("logo/logo.svg"); ?>
 			<h2><? echo strtolower($bites[h2]); ?></h2>
 		</header>
 	</a>

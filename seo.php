@@ -36,7 +36,7 @@
 		],
 		"logo": {
 			"@type": "ImageObject",
-			"url": "<? echo $base . '/'; ?>logo-full.png",
+			"url": "<? echo $base; ?>/logo/logo-full.png",
 		}
 	}
 </script>
@@ -72,7 +72,7 @@
 			],
 			"logo": {
 				"@type": "ImageObject",
-				"url": "<? echo $base . '/'; ?>logo-full.png",
+				"url": "<? echo $base; ?>/logo/logo-full.png",
 			}
 		 }
 		"datePublished" : "<? echo date('c', $graphs[$initial_index][timestamp]); ?>",
