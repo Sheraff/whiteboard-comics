@@ -1,4 +1,9 @@
 
 visits.log
-
-visits.log
+error_logs/
+*/index.php
+!rss/index.php
+!sitemap/index.php
+png/*-nokern.png
+*/*.png
+gif/*.gif
