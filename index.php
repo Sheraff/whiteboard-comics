@@ -82,20 +82,7 @@
 	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, charts, plots, graph, graphs, graphics, time, life, <? echo implode(', ', array_keys($tags_list)); ?>">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
-	<meta property="article:author" content="https://facebook.com/florian.pellet" />
-	<meta property="article:author:first_name" content="Florian" />
-	<meta property="article:author:last_name" content="Pellet" />
-	<meta property="article:tag" content="<? echo $archives ? '' : implode('"/><meta property="article:tag" content="', $graphs[$initial_index][tags]); ?>"/>
-  <meta property="article:published_time" content="<? echo date('c',$graphs[$initial_index][timestamp]); ?>" />
-	<meta property="og:site_name" content="Whiteboard Comics"/>
-	<meta name="twitter:description" property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
-	<meta name="twitter:image" property="og:image" content="<? echo $base . '/' . $bites[preferred_img]; ?>"/>
-	<meta property="og:image:url" content="<? echo $base . '/' . $bites[preferred_img]; ?>"/>
-	<meta property="og:image:width" content="<? echo $bites[img_size][0]; ?>"/>
-	<meta property="og:image:height" content="<? echo $bites[img_size][1]; ?>"/>
-	<meta name="twitter:url" property="og:url" content="<? echo $base . '/' . ($archives ? 'archives' : $bites[preferred_img]) ?>"/>
-	<!-- <meta name="twitter:url" property="og:url" content="<? echo $base . '/' . ($archives ? 'archives' : $graphs[$initial_index][name]); ?>"/> -->
-	<meta name="twitter:title" property="og:title" content="Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?>"/>
+	<? include('seo.php'); ?>
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
 	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>
@@ -169,33 +156,6 @@
 
 </script>
 <script language="javascript" type="text/javascript" src="/script.js"></script>
-<? if(!$archives) { ?>
-	<script type="application/ld+json">
-		{
-			"@context" : "http://schema.org",
-			"@type" : "NewsArticle",
-			"headline" : "<? echo $graphs[$initial_index][formatted_name]; ?>",
-			"thumbnail" : "<? echo $bites[preferred_img]; ?>",
-			"image" : [
-				"<? echo $bites[preferred_img]; ?>"
-			],
-			"datePublished" : "<? echo date('c', $graphs[$initial_index][timestamp]); ?>",
-			"description" : "<? echo $bites[description]; ?>"
-		}
-	</script>
-<?}?>
-<script type="application/ld+json">
-	{
-		"@context" : "http://schema.org",
-		"@type" : "Organization",
-		"name" : "Whiteboard Comics",
-		"url" : "<? echo $base; ?>",
-		"logo": "<? echo $base . '/'; ?>logo-full.png",
-		"sameAs" : [
-			"https://www.facebook.com/existentialWhiteboardComics"
-		]
-	}
-</script>
 </html>
 
 
