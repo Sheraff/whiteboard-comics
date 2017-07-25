@@ -4,6 +4,7 @@ RewriteEngine on
 RewriteRule ^/?archives/?$ /?archives=true [L,NC]
 RewriteRule ^chapon$ index.php?all=true [L,NC]
 RewriteRule ^rss(/)?$ rss/index.php [L,NC]
+RewriteRule ^amp\/(.*)\.html$ amp.php?graph=$1 [L,NC]
 RewriteRule ^([^\/]*)\.png$ png/$1.png [L,NC]
 RewriteRule ^([^\/]*)\.gif$ gif/$1.gif [L,NC]
 RewriteRule ^([^\/]*)\.svg$ svg.php?graph=$1 [L,NC]

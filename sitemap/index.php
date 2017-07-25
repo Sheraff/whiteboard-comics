@@ -26,7 +26,7 @@
       <news:keywords><? echo implode(', ',$graph[tags]); ?></news:keywords>
     </news:news>
     <image:image>
-       <image:loc><? echo "http://whiteboard-comics.com/$graph[thumbnail]"; ?></image:loc>
+       <image:loc><? echo "http://whiteboard-comics.com/$graph[name].gif"; ?></image:loc>
        <image:caption><? echo $bites[description]; ?></image:caption>
     </image:image>
   </url>

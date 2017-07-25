@@ -82,7 +82,8 @@
 	<meta name="keywords" content="whiteboard, comics, thoughts, procrastination, existential, sarcasm, drawing, indexed, svg, animated, charts, plots, graph, graphs, graphics, time, life, <? echo implode(', ', array_keys($tags_list)); ?>">
 	<meta name="author" content="Florian Pellet">
 	<meta name="language" content="en">
-	<? include('seo.php'); ?>
+	<? include('meta.php'); ?>
+	<? include('jsonld.php'); ?>
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
 	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>
