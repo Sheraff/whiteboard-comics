@@ -68,6 +68,7 @@
   	ip => $_SERVER[REMOTE_ADDR]
   ]) . ",\n", FILE_APPEND);
 
+
 ?>-->
 
 <!DOCTYPE html>
@@ -86,9 +87,14 @@
 	<meta property="article:author:last_name" content="Pellet" />
 	<meta property="article:tag" content="<? echo $archives ? '' : implode('"/><meta property="article:tag" content="', $graphs[$initial_index][tags]); ?>"/>
   <meta property="article:published_time" content="<? echo date('c',$graphs[$initial_index][timestamp]); ?>" />
+	<meta property="og:site_name" content="Whiteboard Comics"/>
 	<meta name="twitter:description" property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
-	<meta name="twitter:image" property="og:image" content="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>"/>
-	<meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $graphs[$initial_index][name]; ?>"/>
+	<meta name="twitter:image" property="og:image" content="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>"/>
+	<meta property="og:image:url" content="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>"/>
+	<meta property="og:image:width" content="<? echo $bites[img_size][0]; ?>"/>
+	<meta property="og:image:height" content="<? echo $bites[img_size][1]; ?>"/>
+	<meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $bites[preferred_img] ?>"/>
+	<!-- <meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $graphs[$initial_index][name]; ?>"/> -->
 	<meta name="twitter:title" property="og:title" content="Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?>"/>
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
@@ -96,7 +102,6 @@
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<link href='/style.css' rel='stylesheet'>
 </head>
-<noscript><img src="http://whiteboard-comics.com/<? echo $graphs[$initial_index][thumbnail]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
 <aside <? echo $archives ? 'class="archives"' : ''; ?>>
 	<a id="home" href="/">
 		<header>
@@ -150,6 +155,7 @@
 </section>
 <main>
 	<? if(!$archives) echo format_svg(file_get_contents($graphs[$initial_index][path])); ?>
+	<noscript><img src="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
 </main>
 <script>
 	///////////////////
@@ -169,9 +175,9 @@
 			"@context" : "http://schema.org",
 			"@type" : "NewsArticle",
 			"headline" : "<? echo $graphs[$initial_index][formatted_name]; ?>",
+			"thumbnail" : "<? $bites[preferred_img]; ?>",
 			"image" : [
-				"<? echo $graphs[$initial_index][$graphs[$initial_index][watermarked] ? 'watermarked' : 'thumbnail']; ?>",
-				"<? echo $graphs[$initial_index][path]; ?>"
+				"<? echo $bites[preferred_img]; ?>"
 			],
 			"datePublished" : "<? echo date('c', $graphs[$initial_index][timestamp]); ?>",
 			"description" : "<? echo $bites[description]; ?>"
@@ -227,9 +233,9 @@
 
 	DURABILITY & MAINTAINABILITY
 	- write readme so that the process is clear
-		- groups in AI for timing
-		- above/below in AI for scenario
-		- rename artboards in AI for streamlining exports
+		- groups in Adobe Illustrator for timing
+		- above/below in Adobe Illustrator for scenario
+		- rename artboards in Adobe Illustrator for streamlining exports
 
 	SEO
 	- have more words on each graph (maybe a pun or a description or something)
