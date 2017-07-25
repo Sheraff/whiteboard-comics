@@ -175,7 +175,7 @@
 			"@context" : "http://schema.org",
 			"@type" : "NewsArticle",
 			"headline" : "<? echo $graphs[$initial_index][formatted_name]; ?>",
-			"thumbnail" : "<? $bites[preferred_img]; ?>",
+			"thumbnail" : "<? echo $bites[preferred_img]; ?>",
 			"image" : [
 				"<? echo $bites[preferred_img]; ?>"
 			],
