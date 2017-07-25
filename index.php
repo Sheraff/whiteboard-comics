@@ -1,7 +1,7 @@
 <!-- ♡ <?
 	if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
 		header("HTTP/1.1 301 Moved Permanently");
-		header("Location: http://whiteboard-comics.com");
+		header("Location: $base");
 		exit();
 	}
 
@@ -89,12 +89,12 @@
   <meta property="article:published_time" content="<? echo date('c',$graphs[$initial_index][timestamp]); ?>" />
 	<meta property="og:site_name" content="Whiteboard Comics"/>
 	<meta name="twitter:description" property="og:description" content="<? echo $archives ? $archive_text : $bites[description]; ?>"/>
-	<meta name="twitter:image" property="og:image" content="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>"/>
-	<meta property="og:image:url" content="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>"/>
+	<meta name="twitter:image" property="og:image" content="<? echo $base . '/' . $bites[preferred_img]; ?>"/>
+	<meta property="og:image:url" content="<? echo $base . '/' . $bites[preferred_img]; ?>"/>
 	<meta property="og:image:width" content="<? echo $bites[img_size][0]; ?>"/>
 	<meta property="og:image:height" content="<? echo $bites[img_size][1]; ?>"/>
-	<meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $bites[preferred_img] ?>"/>
-	<!-- <meta name="twitter:url" property="og:url" content="http://whiteboard-comics.com/<? echo $archives ? 'archives' : $graphs[$initial_index][name]; ?>"/> -->
+	<meta name="twitter:url" property="og:url" content="<? echo $base . '/' . ($archives ? 'archives' : $bites[preferred_img]) ?>"/>
+	<!-- <meta name="twitter:url" property="og:url" content="<? echo $base . '/' . ($archives ? 'archives' : $graphs[$initial_index][name]); ?>"/> -->
 	<meta name="twitter:title" property="og:title" content="Whiteboard Comics — <? echo $archives ? 'Archives' : $graphs[$initial_index][formatted_name]; ?>"/>
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
@@ -155,7 +155,7 @@
 </section>
 <main>
 	<? if(!$archives) echo format_svg(file_get_contents($graphs[$initial_index][path])); ?>
-	<noscript><img src="http://whiteboard-comics.com/<? echo $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
+	<noscript><img src="<? echo $base . '/' . $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>" /></noscript>
 </main>
 <script>
 	///////////////////
@@ -189,8 +189,8 @@
 		"@context" : "http://schema.org",
 		"@type" : "Organization",
 		"name" : "Whiteboard Comics",
-		"url" : "http://whiteboard-comics.com",
-		"logo": "http://whiteboard-comics.com/logo-full.png",
+		"url" : "<? echo $base; ?>",
+		"logo": "<? echo $base . '/'; ?>logo-full.png",
 		"sameAs" : [
 			"https://www.facebook.com/existentialWhiteboardComics"
 		]
