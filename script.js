@@ -184,7 +184,7 @@ SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
 MAX_SIMULTANEOUS_SVG_REQUESTS = 4
-LOGGING = false
+LOGGING = true
 FONT_LOADED = false
 FIRST_LANDING = true
 
@@ -484,20 +484,38 @@ function setup_graph (index) {
     pubdate.textContent = 'published on ' + date_obj.getLitteralMonth() + ' ' + parseInt(GRAPHS[index].release[2]) + date_obj.getDatePostfix() + ', ' + GRAPHS[index].release[0]
     MAIN.appendChild(pubdate)
 
-    // png
-    if(GRAPHS[index].watermark_is_loaded)
-      put_overlay_image(index, GRAPHS[index].watermarked)
-    else if (GRAPHS[index].urldata)
-      set_img_from_urldata(index, GRAPHS[index].urldata)
-    else{
-      var img = new Image()
-      MAIN.appendChild(img)
-      if(DOMURL.createObjectURL)
-        svg_to_png(index, set_img_from_urldata.bind(undefined, index, img))
-      else if(GRAPHS[index].watermarked)
-        load_watermark_from_server(img, index)
-      else
-        server_and_console.warn('there isnt going to be an img overlay for this one: #'+index+' ('+GRAPHS[index].formatted_name+')')
+    // transparent overlay
+    if(GRAPHS[index].gif_is_loaded)
+      put_overlay_image(index, GRAPHS[index].gif)
+    else if(GRAPHS[index].watermark_is_loaded){
+      var img = put_overlay_image(index, GRAPHS[index].watermarked)
+      try_and_grab_gif(img, index)
+    }else if (GRAPHS[index].urldata){
+      var img = set_img_from_urldata(index, GRAPHS[index].urldata)
+      try_and_grab_gif(img, index)
+    }else{
+      if(DOMURL.createObjectURL){
+        svg_to_png(index, 1, (function(index, urldata){
+          GRAPHS[index].urldata = urldata
+          var img = set_img_from_urldata(index, urldata)
+          try_and_grab_gif(img, index)
+        }).bind(undefined, index))
+      }else if(GRAPHS[index].watermarked || GRAPHS[index].gif){
+        var img = new Image()
+        MAIN.appendChild(img)
+        if(GRAPHS[index].watermarked)
+          load_watermark_from_server(img, index)
+        try_and_grab_gif(img, index)
+      }else
+        server_and_console.warn('there isnt going to be any img nor gif overlay for this one: #'+index+' ('+GRAPHS[index].formatted_name+')')
+    }
+
+    function try_and_grab_gif(img, index){
+      console.log("TRY AND GRAB GIF !")
+      if(GRAPHS[index].gif)
+        load_gif_from_server(img, index)
+      else if(DOMURL.createObjectURL)
+        create_gif(index, load_gif_from_server.bind(undefined, img, index))
     }
 
     // misc
@@ -976,12 +994,13 @@ function properly_size_svg (svg) {
 // SVG TO PNG LIBRARY //
 ////////////////////////
 
-function set_img_from_urldata (index, urldata, img) {
-  var img = put_overlay_image(index, img?img:urldata, img?urldata:undefined)
-  if(GRAPHS[index].watermarked)
+function set_img_from_urldata (index, urldata, url) {
+  var img = put_overlay_image(index, url?url:urldata)
+  if(GRAPHS[index].watermarked && !GRAPHS[index].gif)
     load_watermark_from_server(img, index)
-  else
-    save_img_to_server(img, index)
+  else if(!GRAPHS[index].watermarked && (url||urldata))
+    save_img_to_server(url?url:urldata, index)
+  return img
 }
 function put_overlay_image(index, url, pre_img){
   img = pre_img || new Image()
@@ -989,7 +1008,7 @@ function put_overlay_image(index, url, pre_img){
   var svg_rect = MAIN.getElementsByTagName('svg')[0].getBoundingClientRect()
   img.height = svg_rect.height
   img.width = svg_rect.width
-  img.setAttribute('alt',GRAPHS[index].name+'.png')
+  img.setAttribute('alt',GRAPHS[index].name+' image')
   if(!pre_img)
     MAIN.appendChild(img)
   img.src = url
@@ -998,32 +1017,64 @@ function put_overlay_image(index, url, pre_img){
 function load_watermark_from_server (img, index) {
   server_and_console.log('loading watermarked img for #'+index+' from server')
   var temp_img = new Image()
-  temp_img.onload = (function (img, temp_img) {
+  temp_img.onload = (function (img, temp_img, index) {
     GRAPHS[index].watermark_is_loaded = true
-    img.src = temp_img.src
-  }).bind(undefined, img, temp_img)
+    if(!GRAPHS[index].gif_is_loaded && index==INDEX)
+      put_overlay_image(index, temp_img.src, img)
+  }).bind(undefined, img, temp_img, index)
   temp_img.src = GRAPHS[index].watermarked
 }
-function save_img_to_server (img, index) {
+function load_gif_from_server (img, index) {
+  server_and_console.log('loading gif for #'+index+' from server')
+  var temp_gif = new Image()
+  temp_gif.onload = (function (img, temp_gif, index) {
+    GRAPHS[index].gif_is_loaded = true
+    if(index==INDEX)
+      put_overlay_image(index, temp_gif.src, img)
+    // img.src = temp_gif.src
+  }).bind(undefined, img, temp_gif, index)
+  temp_gif.src = GRAPHS[index].gif
+}
+function save_gif_img_to_server (img, index, img_nb, img_total, callback) {
+  if(!GRAPHS[index].nofont){
+    server_and_console.log('uploading gif img for #'+index+' to server')
+    var params = 'dataURL=' + encodeURIComponent(img.src)
+    var request = new XMLHttpRequest();
+    request.open('POST', '/save_gif_img.php?name='+GRAPHS[index].name+'&img_nb='+img_nb+'&img_total='+img_total, true);
+    request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
+    request.onreadystatechange = (function (img, index, request, img_nb, img_total, callback) {
+      if (request.readyState === 4 && request.status === 200){
+        server_and_console.log('gif img '+img_nb+' of '+img_total+' for #'+index+' sucessfuly uploaded')
+        if(request.responseText)
+          GRAPHS[index].gif = request.responseText
+        callback(index, img_nb, img_total)
+      }
+    }).bind(undefined, img, index, request, img_nb, img_total, callback)
+    request.send(params)
+  } else {
+    server_and_console.log('NOT uploading gif img for #'+index+' to server because of font kerning issues')
+  }
+}
+function save_img_to_server (urldata, index) {
   server_and_console.log('uploading img for #'+index+' to server, '+(GRAPHS[index].nofont?'wont':'will')+' save image')
-  var params = 'dataURL=' + encodeURIComponent(img.src)
+  var params = 'dataURL=' + encodeURIComponent(urldata)
   var request = new XMLHttpRequest();
   request.open('POST', '/save_img.php?name='+GRAPHS[index].name+'&nosave='+(GRAPHS[index].nofont?'true':'false'), true);
   request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
-  request.onreadystatechange = (function (img, index, request) {
+  request.onreadystatechange = (function (index, request) {
     if (request.readyState === 4 && request.status === 200){
       server_and_console.log('img for #'+index+' sucessfuly uploaded @ '+request.responseText)
       GRAPHS[index].watermarked = request.responseText
-      load_watermark_from_server(img, index)
+      // load_watermark_from_server(img, index)
     }
-  }).bind(undefined, img, index, request)
+  }).bind(undefined, index, request)
   request.send(params)
 }
-function svg_to_png (index, callback) {
+function svg_to_png (index, percent, callback) {
   server_and_console.log('converting SVG to PNG')
   // clone
   var clone_svg = GRAPHS[index].content.cloneNode(true)
-  force_finish_drawing_element_svg(clone_svg)
+  force_svg_animation_percent(clone_svg, percent)
 
   // style // debug, this should come from .css or from getComputedStyle
   clone_svg.style.backgroundColor = 'white';
@@ -1064,18 +1115,52 @@ function svg_to_png (index, callback) {
 
   // this avoids creating an unnecessary BLOB, method found here: http://stackoverflow.com/questions/27619555/image-onload-not-working-with-img-and-blob
   var img = new Image()
-  img.addEventListener('load', (function (img, dimensions, callback) {
+  img.addEventListener('load', (function (img, dimensions, percent, callback) {
     var canvas = document.createElement('canvas')
     canvas.setAttribute('width', dimensions.width)
     canvas.setAttribute('height', dimensions.height)
     var ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height)
     var png_data_url = ctx.canvas.toDataURL('image/png')
-    callback(png_data_url)
+    callback(png_data_url, percent, callback)
     DOMURL.revokeObjectURL(png_data_url)
-  }).bind(undefined, img, dimensions, callback))
+  }).bind(undefined, img, dimensions, percent, callback))
   img.src = 'data:image/svg+xml;utf8,' + svgString
 }
+
+function create_gif (index, callback_create_gif) {
+
+  var total_duration = get_svg_anim_duration(GRAPHS[index].content, false) * 1000
+  var nb_of_imgs = Math.floor(total_duration / 50) + 1
+  console.log('calling fn create_gif() for '+GRAPHS[index].formatted_name + ', gif duration: '+total_duration)
+
+  // var worker = new Worker('worker_test.js')
+  // worker.onmessage = console.log
+  // worker.onerror   = console.log
+  // console.log('worker started-------------------')
+  // console.log(GRAPHS[index])
+  // worker.postMessage(JSON.stringify(GRAPHS[index].content))
+
+  svg_to_png(index, 0, (function(data, png_data_url, percent, callback){
+    img = new Image()
+    img.src = png_data_url
+    save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total){
+      do{
+        data.current_img++
+      } while (GRAPHS[data.index].gif_images.includes(data.current_img))
+      if(data.current_img<=data.nb_of_imgs)
+        setTimeout(svg_to_png.bind(undefined, data.index, data.current_img/data.nb_of_imgs, callback), 0)
+      else
+        data.callback()
+    }).bind(undefined, data, callback))
+  }).bind(undefined, {
+    index: index,
+    nb_of_imgs: nb_of_imgs,
+    current_img: 0,
+    callback: callback_create_gif
+  }))
+}
+
 
 //////////////////////////////
 // SVG FONT TO PATH LIBRARY //
@@ -1273,20 +1358,6 @@ function interrupt_drawing_element_svg (svg) {
     element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
     element.style.opacity = computedStyle.getPropertyValue('opacity')
     element.style.transition = 'none'
-  })
-}
-
-function force_finish_drawing_element_svg (svg) {
-  iterate_group(svg, function (element) {
-    if(['g', 'line', 'polyline', 'path'].indexOf(element.tagName.toLowerCase())===-1)
-      return
-    if(element.getAttribute('data-type')==='erase'){
-      element.style.strokeDashoffset = element.getTotalLength()
-    } else {
-      element.style.strokeDashoffset = '0'
-    }
-    element.style.transition = 'none'
-    element.style.opacity = '1'
   })
 }
 
