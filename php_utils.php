@@ -25,7 +25,17 @@
       $row[release] = explode('-', $row[release]);
       $row[path] = "graphs/graphs_$row[name].svg";
       if(file_exists("png/$row[name].png"))
-          $row[watermarked] = "png/$row[name].png";
+        $row[watermarked] = "png/$row[name].png";
+      if(file_exists("gif/$row[name].gif"))
+        $row[gif] = "gif/$row[name].gif";
+      else {
+        // get existing gif images
+        $row[gif_images] = array();
+        $existing_imgs = preg_grep("/png4gif\/".preg_quote($row[name], '/').".*\.png/", glob("png4gif/*.png"));
+        foreach ($existing_imgs as $key => $file) {
+          array_push($row[gif_images], intval(array_slice(explode('-', explode('.',$file)[0]), -2, 1)[0]));
+        }
+      }
       $row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/graphs_$row[name].png";
       $row[tags] = str_getcsv($row[tags]);
       $row[formatted_name] = trim(htmlspecialchars(preg_replace_callback('/\b[a-zA-Z\s]+/', function($match) {
@@ -75,7 +85,9 @@
 			}
 		// description
 		$extra_content[description] = $graphs[$index][formatted_name].". Graph about $extra_content[readable_tags_list]. Drawn by Whiteboard Comics".($graphs[$index][author]?', '.$graphs[$index][credit].' '.$graphs[$index][author]:'').'. And don\'t forget: '.$extra_content[h2].'.';
-
+    //image
+    $extra_content[preferred_img] = isset($graphs[$index][gif]) ? $graphs[$index][gif] : (isset($graphs[$index][watermarked]) ? $graphs[$index][watermarked] : $graphs[$index][thumbnail]);
+    $extra_content[img_size] = getimagesize($dir.'/'.$extra_content[preferred_img]);
 		return $extra_content;
 	}
 
