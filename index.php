@@ -84,6 +84,7 @@
 	<meta name="language" content="en">
 	<? include('meta.php'); ?>
 	<? include('jsonld.php'); ?>
+	<link rel="amphtml" href="<? echo $base . '/amp/' . $graphs[$initial_index][name] . '.html'; ?>" />
 	<base href="<? echo $base; ?>">
 	<? if($initial_index!==0) echo "<link rel='prev' href='$bites[prev_page]'>"; ?>
 	<? if($initial_index!==count($graphs)-1) echo "<link rel='next' href='$bites[next_page]'>"; ?>

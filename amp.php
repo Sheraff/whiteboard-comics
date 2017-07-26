@@ -1,21 +1,10 @@
 <!-- ♡ <?
-	$graph = $_GET['graph'];
-	var_dump($graph);
-
-	if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
-		header("HTTP/1.1 301 Moved Permanently");
-		header("Location: $base");
-		exit();
-	}
-
-	$master = $_GET['all'];
-	$archives = isset($_GET['archives']) || $_SERVER['REQUEST_URI']==='/archives';
-
+	$width = 450;
+	$_GET['graph'] = $_GET['graph'] ? $_GET['graph'] : urldecode(explode('.',array_pop(explode('/',$_SERVER['REQUEST_URI'])))[0]);
 	require 'php_utils.php';
 
 	// read METADATA
 	$graphs = read_metadata($master, '.', $_GET['graph']?$_GET['graph']:'');
-	var_dump($_GET);
 
 	// try and MATCH graph to query
 	$initial_index = -1;
@@ -43,11 +32,22 @@
 		<meta charset="utf-8">
 		<script async src="https://cdn.ampproject.org/v0.js"></script>
 		<script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
+		<script async custom-element="amp-fit-text" src="https://cdn.ampproject.org/v0/amp-fit-text-0.1.js"></script>
 		<link rel="canonical" href="<? echo $base . '/' . $graphs[$initial_index][name]; ?>">
 		<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 		<? include('jsonld.php'); ?>
 		<style amp-custom>
-
+			body{
+				width: <? echo $width; ?>px;
+				text-align: center;
+			}
+			a{
+				color: brown;
+				border: 1px solid brown;
+				padding: 5px;
+				display: inline-block;
+				margin-bottom: 10px;
+			}
 		</style>
 		<style amp-boilerplate>
 			body{
@@ -67,10 +67,12 @@
 		</style></noscript>
 	</head>
 	<body>
-		<h1><? echo $graphs[$initial_index][formatted_name]; ?></h1>
-		<a href="<? echo $bites[prev_page] . '.html'; ?>">Previous graph</a>
-		<a href="<? echo $bites[next_page] . '.html'; ?>">Next graph</a><br/>
-		<amp-anim width="<? echo $bites[img_size][0]; ?>" height="<? echo $bites[img_size][1]; ?>" src="<? echo $base . '/../' . $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>"></amp-anim>
-		<br/><small>By Florian Pellet, Published: <? echo date('c', $graphs[$initial_index][timestamp]); ?></small>
+		<amp-fit-text width="<? echo $width; ?>" height="<? echo $width/3; ?>" layout="responsive">
+			<? echo $graphs[$initial_index][name]; ?>
+		</amp-fit-text>
+		<a class="ampstart-btn caps ml1" <? if(strlen($bites[prev_page])!=0) echo 'href="' . $bites[prev_page] . '.html"'; ?>>Previous graph</a>
+		<a class="ampstart-btn caps ml1" <? if(strlen($bites[next_page])!=0) echo 'href="' . $bites[next_page] . '.html"'; ?>>Next graph</a></br>
+		<amp-anim width="<? echo $width; ?>" height="<? echo $bites[img_size][1]/$bites[img_size][0]*$width; ?>" src="<? echo $base . '/../' . $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>"></amp-anim>
+		<br/><small>by Florian Pellet <br/>published on <? echo date('c', $graphs[$initial_index][timestamp]); ?></small>
 	</body>
 </html>
