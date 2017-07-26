@@ -71,7 +71,7 @@
 		for ($i=0; $i < 10; $i++) {
 			?>{
 	      "@type": "ListItem",
-	      "position": "<? echo $i; ?>",
+	      "position": "<? echo $i+1; ?>",
 				"url": "<? echo $base . '/' . $graphs[$i][name];?>"
 	    }<? if($i<9) echo ','; ?>
 		<?}
