@@ -464,31 +464,77 @@ footer > a {
   transition: all 0.75s;
 }
 @media (orientation: portrait) {
+  aside {
+    width: 100vw;
+    min-height: 0;
+    height: 10rem;
+  }
+  header {
+    height: 10rem;
+  }
   h1,
   #logo,
   a.home:first-of-type {
     font-size: 6.5vw;
-    width: 100vw;
-    line-height: 5rem;
     padding: 0;
-    height: 5rem;
+    height: 10rem;
+    line-height: 10rem;
   }
-  aside > .nav {
-    width: 50vw;
-    height: 5rem;
-    line-height: 5rem;
+  aside #logo {
+    width: 50%;
+    height: 100%;
+    padding: 0;
+    max-height: none;
   }
-  aside .nav img {
-    position: relative;
-    height: 8vw;
-    top: 1.5vw;
+  aside #nav {
+    overflow: visible;
+    height: auto;
+  }
+  aside #nav [data-title] {
+    width: 25vw;
+    height: 10rem;
+    line-height: 10rem;
+    position: fixed;
+    top: -10rem;
+  }
+  aside #nav [data-title^=prev] {
+    left: 0;
+    display: block;
+  }
+  aside #nav [data-title^=next] {
+    right: 0;
+    display: block;
+  }
+  aside nav [data-title] img {
+    height: 5rem;
+    width: 100%;
+    padding: .5rem;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  aside nav [data-title]:not(.disabled):hover img {
+    transform: translate(-50%, -50%);
+  }
+  aside nav [data-title],
+  aside nav [data-title]::after,
+  aside nav [data-title]:not(.disabled):hover::after {
+    display: none;
+  }
+  aside #menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
   h2,
   aside > p,
+  #blurb,
   #cog,
   #pubdate,
-  #rss,
-  #copyright {
+  #copyright,
+  aside #menu #archive {
     display: none;
   }
   main {
@@ -497,39 +543,32 @@ footer > a {
     height: calc(100vh - 15rem);
     width: 100vw;
   }
-  aside {
-    width: 100vw;
-    min-height: 0;
-    height: 10rem;
-  }
-  aside > * {
-    float: left;
-  }
   aside #next {
     box-shadow: none;
   }
   #footer,
-  #fb,
-  #archive {
+  #fb {
     position: fixed;
     bottom: 0;
     right: 0;
     z-index: 1;
     width: 5rem;
   }
+  aside #menu #fb[data-title],
+  aside #menu #rss[data-title] {
+    width: 5rem;
+    display: block;
+  }
+  aside #menu #rss[data-title] {
+    position: fixed;
+    right: 5rem;
+    bottom: 0;
+  }
   #footer {
     width: calc(100% - 10rem);
-    right: 5rem;
-    background-color: darkgrey;
-  }
-  #archive {
-    right: auto;
-    left: 0;
-  }
-  aside > [data-title]:not(.disabled)::after {
-    display: none;
-  }
-  aside > [data-title]:not(.disabled):hover img {
-    transform: none;
+    left: 0rem;
+    background-color: transparent;
+    text-align: left;
+    padding-left: 1rem;
   }
 }
