@@ -1048,6 +1048,9 @@ function save_gif_img_to_server (img, index, img_nb, img_total, callback) {
         if(request.responseText)
           GRAPHS[index].gif = request.responseText
         callback(index, img_nb, img_total)
+      } else if (request.readyState === 4 && request.status !== 200) {
+        server_and_console.log('ERROR: gif img '+img_nb+' of '+img_total+' for #'+index+' NOT uploaded')
+        callback(index, img_nb, img_total, false)
       }
     }).bind(undefined, img, index, request, img_nb, img_total, callback)
     request.send(params)
@@ -1134,18 +1137,11 @@ function create_gif (index, callback_create_gif) {
   var nb_of_imgs = Math.floor(total_duration / 50) + 1
   console.log('calling fn create_gif() for '+GRAPHS[index].formatted_name + ', gif duration: '+total_duration)
 
-  // var worker = new Worker('worker_test.js')
-  // worker.onmessage = console.log
-  // worker.onerror   = console.log
-  // console.log('worker started-------------------')
-  // console.log(GRAPHS[index])
-  // worker.postMessage(JSON.stringify(GRAPHS[index].content))
-
   svg_to_png(index, 0, (function(data, png_data_url, percent, callback){
     img = new Image()
     img.src = png_data_url
-    save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total){
-      do{
+    save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total, success){
+      if(success) do{
         data.current_img++
       } while (GRAPHS[data.index].gif_images.includes(data.current_img))
       if(data.current_img<=data.nb_of_imgs)
