@@ -31,11 +31,13 @@
 		$row[timestamp] = strtotime("$row[release] 8:45:00");
 		$row[release] = explode('-', $row[release]);
 		$row[path] = "graphs/graphs_$row[name].svg";
-		if(file_exists("png/$row[name].png"))
-				$row[watermarked] = "png/$row[name].png";
-		$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/graphs_$row[name].png";
+		$row[thumbnail] = "thumb/graphs_$row[name].png";
+		if(file_exists("gif/$row[name].gif"))
+				$row[thumbnail] = "$row[name].gif";
+		else if(file_exists("png/$row[name].png"))
+				$row[thumbnail] = "$row[name].png";
 		$row[tags] = str_getcsv($row[tags]);
-		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([=\(\)])/', ' $1 ', $row[name]) ) ) ) );
+		$row[formatted_name] = trim( ucwords( preg_replace('/_/', ' ', preg_replace('/,/', ', ', preg_replace('/([≠=⋂→><×∅∪𝝮\(\)])/', ' $1 ', $row[name]) ) ) ) );
 		$row[content] = false;
 		if($row[timestamp] < $time) // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
 			$graphs[] = $row;
@@ -58,7 +60,7 @@
 	<item>
 		<title>$graph[formatted_name]</title>
 		<description>
-			<![CDATA[ <img src="$root/$graph[thumbnail]"> <br/> For an animated version of this image, go to <a href="$root/$graph[name]">whiteboard-comics.com</a> ]]>
+			<![CDATA[ <img src="$root/$row[thumbnail]"> <br/> For the full version of this image, go to <a href="$root/$graph[name]">whiteboard-comics.com</a> ]]>
     </description>
 		<link>$root/$graph[name]</link>
 		<pubDate>$formatted_date</pubDate>
