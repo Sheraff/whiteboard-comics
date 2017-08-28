@@ -210,6 +210,8 @@ main #pubdate {
   right: 1rem;
   height: 1rem;
   color: rgba(0, 0, 0, 0.7);
+  background-color: white;
+  box-shadow: 0 0 0.2em 0.2em white;
 }
 main #authorship a,
 main #pubdate a {
