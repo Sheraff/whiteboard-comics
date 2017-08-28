@@ -15,14 +15,15 @@
 	use GifCreator\GifCreator;
 
 	$existing_imgs = preg_grep("/png4gif\/".preg_quote($name, '/').".*\.png/", glob("png4gif/*.png"));
-	if(count($existing_imgs)==$img_total+1){
+	if(count($existing_imgs)>=$img_total+1){
 		usort($existing_imgs, function($a,$b) {
 			$a = intval(array_slice(explode('-', explode('.',$a)[0]), -2, 1)[0]);
 			$b = intval(array_slice(explode('-', explode('.',$b)[0]), -2, 1)[0]);
 			return $a>$b;
 		});
 
-		$durations = array_fill(0, $img_total, 5);
+		array_unshift($existing_imgs, $existing_imgs[count($existing_imgs)-1]);
+		$durations = array_fill(0, $img_total+1, 5);
 		array_push($durations, 200);
 		$gc = new GifCreator();
 		$gc->create($existing_imgs, $durations, 0);
