@@ -514,7 +514,7 @@ function setup_graph (index) {
       console.log("TRY AND GRAB GIF !")
       if(GRAPHS[index].gif)
         load_gif_from_server(img, index)
-      else if(DOMURL.createObjectURL)
+      else if(DOMURL.createObjectURL && !GRAPHS[index].gifBeingMade)
         create_gif(index, load_gif_from_server.bind(undefined, img, index))
     }
 
@@ -1037,9 +1037,8 @@ function load_gif_from_server (img, index) {
 }
 function save_gif_img_to_server (img, index, img_nb, img_total, callback) {
   if(!GRAPHS[index].nofont){
-    server_and_console.log('uploading gif img for #'+index+' to server')
     var params = 'dataURL=' + encodeURIComponent(img.src)
-    var request = new XMLHttpRequest();
+    var request = new XMLHttpRequest()
     request.open('POST', '/save_gif_img.php?name='+GRAPHS[index].name+'&img_nb='+img_nb+'&img_total='+img_total, true);
     request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
     request.onreadystatechange = (function (img, index, request, img_nb, img_total, callback) {
@@ -1074,7 +1073,7 @@ function save_img_to_server (urldata, index) {
   request.send(params)
 }
 function svg_to_png (index, percent, callback) {
-  server_and_console.log('converting SVG to PNG')
+  // server_and_console.log('converting SVG to PNG')
   // clone
   var clone_svg = GRAPHS[index].content.cloneNode(true)
   force_svg_animation_percent(clone_svg, percent)
@@ -1133,6 +1132,7 @@ function svg_to_png (index, percent, callback) {
 
 function create_gif (index, callback_create_gif) {
 
+  GRAPHS[index].gifBeingMade = true
   var total_duration = get_svg_anim_duration(GRAPHS[index].content, false) * 1000
   var nb_of_imgs = Math.floor(total_duration / 50) + 1
   console.log('calling fn create_gif() for '+GRAPHS[index].formatted_name + ', gif duration: '+total_duration)
@@ -1141,12 +1141,13 @@ function create_gif (index, callback_create_gif) {
     img = new Image()
     img.src = png_data_url
     save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total, success){
-      if(success) do{
+      if(true) do{ // TODO: why won't upload work since I added the "success" variable?
         data.current_img++
       } while (GRAPHS[data.index].gif_images.includes(data.current_img))
-      if(data.current_img<=data.nb_of_imgs)
+      if(data.current_img<=data.nb_of_imgs){
+        GRAPHS[data.index].gifBeingMade = false
         setTimeout(svg_to_png.bind(undefined, data.index, data.current_img/data.nb_of_imgs, callback), 0)
-      else
+      } else
         data.callback()
     }).bind(undefined, data, callback))
   }).bind(undefined, {
