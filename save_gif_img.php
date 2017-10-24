@@ -10,6 +10,10 @@
   $filename = "png4gif/$name-$img_nb-$img_total.png";
   file_put_contents($filename, $decodedData);
 
+  // if it is complete drawing and official .png doesn't exist, save it there too
+  if($img_nb==$img_total && !file_exists("png/$name.png")){
+    file_put_contents("png/$name.png", $decodedData);
+  }
 	// if all images are here, start creating gif, and echo indication that it's being created
 	require_once('./GifCreator.php');
 	use GifCreator\GifCreator;
