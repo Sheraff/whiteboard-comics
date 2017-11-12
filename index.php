@@ -1,4 +1,6 @@
 <!-- ♡ <?
+	echo 'php v'.PHP_VERSION . ' ';
+
 	if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: $base");

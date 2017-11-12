@@ -511,7 +511,6 @@ function setup_graph (index) {
     }
 
     function try_and_grab_gif(img, index){
-      console.log("TRY AND GRAB GIF !")
       if(GRAPHS[index].gif)
         load_gif_from_server(img, index)
       else if(DOMURL.createObjectURL && !GRAPHS[index].gifBeingMade)
@@ -1025,13 +1024,17 @@ function load_watermark_from_server (img, index) {
   temp_img.src = GRAPHS[index].watermarked
 }
 function load_gif_from_server (img, index) {
-  server_and_console.log('loading gif for #'+index+' from server')
+  server_and_console.log('loading GIF for #'+index+' from server @ '+GRAPHS[index].gif)
   var temp_gif = new Image()
   temp_gif.onload = (function (img, temp_gif, index) {
+    server_and_console.log('GIF loaded for #'+index+' from server @ '+GRAPHS[index].gif)
     GRAPHS[index].gif_is_loaded = true
     if(index==INDEX)
       put_overlay_image(index, temp_gif.src, img)
     // img.src = temp_gif.src
+  }).bind(undefined, img, temp_gif, index)
+  temp_gif.onerror = (function (img, temp_gif, index) {
+    server_and_console.warn('error loading GIF for #'+index+' @ '+temp_gif.src)
   }).bind(undefined, img, temp_gif, index)
   temp_gif.src = GRAPHS[index].gif
 }
@@ -1043,18 +1046,22 @@ function save_gif_img_to_server (img, index, img_nb, img_total, callback) {
     request.setRequestHeader('Content-type','application/x-www-form-urlencoded')
     request.onreadystatechange = (function (img, index, request, img_nb, img_total, callback) {
       if (request.readyState === 4 && request.status === 200){
-        server_and_console.log('gif img '+img_nb+' of '+img_total+' for #'+index+' sucessfuly uploaded')
+        if (img_nb==0) server_and_console.log('GIF processed for #'+index)
+        else server_and_console.log('gif img for #'+index+' sucessfuly uploaded ('+img_total+' total images)')
         if(request.responseText)
           GRAPHS[index].gif = request.responseText
-        callback(index, img_nb, img_total)
+        callback(index, img_nb, img_total, true)
       } else if (request.readyState === 4 && request.status !== 200) {
-        server_and_console.log('ERROR: gif img '+img_nb+' of '+img_total+' for #'+index+' NOT uploaded')
+        server_and_console.warn('ERROR: GIF img '+img_nb+' of '+img_total+' for #'+index+' NOT uploaded. Server responded with '+request.statusText+': '+request.responseText)
+        console.log(request)
         callback(index, img_nb, img_total, false)
       }
     }).bind(undefined, img, index, request, img_nb, img_total, callback)
+    if(img_nb==0)
+      server_and_console.log('uploading last img for #'+index+' and processing GIF')
     request.send(params)
   } else {
-    server_and_console.log('NOT uploading gif img for #'+index+' to server because of font kerning issues')
+    server_and_console.warn('NOT uploading gif img for #'+index+' to server because of font kerning issues')
   }
 }
 function save_img_to_server (urldata, index) {
@@ -1123,7 +1130,7 @@ function svg_to_png (index, percent, callback) {
     canvas.setAttribute('height', dimensions.height)
     var ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height)
-    var png_data_url = ctx.canvas.toDataURL('image/png')
+    var png_data_url = ctx.canvas.toDataURL('image/png', 1)
     callback(png_data_url, percent, callback)
     DOMURL.revokeObjectURL(png_data_url)
   }).bind(undefined, img, dimensions, percent, callback))
@@ -1135,16 +1142,18 @@ function create_gif (index, callback_create_gif) {
   GRAPHS[index].gifBeingMade = true
   var total_duration = get_svg_anim_duration(GRAPHS[index].content, false) * 1000
   var nb_of_imgs = Math.floor(total_duration / 50) + 1
-  console.log('calling fn create_gif() for '+GRAPHS[index].formatted_name + ', gif duration: '+total_duration)
+  server_and_console.log('creating GIF for '+GRAPHS[index].formatted_name + ', gif duration: '+Math.round(total_duration/1000)+'s')
 
-  svg_to_png(index, 0, (function(data, png_data_url, percent, callback){
+  svg_to_png(index, 100, (function(data, png_data_url, percent, callback){
     img = new Image()
     img.src = png_data_url
-    save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total, success){
-      if(true) do{ // TODO: why won't upload work since I added the "success" variable?
-        data.current_img++
+    save_gif_img_to_server(img, data.index, data.current_img, data.nb_of_imgs, (function(data, callback, index, img_nb, img_total, success, error){
+      if(success) do{ // TODO: does upload work reliably?
+        data.current_img--
       } while (GRAPHS[data.index].gif_images.includes(data.current_img))
-      if(data.current_img<=data.nb_of_imgs){
+      else
+        server_and_console.warn(error)
+      if(data.current_img>=0){
         GRAPHS[data.index].gifBeingMade = false
         setTimeout(svg_to_png.bind(undefined, data.index, data.current_img/data.nb_of_imgs, callback), 0)
       } else
@@ -1153,7 +1162,7 @@ function create_gif (index, callback_create_gif) {
   }).bind(undefined, {
     index: index,
     nb_of_imgs: nb_of_imgs,
-    current_img: 0,
+    current_img: nb_of_imgs,
     callback: callback_create_gif
   }))
 }
