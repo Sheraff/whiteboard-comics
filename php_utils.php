@@ -84,9 +84,10 @@
 				$extra_content[readable_tags_list] .= $tag;
 			}
 		// description
-		$extra_content[description] = $graphs[$index][formatted_name].". Graph about $extra_content[readable_tags_list]. Drawn by Whiteboard Comics".($graphs[$index][author]?', '.$graphs[$index][credit].' '.$graphs[$index][author]:'').'. And don\'t forget: '.$extra_content[h2].'.';
+		$extra_content[description] = "Graph about $extra_content[readable_tags_list]. Drawn by Whiteboard Comics".($graphs[$index][author]?', '.$graphs[$index][credit].' '.$graphs[$index][author]:'').'. And don\'t forget: '.$extra_content[h2].'.';
     //image
     $extra_content[preferred_img] = isset($graphs[$index][gif]) ? $graphs[$index][gif] : (isset($graphs[$index][watermarked]) ? $graphs[$index][watermarked] : $graphs[$index][thumbnail]);
+    $extra_content[preferred_img_type] = isset($graphs[$index][gif]) ? 'gif' : 'png';
     $extra_content[img_size] = getimagesize($dir.'/'.$extra_content[preferred_img]);
 		return $extra_content;
 	}
