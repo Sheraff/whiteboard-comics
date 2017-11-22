@@ -166,7 +166,6 @@
 
 <!-- TODO
 	BUGS
-	- properly handle special chars in php (formatted_name could behave wierdly with '→' if used inside a regex)
 	- figure out why rewrite_with_paths() works the first time but never the second
 
 	SVG ANIMATION
@@ -174,7 +173,6 @@
 	- distinguish "verbose" graphs from "simple" graphs, make long <text> of "verbose" graphs write faster
 
 	STYLE
-	- make h2 as big as possible depending on content
 	- smooth scrolling
 		- for setup_archives()
 		- for filter() only if vignettes are animated when added / removed
