@@ -7,15 +7,15 @@ SEND_WARNING = true
 
 server_and_console = {
   warn: function (message) {
-    if(LOGGING) console.warn(message)
+    if(LOGGING) console.warn(message || 'no message')
     if(SEND_WARNING){
       log({
         type: 'warning',
-        log: message
+        log: message || 'no message'
       })
       SEND_LOG = true
     }
-    this.full_log.push('WARNING: '+message)
+    this.full_log.push('WARNING: ' + (message || 'no message'))
   },
   log: function (message) {
     if(LOGGING) console.log(message)

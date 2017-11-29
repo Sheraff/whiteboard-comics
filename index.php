@@ -64,11 +64,11 @@
 	}
 
 	// log VISIT COUNT initial page load
-  file_put_contents ('visits.log', json_encode([
-  	page => $graphs[$initial_index][name],
-  	date => time(),
-  	ip => $_SERVER[REMOTE_ADDR]
-  ]) . ",\n", FILE_APPEND);
+	file_put_contents ('visits.log', json_encode([
+		page => $graphs[$initial_index][name],
+		date => time(),
+		ip => $_SERVER[REMOTE_ADDR]
+	]) . ",\n", FILE_APPEND);
 
 
 ?>-->
