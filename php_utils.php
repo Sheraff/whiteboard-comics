@@ -39,18 +39,18 @@
 			$row[thumbnail] = $row[watermarked] ? $row[watermarked] : "thumb/graphs_$row[name].png";
 			$row[tags] = str_getcsv($row[tags]);
 			$row[formatted_name] = trim(htmlspecialchars(preg_replace_callback('/\b[a-zA-Z\s]+/', function($match) {
-					return ucfirst($match[0]);
+					return $match[0];
 			}, (preg_replace([
 				'/_/',
 				'/,/',
-				'/(≠|=|⋂|\(|\)|→|>|<|×|∅|∪|𝝮)/',
-				'/ +/'
+				'/(≠|=|⋂|→|>|<|×|∅|∪|𝝮)/',
+				'/ +/',
 			], [
 				' ',
 				', ',
 				' $1 ',
-				' '
-			], $row[name])))));
+				' ',
+			], ucfirst($row[name]))))));
 			$row[content] = false;
 
 			if(file_exists("$dir/$row[path]") && ($row[name]===$name || $row[timestamp] < $time || $master)){ // TIME. Release time is at 8:45am Los Angeles time (11:45am NYC, 5:45pm Paris)
