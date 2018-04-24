@@ -30,10 +30,10 @@
 			return $a>$b;
 		});
 		array_unshift($existing_imgs, $existing_imgs[count($existing_imgs)-1]);
-		$durations = array_fill(0, $img_total+1, 4);
-		array_push($durations, intval(200 + round($img_total/10)));
+		$durations = array_fill(0, $img_total+1, 3);
+		array_push($durations, intval(1000 + round($img_total/10)));
 		$gc = new GifCreator\GifCreator();
-		$gc->create($existing_imgs, $durations, 0);
+		$gc->create($existing_imgs, $durations, 1);
 		$gifBinary = $gc->getGif();
 		if(!file_exists('./gif')) mkdir('./gif');
 		file_put_contents("./gif/$name.gif", $gifBinary);
