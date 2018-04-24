@@ -35,7 +35,7 @@
 		<script async custom-element="amp-fit-text" src="https://cdn.ampproject.org/v0/amp-fit-text-0.1.js"></script>
 		<link rel="canonical" href="<? echo $base . '/' . $graphs[$initial_index][name]; ?>">
 		<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-		<? include('jsonld.php'); ?>
+		<? //include('jsonld.php'); ?>
 		<style amp-custom>
 			body{
 				width: <? echo $width; ?>px;
@@ -53,11 +53,27 @@
 	</head>
 	<body>
 		<amp-fit-text width="<? echo $width; ?>" height="<? echo $width/3; ?>" layout="responsive">
-			<? echo $graphs[$initial_index][name]; ?>
+			<? echo $graphs[$initial_index][formatted_name]; ?>
 		</amp-fit-text>
 		<a class="ampstart-btn caps ml1" <? if(strlen($bites[prev_page])!=0) echo 'href="' . $bites[prev_page] . '.html"'; ?>>Previous graph</a>
-		<a class="ampstart-btn caps ml1" <? if(strlen($bites[next_page])!=0) echo 'href="' . $bites[next_page] . '.html"'; ?>>Next graph</a></br>
-		<amp-anim width="<? echo $width; ?>" height="<? echo $bites[img_size][1]/$bites[img_size][0]*$width; ?>" src="<? echo $base . '/../' . $bites[preferred_img]; ?>" alt="<? echo $graphs[$initial_index][formatted_name]; ?>"></amp-anim>
-		<br/><small>by Florian Pellet <br/>published on <? echo date('c', $graphs[$initial_index][timestamp]); ?></small>
+		<a class="ampstart-btn caps ml1" <? if(strlen($bites[next_page])!=0) echo 'href="' . $bites[next_page] . '.html"'; ?>>Next graph</a><br/>
+		<amp-anim
+			width="<? echo $width; ?>"
+			height="<? echo $bites[img_size][1]/$bites[img_size][0]*$width; ?>"
+			src="<? echo '/gif/' . $graph[name] . '.gif'; ?>"
+			alt="<? echo $graphs[$initial_index][formatted_name]; ?>">
+			<amp-img placeholder
+				width="<? echo $width; ?>"
+				height="<? echo $bites[img_size][1]/$bites[img_size][0]*$width; ?>"
+				src="<? echo '/png/' . $graph[name] . '.png'; ?>">
+			</amp-img>
+			<noscript>
+				<img
+					width="<? echo $width; ?>"
+					height="<? echo $bites[img_size][1]/$bites[img_size][0]*$width; ?>"
+					src="<? echo '/gif/' . $graph[name] . '.gif'; ?>" />
+			</noscript>
+		</amp-anim>
+		<br/><small>by Florian Pellet <br/>published on <? echo date('F jS Y', $graphs[$initial_index][timestamp]); ?></small>
 	</body>
 </html>
