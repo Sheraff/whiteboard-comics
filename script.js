@@ -190,6 +190,14 @@ function find_needle_with_key(needle, key) {
 	return index
 }
 
+function modifier_flag(event) {
+	return (
+		event.ctrlKey || event.ctrlLeft || event.ctrlRight ||
+		event.altKey || event.altLeft || event.altRight ||
+		event.shiftKey || event.shiftLeft || event.shiftright ||
+		event.metaKey || event.metaLeft || event.metaRight)
+}
+
 
 /////////////
 // GLOBALS //
@@ -797,6 +805,11 @@ function filter(event) {
 }
 
 function navigate(direction, event) {
+	if (modifier_flag(event)) {
+		server_and_console.log('modifier key detected, letting the browser handle based on link\'s "href"')
+		return true
+	}
+
 	event.stopPropagation()
 	event.preventDefault()
 
