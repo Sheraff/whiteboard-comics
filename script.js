@@ -557,7 +557,13 @@ function setup_graph(index) {
 		var svg = GRAPHS[index].content.cloneNode(true)
 		MAIN.appendChild(svg)
 		prepare_drawing_element_svg(svg)
-		var total_duration = play_svg(svg, .5)
+		if (!document.hidden)
+			play_svg(svg, .5)
+		else {
+			document.addEventListener('visibilitychange', play_svg_on_visibility)
+			server_and_console.log('will play svg animation when tab is visible')
+		}
+
 		if (!ANIMATE)
 			force_finish_drawing_element_svg(svg)
 
@@ -1548,6 +1554,14 @@ function play_svg(svg, delay, callback) {
 		setTimeout(callback, total_duration * 1000)
 
 	return total_duration
+}
+
+function play_svg_on_visibility() {
+	if (!document.hidden) {
+		play_svg(MAIN.querySelector('svg'), 0)
+		document.removeEventListener('visibilitychange', play_svg_on_visibility)
+		server_and_console.log('playing svg now, tab has become visible')
+	}
 }
 
 function get_svg_anim_duration(svg, start) {
