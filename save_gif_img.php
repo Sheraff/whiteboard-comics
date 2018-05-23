@@ -24,6 +24,8 @@
 	$existing_imgs = preg_grep("/$folder_for_img\/".preg_quote($name, '/').".*\.png/", glob("$folder_for_img/*.png"));
 
 	if(count($existing_imgs)>=$img_total+1){
+
+		// setup frames and durations
 		usort($existing_imgs, function($a,$b) {
 			$a = intval(array_slice(explode('-', explode('.',$a)[0]), -2, 1)[0]);
 			$b = intval(array_slice(explode('-', explode('.',$b)[0]), -2, 1)[0]);
@@ -32,12 +34,22 @@
 		array_unshift($existing_imgs, $existing_imgs[count($existing_imgs)-1]);
 		$durations = array_fill(0, $img_total+1, 3);
 		array_push($durations, intval(1000 + round($img_total/10)));
+
+		// create GIF
 		$gc = new GifCreator\GifCreator();
 		$gc->create($existing_imgs, $durations, 1);
 		$gifBinary = $gc->getGif();
+
+		// save GIF
 		if(!file_exists('./gif')) mkdir('./gif');
 		file_put_contents("./gif/$name.gif", $gifBinary);
 		echo "/gif/$name.gif";
+
+		// convert to MP4
+		require './gif2mp4/cloudconvert.php';
+		convertGIF($name);
+
+		// remove png frames
 		foreach ($existing_imgs as $key => $value) {
 			if(file_exists($value)) unlink($value);
 		}
