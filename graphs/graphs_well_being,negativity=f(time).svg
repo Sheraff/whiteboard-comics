@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="694.9px" height="596.3px" viewBox="0 0 694.9 596.3" enable-background="new 0 0 694.9 596.3" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M155.9-4.6
 	c-6.2,18.9-12.3,37.7-18.5,56.6c32-9.4,61.1-28.6,82.3-54.4c-11.4,30.7-22.8,61.3-34.2,92c32.7-29,65.3-58,98-86.9
 	c-4,23-7.9,46.1-11.9,69.1c24.1-19.7,48.3-39.4,72.4-59.1c-6.7,18-11.7,42.2,4,53.3c9.6,6.7,23.2,4.7,32.9-1.8s16.5-16.4,22.9-26.1
@@ -46,72 +36,86 @@
 <g>
 	<g>
 		
-			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="107.2" y1="121.8" x2="107.2" y2="269.8"/>
+			<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="107.2" y1="121.8" x2="107.2" y2="269.8"/>
 		
-			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="85.8" y1="247.7" x2="593.6" y2="247.7"/>
-		
-			<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 107.2144 121.8268)" overflow="visible"/>
-		
-			<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 593.5564 247.3008)" overflow="visible"/>
+			<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="85.8" y1="247.7" x2="593.6" y2="247.7"/>
+		<g>
+			
+				<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+				84.7,143.8 107.2,121.8 129.7,143.8 			"/>
+		</g>
+		<g>
+			
+				<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+				571.6,224.8 593.6,247.3 571.6,269.8 			"/>
+		</g>
 	</g>
-	<text transform="matrix(1 0 0 1 605.1675 254.6299)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">time</text>
+	<text transform="matrix(1 0 0 1 605.1675 254.6299)" font-family="'PermanentMarker'" font-size="30.74px">time</text>
 	<text transform="matrix(1 0 0 1 23.9853 108.4858)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">well being</text>
-	<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#F09B36" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M122.7,231c11.5-27.3,28.5-63.1,63-64c31.6-0.8,52.7,29.2,62.1,55.8c11.1,31.4,12.9,66.9,32.5,94.8c8.4,12,20.5,22.1,34.7,26.4
 		c14.8,4.5,30.1,1.4,42.9-7c13.8-9,23.4-22.7,31.4-36.9c9-16,17.2-32.6,25.7-48.9c2.2-4.1,4.3-8.3,6.5-12.4
 		c8.9-17.1,21.3-40.5,34.3-54.8s32.5-24.1,51.4-20.2c14.8,3,27.4,14.7,31.7,29.2"/>
 	<g>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M186.2,164c2.3,2.9,4.5,5.7,6.8,8.6"/>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M185.1,171.9c1.2-3.6,3.8-6.8,7.2-8.6"/>
-		<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M198.4,151.7c7.3-8.7,18.3-13.3,29.3-15.9c11-2.6,22.4-3.5,33.3-6.3c10.9-2.8,21.8-8,28.4-17.2s7.7-22.9,0.2-31.4"/>
-		<text transform="matrix(1 0 0 1 177.3887 35.0535)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“shit, it’s all</tspan><tspan x="-60.6" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">downhill from here”</tspan></text>
+		<text transform="matrix(1 0 0 1 177.3887 35.0535)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“shit, it’s all</tspan><tspan x="-60.6" y="30" font-family="'PermanentMarker'" font-size="30.74px">downhill from here”</tspan></text>
 	</g>
 	<g>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M218.1,209.8c12.7,12.7,15.4,32,17.3,49.8s3.9,37,15.8,50.5"/>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M244.6,313.1c3.7,1.7,7.3,3.4,11,5.1c0.3-4.2,0.6-8.3,0.9-12.5"/>
-		<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M218.2,272.8c-22,0.3-43.9,0.6-65.9,0.9c-4.5,0.1-9.1,0.2-13.1,2.3c-6,3.2-8.9,10.3-9,17.1s2.3,13.3,4.7,19.6"/>
-		<text transform="matrix(1 0 0 1 28.9941 346.6983)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“no, no... not</tspan><tspan x="-14.1" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">further down”</tspan></text>
+		<text transform="matrix(1 0 0 1 28.9941 346.6983)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“no, no... not</tspan><tspan x="-14.1" y="30" font-family="'PermanentMarker'" font-size="30.74px">further down”</tspan></text>
 	</g>
 	<g>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M327.3,341.6c2.9,3.4,5.7,6.8,8.6,10.1"/>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M333.7,340.2c-1.9,4.3-3.7,8.7-5.6,13"/>
-		<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M337.7,365.6c2.9,10.7,12,19.6,22.8,22.2s22.9-1.1,30.5-9.3c4.2-4.5,6.9-10.2,10.6-15.2c3.7-5,8.8-9.5,14.9-9.9"/>
-		<text transform="matrix(1 0 0 1 419.6769 332.6836)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“well this is</tspan><tspan x="24.3" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">definitely</tspan><tspan x="-8.2" y="60" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">rock bottom”</tspan></text>
+		<text transform="matrix(1 0 0 1 419.6769 332.6836)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“well this is</tspan><tspan x="24.3" y="30" font-family="'PermanentMarker'" font-size="30.74px">definitely</tspan><tspan x="-8.2" y="60" font-family="'PermanentMarker'" font-size="30.74px">rock bottom”</tspan></text>
 	</g>
 	<g>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M380.7,281.9c14.8-36.3,33.1-71.1,54.8-103.7"/>
-		<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M427.5,177.8c3.9-1,7.8-2,11.7-3c-0.5,3.8-1,7.6-1.4,11.4"/>
-		<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 			M402.8,194c-10.7-9.2-19.4-20.6-25.4-33.3c-4.5-9.4-7.5-19.7-6.7-30s5.9-20.7,14.7-26.1c7.2-4.4,16.2-5.2,24.5-3.8
 			s16.2,4.6,24,7.9"/>
-		<text transform="matrix(1 0 0 1 450.0409 107.1556)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“this takes so</tspan><tspan x="-4.3" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">much effort...”</tspan></text>
+		<text transform="matrix(1 0 0 1 450.0409 107.1556)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“this takes so</tspan><tspan x="-4.3" y="30" font-family="'PermanentMarker'" font-size="30.74px">much effort...”</tspan></text>
 	</g>
 </g>
 <g>
 	<g>
 		
-			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="107.2" y1="437.8" x2="107.2" y2="585.8"/>
+			<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="107.2" y1="437.8" x2="107.2" y2="585.8"/>
 		
-			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="85.8" y1="563.7" x2="593.6" y2="563.7"/>
-		
-			<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 107.2144 437.8061)" overflow="visible"/>
-		
-			<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 593.5564 563.28)" overflow="visible"/>
+			<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="85.8" y1="563.7" x2="593.6" y2="563.7"/>
+		<g>
+			
+				<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+				84.7,459.8 107.2,437.8 129.7,459.8 			"/>
+		</g>
+		<g>
+			
+				<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+				571.6,540.8 593.6,563.3 571.6,585.8 			"/>
+		</g>
 	</g>
-	<text transform="matrix(1 0 0 1 605.1674 571.427)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">time</text>
-	<text transform="matrix(1 0 0 1 33.3663 424.9833)" fill="#662D91" font-family="'PermanentMarker'" font-size="30.74px">negativity</text>
-	<path fill="none" stroke="#662D91" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<text transform="matrix(1 0 0 1 605.1674 571.427)" font-family="'PermanentMarker'" font-size="30.74px">time</text>
+	<text transform="matrix(1 0 0 1 33.3663 424.9833)" fill="#7895A4" font-family="'PermanentMarker'" font-size="30.74px">negativity</text>
+	<path fill="none" stroke="#7895A4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M133.9,489.2c137.5-0.5,274.9-1,412.4-1.6"/>
+</g>
+<g id="Arrow_up">
 </g>
 </svg>

@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="787.5px" height="469.8px" viewBox="0 0 787.5 469.8" enable-background="new 0 0 787.5 469.8" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M13.5,164.5
 	c-3.2,18.6-6.3,37.2-9.5,55.8c23.7-21.5,47.3-42.9,71-64.4c-19.7,28.2-39.3,56.3-59,84.5c27.9-23.3,66.3-48.5,94.2-71.7
 	C68.9,206.5,28.1,258,13.2,312c22.6-18.2,45.3-36.3,67.9-54.5C72,302.5,49.8,344.9,18,378.2c40-46.3,79.9-92.6,119.9-138.9
@@ -36,96 +26,104 @@
 </g>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="34.5" y1="199.3" x2="34.5" y2="396.6"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="34.5" y1="199.3" x2="34.5" y2="396.6"/>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="12" y1="371.2" x2="766.2" y2="371.2"/>
-	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 34.4703 199.2728)" overflow="visible"/>
-	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1.1793 0 0 -1 766.2072 371.2044)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="12" y1="371.2" x2="766.2" y2="371.2"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			12,221.3 34.5,199.3 57,221.3 		"/>
+	</g>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			744.2,348.7 766.2,371.2 744.2,393.7 		"/>
+	</g>
 </g>
-<text transform="matrix(1 0 0 1 704.5545 339.7856)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">time</text>
-<text transform="matrix(1 0 0 1 8.9703 188.4312)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">utility</text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 704.5545 339.7856)" font-family="'PermanentMarker'" font-size="30.74px">time</text>
+<text transform="matrix(1 0 0 1 8.9703 188.4312)" font-family="'PermanentMarker'" font-size="30.74px">utility</text>
+<path fill="none" stroke="#F09B36" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M46.5,283c227.9,0.3,454.9,0.3,682.8,0"/>
-<text transform="matrix(1 0 0 1 44.7907 271.5626)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">socializing</text>
-<text transform="matrix(1 0 0 1 44.7911 325.7184)" fill="#F7941E" font-family="'PermanentMarker'" font-size="30.74px">working</text>
-<path fill="none" stroke="#F7941E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 44.7907 271.5626)" fill="#F09B36" font-family="'PermanentMarker'" font-size="30.74px">socializing</text>
+<text transform="matrix(1 0 0 1 44.7911 325.7184)" fill="#CE3045" font-family="'PermanentMarker'" font-size="30.74px">working</text>
+<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M45.5,339c37.2-0.1,74.8-0.2,111.8-3.7c33.5-3.2,67.1-11.5,95.8-29.6c26.4-16.7,47.3-40.7,64-66.8c18.7-29.3,33.3-61.2,44.8-94
 	c12-33.9,20.4-69.1,25.1-104.8c0.6-4.4,1.1-8.9,1.6-13.3"/>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,365.7c0.1,3,0.1,6,0,9.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,345.4c0,2.8,0,5.6,0,8.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,323.9c0,3.2,0,6.5,0,9.7"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,302.4c0,3,0,6,0,9.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,280c0,3.3,0,6.5,0,9.8"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,258.5c0,3,0,6,0,8.9"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,237.7c0,2.8,0,5.6,0,8.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,216.8c0,2.8,0,5.6,0,8.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,196c0,2.7,0,5.5,0,8.2"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,176.9c0,2.3,0,4.6,0,6.9"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,153.4c0,3.7,0,7.4,0,11.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,134.1c0,2.5,0,5,0,7.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,115.7c0,1.8,0,3.7,0,5.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,92.1c0,3.7,0,7.5,0,11.2"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,67.7c0,4,0,7.9,0,11.9"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,50.2c0,1.6,0,3.3,0,4.9"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M400,25.7c0,4,0,7.9,0,11.9"/>
-	<text transform="matrix(1 0 0 1 337.9393 400.4232)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">deadline</text>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,375.1c0.1-3.4,0.1-6.4,0-9.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,353.8c0-2.8,0-5.6,0-8.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,333.6c0-3.2,0-6.5,0-9.7"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,311.4c0-3,0-6,0-9.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,289.8c0-3.3,0-6.5,0-9.8"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,267.5c0-3,0-6,0-8.9"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,246.1c0-2.8,0-5.6,0-8.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,225.2c0-2.8,0-5.6,0-8.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,204.2c0-2.7,0-5.5,0-8.2"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,183.7c0-2.3,0-4.6,0-6.9"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,164.5c0-3.7,0-7.4,0-11.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,141.6c0-2.5,0-5,0-7.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,121.2c0-1.8,0-3.7,0-5.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,103.3c0-3.7,0-7.5,0-11.2"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,79.6c0-4,0-7.9,0-11.9"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,55.1c0-1.6,0-3.3,0-4.9"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M400,37.6c0-4,0-7.9,0-11.9"/>
+	<text transform="matrix(1 0 0 1 337.9393 400.4232)" font-family="'PermanentMarker'" font-size="30.74px">deadline</text>
 </g>
-<path fill="none" stroke="#F7941E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M410.1,27.3c6.2,69.6,25,138.6,55.9,205.3c11.1,23.8,23.9,47.7,46.1,68c47.3,43.3,150.3,55.8,217.3,55.8"/>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="44.3" y1="426" x2="251.8" y2="426"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="44.3" y1="426" x2="251.8" y2="426"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M247.2,420.5c3.2,1.1,6.1,2.9,8.5,5.3c-2.3,1.7-4.7,3.3-7,5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M45.5,421.2c-2,1.4-4.1,2.9-6.1,4.3c1.9,1.3,3.8,2.5,5.7,3.8"/>
 </g>
-<text transform="matrix(1 0 0 1 29.1888 459.1168)" fill="#1C75BC" font-family="'PermanentMarker'" font-size="30.74px">procrastination</text>
+<text transform="matrix(1 0 0 1 29.1888 459.1168)" fill="#821E70" font-family="'PermanentMarker'" font-size="30.74px">procrastination</text>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M274.4,422.2c-1.6,2-3.2,4-4.8,6c2,0.9,4.1,1.8,6.1,2.8"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M272.1,427.1c5.6,0,11.2,0,16.7,0h100.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M388.6,422.7c1.9,1.1,3.8,2.2,5.7,3.4c-1.8,1.7-3.6,3.4-5.4,5.1"/>
 </g>
-<text transform="matrix(1 0 0 1 272.612 459.1166)" fill="#27AAE1" font-family="'PermanentMarker'" font-size="30.74px">urgency</text>
+<text transform="matrix(1 0 0 1 272.612 459.1166)" fill="#AB3D63" font-family="'PermanentMarker'" font-size="30.74px">urgency</text>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M414.1,421.6c-2.1,1.2-4.2,2.4-6.3,3.5c1.4,1.4,2.8,2.9,4.3,4.3"/>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="408.7" y1="425.5" x2="498.8" y2="425.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="408.7" y1="425.5" x2="498.8" y2="425.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M497.4,421.5c2,1.1,4.1,2.2,6.1,3.4c-1.7,1.5-3.5,3-5.2,4.5"/>
 </g>
-<text transform="matrix(1 0 0 1 401.9367 459.1166)" fill="#00A79D" font-family="'PermanentMarker'" font-size="30.74px">anxiety</text>
+<text transform="matrix(1 0 0 1 401.9367 459.1166)" fill="#A583A2" font-family="'PermanentMarker'" font-size="30.74px">anxiety</text>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M516.9,421.6c-1.3,0.9-2.6,1.9-3.8,2.8c1.6,1.2,3.2,2.3,4.8,3.5"/>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="514.5" y1="424.5" x2="726.9" y2="424.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="514.5" y1="424.5" x2="726.9" y2="424.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M726.9,420.7c1.9,0.7,3.6,1.8,5,3.2c-1.5,1.5-2.9,3-4.4,4.5"/>
 </g>
-<text transform="matrix(1 0 0 1 559.3497 459.1164)" fill="#2BB673" font-family="'PermanentMarker'" font-size="30.74px">abandon</text>
+<text transform="matrix(1 0 0 1 559.3497 459.1164)" fill="#80739C" font-family="'PermanentMarker'" font-size="30.74px">abandon</text>
+<g id="Arrow_up">
+</g>
 </svg>

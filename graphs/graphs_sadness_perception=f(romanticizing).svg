@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="550.7px" height="436.7px" viewBox="0 0 550.7 436.7" enable-background="new 0 0 550.7 436.7" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M515.3,52.7
 	c-12.5,6.9-24.9,13.9-37.4,20.8c0.1-9.3,0.1-18.6,0.2-27.9c-11,8.4-22,16.7-33,25.1c7.5-21.4,15-42.7,22.5-64.1
 	c-23.5,23.1-47.1,46.2-70.6,69.3c9.1-7.3,18.6-15.2,21.9-26.4c3.3-11.1-3.4-25.8-15-26.2c-4.9-0.2-9.5,2.2-13.7,4.8
@@ -40,25 +30,33 @@
 </g>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="230.4" y1="90.3" x2="230.4" y2="352.6"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="230.4" y1="90.3" x2="230.4" y2="352.6"/>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="216" y1="335.5" x2="507.8" y2="335.5"/>
-	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 230.4332 89.8333)" overflow="visible"/>
-	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 507.7704 335.5429)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="216" y1="335.5" x2="507.8" y2="335.5"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			207.9,111.8 230.4,89.8 252.9,111.8 		"/>
+	</g>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			485.8,313 507.8,335.5 485.8,358 		"/>
+	</g>
 </g>
-<text transform="matrix(1 0 0 1 238.0464 385.3689)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">how long i keep</tspan><tspan x="-27.3" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">romanticizing my ex</tspan></text>
-<text transform="matrix(1 0 0 1 207.933 69.7631)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">how society sees me</text>
-<text transform="matrix(1 0 0 1 94.464 222.2643)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">regular</tspan><tspan x="74.2" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
-<text transform="matrix(1 0 0 1 93.0236 298.1485)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">pathetic</tspan><tspan x="75.6" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 238.0464 385.3689)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">how long i keep</tspan><tspan x="-27.3" y="30" font-family="'PermanentMarker'" font-size="30.74px">romanticizing my ex</tspan></text>
+<text transform="matrix(1 0 0 1 207.933 69.7631)" fill="#AD123C" font-family="'PermanentMarker'" font-size="30.74px">how society sees me</text>
+<text transform="matrix(1 0 0 1 94.464 222.2643)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">regular</tspan><tspan x="74.2" y="30" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
+<text transform="matrix(1 0 0 1 93.0236 298.1485)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">pathetic</tspan><tspan x="75.6" y="30" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
+<path fill="none" stroke="#AD123C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M242.4,227.5c26.9,0.2,53.7,0.3,80.6,0.5c8.6,0,17.6,0.2,25.3,4.1c9.6,4.9,15.5,15,18.6,25.3s3.9,21.2,6,31.7
 	c2.6,12.6,8.4,26,20.1,31.3c6.3,2.9,13.4,3,20.3,3.1c19.9,0.2,39.8,0.5,59.7,0.7"/>
-<text transform="matrix(1 0 0 1 207.933 38.5138)" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">how i see myself</text>
-<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 207.933 38.5138)" fill="#5D8F76" font-family="'PermanentMarker'" font-size="30.74px">how i see myself</text>
+<path fill="none" stroke="#5D8F76" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M242.2,238.2c22.3-0.2,33.6,3.1,43.5,15.8c6.5,8.4,9.3,19,11.8,29.4s5,21,11.2,29.7c6.2,8.7,17,15,27.3,12.5
 	c12.7-3,19.1-16.8,23.5-29.1c12.5-35.5,22-71.9,28.3-109c1.6-9.5,3.6-20,11.3-25.9c6.2-4.7,14.5-5.2,22.2-5.5
 	c20.9-0.8,41.7-1.5,62.6-2.3"/>
-<text transform="matrix(1 0 0 1 3.1752 146.38)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">greek tragedy</tspan><tspan x="165.5" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
+<text transform="matrix(1 0 0 1 3.1752 146.38)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">greek tragedy</tspan><tspan x="165.5" y="30" font-family="'PermanentMarker'" font-size="30.74px">sad</tspan></text>
+<g id="Arrow_up">
+</g>
 </svg>

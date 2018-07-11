@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="670.5px" height="396.2px" viewBox="0 0 670.5 396.2" enable-background="new 0 0 670.5 396.2" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M418.8,30.6
 	C326.6,30,234.4,29.5,142.2,29c-40.7-0.2-81.8-0.4-121.6,8.2c-8.1,1.8-16.5,4.1-22.7,9.6s-9.4,15.3-5.2,22.4
 	c5.6,9.5,19.2,9.1,30.1,7.5c22.4-3.3,44.7-6.6,67.1-9.9c-13.7,15.5-27.4,30.9-41.1,46.4c-7.2,8.1-14.8,17.5-14,28.3
@@ -37,35 +27,42 @@
 </g>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="20.4" y1="281.8" x2="643.8" y2="281.8"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="20.4" y1="281.8" x2="643.8" y2="281.8"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			621.8,259.3 643.8,281.8 621.8,304.3 		"/>
+	</g>
 	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 643.8463 281.8372)" overflow="visible"/>
-	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="44.8" y1="52.4" x2="44.8" y2="301.2"/>
-	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 44.821 52.4233)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="44.8" y1="52.4" x2="44.8" y2="301.2"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			22.3,74.4 44.8,52.4 67.3,74.4 		"/>
+	</g>
 </g>
-<text transform="matrix(1 0 0 1 473.1232 338.1283)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">duration of</tspan><tspan x="49.8" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">the date</tspan></text>
-<text transform="matrix(1 0 0 1 19.321 40.0825)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">how self conscious i feel</text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M62.4,119.8H218"/>
-<text transform="matrix(1 0 0 1 57.9381 161.8194)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“stop staring</tspan><tspan x="28.8" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">and think</tspan><tspan x="0" y="60" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">of something</tspan><tspan x="44.6" y="90" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">to say.”</tspan></text>
+<text transform="matrix(1 0 0 1 473.1232 338.1283)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">duration of</tspan><tspan x="49.8" y="30" font-family="'PermanentMarker'" font-size="30.74px">the date</tspan></text>
+<text transform="matrix(1 0 0 1 19.321 40.0825)" font-family="'PermanentMarker'" font-size="30.74px">how self conscious i feel</text>
+<line fill="none" stroke="#88206E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="62.4" y1="119.8" x2="218" y2="119.8"/>
+<text transform="matrix(1 0 0 1 57.9381 161.8194)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“stop staring</tspan><tspan x="28.8" y="30" font-family="'PermanentMarker'" font-size="30.74px">and think</tspan><tspan x="0" y="60" font-family="'PermanentMarker'" font-size="30.74px">of something</tspan><tspan x="44.6" y="90" font-family="'PermanentMarker'" font-size="30.74px">to say.”</tspan></text>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M269.3,275.7c0,4,0,8.1,0,12.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M400.9,275.4c0,3.8,0,7.6,0,11.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M287,295c-1.8,2.6-4.2,4.7-6.9,6.3c2.6,1.7,5.2,3.4,7.7,5.2"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M285.8,300.9c32.5,0.2,64.9,0.3,97.4,0.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M381.9,295.4c2.4,2.1,4.8,4.1,7.1,6.2c-2.5,2.2-5,4.4-7.4,6.6"/>
-	<text transform="matrix(1 0 0 1 289.4841 333.6346)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">i talk</text>
+	<text transform="matrix(1 0 0 1 289.4841 333.6346)" font-family="'PermanentMarker'" font-size="30.74px">i talk</text>
 </g>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#88206E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M621.6,115.2c-32,3.3-66.1,6.4-95-7.8c-17.5-8.5-31.5-22.7-48.1-32.8s-38.3-15.9-55.2-6.2c-10.5,6-17.3,17.2-20.6,28.9
 	s-3.6,23.9-3.8,36.1c-0.7,37.3-1.5,74.6-2.2,111.9c-22.9,2.7-63.5,4.8-82.6-8.1c-15.1-10.2-23.1-28-28.8-45.3s-10-35.5-20.4-50.5
 	c-10.4-14.9-28.6-21.4-46.8-21.4"/>
-<text transform="matrix(1 0 0 1 427.9652 161.8198)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">“well done...</tspan><tspan x="-21.1" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">i really should</tspan><tspan x="-3.2" y="60" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">have kept my</tspan><tspan x="-2.6" y="90" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">mouth shut!”</tspan></text>
+<text transform="matrix(1 0 0 1 427.9652 161.8198)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">“well done...</tspan><tspan x="-21.1" y="30" font-family="'PermanentMarker'" font-size="30.74px">i really should</tspan><tspan x="-3.2" y="60" font-family="'PermanentMarker'" font-size="30.74px">have kept my</tspan><tspan x="-2.6" y="90" font-family="'PermanentMarker'" font-size="30.74px">mouth shut!”</tspan></text>
+<g id="Arrow_up">
+</g>
 </svg>

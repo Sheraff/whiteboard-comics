@@ -12,16 +12,18 @@
 	c8.2-6.7,23.6-4.9,25.8,5.4c2.5,11.6-12.2,18.8-23.9,21.1c-100.5,20.2-205.7,17.2-304.9-8.8c-25.2-6.6-51-15.3-69.2-33.9
 	S32.7,43,47.8,21.8C58.6,6.6,78.3,0.1,96.9,0s36.7,5.4,54.8,9.9c82,20.3,168.9,20.2,250.9-0.2"/>
 <g>
-	<text transform="matrix(1 0 0 1 77.2877 27.1295)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">the fine line between</text>
+	<text transform="matrix(1 0 0 1 77.2877 27.1295)" font-family="'PermanentMarker'" font-size="30.74px">the fine line between</text>
 </g>
 <g id="Arrow_right">
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 13.1402 123.13)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">realizing you</tspan><tspan x="-9.3" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">have potential</tspan></text>
+	<text transform="matrix(1 0 0 1 13.1402 123.13)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">realizing you</tspan><tspan x="-9.3" y="30" font-family="'PermanentMarker'" font-size="30.74px">have potential</tspan></text>
 </g>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#AD123C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M235.3,53c1.4,52,2.8,103.9,4.3,155.9"/>
 <g>
-	<text transform="matrix(1 0 0 1 251.3248 123.13)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">realizing your</tspan><tspan x="38" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">potential</tspan></text>
+	<text transform="matrix(1 0 0 1 251.3248 123.13)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">realizing your</tspan><tspan x="38" y="30" font-family="'PermanentMarker'" font-size="30.74px">potential</tspan></text>
+</g>
+<g id="Arrow_up">
 </g>
 </svg>

@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="380.8px" height="316.4px" viewBox="0 0 380.8 316.4" enable-background="new 0 0 380.8 316.4" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M39.1,12.2
 	c-8.5,13.6-11.6,30.4-8.5,46.1c15.8-11.1,28.9-26.1,37.8-43.2C63.2,36,58.1,56.8,52.9,77.6c18.5-19.7,37-39.3,55.6-59
 	c-2.8,13.7-5.5,27.5-8.3,41.2c-0.6,3-1.2,6.4,0.4,9.1c2.7,4.7,10.3,3.8,13.9-0.3s4-9.9,4.3-15.3c0.2-5.4,0.4-11.2,3.6-15.6
@@ -33,35 +23,43 @@
 </g>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="55.2" y1="82.7" x2="55.2" y2="256.3"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="55.2" y1="82.7" x2="55.2" y2="256.3"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			32.7,104.7 55.2,82.7 77.7,104.7 		"/>
+	</g>
 	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 55.235 82.6686)" overflow="visible"/>
-	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="32.7" y1="233.8" x2="315.1" y2="233.8"/>
-	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 315.0797 233.7603)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="32.7" y1="233.8" x2="315.1" y2="233.8"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			293.1,211.3 315.1,233.8 293.1,256.3 		"/>
+	</g>
 </g>
-<text transform="matrix(1 0 0 1 79.9464 266.4617)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">value of the</tspan><tspan x="9.2" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">stuff i own</tspan></text>
-<text transform="matrix(1 0 0 1 28.7349 38.7026)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">negative </tspan><tspan x="0" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">feelings</tspan></text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 79.9464 266.4617)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">value of the</tspan><tspan x="9.2" y="30" font-family="'PermanentMarker'" font-size="30.74px">stuff i own</tspan></text>
+<text transform="matrix(1 0 0 1 28.7349 38.7026)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">negative </tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="30.74px">feelings</tspan></text>
+<path fill="none" stroke="#AB3D63" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M100.5,131.5c-1.8,88.7,143.4,115.7,153.9,0.7"/>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M104.6,138.1c-2.4,1.8-4.9,3.6-7.3,5.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M98.1,137.9c1.5,1.9,3,3.9,4.6,5.8"/>
-	<text transform="matrix(1 0 0 1 130.4291 118.7386)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">envy</text>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<text transform="matrix(1 0 0 1 130.4291 118.7386)" font-family="'PermanentMarker'" font-size="30.74px">envy</text>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M111.3,142.2c4.5-2.1,10.5-0.5,13.4,3.6c1.2,1.7,1.8,3.7,2.8,5.5c1,1.8,2.4,3.6,4.4,4.1c1.9,0.5,4-0.2,5.5-1.4
 		c1.5-1.2,2.7-2.9,3.7-4.6c3.6-6.1,6.3-12.7,7.9-19.6"/>
 </g>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M249.1,139.9c2.9,2.1,5.9,4.2,8.8,6.2"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M248.1,146.8c3.3-2.6,6.6-5.3,9.8-7.9"/>
-	<text transform="matrix(1 0 0 1 283.1835 118.7386)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">greed</text>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<text transform="matrix(1 0 0 1 283.1835 118.7386)" font-family="'PermanentMarker'" font-size="30.74px">greed</text>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M268.4,142.9c2.7-2.1,6.6-1.7,9.6,0s5.2,4.3,7.5,6.8c2.3,2.5,4.9,4.9,8.1,5.8c6.2,1.8,12.9-2.6,15.8-8.4s3-12.5,3.1-19"/>
+</g>
+<g id="Arrow_up">
 </g>
 </svg>

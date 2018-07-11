@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="609.9px" height="434.8px" viewBox="0 0 609.9 434.8" enable-background="new 0 0 609.9 434.8" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M234.8,9.3
 	c-2.1,19.5-4.2,39-6.3,58.5c31.1-16.7,58.6-40,80.2-67.8c-4.6,26.4-9.2,52.8-13.7,79.2c35.2-21.5,70.3-43,105.5-64.4
 	c-23.4,47.2-72.8,80.3-125.3,84.1c12,6.3,24,12.5,36.1,18.8c-10.5,35.5-10.5,73.1-10.4,110.1c0.1,47.6,0.2,95.1,0.3,142.7
@@ -31,28 +21,36 @@
 	c-8.6-78.2-17.1-156.4-25.7-234.7c-2-18.7-7.7-41.7-26.1-45.7c-16.9-3.7-31.2,11.7-42.6,24.6c-45.7,51.8-108.1,88.6-175.6,103.3"/>
 <g>
 	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="66.1" y1="322.3" x2="568.4" y2="322.3"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="66.1" y1="322.3" x2="568.4" y2="322.3"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			547.4,299.8 569.4,322.3 547.4,344.8 		"/>
+	</g>
 	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 569.3969 322.3041)" overflow="visible"/>
-	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="306.6" y1="355" x2="306.6" y2="88.4"/>
-	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 306.5896 87.6518)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="306.6" y1="355" x2="306.6" y2="88.4"/>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			284.1,109.7 306.6,87.7 329.1,109.7 		"/>
+	</g>
 </g>
 <g id="Arrow_right">
 </g>
-<text transform="matrix(1 0 0 1 516.0222 376.1204)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">job</text>
-<text transform="matrix(1 0 0 1 5.8997 283.0022)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">physical</text>
-<text transform="matrix(1 0 0 1 493.692 283.0022)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">mental</text>
+<text transform="matrix(1 0 0 1 516.0222 376.1204)" fill="#72AA8B" font-family="'PermanentMarker'" font-size="30.74px">job</text>
+<text transform="matrix(1 0 0 1 5.8997 283.0022)" font-family="'PermanentMarker'" font-size="30.74px">physical</text>
+<text transform="matrix(1 0 0 1 493.692 283.0022)" font-family="'PermanentMarker'" font-size="30.74px">mental</text>
 <g>
-	<text transform="matrix(1 0 0 1 258.9335 73.4872)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">salary</text>
+	<text transform="matrix(1 0 0 1 258.9335 73.4872)" fill="#72AA8B" font-family="'PermanentMarker'" font-size="30.74px">salary</text>
 </g>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#72AA8B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M87.8,300.9c79.5-3.5,160-8.8,235.7-33.4S470.7,196.8,510.7,128"/>
-<text transform="matrix(1 0 0 1 463.1208 409.1651)" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">illness</text>
+<text transform="matrix(1 0 0 1 463.1208 409.1651)" fill="#CE3045" font-family="'PermanentMarker'" font-size="30.74px">illness</text>
 <g>
-	<text transform="matrix(1 0 0 1 223.0302 42.4615)" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">healthcare</text>
+	<text transform="matrix(1 0 0 1 223.0302 42.4615)" fill="#CE3045" font-family="'PermanentMarker'" font-size="30.74px">healthcare</text>
 </g>
-<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M98.4,127.5C198.3,241,349.5,307.6,500.7,304.7"/>
+<g id="Arrow_up">
+</g>
 </svg>

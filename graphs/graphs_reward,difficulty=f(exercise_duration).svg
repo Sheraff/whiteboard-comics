@@ -2,16 +2,6 @@
 <!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="606.3px" height="431.5px" viewBox="0 0 606.3 431.5" enable-background="new 0 0 606.3 431.5" xml:space="preserve">
-<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22,22.5 0,0 -22,-22.5 	"/>
-</symbol>
-<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
-	
-		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-		-22.5,-22 0,0 22.5,-22 	"/>
-</symbol>
 <path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M151.5,67.6
 	c-0.2-8.7-0.4-17.3-0.7-26c-10.9,10.7-21.8,21.3-32.6,32c-1-16.1-1.9-32.3-2.9-48.4c-0.4-7.4-1.2-15.4-6.3-20.7
 	C99.1-5.8,80,3,75.5,16.6s0.7,28.2,5.8,41.5c-2.8-19.3-5.6-38.5-8.4-57.8C61.7,22.9,50.6,45.6,39.4,68.2
@@ -37,56 +27,64 @@
 <g id="Arrow_right">
 </g>
 <g>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			15.6,98.8 38.1,76.8 60.6,98.8 		"/>
+	</g>
+	<g>
+		
+			<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			485.8,301.8 507.8,324.3 485.8,346.8 		"/>
+	</g>
 	
-		<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 38.1393 76.8424)" overflow="visible"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="38.1" y1="76.8" x2="38.1" y2="346.8"/>
 	
-		<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 507.8492 324.3385)" overflow="visible"/>
-	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="38.1" y1="76.8" x2="38.1" y2="346.8"/>
-	
-		<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.6" y1="324.3" x2="507.8" y2="324.3"/>
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.6" y1="324.3" x2="507.8" y2="324.3"/>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 386.6054 249.5432)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">months spent</tspan><tspan x="23.5" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">exercising</tspan></text>
+	<text transform="matrix(1 0 0 1 386.6054 249.5432)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">months spent</tspan><tspan x="23.5" y="30" font-family="'PermanentMarker'" font-size="30.74px">exercising</tspan></text>
 </g>
-<text transform="matrix(1 0 0 1 10.6393 63.8175)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">difficulty</text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 10.6393 63.8175)" fill="#ED7C31" font-family="'PermanentMarker'" font-size="30.74px">difficulty</text>
+<path fill="none" stroke="#ED7C31" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M48.4,117c6.1,21.4,15.6,41.8,28.1,60.2c39,57.7,104.8,92.9,172.6,109s138.2,15.3,207.9,14.3"/>
-<text transform="matrix(1 0 0 1 10.6393 31.969)" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">reward</text>
-<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 10.6393 31.969)" fill="#CE3045" font-family="'PermanentMarker'" font-size="30.74px">reward</text>
+<path fill="none" stroke="#CE3045" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M50.2,312.2C92.9,244.4,153.4,188,224,150.2S375,93.1,455.1,95"/>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,125c0-3.3,0-6.5,0-9.8"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,142.4c0-2.8,0-5.6,0-8.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,160.5c0-3,0-6,0-9.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,177.9c0-2.6,0-5.1,0-7.7"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,198.2c0-3.5,0-7,0-10.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,218.3c0-3.7,0-7.4,0-11.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,236.4c0-2.8,0-5.6,0-8.4"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,255.3c0-3.3,0-6.5,0-9.8"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,273.4c0-3,0-6,0-9.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,292.9c0-3.5,0-7,0-10.5"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,311c0-3,0-6,0-9.1"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M84.1,330.7c0-3.6,0-7.3,0-10.9"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,330.7c0-3.3,0-6.5,0-9.8"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,311.9c0-2.8,0-5.6,0-8.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,294.5c0-3,0-6,0-9.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,275.7c0-2.6,0-5.1,0-7.7"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,258.2c0-3.5,0-7,0-10.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,238.8c0-3.7,0-7.4,0-11.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,217.9c0-2.8,0-5.6,0-8.4"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,200.5c0-3.3,0-6.5,0-9.8"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,181.6c0-3,0-6,0-9.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,163.5c0-3.5,0-7,0-10.5"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,144c0-3,0-6,0-9.1"/>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M84.1,126.1c0-3.6,0-7.3,0-10.9"/>
 </g>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M83.3,350.6c2.2,5.2-0.5,11.1-3.8,15.6s-7.2,9.1-7.7,14.7c-0.8,8.6,7.4,15.9,15.8,17.4c8.5,1.5,17.1-1.4,25.2-4.1
 		c8.4-2.9,16.9-5.7,25.3-8.6"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M80.6,352c1.4-1.7,2.8-3.3,4.2-5c1,1.4,2,2.8,3,4.2"/>
-	<text transform="matrix(1 0 0 1 150.0692 375.821)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">my usual</tspan><tspan x="0" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">stopping point</tspan></text>
+	<text transform="matrix(1 0 0 1 150.0692 375.821)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">my usual</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="30.74px">stopping point</tspan></text>
+</g>
+<g id="Arrow_up">
 </g>
 </svg>

@@ -18,23 +18,25 @@
 	c-11,5.9-24.3,8.7-36.2,4.9c-16.1-5.1-26.2-20.7-34.3-35.6c-13.3-24.2-24.9-49.3-34.8-75.1"/>
 <g id="Arrow_right">
 </g>
-<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M250.1,75.4c-65.3-2.8-89.4,93.1-13.1,97.4c65.4,3.7,85.3-99.1,20.2-92.8"/>
-<text transform="matrix(1 0 0 1 86.2988 116.7501)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">who</tspan><tspan x="-0.8" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">i am</tspan></text>
-<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 86.2988 116.7501)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">who</tspan><tspan x="-0.8" y="30" font-family="'PermanentMarker'" font-size="30.74px">i am</tspan></text>
+<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M106.3,28.2C-19.2,54.9-9.2,228.4,127.8,218.3C296.3,205.8,208.2-12,114.4,23.2"/>
-<text transform="matrix(1 0 0 1 314.804 101.7502)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">what</tspan><tspan x="0" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">people</tspan><tspan x="0" y="60" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">ask about</tspan></text>
-<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+<text transform="matrix(1 0 0 1 314.804 101.7502)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">what</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="30.74px">people</tspan><tspan x="0" y="60" font-family="'PermanentMarker'" font-size="30.74px">ask about</tspan></text>
+<path fill="none" stroke="#F4BB3A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 	M210.6,96.9c-1.9,1-3.9,2-5.8,3c3.1,0.4,6.2,0.8,9.2,1.2c-3.7,1.6-7.5,3.3-11.2,4.9c4.4,0.2,8.8,0.4,13.2,0.6
 	c-6.6,1.7-13.3,3.3-19.9,5c7,0,13.9,0,20.9,0c-6.9,1.9-13.7,3.8-20.6,5.7c6.7-0.1,13.5-0.3,20.2-0.4c-7.1,2.2-14.2,4.3-21.4,6.5
 	c7.4-0.4,14.7-0.8,22.1-1.3c-7.6,2.7-15.1,5.3-22.7,8c7.6-0.5,15.1-0.9,22.7-1.4c-7.3,2.4-14.6,4.7-22,7.1c7.3-0.5,14.7-1,22-1.5
 	c-6.8,2.5-13.5,4.9-20.3,7.4c6.7-0.6,13.3-1.1,20-1.7c-5.8,2.9-11.7,5.7-17.5,8.6c5.9-1,11.7-2,17.6-3c-5.1,2.4-10.1,4.9-15.2,7.3
 	c4.5-0.7,9-1.4,13.5-2.2c-3.2,2.2-6.4,4.4-9.6,6.6c2.9-0.9,5.7-1.8,8.6-2.7c-1.4,1.5-2.7,3.1-4.1,4.6"/>
 <g>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M221.4,180.9c8.1,8,13.2,19,13.9,30.4c0.3,4.2-0.1,8.6,1.4,12.6c1.9,5.3,6.8,9.1,12.1,11.1c5.3,2,11,2.4,16.6,2.9"/>
-	<path fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
 		M219.9,187.5c0-2.6,0-5.2-0.1-7.8c2.8,0.9,5.7,1.9,8.5,2.8"/>
-	<text transform="matrix(1 0 0 1 273.342 232.8076)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">first</tspan><tspan x="0" y="30" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">impressions</tspan></text>
+	<text transform="matrix(1 0 0 1 273.342 232.8076)"><tspan x="0" y="0" font-family="'PermanentMarker'" font-size="30.74px">first</tspan><tspan x="0" y="30" font-family="'PermanentMarker'" font-size="30.74px">impressions</tspan></text>
+</g>
+<g id="Arrow_up">
 </g>
 </svg>
