@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="718.1px" height="519.2px" viewBox="0 0 718.1 519.2" enable-background="new 0 0 718.1 519.2" xml:space="preserve">
+<symbol  id="Arrow_right_1_" viewBox="-25.5 -26 29 52">
+	
+		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		-22,22.5 0,0 -22,-22.5 	"/>
+</symbol>
+<symbol  id="Arrow_up" viewBox="-26 -25.5 52 29">
+	
+		<polyline fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		-22.5,-22 0,0 22.5,-22 	"/>
+</symbol>
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M321.5,25
+	c-92.3-0.1-184.6-0.3-276.9-0.4c-8.6,0-17.6,0.1-25,4.5s-12,14.6-7.3,21.8c5.1,7.8,16.5,7.1,25.6,5.6c25.7-4.3,51.3-8.7,77-13
+	c4.8,10.9-9,20.6-20.6,23.4c-11.6,2.8-26.3,7.2-27.2,19c-0.6,9.3,9.1,16.5,18.4,16.7c9.3,0.2,17.8-4.5,25.9-9.1
+	c3.6,10.9-5.2,22.3-15.2,28c-10.1,5.6-21.8,7.9-31.4,14.2C55.2,142,48.1,155.1,54,165c5.8,9.7,20.7,9.9,29.9,3.5
+	c9.3-6.5,14.2-17.3,18.9-27.6c4.7-10.3,10-21,19.6-27c-2.6,8.8-5.2,18-3.5,27s9.2,17.6,18.4,17.2c9-0.4,15.6-9,17.8-17.7
+	c2.2-8.7,1.4-17.9,2.6-26.8c5-35,48.5-58.3,80.4-43c-24.3,1.3-48.7,2.7-73,4c-12,0.7-26.1,2.7-31.5,13.3
+	c-6.7,13.2,6.6,29.2,21.2,31.6c14.6,2.4,29-4,43-8.9c11.9-4.2,25.2-7.3,37-2.7s19.8,20,12.7,30.5c-4.7,6.9-13.7,9.1-22,10.3
+	c-23,3.3-46.6,2.8-69.5-1.6c29.6,31.6,85.3,33.5,117,4c-4,15.4-11.1,31.5-25.4,38.6c-14.2,7.1-35.9-1.4-35.9-17.2
+	c0-10.3,8.7-18.8,18.4-22.4c9.7-3.5,20.2-3.3,30.5-3.9c35-2.1,69.2-15.3,96.6-37.1c20.9-16.6,37.7-37.9,58.3-54.8
+	C458,19.6,516.4,5.1,570.1,16c9.6,1.9,21.2,7.2,21,17c-0.1,12.9-18.5,15.2-31.3,13.2c-21.4-3.4-42.9-6.8-64.3-10.2
+	c-7.5-1.2-15.3-2.4-22.7-0.6s-14.4,7.4-15.5,15c-1.6,11.1,10.8,20.2,22,19.7c11.2-0.5,21-7.4,30.1-14c-5,25.7-30.3,45.7-56.4,44.7
+	c1.1,12.9,19.1,14.7,31.8,12.9c12.8-1.8,30.8,0.3,31.6,13.2c0.8,12.4-16,17.3-28.4,16.2s-28.1-2.5-34.1,8.4
+	c-6.7,12.2,9.3,27.2,22.8,23.8c13.5-3.4,21.5-17.6,24-31.3s1.3-27.9,4.4-41.5c3.1-13.6,12.4-27.4,26.2-29.2
+	C545.2,71.3,559,89,550,99.6c16.3-4.4,32.5-8.9,48.8-13.3c-7.3,15.4,2.9,36.3,19.5,40c8.8,1.9,17.9-0.4,26.9-0.4
+	c9,0,19.3,3.4,22.3,11.9c3.8,10.8-7.7,21.9-19.1,22.9c-11.4,1-22.3-4.5-33-8.5c-33.1-12.3-70.9-11.5-103.4,2.3
+	c11.3,12.7,32.1,3.6,46-6.3s33.6-20.1,46.2-8.6c6.5,6,7.8,15.5,11.9,23.2c8.5,16,31,22.8,46.9,14.1c-19.1,5.7-38.2,11.4-57.3,17.1
+	c12.8,22,37.4,36.7,62.8,37.6c9.9,0.4,20-1.2,29.8,0.6c9.8,1.9,19.7,8.5,21,18.4c1.3,9.5-6.1,18.4-14.9,22.2
+	c-8.8,3.8-18.7,3.6-28.3,3.4C464.1,271.2,252,266,40,260.9c-6.4-0.2-13-0.3-18.8,2.4s-10.4,9-8.9,15.2c2.1,8.8,13.5,10.8,22.5,11.1
+	c50,1.6,99.9,3.1,149.9,4.7c-1.2,12.1-17.3,15.3-29.4,14.5c-12.1-0.8-27.8-0.3-31.9,11.1c-3.7,10.3,6.7,21.2,17.5,22.4
+	c10.9,1.1,21.2-4.3,30.8-9.5c-11.6,16.5-23.3,33-34.9,49.6c15.1,1.6,34.7,8,34,23.2c-0.6,13.5-17,19.3-30.3,21.8
+	c8.3,4.9,16.5,9.8,24.8,14.7c-11.3,3.5-23.2,9.8-27.2,20.9c-4,11.2,5.6,26.5,17.1,23.3c18.7-5.2,7.8-40.9,25.5-48.6
+	c6.6-2.9,15.2,0.6,17.9,7.3c2.7,6.6-1,15.1-7.7,17.7c8,2,16,4,23.9,6.1c4.4-22.6,8.7-45.2,13.1-67.8c12.6,5.6,25.2,11.1,37.8,16.7
+	c1.5-29.2,3-58.5,4.4-87.7c19.6,5.8,39.2,11.5,58.8,17.3c-3.3-14.5-6.6-30.2-0.9-44c5.7-13.8,24.3-23,36.1-13.8
+	c13.4,10.5,9.4,36.6,25.4,42.6c15.4,5.7,28.2-14.7,44.5-17.6c10.4-1.8,21.6,5,24.8,15.1s-2.2,22.1-11.9,26.5
+	c-2.5,8.1,7.5,15.5,15.9,14.3c8.4-1.2,15.1-7.4,21.8-12.6c6.7-5.2,15.4-9.7,23.4-7c10.2,3.5,13.4,17.3,9.2,27.2
+	c-4.1,9.9-13.2,16.7-21.9,23c16.4,10.1,32.8,20.1,49.2,30.2c3,1.9,6,3.7,9,5.6c11.4,7,23.2,14.3,31,25.2
+	c7.9,10.9,10.9,26.3,3.8,37.7c-10.7,17.1-39.2,14.4-51.5-1.6s-11.2-38.9-4-57.7c-15.6,8.1-26.1,23-38.7,35.3
+	c-12.6,12.2-30.3,22.4-47,17.1c-12.6-4-21-15.4-29.8-25.2c-8.8-9.8-21.2-19-34-16.2c-15.7,3.4-24.2,23.2-40.1,25.5
+	c-20.2,3-36-15.6-56.4-14.6c-9.9,0.5-11.8,3.7-19.2,10.1c-7.5,6.5-21.2,8.5-31.1,8.2c-9.9-0.4-19.1-12.3-13.2-20.2"/>
+<g id="Arrow_right">
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="84.4" y1="45.2" x2="84.4" y2="169.7"/>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="61.9" y1="147.2" x2="256.4" y2="147.2"/>
+		
+			<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 257.1795 147.1696)" overflow="visible"/>
+		
+			<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 84.4433 45.2673)" overflow="visible"/>
+	</g>
+	<text transform="matrix(1 0 0 1 211.2344 196.5442)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">age</text>
+	<text transform="matrix(1 0 0 1 5.6876 33.0716)" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">concepts understood</text>
+	<path fill="none" stroke="#009444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M101.4,133.7c0-9.7,5.3-18.8,12.5-25.4s16.1-10.8,25-14.6c30-12.8,61.8-21.5,94.2-25.7"/>
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="478.9" y1="45.2" x2="478.9" y2="169.7"/>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="456.4" y1="147.2" x2="650.9" y2="147.2"/>
+		
+			<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 651.6855 147.1696)" overflow="visible"/>
+		
+			<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 478.9493 45.2674)" overflow="visible"/>
+	</g>
+	<text transform="matrix(1 0 0 1 605.7405 196.5442)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">age</text>
+	<text transform="matrix(1 0 0 1 451.4493 33.0716)" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">cognition</text>
+	<path fill="none" stroke="#BE1E2D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M491.1,134.3c4.8-16.2,9.6-32.4,14.4-48.6c0.9-3,1.9-6.2,4-8.5c3-3.3,7.9-4.1,12.3-3.3c4.3,0.8,8.3,3,12.2,5
+		c13.9,7.1,28.6,12.5,43.7,16.1c8.1,1.9,16.6,3.4,23.4,8.3c10.2,7.3,14.6,20.3,18.3,32.5"/>
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="154.6" y1="295.9" x2="154.6" y2="487.5"/>
+		
+			<line fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="132.1" y1="463.1" x2="568.5" y2="463.1"/>
+		
+			<use xlink:href="#Arrow_right_1_"  width="29" height="52" x="-25.5" y="-26" transform="matrix(1 0 0 -1 568.8929 463.1111)" overflow="visible"/>
+		
+			<use xlink:href="#Arrow_up"  width="52" height="29" x="-26" y="-25.5" transform="matrix(1 0 0 -1 154.5573 295.2119)" overflow="visible"/>
+	</g>
+	<text transform="matrix(1 0 0 1 532.5978 513.2058)" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">age</text>
+	<text transform="matrix(1 0 0 1 6.0739 277.8867)"><tspan x="0" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px">intellectual potential = </tspan><tspan x="384.1" y="0" fill="#BE1E2D" font-family="'PermanentMarker'" font-size="30.74px">cognition</tspan><tspan x="527.8" y="0" fill="#231F20" font-family="'PermanentMarker'" font-size="30.74px"> × </tspan><tspan x="565.6" y="0" fill="#009444" font-family="'PermanentMarker'" font-size="30.74px">concepts</tspan></text>
+	<path fill="none" stroke="#1C75BC" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M171.3,444.6c21.9-0.9,43.1-9.6,57.5-23.5c19.9-19.3,25.9-46.2,42.2-67.8c21.9-29,62.6-46.2,103.2-46
+		c40.6,0.3,80.1,17.2,106.9,43.2c26.8,26.1,41.2,60.7,42.4,95.2"/>
+</g>
+</svg>
