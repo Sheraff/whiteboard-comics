@@ -32,7 +32,9 @@
 			return $a>$b;
 		});
 		array_unshift($existing_imgs, $existing_imgs[count($existing_imgs)-1]);
-		$durations = array_fill(0, $img_total+1, 3);
+		$durations = array_fill(0, $img_total, 3);
+		$durations[0] = 10;
+		array_unshift($durations, 1);
 		array_push($durations, intval(1000 + round($img_total/10)));
 
 		// create GIF
