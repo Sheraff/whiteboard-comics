@@ -211,7 +211,7 @@ SPEED = localStorage.getItem('speed') || 5
 SIZE_FACTOR = 1.4
 SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 DOMURL = self.URL || self.webkitURL || self
-MAX_SIMULTANEOUS_SVG_REQUESTS = 4
+MAX_SIMULTANEOUS_SVG_REQUESTS = 10
 LOGGING = true
 FONT_LOADED = false
 FIRST_LANDING = true
@@ -698,7 +698,7 @@ function which_vignette_should_load() {
 }
 
 function check_each_vignette_for_loading_position(force) {
-	var margin = cached_inner_height / 2
+	var margin = cached_inner_height
 	var loading_window = [
 		window.scrollY - margin,
 		window.scrollY + cached_inner_height + margin
@@ -728,7 +728,7 @@ function check_each_vignette_for_loading_position(force) {
 							loading_as[index].requested = false
 						}
 					})
-					.bind(undefined, i, margin), 300)
+					.bind(undefined, i, margin), 50)
 			}
 		}
 	}
