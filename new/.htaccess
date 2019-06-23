@@ -1,0 +1,9 @@
+AddType image/svg+xml .svg .svgz
+
+RewriteEngine on
+RewriteRule ^/?archives/?$ /?archives=true [L,NC]
+RewriteRule ^chapon$ index.php?all=true&archives=true [L,NC]
+RewriteRule ^([^\/]*)\.png$ png/$1.png [L,NC]
+RewriteRule ^([^\/]*)\.gif$ gif/$1.gif [L,NC]
+RewriteRule ^([^\/]*)\.mp4$ mp4/$1.mp4 [L,NC]
+RewriteRule ^([^\.]*)$ index.php?graph=$1 [NC]

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 768.7 488" enable-background="new 0 0 768.7 488" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M74,17.6
+	C54.2,46.7,37,77.7,22.8,110c-3.4,7.7-6.7,15.7-6.8,24.2c-0.1,8.4,3.8,17.4,11.4,21.1c14.4,7,29.3-8,39.1-20.7
+	C110,78.7,169.5,35.4,236,11.2c-19.8,44.2-56.4,78.1-88.6,114.2s-62.2,78.8-63.5,127.2c80.9-104,163.3-209.4,269.6-287.1
+	C318.3,67.2,225.7,135.9,157.6,219.3C108.1,280,70.5,350.5,47.9,425.6c20.1,5.9,41.9-2.4,58.5-15.1s29.6-29.5,44.5-44.1
+	c40.5-39.6,105.2-40.3,155-67.2c110.5-59.7,194.2-165.7,292.3-244c11.4-9.1,29.4-17.6,38.5-6.2c6.2,7.7,2.7,19.2-1.7,28.1
+	c-19.3,39.4-50,73.2-87.4,96.2c-13.1,8-27.1,14.9-37.8,26c-10.6,11-17.3,27.7-11.5,41.9c12.2,3,25.1-2.1,35.2-9.6
+	c10.1-7.5,18.2-17.4,27.5-25.8c28.1-25.2,68.2-36.2,105.2-28.9c-12.1,31.5-37.8,57.5-69.1,70c-21.2,8.5-44.6,11.1-64.8,21.8
+	s-36.7,34.3-28.7,55.7c5.9,15.7,23,24.5,39.6,26.6c16.6,2.1,33.3-1,50-1.7c34.7-1.5,69.9,7.5,99.5,25.7c4.5,2.8,9.2,6,11.4,10.8
+	c4.1,8.7-1.3,19.4-9.4,24.5c-8.1,5.1-18,6-27.6,6.8c-179.6,14-360,18.4-540,13.1"/>
+<g>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="138.7" y1="101" x2="138.7" y2="449.7"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="116.2" y1="427.7" x2="699.6" y2="427.7"/>
+</g>
+<g>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		677.6,405.2 699.6,427.7 677.6,450.2 	"/>
+	<text transform="matrix(1 0 0 1 633.3809 392.6064)" font-family="'PermanentMarker'" font-size="31">time</text>
+</g>
+<g>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		116.2,123 138.7,101 161.2,123 	"/>
+	<text transform="matrix(1 0 0 1 111.9985 51.3345)" fill="#F6967D" font-family="'PermanentMarker'" font-size="31">amount of sweat</text>
+</g>
+<path fill="none" stroke="#F6967D" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M161.2,405.2
+	C249,405.2,543,123,624,42"/>
+<g>
+	<text transform="matrix(1 0 0 1 31.623 162.0166)" font-family="'PermanentMarker'" font-size="31">a lot</text>
+	<text transform="matrix(1 0 0 1 41.3408 392.6064)" font-family="'PermanentMarker'" font-size="31">none</text>
+</g>
+<text transform="matrix(1 0 0 1 111.9985 87.3325)" fill="#95CD8B" font-family="'PermanentMarker'" font-size="31">care factor</text>
+<path fill="none" stroke="#95CD8B" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M161.2,384
+	C257,384,326,190,446,190s-21.7,127,150.5,228.5c22.9,13.5,40.8,24,54.5,32"/>
+<g>
+	<path fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M603,190c0,0-5-54.5-113-3.5"/>
+	<text transform="matrix(1 0 0 1 557.4438 218.9258)" font-family="'PermanentMarker'" font-size="31">“f*ck it”</text>
+</g>
+</svg>

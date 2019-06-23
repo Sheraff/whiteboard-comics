@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 402 472.5" enable-background="new 0 0 402 472.5" xml:space="preserve">
+<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M309,0
+	C224.8,0.7,140.6,1.3,56.4,2C49.7,2,42.3,2.4,37.8,7.3c-4.3,4.7-4.3,11.8-4,18.1c3.8,87.2,7.6,174.4,11.5,261.6
+	c2.4,54.7,3.7,113.6-26.9,159c88.8,10.2,178.5,12.3,267.7,6.2c29.6-2,62-6.4,81.7-28.5c6.3-7,10.9-15.9,11.3-25.3
+	c0.4-9.4-4-19.3-12.2-23.9c-15-8.5-33.4,3.2-45.2,15.8c-11.8,12.6-24.1,28.1-41.3,28.6c-28.2,0.9-44.9-38.4-73.2-38.4
+	c-16.2,0-28.9,13.2-42.9,21.3c-16.6,9.6-37.3,12.5-55.4,6.3c-18.1-6.2-33.1-21.8-37.1-40.6c-3.4-16.1,1.1-32.9,8.5-47.6
+	c7.4-14.7,17.6-27.7,26.6-41.5c18.7-28.6,32.4-60.7,54.5-86.8c23.4-27.6,55-46.9,85.9-65.7c21.5-13.1,43-26.1,64.5-39.2
+	c5.4-3.3,11-6.6,17.2-7c6.3-0.4,13.2,3.3,14.3,9.5c0.9,5.2-2.4,10.1-5.6,14.2C283.3,175,220.4,240,150.7,296.7"/>
+<g>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="45" y1="45" x2="45" y2="393.7"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="370.7" y1="371.3" x2="22" y2="371.3"/>
+</g>
+<g>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		22.5,67 45,45 67.5,67 	"/>
+	<text transform="matrix(1 0 0 1 18.0036 28.9852)" font-family="'PermanentMarker'" font-size="30.7418"># of pizzas eaten</text>
+</g>
+<g>
+	
+		<polyline fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		348.7,348.8 370.7,371.3 348.7,393.8 	"/>
+	<text transform="matrix(1 0 0 1 74.1807 425.3182)" fill="#8DC63F" font-family="'PermanentMarker'" font-size="31">time spent exercising</text>
+</g>
+<g>
+	<path fill="none" stroke="#8DC63F" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M51.3,354.3
+		c91.4-98.2,186.9-192.6,286-282.9"/>
+	<g>
+		
+			<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 123.1568 262.6899)" fill="#8DC63F" font-family="'PermanentMarker'" font-size="31">“i earned it”</text>
+	</g>
+</g>
+<g>
+	<path fill="none" stroke="#9E005D" stroke-width="7" stroke-linecap="round" stroke-miterlimit="10" d="M58.4,364
+		C157.6,269.5,255,173.1,350.6,74.9"/>
+	<g>
+		<text transform="matrix(1 0 0 1 7.5942 461.9828)" fill="#9E005D" font-family="'PermanentMarker'" font-size="31">time sitting on the couch</text>
+	</g>
+	<g>
+		
+			<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 165.4823 309.7604)" fill="#9E005D" font-family="'PermanentMarker'" font-size="31">“oh screw it”</text>
+	</g>
+</g>
+</svg>
