@@ -12,6 +12,7 @@ body{
 
     --aside: 300px;
     --margin: 10px;
+    --popDuration: .5s;
 
     main{
         flex: 1;
@@ -66,8 +67,8 @@ body{
                 grid-column: 1 / 1;
             }
             & > *:first-child {
-                grid-row: 1 / 1;
-                grid-column: 1 / 1;
+                grid-column: 1 / 1 / span 3;
+                grid-row: 1 / 1 / span 3;
             }
         }
         @media screen and (max-width: 2000px) { section{--count: 8;} }
@@ -76,8 +77,13 @@ body{
         @media screen and (max-width: 1400px) { section{--count: 5;} }
         @media screen and (max-width: 1200px) { section{--count: 4;} }
         @media screen and (max-width: 1000px) { section{--count: 3;} }
-        @media screen and (max-width: 800px)  { section{--count: 2;} }
+        @media screen and (max-width: 800px)  { section{--count: 2;} } 
         @media screen and (max-width: 600px)  { section{--count: 1;} }
+
+        @media screen and (max-width: 1200px) { section > *:first-child{
+            grid-column: 1 / 1 / span 2;
+            grid-row: 1 / 1 / span 2;
+        }}
     }
 
     & > aside{
@@ -134,7 +140,7 @@ article{
     position: relative;
     overflow: hidden;
     transform-origin: 0 0;
-    transition: transform 1s ease, opacity 1s ease, box-shadow .2s ease;
+    transition: transform var(--popDuration) linear, opacity var(--popDuration) ease, box-shadow .2s ease;
     will-change: transform, opacity, box-shadow;
     background-color: white;
     padding: calc(.25 * var(--margin));
@@ -185,7 +191,7 @@ article{
         overflow: visible;
         
         transform-origin: center center;
-        transition: transform 1s ease, opacity 1s ease;
+        transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
         will-change: transform, opacity;
 
         tspan, text{
@@ -197,7 +203,7 @@ article{
         }
         [data-type="writing"]{
             opacity: 0;
-            transition: opacity .2s ease, stroke .2s ease;
+            transition: opacity .2s ease, stroke .2s linear;
             will-change: opacity;
             fill: none;
             stroke-width: 4;

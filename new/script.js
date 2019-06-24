@@ -3,6 +3,12 @@ let index = 0
 
 // TODO: both path should start up in parallel
 
+// IDEA: "contact" is a drawable canvas
+// IDEA: while loading a card, draw kids scribble (stick figures, sun, house, heart, smiley, hashtag, dicks) on it and erase them (flip board when done ?) (allows to keep div from being interactive for longer and allow playability as soon as the graph appears ?)
+// IDEA: latest card is just a big bigger in the grid (2x2 if small, 3x3 if possible) so we can always land on /archives
+    // IDEA: some other cards are 2x2 (if big, regular otherwise) to put my favorites forward? (or random ?)
+// IDEA: on archives, arrows allow you to select a card, enter/space to open
+// IDEA: archive's tag list is scrollable so that the sidebar never exceeds 100vh ? (i still like better the old option: sibebar is sticky if taller than content)
 
 //// MAIN PATH
 
@@ -92,21 +98,22 @@ articles.forEach(article => {
         e.stopPropagation()
         toggleArticle(article)
     })
-    article.addEventListener('mouseenter', (e) => {
-        if(!article.data.active) 
-            article.data.mouseover = setTimeout(() => {
-                if(!article.data.active)
-                    animateSVG(article.erase)
-                    .then(() => animateSVG(article.svg))
-            }, 1500)
-    })
-    article.addEventListener('mouseleave', (e) => {
-        if(article.data.mouseover)
-            clearTimeout(article.data.mouseover)
-    })
+    // article.addEventListener('mouseenter', (e) => {
+    //     if (!article.data.active)
+    //         article.data.mouseover = setTimeout(() => {
+    //             if (!article.data.active)
+    //                 animateSVG(article.erase)
+    //                     .then(() => animateSVG(article.svg))
+    //         }, 1500)
+    // })
+    // article.addEventListener('mouseleave', (e) => {
+    //     if (article.data.mouseover)
+    //         clearTimeout(article.data.mouseover)
+    // })
+    // TODO: mouseover will be a good idea once pausing / reseting / resuming is reliable
 })
 window.addEventListener('keyup', (e) => {
-    if(e.key === "Escape") {
+    if (e.key === "Escape") {
         const previous = articles.find(article => article.data.active)
         if (previous)
             pop(previous)
@@ -172,19 +179,6 @@ const getSVG = (article) => {
     return getRaw
 }
 
-const onIntersection = (entries, observer) => {
-    entries.filter(entry => entry.isIntersecting)
-        .forEach(entry => {
-            observer.unobserve(entry.target)
-            Promise.all([
-                getSVG(entry.target),
-                document.fonts.load('1em Permanent Marker')
-            ])
-                .then(([xml]) => processFetchedSVG(entry.target, xml))
-                // TODO: stack them and do them one by one instead of all at once
-        })
-}
-
 const processFetchedSVG = (article, xml) => {
     article.data.content = xml
     const template = document.createElement('template')
@@ -221,20 +215,47 @@ const processFetchedSVG = (article, xml) => {
         requestIdleCallback(() => {
             // this is the costly operation. SVG must be part of document for it to work
             textToSVGAlphabet(svg)
-            .then(() => { article.classList.add('texted') })
+                .then(() => { 
+                    article.classList.add('texted') 
+                    article.data.texted = true
+                })
 
             window.requestAnimationFrame(() => {
                 article.classList.add('processed')
+                article.data.processed = true
                 resolve(article)
             })
         })
     })
 }
 
-const intersectionObserver = new IntersectionObserver(onIntersection, { rootMargin: `${window.innerHeight}px` })
+const loadOnIntersection = (entries, observer) => {
+    entries.filter(entry => entry.isIntersecting)
+        .forEach(entry => {
+            observer.unobserve(entry.target)
+            Promise.all([
+                getSVG(entry.target),
+                document.fonts.load('1em Permanent Marker')
+            ])
+            .then(([xml]) => processFetchedSVG(entry.target, xml))
+        })
+}
+
+const hideOnIntersection = (entries, observer) => {
+    entries.forEach(entry => {
+        // check that article.data.processed because `getStartPositionOfChar` needs svg to be displayed
+        const svg = entry.target.svg
+        if(svg && entry.target.data.texted)
+            requestAnimationFrame(() => {svg.style.display = entry.isIntersecting ? 'block' : 'none'})
+    })
+}
+
+const loadIntersectionObserver = new IntersectionObserver(loadOnIntersection, { rootMargin: `${window.innerHeight}px` })
+const hideIntersectionObserver = new IntersectionObserver(hideOnIntersection, { rootMargin: `${window.innerHeight}px` }) // TODO: this might optimize scroll ? (needs verifying) but lowers UX (svgs take time to reappear)
 
 articles.forEach(article => {
-    intersectionObserver.observe(article)
+    loadIntersectionObserver.observe(article)
+    hideIntersectionObserver.observe(article)
 })
 
 // receive all auto-loaded SVGs from worker in onmessage, process all SVGs on requestIdleCallback
@@ -264,7 +285,7 @@ const textToSVGAlphabet = (svg) => {
             if (LETTERS[letter].viewbox)
                 resolve(LETTERS[letter])
             else {
-                if(LETTERS[letter].getting)
+                if (LETTERS[letter].getting)
                     LETTERS[letter].getting.push(resolve)
                 else {
                     LETTERS[letter].getting = [resolve]
@@ -295,46 +316,46 @@ const textToSVGAlphabet = (svg) => {
         const promises = []
         loopOverAllSpans(svg, (span) => {
             span.textContent.split('')
-            .filter(char => char!==' ')
-            .forEach(char => {
-                promises.push(getLetter(char))
-            })
+                .filter(char => char !== ' ')
+                .forEach(char => {
+                    promises.push(getLetter(char))
+                })
         })
         Promise.all(promises)
-        .catch(e => reject(e))
-        .then((letters) => {
-            loopOverAllSpans(svg, (span, isLong) => {
-                const isTSpan = span.tagName.toUpperCase() === 'TSPAN'
-                const transform = isTSpan ? span.parentElement.getAttribute('transform') : span.getAttribute('transform')
-                const color = span.getAttribute('fill') || span.parentElement.getAttribute('fill') || undefined
-                const reference = isTSpan ? span.parentElement : span
-                const pushPaths = []
-                span.textContent.split('')
-                .forEach((char, index) => {
-                    if (char === ' ')
-                        return
-                    const letter = letters.shift()
+            .catch(e => reject(e))
+            .then((letters) => {
+                loopOverAllSpans(svg, (span, isLong) => {
+                    const isTSpan = span.tagName.toUpperCase() === 'TSPAN'
+                    const transform = isTSpan ? span.parentElement.getAttribute('transform') : span.getAttribute('transform')
+                    const color = span.getAttribute('fill') || span.parentElement.getAttribute('fill') || undefined
+                    const reference = isTSpan ? span.parentElement : span
+                    const pushPaths = []
+                    span.textContent.split('')
+                        .forEach((char, index) => {
+                            if (char === ' ')
+                                return
+                            const letter = letters.shift()
 
-                    const position = span.getStartPositionOfChar(index)
-                    const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
+                            const position = span.getStartPositionOfChar(index)
+                            const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
 
-                    paths.forEach(path => {
-                        path.parentNode.removeChild(path)
-                        path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
-                        path.setAttribute('data-type', 'writing')
-                        if (isLong) path.setAttribute('data-paragraph', true)
-                        if (color) path.setAttribute('stroke', color)
-                        pushPaths.push(path)
+                            paths.forEach(path => {
+                                path.parentNode.removeChild(path)
+                                path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
+                                path.setAttribute('data-type', 'writing')
+                                if (isLong) path.setAttribute('data-paragraph', true)
+                                if (color) path.setAttribute('stroke', color)
+                                pushPaths.push(path)
+                            })
+                        })
+                    window.requestAnimationFrame(() => {
+                        pushPaths.forEach(path => {
+                            reference.parentNode.insertBefore(path, reference)
+                        })
+                        resolve()
                     })
-                })
-                window.requestAnimationFrame(() => { 
-                    pushPaths.forEach(path => {
-                        reference.parentNode.insertBefore(path, reference)
-                    })
-                    resolve()
                 })
             })
-        })
     })
 }
 
@@ -419,6 +440,9 @@ const animateSVG = (svg) => {
                     const overshot = (performance.now() - startAt) / 1000
                     element.style.transition = `stroke-dashoffset ${duration}s ${getElementSmoothing(element)} ${delay - overshot}s, opacity 0s ${delay - overshot}s`
                     element.style.strokeDashoffset = '0'
+                    element.style.visibility = 'visible'
+		            element.style.opacity = '1'
+                    
                     setTimeout(() => element.classList.remove('yesanim'), (delay - overshot + duration) * 1000)
                 })
                 return duration
@@ -443,6 +467,8 @@ const animateSVG = (svg) => {
             requestAnimationFrame(() => {
                 element.style.strokeDasharray = length + ' ' + length
                 element.style.strokeDashoffset = length
+                element.style.visibility = 'hidden'
+		        element.style.opacity = '0'
             })
         }
 
