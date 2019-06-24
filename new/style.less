@@ -144,6 +144,7 @@ article{
     will-change: transform, opacity, box-shadow;
     background-color: white;
     padding: calc(.25 * var(--margin));
+    cursor: pointer;
 
     // loading classes
     box-shadow: 0 0 .5px black;
@@ -152,14 +153,11 @@ article{
         transition: opacity .2s ease;
         will-change: opacity;
     }
-    &.loaded{
-        box-shadow: 0 0 1.5px black;
+    &.processed{
+        box-shadow: 0 0 2.5px black;
         & > svg{
             opacity: 1;
         }
-    }
-    &.processed{
-        box-shadow: 0 0 2.5px black;
     }
     &.texted{
         & > svg{
@@ -193,7 +191,18 @@ article{
         transform-origin: center center;
         transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
         will-change: transform, opacity;
-
+        path, line, polyline{
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-miterlimit: 10;
+            fill: none;
+            &:not([stroke]){
+                stroke: black;
+            }
+            &:not([stroke-width]){
+                stroke-width: 4;
+            }
+        }
         tspan, text{
             font-display: block;
             font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
@@ -205,15 +214,10 @@ article{
             opacity: 0;
             transition: opacity .2s ease, stroke .2s linear;
             will-change: opacity;
-            fill: none;
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-miterlimit: 10;
-
-            &:not([stroke]){
-                stroke: rgb(0, 0, 0);
-            }
+        }
+        [data-type="erase"]{
+            stroke-linejoin: bevel;
+            stroke-linecap: butt;
         }
     }
 }

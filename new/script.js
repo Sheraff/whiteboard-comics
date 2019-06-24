@@ -1,7 +1,9 @@
 const articles = [...document.querySelectorAll('section article')]
 let index = 0
 
-// TODO: both path should start up in parallel
+// TODO: both path should start up in parallel 
+// - path 1: interactivity, pop, event listener, 1st graph opened
+// - path 2: archives, loading SVGs, processing, intersectionObserver, worker
 
 // IDEA: "contact" is a drawable canvas
 // IDEA: while loading a card, draw scribble (stick figures, sun, house, heart, smiley, hashtag, dicks, math equations, mini graphs) on it and erase them when loaded (flip board when done ?)
@@ -11,11 +13,10 @@ let index = 0
 // IDEA: on archives, arrows allow you to select a card, enter/space to open
 // IDEA: archive's tag list is scrollable so that the sidebar never exceeds 100vh ? (i still like better the old option: sibebar is sticky if taller than content)
 
-// TODO: commit index.php
-// change head to <link rel="preload" as="worker" href="">
 // use onload="preloadFinished()" on <link> to start worker tasks ?
 // TODO: separate immediately-needed JS and later-is-fine JS into 2 separate script files
 // TODO: find out how to switch to HTTP2
+// TODO: store server-side processed svg to reduce time-to-first-byte
 
 //// MAIN PATH
 
@@ -70,11 +71,11 @@ function pop(article, on = false) {
             overlay.querySelector('.date').innerText = readableDate(article.data.release)
             overlay.querySelector('.credit').innerText = article.data.credit
             overlay.querySelector('.collab a').innerText = article.data.author
-            setTimeout(() => overlay.classList.add('front'), 1000)
+            setTimeout(() => overlay.classList.add('front'), 500)
         }
     })
 
-    return new Promise(resolve => setTimeout(resolve, 1000))
+    return new Promise(resolve => setTimeout(resolve, 500))
 }
 
 const toggleArticle = (article, state) => {
@@ -107,18 +108,6 @@ articles.forEach(article => {
         e.stopPropagation()
         toggleArticle(article)
     })
-    // article.addEventListener('mouseenter', (e) => {
-    //     if (!article.data.active)
-    //         article.data.mouseover = setTimeout(() => {
-    //             if (!article.data.active)
-    //                 animateSVG(article.erase)
-    //                     .then(() => animateSVG(article.svg))
-    //         }, 1500)
-    // })
-    // article.addEventListener('mouseleave', (e) => {
-    //     if (article.data.mouseover)
-    //         clearTimeout(article.data.mouseover)
-    // })
     article.addEventListener('mouseenter', (e) => {
         if(article.data.processed) {
             textToSVGAlphabet(article.svg)
@@ -129,7 +118,6 @@ articles.forEach(article => {
         } else
             article.data.texted = false
     }, {once: true})
-    // TODO: mouseover will be a good idea once pausing / reseting / resuming is reliable
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === "Escape") {
@@ -170,7 +158,12 @@ worker.onmessage = e => {
     })
 }
 // Send worker JSON of all graphs
-requestIdleCallback(() => worker.postMessage(JSON.stringify({ graphs: articles.map(article => article.data) })))
+requestIdleCallback(() => worker.postMessage(JSON.stringify({ graphs: articles.map(article => { 
+    return {
+        name: article.data.name,
+        content: !!article.data.content
+    }
+}) })))
 
 
 const getSVG = (article) => {
@@ -191,7 +184,6 @@ const getSVG = (article) => {
             localStorage.setItem(article.data.name, content)
             return resolve(content)
         })
-        console.log('lazy loading', article.data.key)
         worker.postMessage(JSON.stringify({ raw: article.data.key }))
     })
 
@@ -199,23 +191,23 @@ const getSVG = (article) => {
 }
 
 const processFetchedSVG = (article, xml) => {
-    article.data.content = xml
-    const template = document.createElement('template')
-    template.innerHTML = xml
-    const svg = template.content.querySelector('svg')
+    let resolve, reject
 
-    // the first white path should be the "erase" path so put it on top and label it so we can use it later
-    window.requestAnimationFrame(() => {
+    // SVG starts in template (doesn't trigger DOM)
+    window.requestIdleCallback(() => {
+        article.data.content = xml
+        const template = document.createElement('template')
+        template.innerHTML = xml
+        const svg = template.content.querySelector('svg')
+
+        // the first white path should be the "erase" path so put it on top and label it so we can use it later
         article.erase = svg.querySelector('path[stroke="#FFFFFF"]')
         svg.removeChild(article.erase)
         article.erase.setAttribute('data-type', 'erase')
         article.erase.style.display = 'none'
         svg.appendChild(article.erase)
         
-    })
-
-    // get all graphs to "look the same size" (meaning a small graph isn't displayed big to occupy all the available space)
-    window.requestAnimationFrame(() => {
+        // get all graphs to "look the same size" (meaning a small graph isn't displayed big to occupy all the available space)
         const SIZE_FACTOR = 1.4
         const viewbox = svg.getAttribute('viewBox').split(' ')
         const svgbox = svg.getBoundingClientRect()
@@ -223,27 +215,18 @@ const processFetchedSVG = (article, xml) => {
             svg.style.width = (.9 * SIZE_FACTOR * viewbox[2] / 10) + '%'
         else
             svg.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
-    })
 
-
-    return new Promise((resolve, reject) => {
-        // put SVG back into place
+        // SVG is in DOM
         window.requestAnimationFrame(() => {
+            // put SVG into place
             article.replaceChild(svg, article.querySelector('svg'))
-            article.classList.add('loaded')
             article.svg = svg
-        })
-
-        
-        window.requestAnimationFrame(() => {
             article.classList.add('processed')
             article.data.processed = true
             if(article.data.texted!==false)
                 resolve(article)
-            
 
-            // replace <text> font elements, with <g> SVG elements
-            // this is the costly operation. SVG must be part of document for it to work
+            // replace <text> font elements, with <g> SVG elements (only is already requested before)
             if(article.data.texted===false) {
                 textToSVGAlphabet(article.svg)
                 .then(() => { 
@@ -253,6 +236,11 @@ const processFetchedSVG = (article, xml) => {
                 })
             }
         })
+    })
+
+    return new Promise((res, rej) => {
+        resolve = res
+        reject = rej        
     })
 }
 
@@ -275,11 +263,9 @@ articles.forEach(article => {
     // MAYBE: intersectionObserver to display none SVGs outside of viewport
 })
 
-// receive all auto-loaded SVGs from worker in onmessage, process all SVGs on requestIdleCallback
 
 const textToSVGAlphabet = (svg) => {
-    // TODO: text remains visible as long as all letters havent loaded
-
+    // this is the costly operation. SVG must be part of DOM for it to work
     const processLetterSVG = letter => {
         const template = document.createElement('template')
         template.innerHTML = letter.content
@@ -347,24 +333,23 @@ const textToSVGAlphabet = (svg) => {
                     const color = span.getAttribute('fill') || span.parentElement.getAttribute('fill') || undefined
                     const reference = isTSpan ? span.parentElement : span
                     const pushPaths = []
-                    span.textContent.split('')
-                        .forEach((char, index) => {
-                            if (char === ' ')
-                                return
-                            const letter = letters.shift()
+                    span.textContent.split('').forEach((char, index) => {
+                        if (char === ' ')
+                            return
+                        const letter = letters.shift()
 
-                            const position = span.getStartPositionOfChar(index)
-                            const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
+                        const position = span.getStartPositionOfChar(index)
+                        const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
 
-                            paths.forEach(path => {
-                                path.parentNode.removeChild(path)
-                                path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
-                                path.setAttribute('data-type', 'writing')
-                                if (isLong) path.setAttribute('data-paragraph', true)
-                                if (color) path.setAttribute('stroke', color)
-                                pushPaths.push(path)
-                            })
+                        paths.forEach(path => {
+                            path.parentNode.removeChild(path)
+                            path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
+                            path.setAttribute('data-type', 'writing')
+                            if (isLong) path.setAttribute('data-paragraph', true)
+                            if (color) path.setAttribute('stroke', color)
+                            pushPaths.push(path)
                         })
+                    })
                     window.requestAnimationFrame(() => {
                         pushPaths.forEach(path => {
                             reference.parentNode.insertBefore(path, reference)

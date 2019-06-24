@@ -1,9 +1,6 @@
 let graphs
-let loadList = []
-let isLoading
-let backlog = []
-let idleTimeout
 
+let backlog = []
 onmessage = e => {
     const data = JSON.parse(e.data)
     if (data.graphs) {
@@ -22,55 +19,37 @@ const respond = (data) => {
     if (data.raw) {
         if(graphs[data.raw].content)
             postMessage(JSON.stringify({[graphs[data.raw].name]: graphs[data.raw].content}))
-        else {
-            loadList.unshift({
-                key: graphs[data.raw].key,
-                callback: xml => postMessage(JSON.stringify({[graphs[data.raw].name]: xml}))
-            })
-            if(!isLoading)
-                loadOne()
-        }
+        else
+            loadItem(data.raw, xml => postMessage(JSON.stringify({[graphs[data.raw].name]: xml})))
     }
 }
 
+// load item asap
+const loadItem = (index, callback) => {
+    if(!graphs[index].callbacks)
+        graphs[index].callbacks = []
+    graphs[index].callbacks.push(callback)
+    if(graphs[index].isLoading)
+        return
+    graphs[index].isLoading = true
+    fetch('./svg.php?graph=' + graphs[index].name)
+    .then(response => response.text())
+    .then(xml => {
+        graphs[index].content = xml
+        graphs[index].callbacks.forEach(callback => callback(xml))
+        delete graphs[index].callbacks
+        delete graphs[index].isLoading
+    })
+
+}
+
+// load item when idle for 500ms
+let idleTimeout
 const loadWhenIdle = () => {
     if(idleTimeout) clearTimeout(idleTimeout)
     idleTimeout = setTimeout(() => {
         const key = graphs.findIndex(graph => !graph.content)
-        if(key!==-1) {
-            console.log('boredom loading', key)
-            loadList.push({key})
-            loadOne()
-        } else {
-            console.log('all done loading')
-        }
+        if(key!==-1)
+            loadItem(key, loadWhenIdle)
     }, 500)
 }
-
-const loadOne = () => {
-    isLoading = true
-    const loaditem = loadList.shift()
-
-    const resolve = (xml) => {
-        graphs[loaditem.key].content = xml
-        if(loaditem.callback)
-            loaditem.callback(xml)
-        if(loadList.length) {
-            loadOne()
-        } else {
-            isLoading = false
-            loadWhenIdle()
-        }
-    }
-
-    if(!!graphs[loaditem.key].content)
-        resolve(graphs[loaditem.key].content)
-    else {
-        fetch(graphs[loaditem.key].path)
-        .then(response => response.text())
-        .then(xml => resolve(xml))
-    }
-}
-
-
-// load all from list in order, one at a time. If we get a load request, it takes priority. If all load requests have been processed, resume loading in order.

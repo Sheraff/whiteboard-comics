@@ -167,6 +167,7 @@ article {
   will-change: transform, opacity, box-shadow;
   background-color: white;
   padding: calc(0.25 * var(--margin));
+  cursor: pointer;
   box-shadow: 0 0 0.5px black;
 }
 article > svg {
@@ -174,14 +175,11 @@ article > svg {
   transition: opacity 0.2s ease;
   will-change: opacity;
 }
-article.loaded {
-  box-shadow: 0 0 1.5px black;
-}
-article.loaded > svg {
-  opacity: 1;
-}
 article.processed {
   box-shadow: 0 0 2.5px black;
+}
+article.processed > svg {
+  opacity: 1;
 }
 article.texted > svg tspan,
 article.texted > svg text {
@@ -213,6 +211,24 @@ article > svg {
   transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
   will-change: transform, opacity;
 }
+article > svg path,
+article > svg line,
+article > svg polyline {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+  fill: none;
+}
+article > svg path:not([stroke]),
+article > svg line:not([stroke]),
+article > svg polyline:not([stroke]) {
+  stroke: black;
+}
+article > svg path:not([stroke-width]),
+article > svg line:not([stroke-width]),
+article > svg polyline:not([stroke-width]) {
+  stroke-width: 4;
+}
 article > svg tspan,
 article > svg text {
   font-display: block;
@@ -225,12 +241,8 @@ article > svg [data-type="writing"] {
   opacity: 0;
   transition: opacity 0.2s ease, stroke 0.2s linear;
   will-change: opacity;
-  fill: none;
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10;
 }
-article > svg [data-type="writing"]:not([stroke]) {
-  stroke: #000000;
+article > svg [data-type="erase"] {
+  stroke-linejoin: bevel;
+  stroke-linecap: butt;
 }
