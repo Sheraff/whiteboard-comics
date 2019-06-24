@@ -22,8 +22,8 @@ $initial = 0;
 ?>
 
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block" rel="stylesheet">
-<link href="./worker.js" rel="prefetch" as="worker">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
+<link rel="preload" as="worker" href="./worker.js">
 
 <body>
 	<main>
