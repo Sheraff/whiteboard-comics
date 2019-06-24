@@ -4,6 +4,7 @@ error_logs/
 */index.php
 !rss/index.php
 !sitemap/index.php
+!new/index.php
 png/*-nokern.png
 */*.png
 gif/*.gif
