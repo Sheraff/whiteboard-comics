@@ -4,11 +4,18 @@ let index = 0
 // TODO: both path should start up in parallel
 
 // IDEA: "contact" is a drawable canvas
-// IDEA: while loading a card, draw kids scribble (stick figures, sun, house, heart, smiley, hashtag, dicks) on it and erase them (flip board when done ?) (allows to keep div from being interactive for longer and allow playability as soon as the graph appears ?)
+// IDEA: while loading a card, draw scribble (stick figures, sun, house, heart, smiley, hashtag, dicks, math equations, mini graphs) on it and erase them when loaded (flip board when done ?)
+// IDEA: smart processing of SVGs: only start doing the costly operations (alphabet) on user events (mouseover) or specific states (viewing 1 graph => process next & previous)
 // IDEA: latest card is just a big bigger in the grid (2x2 if small, 3x3 if possible) so we can always land on /archives
     // IDEA: some other cards are 2x2 (if big, regular otherwise) to put my favorites forward? (or random ?)
 // IDEA: on archives, arrows allow you to select a card, enter/space to open
 // IDEA: archive's tag list is scrollable so that the sidebar never exceeds 100vh ? (i still like better the old option: sibebar is sticky if taller than content)
+
+// TODO: commit index.php
+// change head to <link rel="preload" as="worker" href="">
+// use onload="preloadFinished()" on <link> to start worker tasks ?
+// TODO: separate immediately-needed JS and later-is-fine JS into 2 separate script files
+// TODO: find out how to switch to HTTP2
 
 //// MAIN PATH
 
