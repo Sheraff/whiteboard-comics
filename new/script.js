@@ -251,11 +251,11 @@ const hideOnIntersection = (entries, observer) => {
 }
 
 const loadIntersectionObserver = new IntersectionObserver(loadOnIntersection, { rootMargin: `${window.innerHeight}px` })
-const hideIntersectionObserver = new IntersectionObserver(hideOnIntersection, { rootMargin: `${window.innerHeight}px` }) // TODO: this might optimize scroll ? (needs verifying) but lowers UX (svgs take time to reappear)
+// const hideIntersectionObserver = new IntersectionObserver(hideOnIntersection, { rootMargin: `${window.innerHeight}px` }) // TODO: this might optimize scroll ? (needs verifying) but lowers UX (svgs take time to reappear)
 
 articles.forEach(article => {
     loadIntersectionObserver.observe(article)
-    hideIntersectionObserver.observe(article)
+    // hideIntersectionObserver.observe(article)
 })
 
 // receive all auto-loaded SVGs from worker in onmessage, process all SVGs on requestIdleCallback
