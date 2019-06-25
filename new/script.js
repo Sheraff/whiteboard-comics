@@ -1,7 +1,9 @@
 const articles = [...document.querySelectorAll('section article')]
 let index = 0
 
-// TODO: both path should start up in parallel
+// TODO: both path should start up in parallel 
+// - path 1: interactivity, pop, event listener, 1st graph opened
+// - path 2: archives, loading SVGs, processing, intersectionObserver, worker
 
 // IDEA: "contact" is a drawable canvas
 // IDEA: while loading a card, draw scribble (stick figures, sun, house, heart, smiley, hashtag, dicks, math equations, mini graphs) on it and erase them when loaded (flip board when done ?)
@@ -11,8 +13,6 @@ let index = 0
 // IDEA: on archives, arrows allow you to select a card, enter/space to open
 // IDEA: archive's tag list is scrollable so that the sidebar never exceeds 100vh ? (i still like better the old option: sibebar is sticky if taller than content)
 
-// TODO: commit index.php
-// change head to <link rel="preload" as="worker" href="">
 // use onload="preloadFinished()" on <link> to start worker tasks ?
 // TODO: separate immediately-needed JS and later-is-fine JS into 2 separate script files
 // TODO: find out how to switch to HTTP2
@@ -21,6 +21,7 @@ let index = 0
 
 // TODO: boredom loading of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport?)
 // TODO: batch DOM changes
+// TODO: store server-side processed svg to reduce time-to-first-byte
 
 //// MAIN PATH
 
@@ -51,33 +52,35 @@ function pop(article, on = false) {
         const date = new Date(`${release[1]} / ${release[2]} / ${release[0]}`)
         return `published on ${date.getLitteralMonth()} ${parseInt(release[2])}${date.getDatePostfix()}, ${release[0]}`
     }
-    const overlay = document.querySelector('main aside')
-    if (!on) {
-        article.style.transform = ''
-        article.svg.style.transform = 'translate(-50%, -50%)'
-        article.classList.remove('front')
-        overlay.classList.remove('front')
-    } else {
+    window.requestAnimationFrame(() => {
+        const overlay = document.querySelector('main aside')
+        if (!on) {
+            article.style.transform = ''
+            article.svg.style.transform = 'translate(-50%, -50%)'
+            article.classList.remove('front')
+            overlay.classList.remove('front')
+        } else {
 
-        article.classList.add('active')
-        article.data.active = true
-        article.svg.classList.add('yesanim')
-        article.classList.add('yesanim')
-        const orig = article.getBoundingClientRect()
-        const dest = overlay.getBoundingClientRect()
-        const wRatio = dest.width / orig.width
-        const hRatio = dest.height / orig.height
-        article.style.transform = `translate(${dest.left - orig.left}px, ${dest.top - orig.top}px) scale(${wRatio}, ${hRatio})`
-        article.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
-        article.classList.add('front')
+            article.classList.add('active')
+            article.data.active = true
+            article.svg.classList.add('yesanim')
+            article.classList.add('yesanim')
+            const orig = article.getBoundingClientRect()
+            const dest = overlay.getBoundingClientRect()
+            const wRatio = dest.width / orig.width
+            const hRatio = dest.height / orig.height
+            article.style.transform = `translate(${dest.left - orig.left}px, ${dest.top - orig.top}px) scale(${wRatio}, ${hRatio})`
+            article.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
+            article.classList.add('front')
 
-        overlay.querySelector('.date').innerText = readableDate(article.data.release)
-        overlay.querySelector('.credit').innerText = article.data.credit
-        overlay.querySelector('.collab a').innerText = article.data.author
-        setTimeout(() => overlay.classList.add('front'), 1000)
-    }
+            overlay.querySelector('.date').innerText = readableDate(article.data.release)
+            overlay.querySelector('.credit').innerText = article.data.credit
+            overlay.querySelector('.collab a').innerText = article.data.author
+            setTimeout(() => overlay.classList.add('front'), 500)
+        }
+    })
 
-    return new Promise(resolve => setTimeout(resolve, 1000))
+    return new Promise(resolve => setTimeout(resolve, 500))
 }
 
 const toggleArticle = (article, state) => {
@@ -110,19 +113,16 @@ articles.forEach(article => {
         e.stopPropagation()
         toggleArticle(article)
     })
-    // article.addEventListener('mouseenter', (e) => {
-    //     if (!article.data.active)
-    //         article.data.mouseover = setTimeout(() => {
-    //             if (!article.data.active)
-    //                 animateSVG(article.erase)
-    //                     .then(() => animateSVG(article.svg))
-    //         }, 1500)
-    // })
-    // article.addEventListener('mouseleave', (e) => {
-    //     if (article.data.mouseover)
-    //         clearTimeout(article.data.mouseover)
-    // })
-    // TODO: mouseover will be a good idea once pausing / reseting / resuming is reliable
+    article.addEventListener('mouseenter', (e) => {
+        if(article.data.processed) {
+            textToSVGAlphabet(article.svg)
+            .then(() => { 
+                article.classList.add('texted') 
+                article.data.texted = true
+            })
+        } else
+            article.data.texted = false
+    }, {once: true})
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === "Escape") {
@@ -163,7 +163,12 @@ worker.onmessage = e => {
     })
 }
 // Send worker JSON of all graphs
-requestIdleCallback(() => worker.postMessage(JSON.stringify({ graphs: articles.map(article => article.data) })))
+requestIdleCallback(() => worker.postMessage(JSON.stringify({ graphs: articles.map(article => { 
+    return {
+        name: article.data.name,
+        content: !!article.data.content
+    }
+}) })))
 
 
 const getSVG = (article) => {
@@ -184,7 +189,6 @@ const getSVG = (article) => {
             localStorage.setItem(article.data.name, content)
             return resolve(content)
         })
-        console.log('lazy loading', article.data.key)
         worker.postMessage(JSON.stringify({ raw: article.data.key }))
     })
 
@@ -192,6 +196,8 @@ const getSVG = (article) => {
 }
 
 const processFetchedSVG = (article, xml) => {
+    let resolve, reject
+    
     article.data.content = xml
     const template = document.createElement('template')
     template.innerHTML = xml
@@ -214,30 +220,54 @@ const processFetchedSVG = (article, xml) => {
     else
         svg.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
 
+    // SVG starts in template (doesn't trigger DOM)
+    window.requestIdleCallback(() => {
+        article.data.content = xml
+        const template = document.createElement('template')
+        template.innerHTML = xml
+        const svg = template.content.querySelector('svg')
 
-    return new Promise((resolve, reject) => {
-        // put SVG back into place
+        // the first white path should be the "erase" path so put it on top and label it so we can use it later
+        article.erase = svg.querySelector('path[stroke="#FFFFFF"]')
+        svg.removeChild(article.erase)
+        article.erase.setAttribute('data-type', 'erase')
+        article.erase.style.display = 'none'
+        svg.appendChild(article.erase)
+        
+        // get all graphs to "look the same size" (meaning a small graph isn't displayed big to occupy all the available space)
+        const SIZE_FACTOR = 1.4
+        const viewbox = svg.getAttribute('viewBox').split(' ')
+        const svgbox = svg.getBoundingClientRect()
+        if (svgbox.width < svgbox.height)
+            svg.style.width = (.9 * SIZE_FACTOR * viewbox[2] / 10) + '%'
+        else
+            svg.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
+
+        // SVG is in DOM
         window.requestAnimationFrame(() => {
+            // put SVG into place
             article.replaceChild(svg, article.querySelector('svg'))
-            article.classList.add('loaded')
             article.svg = svg
-        })
+            article.classList.add('processed')
+            article.data.processed = true
+            if(article.data.texted!==false)
+                resolve(article)
 
-        // replace <text> font elements, with <g> SVG elements
-        requestIdleCallback(() => {
-            // this is the costly operation. SVG must be part of document for it to work
-            textToSVGAlphabet(svg)
+            // replace <text> font elements, with <g> SVG elements (only is already requested before)
+            if(article.data.texted===false) {
+                textToSVGAlphabet(article.svg)
                 .then(() => { 
                     article.classList.add('texted') 
                     article.data.texted = true
+                    resolve(article)
                 })
-
-            window.requestAnimationFrame(() => {
-                article.classList.add('processed')
-                article.data.processed = true
-                resolve(article)
-            })
+            }
         })
+    })
+
+    return new Promise((res, rej) => {
+        resolve = res
+        reject = rej        
     })
 }
 
@@ -253,28 +283,16 @@ const loadOnIntersection = (entries, observer) => {
         })
 }
 
-const hideOnIntersection = (entries, observer) => {
-    entries.forEach(entry => {
-        // check that article.data.processed because `getStartPositionOfChar` needs svg to be displayed
-        const svg = entry.target.svg
-        if(svg && entry.target.data.texted)
-            requestAnimationFrame(() => {svg.style.display = entry.isIntersecting ? 'block' : 'none'})
-    })
-}
-
 const loadIntersectionObserver = new IntersectionObserver(loadOnIntersection, { rootMargin: `${window.innerHeight}px` })
-const hideIntersectionObserver = new IntersectionObserver(hideOnIntersection, { rootMargin: `${window.innerHeight}px` }) // TODO: this might optimize scroll ? (needs verifying) but lowers UX (svgs take time to reappear)
 
 articles.forEach(article => {
     loadIntersectionObserver.observe(article)
-    hideIntersectionObserver.observe(article)
+    // MAYBE: intersectionObserver to display none SVGs outside of viewport
 })
 
-// receive all auto-loaded SVGs from worker in onmessage, process all SVGs on requestIdleCallback
 
 const textToSVGAlphabet = (svg) => {
-    // TODO: text remains visible as long as all letters havent loaded
-
+    // this is the costly operation. SVG must be part of DOM for it to work
     const processLetterSVG = letter => {
         const template = document.createElement('template')
         template.innerHTML = letter.content
@@ -342,24 +360,23 @@ const textToSVGAlphabet = (svg) => {
                     const color = span.getAttribute('fill') || span.parentElement.getAttribute('fill') || undefined
                     const reference = isTSpan ? span.parentElement : span
                     const pushPaths = []
-                    span.textContent.split('')
-                        .forEach((char, index) => {
-                            if (char === ' ')
-                                return
-                            const letter = letters.shift()
+                    span.textContent.split('').forEach((char, index) => {
+                        if (char === ' ')
+                            return
+                        const letter = letters.shift()
 
-                            const position = span.getStartPositionOfChar(index)
-                            const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
+                        const position = span.getStartPositionOfChar(index)
+                        const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
 
-                            paths.forEach(path => {
-                                path.parentNode.removeChild(path)
-                                path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
-                                path.setAttribute('data-type', 'writing')
-                                if (isLong) path.setAttribute('data-paragraph', true)
-                                if (color) path.setAttribute('stroke', color)
-                                pushPaths.push(path)
-                            })
+                        paths.forEach(path => {
+                            path.parentNode.removeChild(path)
+                            path.setAttribute('transform', `${transform} translate(${position.x}, ${position.y - letter.viewbox.height + 10})`)
+                            path.setAttribute('data-type', 'writing')
+                            if (isLong) path.setAttribute('data-paragraph', true)
+                            if (color) path.setAttribute('stroke', color)
+                            pushPaths.push(path)
                         })
+                    })
                     window.requestAnimationFrame(() => {
                         pushPaths.forEach(path => {
                             reference.parentNode.insertBefore(path, reference)
@@ -437,13 +454,15 @@ const animateSVG = (svg) => {
                     return 0
 
                 // add delay when changing color (taking a new marker)
-                const newColor = element.getAttribute('stroke') || '#000000'
-                if (color !== newColor)
-                    delay += .25
-                color = newColor
+                if(!FULL && delay!==0){
+                    const newColor = element.getAttribute('stroke') || '#000000'
+                    if (color !== newColor)
+                        delay += .25
+                    color = newColor
+                }
 
                 // add delay between traits (lifting hand) except when writing
-                if (element.dataset.type !== 'writing')
+                if (!FULL && delay!==0 && element.dataset.type !== 'writing')
                     delay += .1
                 const duration = typeof options.duration === 'undefined' ? getElementDuration(element) : options.duration
                 requestAnimationFrame(() => {
@@ -463,11 +482,7 @@ const animateSVG = (svg) => {
             return delay - ((performance.now() - startAt) / 1000)
         }
         const timeUntilAnimationEnd = animateSVGTree(element)
-        if (typeof resolve === 'function')
-            setTimeout(() => {
-                void (svg.offsetHeight)
-                resolve()
-            }, timeUntilAnimationEnd)
+        setTimeout(resolve, timeUntilAnimationEnd)
     }
 
     const prepareDrawingSVG = (element) => {
@@ -500,7 +515,6 @@ const animateSVG = (svg) => {
         else svg.style.display = 'inherit'
         prepareDrawingSVG(svg)
         requestAnimationFrame(() => {
-            void (svg.offsetHeight)
             requestAnimationFrame(() => drawElementSVG(svg))
         })
     })
