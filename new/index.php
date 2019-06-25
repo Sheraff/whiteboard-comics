@@ -27,7 +27,7 @@ $initial = 0;
 
 <body>
 	<main>
-		<aside>
+		<aside id="overlay">
 			<div class='date'published on><?php echo display_date($graph[timestamp]); ?></div>
 			<div class='collab'>
 				<span class='credit'><?php echo $graph[credit]."\n"; ?></span>
@@ -37,11 +37,11 @@ $initial = 0;
 			</div>
 		</aside>
 
-		<section>
+		<section id="graphs">
 			<?php foreach ($graphs as $index => $graph) article($graph, $index===$initial); ?>
 		</section>
 	</main>
-	<aside>
+	<aside id="meta">
 		<header>
 			<a>
 				<h1><?php echo file_get_contents('./logo/logo.svg'); ?></h1>

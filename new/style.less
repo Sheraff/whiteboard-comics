@@ -5,6 +5,11 @@ html, body, ul, li, a {
     padding: 0;
     list-style: none;
 }
+
+*:not(.yesanim){
+    transition: none !important;
+}
+
 body{
     display: flex;
 	margin: 0;
@@ -13,143 +18,140 @@ body{
     --aside: 300px;
     --margin: 10px;
     --popDuration: .5s;
+}
 
-    main{
-        flex: 1;
-        position: relative;
-        margin-left: calc(var(--aside) + var(--margin));
-        aside{
-            position: fixed;
-            height: 100vh;
-            left: calc(var(--aside) + calc(var(--margin) * 1.5));
-            right: 0;
-            opacity: 0;
-            will-change: opacity;
-            transition: opacity .2s ease;
-            z-index: 999;
-            pointer-events: none;
-            &.front{
-                opacity: 1;
-            }
-            & > *{
-                position: absolute;
-                right: var(--margin);
-                pointer-events: initial;
-                
-                &:first-child{
-                    top: var(--margin);
-                }
-                &:last-child{
-                    bottom: var(--margin);
-                }
+main{
+    position: relative;
+    flex: 1;
+    margin-left: calc(var(--aside) + var(--margin));
+    // width: calc(100vw - calc(var(--aside) + var(--margin)))
+}
 
-                &, a{
-                    color: gray;
-                }
-            }
+#overlay{
+    position: fixed;
+    height: 100vh;
+    left: calc(var(--aside) + calc(var(--margin) * 1.5));
+    right: 0;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity .2s ease;
+    z-index: 999;
+    pointer-events: none;
+    &.front{
+        opacity: 1;
+    }
+    & > *{
+        position: absolute;
+        right: var(--margin);
+        pointer-events: initial;
+        
+        &:first-child{
+            top: var(--margin);
         }
-        section{
-            margin: var(--margin);
-
-            display: grid;
-            grid-gap: var(--margin);
-            justify-content: space-around;
-
-            // cells of equal width
-            --count: 9;
-            grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
-            grid-auto-rows: 1fr;
-
-            // auto-layout around cells bigger than 1x1
-            grid-auto-flow: dense;
-           
-            // hack for square cells
-            &::before {
-                content: '';
-                width: 0;
-                padding-bottom: 100%;
-                grid-row: 1 / 1;
-                grid-column: 1 / 1;
-            }
-            // override hack so that 1st cell isn't blank
-            article:first-child {
-                grid-column: 1 / 1 / span 3;
-                grid-row: 1 / 1 / span 3;
-            }
-            article.featured, article:nth-child(10), article:nth-child(11) {
-                grid-column-end: span 2;
-                grid-row-end: span 2;
-            }
+        &:last-child{
+            bottom: var(--margin);
         }
-        @media screen and (max-width: 2000px) { section{--count: 8;} }
-        @media screen and (max-width: 1800px) { section{--count: 7;} }
-        @media screen and (max-width: 1600px) { section{--count: 6;} }
-        @media screen and (max-width: 1400px) { section{--count: 5;} }
-        @media screen and (max-width: 1200px) { section{--count: 4;} }
-        @media screen and (max-width: 1000px) { section{--count: 3;} }
-        @media screen and (max-width: 800px)  { section{--count: 2;} } 
-        @media screen and (max-width: 600px)  { section{--count: 1;} }
 
-        @media screen and (max-width: 1200px) { 
-            article:first-child{
-                grid-column: 1 / 1 / span 2;
-                grid-row: 1 / 1 / span 2;
-            }
-            article.featured{
-                grid-column-end: span 1;
-                grid-row-end: span 1;
-            }
+        &, a{
+            color: gray;
         }
     }
+}
 
-    & > aside{
-        position: fixed;
-        order: -1;
-        width: var(--aside);
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        padding: 0 var(--margin);
-        justify-content: space-between;
-        text-align: center;
+#graphs{
+    margin: var(--margin);
 
-        --unit: 75px;
+    display: grid;
+    grid-gap: var(--margin);
+    justify-content: space-around;
 
-        h1{
-            height: var(--unit);
-            svg{
-                overflow: visible;
-            }
+    // cells of equal width
+    --count: 9;
+    grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
+    grid-auto-rows: 1fr;
+
+    // auto-layout around cells bigger than 1x1
+    grid-auto-flow: dense;
+    
+    // hack for square cells
+    &::before{
+        content: '';
+        width: 0;
+        padding-bottom: 100%;
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+    }
+    // override hack so that 1st cell isn't blank
+    article:first-child{
+        grid-column: 1 / 1 / span 3;
+        grid-row: 1 / 1 / span 3;
+    }
+    article.featured{
+        grid-column-end: span 2;
+        grid-row-end: span 2;
+    }
+}
+@media screen and (max-width: 2000px) { #graphs{--count: 8;} }
+@media screen and (max-width: 1800px) { #graphs{--count: 7;} }
+@media screen and (max-width: 1600px) { #graphs{--count: 6;} }
+@media screen and (max-width: 1400px) { #graphs{--count: 5;} }
+@media screen and (max-width: 1200px) { #graphs{--count: 4;} }
+@media screen and (max-width: 1000px) { #graphs{--count: 3;} }
+@media screen and (max-width: 800px)  { #graphs{--count: 2;} } 
+@media screen and (max-width: 600px)  { #graphs{--count: 1;} }
+
+@media screen and (max-width: 1200px){ 
+    article:first-child{
+        grid-column: 1 / 1 / span 2;
+        grid-row: 1 / 1 / span 2;
+    }
+    article.featured{
+        grid-column-end: span 1;
+        grid-row-end: span 1;
+    }
+}
+
+
+#meta{
+    position: fixed;
+    order: -1;
+    width: var(--aside);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin);
+    justify-content: space-between;
+    text-align: center;
+
+    --unit: 75px;
+
+    h1{
+        height: var(--unit);
+        svg{
+            overflow: visible;
         }
-        h2 {
-            height: var(--unit);
-        }
-        & > *:not(header) {
-            text-transform: lowercase;
-        }
-        #navigation, #menu {
-            height: var(--unit);
-            ul {
-                display: flex;
-                li {
-                    flex: 1;
-                }
-            }
-        }
-        footer {
+    }
+    h2 {
+        height: var(--unit);
+    }
+    & > *:not(header) {
+        text-transform: lowercase;
+    }
+    #navigation, #menu {
+        height: var(--unit);
+        ul {
+            display: flex;
             li {
-                height: var(--unit);
+                flex: 1;
             }
         }
     }
+    footer {
+        li {
+            height: var(--unit);
+        }
+    }
 }
-
-
-*:not(.yesanim){
-    transition: none !important;
-}
-
-
 
 
 article{
@@ -161,6 +163,14 @@ article{
     background-color: white;
     padding: calc(.25 * var(--margin));
     cursor: pointer;
+
+    &.frontClassToUseForMainGraph{
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: calc(100vw - calc(var(--aside) + 2 * var(--margin)));
+        height: 100vh;
+    }
 
     // loading classes
     box-shadow: 0 0 .5px black;

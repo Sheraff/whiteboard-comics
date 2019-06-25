@@ -2,7 +2,7 @@
 
 
 function article ($graph, $active=false) { ?>
-	<article>
+	<article <?php echo "class='" . (rand(0,10)===0 ? "featured" : "") . "'" ?>>
         <?php echo $graph[content] ? $graph[content] : "<svg></svg>"; ?>
         <!-- <div class='progress'></div> -->
 	</article>

@@ -9,6 +9,9 @@ a {
   padding: 0;
   list-style: none;
 }
+*:not(.yesanim) {
+  transition: none !important;
+}
 body {
   display: flex;
   margin: 0;
@@ -17,12 +20,12 @@ body {
   --margin: 10px;
   --popDuration: 0.5s;
 }
-body main {
-  flex: 1;
+main {
   position: relative;
+  flex: 1;
   margin-left: calc(var(--aside) + var(--margin));
 }
-body main aside {
+#overlay {
   position: fixed;
   height: 100vh;
   left: calc(var(--aside) + calc(var(--margin) * 1.5));
@@ -33,25 +36,25 @@ body main aside {
   z-index: 999;
   pointer-events: none;
 }
-body main aside.front {
+#overlay.front {
   opacity: 1;
 }
-body main aside > * {
+#overlay > * {
   position: absolute;
   right: var(--margin);
   pointer-events: initial;
 }
-body main aside > *:first-child {
+#overlay > *:first-child {
   top: var(--margin);
 }
-body main aside > *:last-child {
+#overlay > *:last-child {
   bottom: var(--margin);
 }
-body main aside > *,
-body main aside > * a {
+#overlay > *,
+#overlay > * a {
   color: gray;
 }
-body main section {
+#graphs {
   margin: var(--margin);
   display: grid;
   grid-gap: var(--margin);
@@ -61,74 +64,72 @@ body main section {
   grid-auto-rows: 1fr;
   grid-auto-flow: dense;
 }
-body main section::before {
+#graphs::before {
   content: '';
   width: 0;
   padding-bottom: 100%;
   grid-row: 1;
   grid-column: 1;
 }
-body main section article:first-child {
+#graphs article:first-child {
   grid-column: 1 / span 3;
   grid-row: 1 / span 3;
 }
-body main section article.featured,
-body main section article:nth-child(10),
-body main section article:nth-child(11) {
+#graphs article.featured {
   grid-column-end: span 2;
   grid-row-end: span 2;
 }
 @media screen and (max-width: 2000px) {
-  body main section {
+  #graphs {
     --count: 8;
   }
 }
 @media screen and (max-width: 1800px) {
-  body main section {
+  #graphs {
     --count: 7;
   }
 }
 @media screen and (max-width: 1600px) {
-  body main section {
+  #graphs {
     --count: 6;
   }
 }
 @media screen and (max-width: 1400px) {
-  body main section {
+  #graphs {
     --count: 5;
   }
 }
 @media screen and (max-width: 1200px) {
-  body main section {
+  #graphs {
     --count: 4;
   }
 }
 @media screen and (max-width: 1000px) {
-  body main section {
+  #graphs {
     --count: 3;
   }
 }
 @media screen and (max-width: 800px) {
-  body main section {
+  #graphs {
     --count: 2;
   }
 }
 @media screen and (max-width: 600px) {
-  body main section {
+  #graphs {
     --count: 1;
   }
 }
 @media screen and (max-width: 1200px) {
-  body main article:first-child {
+  article:first-child {
     grid-column: 1 / span 2;
     grid-row: 1 / span 2;
   }
-  body main article.featured {
+  article.featured {
     grid-column-end: span 1;
     grid-row-end: span 1;
   }
 }
-body > aside {
+#meta {
   position: fixed;
   order: -1;
   width: var(--aside);
@@ -140,35 +141,32 @@ body > aside {
   text-align: center;
   --unit: 75px;
 }
-body > aside h1 {
+#meta h1 {
   height: var(--unit);
 }
-body > aside h1 svg {
+#meta h1 svg {
   overflow: visible;
 }
-body > aside h2 {
+#meta h2 {
   height: var(--unit);
 }
-body > aside > *:not(header) {
+#meta > *:not(header) {
   text-transform: lowercase;
 }
-body > aside #navigation,
-body > aside #menu {
+#meta #navigation,
+#meta #menu {
   height: var(--unit);
 }
-body > aside #navigation ul,
-body > aside #menu ul {
+#meta #navigation ul,
+#meta #menu ul {
   display: flex;
 }
-body > aside #navigation ul li,
-body > aside #menu ul li {
+#meta #navigation ul li,
+#meta #menu ul li {
   flex: 1;
 }
-body > aside footer li {
+#meta footer li {
   height: var(--unit);
-}
-*:not(.yesanim) {
-  transition: none !important;
 }
 article {
   position: relative;
@@ -180,6 +178,13 @@ article {
   padding: calc(0.25 * var(--margin));
   cursor: pointer;
   box-shadow: 0 0 0.5px black;
+}
+article.frontClassToUseForMainGraph {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100vw - calc(var(--aside) + 2 * var(--margin)));
+  height: 100vh;
 }
 article > svg {
   opacity: 0;
