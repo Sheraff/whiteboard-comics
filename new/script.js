@@ -22,6 +22,7 @@ let index = 0
 // TODO: boredom loading of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport?)
 // TODO: batch DOM changes
 // TODO: store server-side processed svg to reduce time-to-first-byte
+// TODO: add service worker (exclusively for .svg requests): can cache raw .svg (instead of localstorage) and in localstorage well put stringified versions of PROCESSED svgs (w/ alphabet replaced)
 
 //// MAIN PATH
 
@@ -197,28 +198,6 @@ const getSVG = (article) => {
 
 const processFetchedSVG = (article, xml) => {
     let resolve, reject
-    
-    article.data.content = xml
-    const template = document.createElement('template')
-    template.innerHTML = xml
-
-    // the first white path should be the "erase" path so put it on top and label it so we can use it later
-    const svg = template.content.querySelector('svg')
-    const erase = svg.querySelector('path[stroke="#FFFFFF"]')
-    svg.removeChild(erase)
-    erase.setAttribute('data-type', 'erase')
-    erase.style.display = 'none'
-    svg.appendChild(erase)
-    article.erase = erase
-
-    // get all graphs to "look the same size" (meaning a small graph isn't displayed big to occupy all the available space)
-    const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
-    const viewbox = svg.getAttribute('viewBox').split(' ')
-    const svgbox = svg.getBoundingClientRect()
-    if (svgbox.width < svgbox.height)
-        svg.style.width = (.9 * SIZE_FACTOR * viewbox[2] / 10) + '%'
-    else
-        svg.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
 
     // SVG starts in template (doesn't trigger DOM)
     window.requestIdleCallback(() => {
@@ -235,7 +214,7 @@ const processFetchedSVG = (article, xml) => {
         svg.appendChild(article.erase)
         
         // get all graphs to "look the same size" (meaning a small graph isn't displayed big to occupy all the available space)
-        const SIZE_FACTOR = 1.4
+        const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
         const viewbox = svg.getAttribute('viewBox').split(' ')
         const svgbox = svg.getBoundingClientRect()
         if (svgbox.width < svgbox.height)
