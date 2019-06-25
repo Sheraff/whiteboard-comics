@@ -1,4 +1,4 @@
-<?
+<?php
 	function format_svg($string){
 		$string = preg_replace([
 			'/<\?xml.*?>/',

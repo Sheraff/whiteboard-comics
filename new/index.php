@@ -1,4 +1,4 @@
-<!-- ♡ <?
+<!-- ♡ <?php
 // PHP HEADER
 
 echo 'php v'.PHP_VERSION . ' ';
@@ -12,7 +12,7 @@ if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
 require 'serve.php';
 ?> -->
 
-<?
+<?php
 $graphs = read_tsv();
 rsort($graphs);
 for($i=0; $i<5; $i++){
@@ -28,23 +28,23 @@ $initial = 0;
 <body>
 	<main>
 		<aside>
-			<div class='date'published on><? echo display_date($graph[timestamp]); ?></div>
+			<div class='date'published on><?php echo display_date($graph[timestamp]); ?></div>
 			<div class='collab'>
-				<span class='credit'><? echo $graph[credit]."\n"; ?></span>
-				<a href="<? echo $graph[source]; ?>" target="_blank">
-					<? echo $graph[author]."\n"; ?>
+				<span class='credit'><?php echo $graph[credit]."\n"; ?></span>
+				<a href="<?php echo $graph[source]; ?>" target="_blank">
+					<?php echo $graph[author]."\n"; ?>
 				</a>
 			</div>
 		</aside>
 
 		<section>
-			<? foreach ($graphs as $index => $graph) article($graph, $index===$initial); ?>
+			<?php foreach ($graphs as $index => $graph) article($graph, $index===$initial); ?>
 		</section>
 	</main>
 	<aside>
 		<header>
 			<a>
-				<h1><? echo file_get_contents('./logo/logo.svg'); ?></h1>
+				<h1><?php echo file_get_contents('./logo/logo.svg'); ?></h1>
 				<h2>I ♡ correlations!</h2>
 			</a>
 			<nav id='navigation'>
@@ -87,6 +87,6 @@ $initial = 0;
 	</aside>
 </body>
 
-<script>const GRAPHS  = (<? echo json_encode($graphs);  ?>)</script>
-<script>const LETTERS = (<? echo json_encode($letters); ?>)</script>
+<script>const GRAPHS  = (<?php echo json_encode($graphs);  ?>)</script>
+<script>const LETTERS = (<?php echo json_encode($letters); ?>)</script>
 <script src="script.js"></script>

@@ -1,12 +1,12 @@
-<?
+<?php
 
 
-function article ($graph, $active=false) {?>
+function article ($graph, $active=false) { ?>
 	<article>
-        <? echo $graph[content] ? $graph[content] : "<svg></svg>"; ?>
+        <?php echo $graph[content] ? $graph[content] : "<svg></svg>"; ?>
         <!-- <div class='progress'></div> -->
 	</article>
-<?}
+<?php }
 
 date_default_timezone_set('America/Los_Angeles');
 function read_tsv ($force = false) {
