@@ -52,32 +52,4 @@ const loadWhenIdle = () => {
         if(key!==-1)
             loadItem(key, loadWhenIdle)
     }, 500)
-<<<<<<< HEAD
-}
-
-const loadOne = () => {
-    isLoading = true
-    const loaditem = loadList.shift()
-
-    const resolve = (xml) => {
-        graphs[loaditem.key].content = xml
-        if(loaditem.callback)
-            loaditem.callback(xml)
-        if(loadList.length) {
-            loadOne()
-        } else {
-            isLoading = false
-            loadWhenIdle()
-        }
-    }
-
-    if(!!graphs[loaditem.key].content)
-        resolve(graphs[loaditem.key].content)
-    else {
-        fetch(graphs[loaditem.key].path)
-        .then(response => response.text())
-        .then(xml => resolve(xml))
-    }
-=======
->>>>>>> ff4608f1191bc068ab606c55efd3ce8cc79c1ef5
 }
