@@ -71,6 +71,3 @@ const loadOne = () => {
         .then(xml => resolve(xml))
     }
 }
-
-
-// load all from list in order, one at a time. If we get a load request, it takes priority. If all load requests have been processed, resume loading in order.
