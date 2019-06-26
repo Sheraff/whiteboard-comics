@@ -2,6 +2,10 @@ const articles = [...document.querySelectorAll('section article')]
 let activeIndex = -1
 const placeholder = document.createElement('article')
 
+/////////////////////////
+// IT'S TIME TO REFACTOR, I GET LOST IN MY OWN CODE => MAKE USE OF IMPORTS
+/////////////////////
+
 // TODO: both path should start up in parallel 
 // - path 1: interactivity, pop, event listener, 1st graph opened
 // - path 2: archives, loading SVGs, processing, intersectionObserver, worker
@@ -74,15 +78,15 @@ function transitionArticle(article, on = false, animate = false, duration = .5) 
             article.svg.style.transition = `transform ${duration}s linear`
             article.style.transform = `translate(0, 0) scale(1, 1)`
             article.svg.style.transform = `translate(-50%, -50%) scale(1, 1)`
-            if(!on) article.data.activeClassTimeout = setTimeout(() => {
-                article.classList.remove('active')
-                article.data.active = false
-            }, duration*1000)
             setTimeout(() => after(resolve), duration*1000)
         })
     }
 
     const after = (resolve) => {
+        if(!on) {
+            article.classList.remove('active')
+            article.data.active = false
+        }
         resolve()
         const queued = article.data.queued
         delete article.data.queued
@@ -134,18 +138,18 @@ function updateOverlay(article) {
 
 // pop an article in / out of the list view
 function articlePop(article, on) {
-    // TODO: third functon comes after either one of pop() or switch() and does the metadata stuff on #overlay
-
     // function as a toggle if no behavior is specified by 'on'
     if (on === undefined)
         on = article.data.state === undefined ? true : !article.data.state
     article.data.state = on
 
+    // turn OFF case
     if (!on) {
         if(activeIndex!==-1 && articles[activeIndex] === article)
             activeIndex = -1
         return transitionArticle(article, on, true)
     }
+    // turn ON case
     else {
         if (activeIndex!==-1 && articles[activeIndex] !== article) {
             articlePop(articles[activeIndex], false)
@@ -154,9 +158,10 @@ function articlePop(article, on) {
         }
         activeIndex = article.data.key
         return Promise.all([
-            animateSVG(article.erase),
-            transitionArticle(article, on, true)
+            transitionArticle(article, on, true),
+            animateSVG(article.erase)
         ])
+        .then(() => afterTransitionArticle(article))
     }
 }
 
@@ -167,9 +172,12 @@ function articleSwitch(article, on) {
         on = article.data.state === undefined ? true : !article.data.state
     article.data.state = on
 
+    // turn OFF case
     if (!on)
         return animateSVG(article.erase)
             .then(() => transitionArticle(article, on))
+            .then(() => article.erase.style.display = 'none')
+    // turn ON case
     else {
         if (activeIndex===-1 || articles[activeIndex] === article)
             throw 'cannot just articleSwitch from nothing, nor articleSwitch to itself'
@@ -177,13 +185,57 @@ function articleSwitch(article, on) {
         activeIndex = article.data.key
         return articleSwitch(previous, false)
             .then(() => transitionArticle(article, on))
+            .then(() => afterTransitionArticle(article))
     }
 }
 
-// TODO: post switch / pop function does (switch & pop returned promises should return <article> on resolve)
-// 1. metadata on #overlay
-// 2. animate SVG if appropriate
-// 3. textToSVGAlphabet on potential next / prev
+const afterTransitionArticle = (article) => {
+    const animate = () => new Promise(resolve => {
+        if(article.data.texted) {
+            animateSVG(article.svg)
+            resolve()
+        } else {
+            textToSVGAlphabet(article.svg)
+            .then(() => {
+                article.classList.add('texted')
+                article.data.texted = true
+                animateSVG(article.svg)
+                resolve()
+            })
+        }
+    })
+    
+    animate()
+    // .then(() => { console.log('toggle and fill #overlay') })
+    .then(() => {
+        console.log('coucou', article.data.key)
+        if(article.data.key!==0){
+            textToSVGAlphabet(articles[article.data.key-1].svg) // TODO: these won't process svg... WHY ?!
+        }
+        if(article.data.key!==articles.length-1){
+            textToSVGAlphabet(articles[article.data.key+1].svg) // TODO: these won't process svg... WHY ?!
+        }
+    })
+}
+
+// TODO: make processFetchedSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
+// TODO: finish makeArticleReady() so that it can be called at anytime and resolve when the graph is ready to be put through animateSVG()
+// TODO: use makeArticleReady() for all interactions (switch & pop) as well as for preparing graphs (next & prev)
+const makeArticleReady = (article) => {
+    if(!article.data.processed)
+        return Promise.all([
+            getSVG(article),
+            document.fonts.load('1em Permanent Marker')
+        ])
+        .then(([xml]) => {
+            article.data.texted = false
+            return processFetchedSVG(article, xml)
+        })
+    else if(!article.data.texted)
+        return textToSVGAlphabet(article.svg)
+    else
+        return Promise.resolve()
+}
 
 articles.forEach(article => {
     article.addEventListener('click', (e) => {
@@ -192,7 +244,6 @@ articles.forEach(article => {
             articlePop(article)
         else
             articlePop(article)
-            .then(() => animateSVG(article.svg))
     })
     article.addEventListener('mouseenter', (e) => {
         if(article.data.processed) {
@@ -211,10 +262,10 @@ window.addEventListener('keyup', (e) => {
             if (activeIndex!==-1) articlePop(articles[activeIndex])
             break;
         case 'ArrowLeft':
-            if(activeIndex!==-1 && activeIndex!==0) articleSwitch(articles[activeIndex-1]).then(() => animateSVG(articles[activeIndex]))
+            if(activeIndex!==-1 && activeIndex!==0) articleSwitch(articles[activeIndex-1])
             break;
         case 'ArrowRight':
-                if(activeIndex!==-1 && activeIndex!==articles.length-1) articleSwitch(articles[activeIndex+1]).then(() => animateSVG(articles[activeIndex]))
+                if(activeIndex!==-1 && activeIndex!==articles.length-1) articleSwitch(articles[activeIndex+1])
                 break;
     }
 })
@@ -357,6 +408,7 @@ articles.forEach(article => {
 
 
 const textToSVGAlphabet = (svg) => {
+    console.log(svg)
     // this is the costly operation. SVG must be part of DOM for it to work
     const processLetterSVG = letter => {
         const template = document.createElement('template')
@@ -478,7 +530,7 @@ const animateSVG = (svg) => {
             .reduce((acc, point, index, points) => { return index > 0 && acc + pythagore(points[index - 1], point) }, 0)
     }
 
-    const drawElementSVG = (element, options = {}) => {
+    const drawElementSVG = (element) => {
         // use CSS animation to animate drawing of strokes
         const getElementSmoothing = (element) => {
             if (element.dataset.type === 'writing' || !element.getAttribute('stroke'))
@@ -502,7 +554,7 @@ const animateSVG = (svg) => {
 
         // timing logic
         const animateSVGTree = (element) => {
-            let delay = typeof options.delay === 'undefined' ? 0 : options.delay
+            let delay = 0
             let color
             const startAt = performance.now()
             const depth = (element) => {
@@ -529,7 +581,7 @@ const animateSVG = (svg) => {
                 // add delay between traits (lifting hand) except when writing
                 if (!FULL && delay!==0 && element.dataset.type !== 'writing')
                     delay += .1
-                const duration = typeof options.duration === 'undefined' ? getElementDuration(element) : options.duration
+                const duration = getElementDuration(element)
                 requestAnimationFrame(() => {
                     // compensate for processing time (non negligible over many operations)
                     element.classList.add('yesanim')
@@ -547,7 +599,9 @@ const animateSVG = (svg) => {
             return delay - ((performance.now() - startAt) / 1000)
         }
         const timeUntilAnimationEnd = animateSVGTree(element)
-        setTimeout(resolve, timeUntilAnimationEnd)
+        setTimeout(() => console.log('animation ended', FULL), timeUntilAnimationEnd*1000)
+        console.log(timeUntilAnimationEnd)
+        setTimeout(resolve, timeUntilAnimationEnd*1000)
     }
 
     const prepareDrawingSVG = (element) => {
