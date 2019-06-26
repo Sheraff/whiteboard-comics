@@ -1,5 +1,5 @@
 const articles = [...document.querySelectorAll('section article')]
-let index = 0
+let activeIndex = -1
 const placeholder = document.createElement('article')
 
 // TODO: both path should start up in parallel 
@@ -28,6 +28,8 @@ const placeholder = document.createElement('article')
 // use .active <article> class, make transitions (position, calculate, transform, release)
 // prevent scrolling when an <article> is front
 
+// TODO: document all attributes of <article> like .state, .active, .svg, .erase...
+
 //// MAIN PATH
 
 
@@ -44,6 +46,7 @@ function transitionArticle(article, on = false, animate = false, duration = .5) 
             if(article.classList.contains('featured'))
                 placeholder.classList.add('featured')
             article.classList.add('active')
+            article.data.active = true
             article.parentNode.insertBefore(placeholder, article)
         } else {
             placeholder.classList.remove('featured')
@@ -71,7 +74,10 @@ function transitionArticle(article, on = false, animate = false, duration = .5) 
             article.svg.style.transition = `transform ${duration}s linear`
             article.style.transform = `translate(0, 0) scale(1, 1)`
             article.svg.style.transform = `translate(-50%, -50%) scale(1, 1)`
-            if(!on) article.data.activeClassTimeout = setTimeout(() => article.classList.remove('active'), duration*1000)
+            if(!on) article.data.activeClassTimeout = setTimeout(() => {
+                article.classList.remove('active')
+                article.data.active = false
+            }, duration*1000)
             setTimeout(() => after(resolve), duration*1000)
         })
     }
@@ -94,10 +100,7 @@ function transitionArticle(article, on = false, animate = false, duration = .5) 
     
 }
 
-function pop(article, on = false) {
-    // TODO: pop should be the function that brings <article> in / out, with transitionArticle.animate = true, Promise.all([erase, transition])
-    // TODO: make another function that *switches* to next / previous, with transitionArticle.animate = false, erase.then(transition)
-
+function updateOverlay(article) {
     const readableDate = (release) => {
         Date.prototype.getLitteralMonth = function () {
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -123,38 +126,73 @@ function pop(article, on = false) {
         return `published on ${date.getLitteralMonth()} ${parseInt(release[2])}${date.getDatePostfix()}, ${release[0]}`
     }
 
-    return transitionArticle(article, on, true)
+    overlay.querySelector('.date').innerText = readableDate(article.data.release)
+    overlay.querySelector('.credit').innerText = article.data.credit
+    overlay.querySelector('.collab a').innerText = article.data.author
+    overlay.classList.add('front')
 }
 
-const toggleArticle = (article, state) => {
-    if (state === undefined)
-        state = article.data.state === undefined ? true : !article.data.state
+// pop an article in / out of the list view
+function articlePop(article, on) {
+    // TODO: third functon comes after either one of pop() or switch() and does the metadata stuff on #overlay
 
-    article.data.state = state
+    // function as a toggle if no behavior is specified by 'on'
+    if (on === undefined)
+        on = article.data.state === undefined ? true : !article.data.state
+    article.data.state = on
 
-
-    if (!state)
-        pop(article, false)
+    if (!on) {
+        if(activeIndex!==-1 && articles[activeIndex] === article)
+            activeIndex = -1
+        return transitionArticle(article, on, true)
+    }
     else {
-        const previous = articles.find(article => article.data.active)
-        if (previous && previous !== article) {
-            toggleArticle(previous, false)
-            previous.classList.remove('active')
-            previous.data.active = false
+        if (activeIndex!==-1 && articles[activeIndex] !== article) {
+            articlePop(articles[activeIndex], false)
+            articles[activeIndex].classList.remove('active')
+            articles[activeIndex].data.active = false
         }
-        Promise.all([
+        activeIndex = article.data.key
+        return Promise.all([
             animateSVG(article.erase),
-            pop(article, true)
-        ]).then(() => {
-            animateSVG(article.svg)
-        })
+            transitionArticle(article, on, true)
+        ])
     }
 }
+
+// switch from one expanded article to another one without going back to list view, mainly used for next / prev
+function articleSwitch(article, on) {
+    // function as a toggle if no behavior is specified by 'on'
+    if (on === undefined)
+        on = article.data.state === undefined ? true : !article.data.state
+    article.data.state = on
+
+    if (!on)
+        return animateSVG(article.erase)
+            .then(() => transitionArticle(article, on))
+    else {
+        if (activeIndex===-1 || articles[activeIndex] === article)
+            throw 'cannot just articleSwitch from nothing, nor articleSwitch to itself'
+        const previous = articles[activeIndex]
+        activeIndex = article.data.key
+        return articleSwitch(previous, false)
+            .then(() => transitionArticle(article, on))
+    }
+}
+
+// TODO: post switch / pop function does (switch & pop returned promises should return <article> on resolve)
+// 1. metadata on #overlay
+// 2. animate SVG if appropriate
+// 3. textToSVGAlphabet on potential next / prev
 
 articles.forEach(article => {
     article.addEventListener('click', (e) => {
         e.stopPropagation()
-        toggleArticle(article)
+        if(article.data.state)
+            articlePop(article)
+        else
+            articlePop(article)
+            .then(() => animateSVG(article.svg))
     })
     article.addEventListener('mouseenter', (e) => {
         if(article.data.processed) {
@@ -168,10 +206,16 @@ articles.forEach(article => {
     }, {once: true})
 })
 window.addEventListener('keyup', (e) => {
-    if (e.key === "Escape") {
-        const previous = articles.find(article => article.data.active)
-        if (previous)
-            pop(previous)
+    switch(e.key){
+        case 'Escape':
+            if (activeIndex!==-1) articlePop(articles[activeIndex])
+            break;
+        case 'ArrowLeft':
+            if(activeIndex!==-1 && activeIndex!==0) articleSwitch(articles[activeIndex-1]).then(() => animateSVG(articles[activeIndex]))
+            break;
+        case 'ArrowRight':
+                if(activeIndex!==-1 && activeIndex!==articles.length-1) articleSwitch(articles[activeIndex+1]).then(() => animateSVG(articles[activeIndex]))
+                break;
     }
 })
 
