@@ -9,9 +9,6 @@ a {
   padding: 0;
   list-style: none;
 }
-*:not(.yesanim) {
-  transition: none !important;
-}
 body {
   display: flex;
   margin: 0;
@@ -185,6 +182,7 @@ article.frontClassToUseForMainGraph {
   right: 0;
   width: calc(100vw - calc(var(--aside) + 2 * var(--margin)));
   height: 100vh;
+  z-index: 1;
 }
 article > svg {
   opacity: 0;

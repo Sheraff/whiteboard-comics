@@ -1,5 +1,6 @@
 const articles = [...document.querySelectorAll('section article')]
 let index = 0
+const placeholder = document.createElement('article')
 
 // TODO: both path should start up in parallel 
 // - path 1: interactivity, pop, event listener, 1st graph opened
@@ -25,11 +26,77 @@ let index = 0
 
 // MAIN TODO: NAVIGATION w/ DEPLOYED GRAPH
 // use .active <article> class, make transitions (position, calculate, transform, release)
+// prevent scrolling when an <article> is front
 
 //// MAIN PATH
 
 
+function transitionArticle(article, on = false, animate = false, duration = .5) {
+
+    const getAction = (resolve) => () => {
+        article.data.queued = true
+        // memorize
+        let orig 
+        if(animate) orig = article.getBoundingClientRect()
+        // apply
+        article.classList[on ? 'add' : 'remove']('frontClassToUseForMainGraph')
+        if(on){
+            if(article.classList.contains('featured'))
+                placeholder.classList.add('featured')
+            article.classList.add('active')
+            article.parentNode.insertBefore(placeholder, article)
+        } else {
+            placeholder.classList.remove('featured')
+            placeholder.remove()
+        }
+        if(animate)
+            animation(orig, resolve)
+        else 
+            after(resolve)
+
+    }
+
+    const animation = (orig, resolve) => {
+        const dest = article.getBoundingClientRect()
+        // transform
+        const wRatio = orig.width / dest.width
+        const hRatio = orig.height / dest.height
+        article.style.transition = `none`
+        article.svg.style.transition = `none`
+        article.style.transform = `translate(${orig.left - dest.left}px, ${orig.top - dest.top}px) scale(${wRatio}, ${hRatio})`
+        article.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
+        // release
+        window.requestAnimationFrame(() => {
+            article.style.transition = `transform ${duration}s linear`
+            article.svg.style.transition = `transform ${duration}s linear`
+            article.style.transform = `translate(0, 0) scale(1, 1)`
+            article.svg.style.transform = `translate(-50%, -50%) scale(1, 1)`
+            if(!on) article.data.activeClassTimeout = setTimeout(() => article.classList.remove('active'), duration*1000)
+            setTimeout(() => after(resolve), duration*1000)
+        })
+    }
+
+    const after = (resolve) => {
+        resolve()
+        const queued = article.data.queued
+        delete article.data.queued
+        if(typeof queued === 'function')
+            queued()
+    }
+
+    return new Promise(resolve => {
+        const action = getAction(resolve)
+        if(article.data.queued)
+            article.data.queued = action
+        else
+            action()
+    })
+    
+}
+
 function pop(article, on = false) {
+    // TODO: pop should be the function that brings <article> in / out, with transitionArticle.animate = true, Promise.all([erase, transition])
+    // TODO: make another function that *switches* to next / previous, with transitionArticle.animate = false, erase.then(transition)
 
     const readableDate = (release) => {
         Date.prototype.getLitteralMonth = function () {
@@ -55,35 +122,8 @@ function pop(article, on = false) {
         const date = new Date(`${release[1]} / ${release[2]} / ${release[0]}`)
         return `published on ${date.getLitteralMonth()} ${parseInt(release[2])}${date.getDatePostfix()}, ${release[0]}`
     }
-    window.requestAnimationFrame(() => {
-        const overlay = document.querySelector('main aside')
-        if (!on) {
-            article.style.transform = ''
-            article.svg.style.transform = 'translate(-50%, -50%)'
-            article.classList.remove('front')
-            overlay.classList.remove('front')
-        } else {
 
-            article.classList.add('active')
-            article.data.active = true
-            article.svg.classList.add('yesanim')
-            article.classList.add('yesanim')
-            const orig = article.getBoundingClientRect()
-            const dest = overlay.getBoundingClientRect()
-            const wRatio = dest.width / orig.width
-            const hRatio = dest.height / orig.height
-            article.style.transform = `translate(${dest.left - orig.left}px, ${dest.top - orig.top}px) scale(${wRatio}, ${hRatio})`
-            article.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
-            article.classList.add('front')
-
-            overlay.querySelector('.date').innerText = readableDate(article.data.release)
-            overlay.querySelector('.credit').innerText = article.data.credit
-            overlay.querySelector('.collab a').innerText = article.data.author
-            setTimeout(() => overlay.classList.add('front'), 500)
-        }
-    })
-
-    return new Promise(resolve => setTimeout(resolve, 500))
+    return transitionArticle(article, on, true)
 }
 
 const toggleArticle = (article, state) => {
