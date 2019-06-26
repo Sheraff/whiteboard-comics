@@ -2,10 +2,10 @@
 
 
 function article ($graph, $active=false) { ?>
-	<article <?php echo "class='" . (rand(0,10)===0 ? "featured" : "") . "'" ?>>
+	<svg-card <?php echo "class='" . (rand(0,10)===0 ? "featured" : "") . "'" ?>>
         <?php echo $graph[content] ? $graph[content] : "<svg></svg>"; ?>
         <!-- <div class='progress'></div> -->
-	</article>
+	</svg-card>
 <?php }
 
 date_default_timezone_set('America/Los_Angeles');

@@ -1,12 +1,13 @@
-let graphs
+let graphs = {}
 
-let backlog = []
+let backlog = {}
 onmessage = e => {
     const data = JSON.parse(e.data)
-    if (data.graphs) {
-        graphs = data.graphs
+    if (data.graph) {
+        graph[data.graph.name] = data.graph.content
         postMessage(JSON.stringify({ready: true}))
-        backlog.forEach(data => respond(data))
+        if(backlog[data.graph.name])
+            backlog[data.graph.name].forEach(data => respond(data))
         loadWhenIdle()
     } else if (graphs) {
         respond(data)

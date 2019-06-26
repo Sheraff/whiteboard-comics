@@ -23,7 +23,7 @@ $initial = 0;
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
-<link rel="preload" as="worker" href="./worker.js">
+<link rel="preload" as="worker" href="src/worker.js">
 
 <body>
 	<main>
@@ -89,4 +89,4 @@ $initial = 0;
 
 <script>const GRAPHS  = (<?php echo json_encode($graphs);  ?>)</script>
 <script>const LETTERS = (<?php echo json_encode($letters); ?>)</script>
-<script src="script.js"></script>
+<script type="module" src="src/script.js"></script>

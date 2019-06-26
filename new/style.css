@@ -68,11 +68,11 @@ main {
   grid-row: 1;
   grid-column: 1;
 }
-#graphs article:first-child {
+#graphs svg-card:first-child {
   grid-column: 1 / span 3;
   grid-row: 1 / span 3;
 }
-#graphs article.featured {
+#graphs svg-card.featured {
   grid-column-end: span 2;
   grid-row-end: span 2;
 }
@@ -117,11 +117,11 @@ main {
   }
 }
 @media screen and (max-width: 1200px) {
-  article:first-child {
+  svg-card:first-child {
     grid-column: 1 / span 2;
     grid-row: 1 / span 2;
   }
-  article.featured {
+  svg-card.featured {
     grid-column-end: span 1;
     grid-row-end: span 1;
   }
@@ -165,7 +165,7 @@ main {
 #meta footer li {
   height: var(--unit);
 }
-article {
+svg-card {
   position: relative;
   overflow: hidden;
   transform-origin: 0 0;
@@ -176,7 +176,7 @@ article {
   cursor: pointer;
   box-shadow: 0 0 0.5px black;
 }
-article.frontClassToUseForMainGraph {
+svg-card.frontClassToUseForMainGraph {
   position: fixed;
   top: 0;
   right: 0;
@@ -184,35 +184,35 @@ article.frontClassToUseForMainGraph {
   height: 100vh;
   z-index: 1;
 }
-article > svg {
+svg-card > svg {
   opacity: 0;
   transition: opacity 0.2s ease;
   will-change: opacity;
 }
-article.processed {
+svg-card.processed {
   box-shadow: 0 0 2.5px black;
 }
-article.processed > svg {
+svg-card.processed > svg {
   opacity: 1;
 }
-article.texted > svg tspan,
-article.texted > svg text {
+svg-card.texted > svg tspan,
+svg-card.texted > svg text {
   opacity: 0;
 }
-article.texted > svg [data-type="writing"] {
+svg-card.texted > svg [data-type="writing"] {
   opacity: 1;
 }
-article.active {
+svg-card.active {
   z-index: 1;
 }
-article.front,
-article.front:hover {
+svg-card.front,
+svg-card.front:hover {
   box-shadow: 0.5px 0 1.5px black;
 }
-article:hover {
+svg-card:hover {
   box-shadow: 0.5px 0.5px 4px black;
 }
-article > svg {
+svg-card > svg {
   max-height: 100%;
   max-width: 100%;
   position: relative;
@@ -225,38 +225,38 @@ article > svg {
   transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
   will-change: transform, opacity;
 }
-article > svg path,
-article > svg line,
-article > svg polyline {
+svg-card > svg path,
+svg-card > svg line,
+svg-card > svg polyline {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-miterlimit: 10;
   fill: none;
 }
-article > svg path:not([stroke]),
-article > svg line:not([stroke]),
-article > svg polyline:not([stroke]) {
+svg-card > svg path:not([stroke]),
+svg-card > svg line:not([stroke]),
+svg-card > svg polyline:not([stroke]) {
   stroke: black;
 }
-article > svg path:not([stroke-width]),
-article > svg line:not([stroke-width]),
-article > svg polyline:not([stroke-width]) {
+svg-card > svg path:not([stroke-width]),
+svg-card > svg line:not([stroke-width]),
+svg-card > svg polyline:not([stroke-width]) {
   stroke-width: 4;
 }
-article > svg tspan,
-article > svg text {
+svg-card > svg tspan,
+svg-card > svg text {
   font-display: block;
   font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
   opacity: 1;
   transition: opacity 0.2s ease;
   will-change: opacity;
 }
-article > svg [data-type="writing"] {
+svg-card > svg [data-type="writing"] {
   opacity: 0;
   transition: opacity 0.2s ease, stroke 0.2s linear;
   will-change: opacity;
 }
-article > svg [data-type="erase"] {
+svg-card > svg [data-type="erase"] {
   stroke-linejoin: bevel;
   stroke-linecap: butt;
 }

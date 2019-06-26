@@ -82,11 +82,11 @@ main{
         grid-column: 1 / 1;
     }
     // override hack so that 1st cell isn't blank
-    article:first-child{
+    svg-card:first-child{
         grid-column: 1 / 1 / span 3;
         grid-row: 1 / 1 / span 3;
     }
-    article.featured{
+    svg-card.featured{
         grid-column-end: span 2;
         grid-row-end: span 2;
     }
@@ -101,11 +101,11 @@ main{
 @media screen and (max-width: 600px)  { #graphs{--count: 1;} }
 
 @media screen and (max-width: 1200px){ 
-    article:first-child{
+    svg-card:first-child{
         grid-column: 1 / 1 / span 2;
         grid-row: 1 / 1 / span 2;
     }
-    article.featured{
+    svg-card.featured{
         grid-column-end: span 1;
         grid-row-end: span 1;
     }
@@ -154,7 +154,7 @@ main{
 }
 
 
-article{
+svg-card{
     position: relative;
     overflow: hidden;
     transform-origin: 0 0;
