@@ -5,7 +5,9 @@ export default class SVGCard extends HTMLElement{
         super()
 
         this.svg = this.querySelector('svg')
-        this.state = {}
+        this.state = {
+            open: false
+        }
         this.info = {}
     }
 
@@ -43,12 +45,19 @@ export default class SVGCard extends HTMLElement{
         return SVGAnim.animate(this.svg)
     }
 
+    resume() {
+        // TODO (probably to integrate to play() and an associated this.state.playing flag)
+        // will allow for changing speed of animation during animation
+    }
+
     erase() {
+        SVGAnim.freeze(this.svg)
         return SVGAnim.animate(this.erasePath)
     }
 
     unerase() {
         this.erasePath.style.display = 'none'
+        return SVGAnim.reset(this.svg)
     }
 
     alphabet() {
@@ -131,5 +140,22 @@ export default class SVGCard extends HTMLElement{
         })
     
         return getRaw
+    }
+
+    // TODO: finish this function as 'get this card from any state to ready to play' and replace all other methods
+    makeReady = (card) => {
+        if(!card.state.processed)
+            return Promise.all([
+                card.getContent(),
+                document.fonts.load('1em Permanent Marker')
+            ])
+            .then(([xml]) => {
+                card.state.texted = false
+                return card.processSVG(xml)
+            })
+        else if(!card.state.texted)
+            return card.alphabet()
+        else
+            return Promise.resolve()
     }
 }
