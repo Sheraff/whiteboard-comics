@@ -6,11 +6,11 @@ export default class SVGAnim {
         const pythagore = (A, B) => Math.sqrt(Math.pow(A[0] - B[0], 2) + Math.pow(A[1] - B[1], 2))
 
         SVGElement.prototype.hasLength = function () {
-            return ['line', 'polyline', 'path'].indexOf(this.tagName.toLowerCase()) !== -1
+            return ['line', 'polyline', 'path'].includes(this.tagName.toLowerCase())
         }
 
         SVGElement.prototype.isGroup = function () {
-            return ['svg', 'g'].indexOf(this.tagName.toLowerCase()) !== -1
+            return ['svg', 'g'].includes(this.tagName.toLowerCase())
         }
 
         SVGLineElement.prototype.getTotalLength = function () {
@@ -268,7 +268,7 @@ export default class SVGAnim {
     static walkSVGTree(element, childCallback, parentCallback) {
         const depth = (element) => {
             if (!element.isGroup()) {
-                if (childCallback) (element)
+                if (childCallback) childCallback(element)
             } else {
                 if (parentCallback) parentCallback(element)
                 for (let child of element.children) {

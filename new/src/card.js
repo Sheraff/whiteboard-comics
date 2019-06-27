@@ -51,7 +51,7 @@ export default class SVGCard extends HTMLElement{
     }
 
     erase() {
-        SVGAnim.freeze(this.svg)
+        SVGAnim.freeze(this.svg) // TODO freeze() isn't working
         return SVGAnim.animate(this.erasePath)
     }
 
