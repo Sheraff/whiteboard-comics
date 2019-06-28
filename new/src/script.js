@@ -64,6 +64,7 @@ cards.forEach((card, key) => {
 // TODO: preload all modules with <link> attributes
 
 // TODO: make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
+// TODO: switch from localStorage to indexedDB and handle all this from worker
 
 
 
