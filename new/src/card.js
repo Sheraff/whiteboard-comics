@@ -6,22 +6,34 @@ export default class SVGCard extends HTMLElement{
 
         this.svg = this.querySelector('svg')
         this.state = {
-            open: false
+            open:     false, // whether the card is in the grid, or poped-out to the front
+            hydrated: false, // whether the card was hydrated with info from the database (php dump only for now)
         }
-        this.info = {}
+        this.info = {} // metadata about graph content (release date, author, tags...)
+        this.registerToWorker()
+    }
+
+    registerToWorker() {
+        Promise.all([
+            new Promise(resolve => this.workerPromise = resolve),
+            new Promise(resolve => this.hydratePromise = resolve)
+        ]).then(() => {
+            // hydrate worker
+            requestIdleCallback(() => this._worker.postMessage(JSON.stringify({
+                type: 'hydrate',
+                data: {
+                    name: this.name,
+                    content: !!this.rawXML,
+                    key: this.key
+                }
+            })))
+        })
     }
 
     set worker(worker) {
-        this.worker = worker
-
-        // TODO: on worker setter, register informations to worker (change worker.js too)
-        // // Send worker JSON of all graphs
-        // requestIdleCallback(() => worker.postMessage(JSON.stringify({ graphs: articles.map(article => { 
-        //     return {
-        //         name: article.data.name,
-        //         content: !!article.data.content
-        //     }
-        // }) })))
+        this._worker = worker
+        this.workerPromise()
+        delete this.workerPromise
     }
 
     set graph(graph) {
@@ -39,6 +51,10 @@ export default class SVGCard extends HTMLElement{
                 localStorage.setItem(graph.name, this.rawXML)
             }
         }
+
+        this.state.hydrated = true
+        this.hydratePromise()
+        delete this.hydratePromise
     }
 
     play() {
@@ -93,7 +109,7 @@ export default class SVGCard extends HTMLElement{
             // SVG is in DOM
             window.requestAnimationFrame(() => {
                 // put SVG into place
-                this.replaceChild(svg, this.querySelector('svg'))
+                this.replaceChild(svg, this.querySelector('svg')) // here is the only place this._svg should be set (and use appendChild), for everywhere else, this.svg is fine and should point to a getter
                 this.svg = svg
                 this.classList.add('processed')
                 this.state.processed = true
@@ -120,23 +136,34 @@ export default class SVGCard extends HTMLElement{
 
     getContent () {
         const getRaw = new Promise((resolve, reject) => {
+            // already in here (store is necessary)
             if (this.rawXML) {
                 resolve(this.rawXML)
                 if (!localStorage.getItem(this.name))
                     localStorage.setItem(this.name, this.rawXML)
                 return
             }
+
+            // in storage, extract
             const localContent = localStorage.getItem(this.name)
             if (localContent)
                 return resolve(localContent)
-            worker.customWorkerResponses.push(data => {
-                const content = data[this.name]
-                if (!content)
+
+            // request from worker (and store)
+            this._worker.customWorkerResponses.push(message => {
+                // check if this response is for this card
+                if (message.name!==this.name)
                     return false
-                localStorage.setItem(this.name, content)
-                return resolve(content)
+                localStorage.setItem(this.name, message.content)
+                resolve(message.content)
+                return true
             })
-            worker.postMessage(JSON.stringify({ raw: this.key })) // TODO: request with this.name instead
+            this._worker.postMessage(JSON.stringify({ 
+                type: 'request',
+                data: {
+                    name: this.name
+                }
+            }))
         })
     
         return getRaw

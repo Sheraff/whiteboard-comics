@@ -1,45 +1,61 @@
 let graphs = {}
-
 let backlog = {}
+
 onmessage = e => {
-    const data = JSON.parse(e.data)
-    if (data.graph) {
-        graph[data.graph.name] = data.graph.content
-        postMessage(JSON.stringify({ready: true}))
-        if(backlog[data.graph.name])
-            backlog[data.graph.name].forEach(data => respond(data))
-        loadWhenIdle()
-    } else if (graphs) {
-        respond(data)
-    } else {
-        backlog.push(data)
+    const message = JSON.parse(e.data)
+    switch(message.type) {
+        case 'hydrate':
+            graphs[message.data.name] = {content: message.data.content}
+            if(backlog[message.data.name]) {
+                backlog[message.data.name].forEach(message => request(message))
+                delete backlog[message.data.name]
+            }
+            loadWhenIdle()
+            break;
+        case 'request':
+            const name = message.data.name
+            if (graphs[name]) {
+                request(message)
+            } else {
+                if(!backlog[name])
+                    backlog[name] = []
+                backlog[name].push(message)
+            }
+            break;
     }
 }
 
-const respond = (data) => {
-    if (data.raw) {
-        if(graphs[data.raw].content)
-            postMessage(JSON.stringify({[graphs[data.raw].name]: graphs[data.raw].content}))
-        else
-            loadItem(data.raw, xml => postMessage(JSON.stringify({[graphs[data.raw].name]: xml})))
-    }
+const request = (message) => {
+    const name = message.data.name
+    if(graphs[name].content)
+        postMessage(JSON.stringify({
+            name: name,
+            content: graphs[name].content
+        }))
+    else if(graphs[name])
+        loadItem(name, xml => postMessage(JSON.stringify({
+            name: name,
+            content: xml
+        })))
+    else
+        throw `${name} hasn't registered yet`
 }
 
 // load item asap
-const loadItem = (index, callback) => {
-    if(!graphs[index].callbacks)
-        graphs[index].callbacks = []
-    graphs[index].callbacks.push(callback)
-    if(graphs[index].isLoading)
-        return
-    graphs[index].isLoading = true
-    fetch('./svg.php?graph=' + graphs[index].name)
+const loadItem = (name, callback) => {
+    if(!graphs[name].callbacks)
+        graphs[name].callbacks = []
+    graphs[name].callbacks.push(callback)
+    if(graphs[name].isLoading)
+        return 'isLoading'
+    graphs[name].isLoading = true
+    fetch('/svg.php?graph=' + name)
     .then(response => response.text())
     .then(xml => {
-        graphs[index].content = xml
-        graphs[index].callbacks.forEach(callback => callback(xml))
-        delete graphs[index].callbacks
-        delete graphs[index].isLoading
+        graphs[name].content = xml
+        graphs[name].callbacks.forEach(callback => callback(xml))
+        delete graphs[name].callbacks
+        delete graphs[name].isLoading
     })
 
 }
@@ -49,8 +65,8 @@ let idleTimeout
 const loadWhenIdle = () => {
     if(idleTimeout) clearTimeout(idleTimeout)
     idleTimeout = setTimeout(() => {
-        const key = graphs.findIndex(graph => !graph.content)
-        if(key!==-1)
+        const key = Object.keys(graphs).find(key => !graphs[key].content)
+        if(key)
             loadItem(key, loadWhenIdle)
     }, 500)
 }
