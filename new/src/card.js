@@ -6,8 +6,12 @@ export default class SVGCard extends HTMLElement{
 
         this.svg = this.querySelector('svg')
         this.state = {
-            open:     false, // whether the card is in the grid, or poped-out to the front
-            hydrated: false, // whether the card was hydrated with info from the database (php dump only for now)
+            // queued, // temporary state (TODO: shouldn't be a state, might not even be necessary (is a flag for choosing between two paths but is always true))
+            processed: false, // whether the svg has been processed (content is created based on XML, erase path is put in front, size is calculated based on viewbox)
+            texted:    false, // whether the svg's <text> has been replaced w/ animatable <path> letters
+            active:    false, // whether the card is the current one (z-index higher, current keyboard selection, is open, was just open, or will be opened)
+            open:      false, // whether the card is in the grid, or poped-out to the front
+            hydrated:  false, // whether the card was hydrated with info from the database (php dump only for now)
         }
         this.info = {} // metadata about graph content (release date, author, tags...)
         this.registerToWorker()
@@ -113,18 +117,11 @@ export default class SVGCard extends HTMLElement{
                 this.svg = svg
                 this.classList.add('processed')
                 this.state.processed = true
-                if(this.state.texted!==false)
+                if(!this.shouldProcessAlphabet)
                     resolve(this)
-    
-                // replace <text> font elements, with <g> SVG elements (only is already requested before)
-                if(this.state.texted===false) {
-                    SVGAnim.textToSVGAlphabet(this.svg)
-                    .then(() => { 
-                        this.classList.add('texted') 
-                        this.state.texted = true
-                        resolve(this)
-                    })
-                }
+                // replace <text> font elements, with <g> SVG elements (only if already requested before)
+                else
+                    this.alphabet()
             })
         })
     
@@ -177,7 +174,7 @@ export default class SVGCard extends HTMLElement{
                 document.fonts.load('1em Permanent Marker')
             ])
             .then(([xml]) => {
-                card.state.texted = false
+                card.shouldProcessAlphabet = true
                 return card.processSVG(xml)
             })
         else if(!card.state.texted)

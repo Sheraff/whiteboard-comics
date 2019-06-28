@@ -55,8 +55,8 @@ export default class CardArray extends Array{
     cardPop(card, on) {
         // function as a toggle if no behavior is specified by 'on'
         if (on === undefined)
-            on = card.state.state === undefined ? true : !card.state.state
-        card.state.state = on
+            on = card.state.open === undefined ? true : !card.state.open
+        card.state.open = on
     
         // turn OFF case
         if (!on) {
@@ -69,7 +69,7 @@ export default class CardArray extends Array{
             if (this.activeIndex!==-1 && this[this.activeIndex] !== card) {
                 this.cardPop(this[this.activeIndex], false)
                 this[this.activeIndex].classList.remove('active')
-                this[this.activeIndex].data.active = false
+                this[this.activeIndex].state.active = false
             }
             this.activeIndex = card.key
             return Promise.all([
@@ -84,8 +84,8 @@ export default class CardArray extends Array{
     cardSwitch(card, on) {
         // function as a toggle if no behavior is specified by 'on'
         if (on === undefined)
-            on = card.state.state === undefined ? true : !card.state.state
-        card.state.state = on
+            on = card.state.open === undefined ? true : !card.state.open
+        card.state.open = on
     
         // turn OFF case
         if (!on) {
@@ -112,8 +112,6 @@ export default class CardArray extends Array{
             } else {
                 card.alphabet()
                 .then(() => {
-                    card.classList.add('texted')
-                    card.state.texted = true
                     card.play()
                     resolve()
                 })
@@ -127,19 +125,11 @@ export default class CardArray extends Array{
                 const otherCard = this[card.key-1]
                 if(!otherCard.state.texted)
                     otherCard.alphabet()
-                    .then(() => { 
-                        otherCard.classList.add('texted') 
-                        otherCard.state.texted = true
-                    })
             }
             if(card.key!==this.length-1){
                 const otherCard = this[card.key+1]
                 if(!otherCard.state.texted)
                     otherCard.alphabet()
-                    .then(() => { 
-                        otherCard.classList.add('texted') 
-                        otherCard.state.texted = true
-                    })
             }
         })
     }

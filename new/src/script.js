@@ -89,12 +89,8 @@ cards.forEach(card => {
     card.addEventListener('mouseenter', (e) => {
         if(card.state.processed) {
             card.alphabet()
-            .then(() => { 
-                card.classList.add('texted') 
-                card.state.texted = true
-            })
         } else
-            card.state.texted = false
+            card.shouldProcessAlphabet = true
     }, {once: true})
 })
 window.addEventListener('keyup', (e) => {
