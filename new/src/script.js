@@ -38,6 +38,12 @@ cards.forEach((card, key) => {
 
 // TODO: make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 
+// TRY: perf improves if we don't add an empty <svg> in the cards in php (and to appendChild instead of replaceChild) ???
+// TRY: perf => add event listeners to cards from within cards.js
+
+// TODO: figure out why first path of a replaces <span> is always late
+// TODO: make a getter for SVGs in card.js
+
 
 const worker = new Worker('src/worker.js')
 worker.customWorkerResponses = []
