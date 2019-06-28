@@ -2,12 +2,39 @@ import SVGAnim from "./svg.js";
 import SVGCard from "./card.js";
 import CardArray from "./layout.js"
 
+/////////////////////
+// SVG SETUP
+/////////////////////
+
+
 new SVGAnim(LETTERS)
+
+
+/////////////////////
+// WEB WORKER
+/////////////////////
+
+const worker = new Worker('src/worker.js')
+worker.customWorkerResponses = []
+worker.onmessage = e => {
+    const message = JSON.parse(e.data)
+    worker.customWorkerResponses.forEach((response, key) => {
+        const res = response(message)
+        if (res) worker.customWorkerResponses.splice(key, 1)
+    })
+}
+
+
+/////////////////////
+// CARDS & HYDRATION
+/////////////////////
+
 customElements.define('svg-card', SVGCard)
 const cards = CardArray.querySelectorAll('svg-card')
 cards.forEach((card, key) => {
     card.graph = GRAPHS[key]
     card.key = key
+    card.worker = worker
 })
 
 // KEEP IN MIND: both path should start up in parallel 
@@ -37,6 +64,8 @@ cards.forEach((card, key) => {
 // TODO: preload all modules with <link> attributes
 
 // TODO: make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
+// TODO: switch from localStorage to indexedDB and handle all this from worker
+
 
 // TRY: perf improves if we don't add an empty <svg> in the cards in php (and to appendChild instead of replaceChild) ???
 // TRY: perf => add event listeners to cards from within cards.js
@@ -45,15 +74,6 @@ cards.forEach((card, key) => {
 // TODO: make a getter for SVGs in card.js
 
 
-const worker = new Worker('src/worker.js')
-worker.customWorkerResponses = []
-worker.onmessage = e => {
-    const data = JSON.parse(e.data)
-    worker.customWorkerResponses.forEach((response, key) => {
-        const res = response(data)
-        if (res) worker.customWorkerResponses.splice(key, 1)
-    })
-}
 
 cards.forEach(card => {
     card.addEventListener('click', (e) => {

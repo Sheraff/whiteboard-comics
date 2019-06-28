@@ -13,6 +13,10 @@ export default class SVGAnim {
             return ['svg', 'g'].includes(this.tagName.toLowerCase())
         }
 
+        SVGElement.prototype.isText = function () {
+            return ['text', 'tspan'].includes(this.tagName.toLowerCase())
+        }
+
         SVGLineElement.prototype.getTotalLength = function () {
             return pythagore([this.getAttribute('x1'), this.getAttribute('y1')], [this.getAttribute('x2'), this.getAttribute('y2')])
         }
@@ -124,7 +128,7 @@ export default class SVGAnim {
     // TODO: should return a promise bc this will take time
     static reset(svg) {
         const callback = (element) => {
-            if(element.dataset.type !== 'erase')
+            if (element.dataset.type !== 'erase')
                 window.requestAnimationFrame(() => {
                     element.style.transition = 'none'
                     element.style.strokeDashoffset = '0'
@@ -139,7 +143,7 @@ export default class SVGAnim {
     // TODO: should return a promise bc this will take time
     static freeze(svg) {
         const callback = (element) => {
-            if(element.dataset.type !== 'erase')
+            if (element.dataset.type !== 'erase')
                 window.requestAnimationFrame(() => {
                     const computedStyle = window.getComputedStyle(element)
                     element.style.strokeDashoffset = computedStyle.getPropertyValue('stroke-dashoffset')
@@ -267,7 +271,9 @@ export default class SVGAnim {
 
     static walkSVGTree(element, childCallback, parentCallback) {
         const depth = (element) => {
-            if (!element.isGroup()) {
+            if (element.isText()) {
+                return
+            } else if (!element.isGroup()) {
                 if (childCallback) childCallback(element)
             } else {
                 if (parentCallback) parentCallback(element)
