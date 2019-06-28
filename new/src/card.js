@@ -81,7 +81,12 @@ export default class SVGCard extends HTMLElement{
     }
 
     alphabet() {
-        return SVGAnim.textToSVGAlphabet(this.svg)
+        const promise = this.state.texted ? Promise.resolve() : SVGAnim.textToSVGAlphabet(this.svg)
+        return promise.then(() => {
+            delete this.shouldProcessAlphabet
+            this.state.texted = true
+            this.classList.add('texted')
+        })
     }
 
     processSVG (xml) {
