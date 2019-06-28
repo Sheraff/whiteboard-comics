@@ -53,7 +53,8 @@ cards.forEach((card, key) => {
 // TODO: optimization: remove querySelector as much as possible (and cache DOM into variables instead) (especially in the costly alphabet section) (other methods of getting DOM elements are barely faster, no need to optimize for this except in extreme cases)
 // TODO: use simple CSS selectors (id is best, classes are preferred, then tags, and then compositing many items)
 
-// TODO: boredom loading of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport?)
+// TODO: boredom processing of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport?)
+    // continued: worker can send a message every time it loads a graph that would have a ≠ structure (not get caught by any customWorkerResponses) and add to a list of graphs that can be bordedom processed
 // TODO: batch DOM changes
 // TODO: store server-side processed svg to reduce time-to-first-byte
 // TODO: add service worker (exclusively for .svg requests): can cache raw .svg (instead of localstorage) and in localstorage well put stringified versions of PROCESSED svgs (w/ alphabet replaced)
@@ -72,6 +73,8 @@ cards.forEach((card, key) => {
 
 // TODO: figure out why first path of a replaces <span> is always late
 // TODO: make a getter for SVGs in card.js
+// TODO: in list mode, display <text>, in front mode, display <path data-type="writing"> to limit number of nodes 
+// TODO: in alphabet, some <text> are processed twice (2 layers of <path> for each trait)
 
 
 

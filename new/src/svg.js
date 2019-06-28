@@ -73,7 +73,7 @@ export default class SVGAnim {
                 if (!spans.length) {
                     callback(text)
                 } else {
-                    const isLong = 40 < text.getNumberOfChars() + spans.length - 1
+                    const isLong = 40 < text.getNumberOfChars() + spans.length - 1 // TODO: getNumberOfChars is a costly function, replace w/ text.textContent.length
                     spans.forEach(span => callback(span, isLong))
                 }
             })
@@ -103,7 +103,7 @@ export default class SVGAnim {
                             const letter = letters.shift()
 
                             const position = span.getStartPositionOfChar(index)
-                            const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline')
+                            const paths = letter.content.cloneNode(true).querySelectorAll('path,line,polyline') // TODO: cloneNode is costly, is there anything more efficient than cloneNode ? 
 
                             paths.forEach(path => {
                                 path.parentNode.removeChild(path)

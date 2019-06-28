@@ -66,6 +66,7 @@ const loadWhenIdle = () => {
     if(idleTimeout) clearTimeout(idleTimeout)
     idleTimeout = setTimeout(() => {
         const key = Object.keys(graphs).find(key => !graphs[key].content)
+        console.log(`boredom loading ${key}`)
         if(key)
             loadItem(key, loadWhenIdle)
     }, 500)
