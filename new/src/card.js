@@ -27,7 +27,7 @@ export default class SVGCard extends HTMLElement{
                 type: 'hydrate',
                 data: {
                     name: this.name,
-                    content: !!this.rawXML,
+                    XML: !!this.rawXML,
                     key: this.key
                 }
             })))
@@ -46,15 +46,8 @@ export default class SVGCard extends HTMLElement{
         this.info.author = graph.author
         this.name = graph.name
 
-        const localContent = localStorage.getItem(graph.name)
-        if (localContent)
-            this.rawXML = localContent
-        else {
-            if (this.svg.childNodes.length) {
-                this.rawXML = this.svg.outerHTML
-                localStorage.setItem(graph.name, this.rawXML)
-            }
-        }
+        if (this.svg.childNodes.length)
+            this.rawXML = this.svg.outerHTML
 
         this.state.hydrated = true
         this.hydratePromise()
@@ -138,26 +131,18 @@ export default class SVGCard extends HTMLElement{
 
     getContent () {
         const getRaw = new Promise((resolve, reject) => {
-            // already in here (store is necessary)
+            // already in here
             if (this.rawXML) {
                 resolve(this.rawXML)
-                if (!localStorage.getItem(this.name))
-                    localStorage.setItem(this.name, this.rawXML)
                 return
             }
 
-            // in storage, extract
-            const localContent = localStorage.getItem(this.name)
-            if (localContent)
-                return resolve(localContent)
-
-            // request from worker (and store)
+            // request from worker
             this._worker.customWorkerResponses.push(message => {
                 // check if this response is for this card
                 if (message.name!==this.name)
                     return false
-                localStorage.setItem(this.name, message.content)
-                resolve(message.content)
+                resolve(message.XML)
                 return true
             })
             this._worker.postMessage(JSON.stringify({ 
