@@ -28,7 +28,10 @@
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
+- [ ] proper ordering of graphs
+- [ ] logo animation
 - [ ] auto SVG to GIF process
+- [ ] SEO, headers, favicon
 
 ## PERF LIST for non-blocking performance improvements
 
@@ -42,6 +45,7 @@
 - [ ] *??* perf => add event listeners to cards from within cards.js
 - [ ] in list mode, display <text>, in front mode, display <path data-type="writing"> to limit number of nodes (has to be done w/ display:none to get the perf enhancements, will need to wait for current animation to be over before switching)
 - [ ] reduce time-to-first-meaningful-paint (when we can see a graph)
+- [ ] use `IdleDeadline.didTimeout` for shortening idleCallbacks ? 
 
 ## TRY LIST for things to investigate
 
