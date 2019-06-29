@@ -88,9 +88,8 @@ export default class SVGCard extends HTMLElement{
         // SVG starts in template (doesn't trigger DOM)
         window.requestIdleCallback(() => {
             this.rawXML = xml
-            const template = document.createElement('template')
-            template.innerHTML = xml
-            const svg = template.content.querySelector('svg')
+            const template = document.createRange().createContextualFragment(xml) // TODO: add a fallback to new DOMParser().parseFromString ??
+            const svg = template.firstElementChild
     
             // the first white path should be the "erase" path so put it on top and label it so we can use it later
             this.erasePath = svg.querySelector('path[stroke="#FFFFFF"]')

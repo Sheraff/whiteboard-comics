@@ -74,6 +74,7 @@ cards.forEach((card, key) => {
 // TODO: in list mode, display <text>, in front mode, display <path data-type="writing"> to limit number of nodes (has to be done w/ display:none to get the perf enhancements, will need to wait for current animation to be over before switching)
 // TODO: some cards get called twice on .alphabet(). This is fixed (using state.texted flag) but should be investigated for performance
 // TODO: on pop-out, card animation seems to start w/ bigger height than 100vh
+// TODO: fix issue when graph is toggled OFF during animation and toggled back ON while animation isn't finished => isn't able to restart properly and we see the animation running from 2 ≠ timelines at the same time
 
 
 

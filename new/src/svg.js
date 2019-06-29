@@ -31,9 +31,8 @@ export default class SVGAnim {
     static textToSVGAlphabet(svg) {
         // this is the costly operation. SVG must be part of DOM for it to work
         const processLetterSVG = letter => {
-            const template = document.createElement('template')
-            template.innerHTML = letter.content
-            const svg = template.content.querySelector('svg')
+            const template = document.createRange().createContextualFragment(letter.content) // TODO: add a fallback to new DOMParser().parseFromString ??
+            const svg = template.firstElementChild
             const [x, y, width, height] = (svg.getAttribute('viewbox') || svg.getAttribute('viewBox')).split(' ')
             letter.viewbox = { width, height }
             letter.content = svg
@@ -49,19 +48,17 @@ export default class SVGAnim {
                     .replace(/”/g, '"')
                 if (!LETTERS[letter])
                     reject('letter not found')
-                if (LETTERS[letter].viewbox)
+                else if (LETTERS[letter].viewbox)
                     resolve(LETTERS[letter])
-                else {
-                    if (LETTERS[letter].getting)
+                else if (LETTERS[letter].getting)
                         LETTERS[letter].getting.push(resolve)
-                    else {
-                        LETTERS[letter].getting = [resolve]
-                        LETTERS[letter].char = letter
-                        requestIdleCallback(() => {
-                            LETTERS[letter] = processLetterSVG(LETTERS[letter])
-                            LETTERS[letter].getting.forEach(callback => callback(LETTERS[letter]))
-                        })
-                    }
+                else {
+                    LETTERS[letter].getting = [resolve]
+                    LETTERS[letter].char = letter
+                    requestIdleCallback(() => {
+                        LETTERS[letter] = processLetterSVG(LETTERS[letter])
+                        LETTERS[letter].getting.forEach(callback => callback(LETTERS[letter]))
+                    })
                 }
             })
         }

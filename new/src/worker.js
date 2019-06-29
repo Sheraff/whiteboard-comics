@@ -12,8 +12,8 @@ const dbPromise = new Promise((resolve, reject) => {
     dbOpenRequest.onupgradeneeded = () => {
         const db = dbOpenRequest.result
         const store = db.createObjectStore('graphs', { keyPath: 'name' })
-        store.createIndex('tags', 'tags', { multiEntry: true })
-        store.createIndex('release', 'release')
+        // store.createIndex('tags', 'tags', { multiEntry: true })
+        // store.createIndex('release', 'release')
         store.createIndex('noXML', 'noXML') // used for boredom loading to list all graphs that still don't have an XML loaded
     }
     dbOpenRequest.onsuccess = () => {
