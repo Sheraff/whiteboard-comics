@@ -38,7 +38,9 @@ $initial = 0;
 		</aside>
 
 		<section id="graphs">
-			<?php foreach ($graphs as $index => $graph) article($graph, $index===$initial); ?>
+			<?php 
+				$count = count($graphs);
+				foreach ($graphs as $index => $graph) article($graph, $index===$initial, $index<$count-10); ?>
 		</section>
 	</main>
 	<aside id="meta">
