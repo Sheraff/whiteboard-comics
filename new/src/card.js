@@ -46,7 +46,7 @@ export default class SVGCard extends HTMLElement{
         this.info.author = graph.author
         this.name = graph.name
 
-        if (this.svg.childNodes.length)
+        if (this.svg && this.svg.childNodes.length)
             this.rawXML = this.svg.outerHTML
 
         this.state.hydrated = true
@@ -110,7 +110,10 @@ export default class SVGCard extends HTMLElement{
             // SVG is in DOM
             window.requestAnimationFrame(() => {
                 // put SVG into place
-                this.replaceChild(svg, this.querySelector('svg')) // here is the only place this._svg should be set (and use appendChild), for everywhere else, this.svg is fine and should point to a getter
+                if(this.svg)
+                    this.replaceChild(svg, this.querySelector('svg')) // here is the only place this._svg should be set (and use appendChild), for everywhere else, this.svg is fine and should point to a getter
+                else
+                    this.appendChild(svg)
                 this.svg = svg
                 this.classList.add('processed')
                 this.state.processed = true

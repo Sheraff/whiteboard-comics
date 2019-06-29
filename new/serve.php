@@ -3,7 +3,7 @@
 
 function article ($graph, $active=false) { ?>
 	<svg-card <?php echo "class='" . (rand(0,10)===0 ? "featured" : "") . "'" ?>>
-        <?php echo $graph[content] ? $graph[content] : "<svg></svg>"; ?>
+        <?php if($graph[content]) echo $graph[content]; ?>
         <!-- <div class='progress'></div> -->
 	</svg-card>
 <?php }
