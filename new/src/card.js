@@ -27,8 +27,7 @@ export default class SVGCard extends HTMLElement{
                 type: 'hydrate',
                 data: {
                     name: this.name,
-                    XML: !!this.rawXML,
-                    key: this.key
+                    XML: !!this.rawXML
                 }
             })))
         })
@@ -46,7 +45,7 @@ export default class SVGCard extends HTMLElement{
         this.info.author = graph.author
         this.name = graph.name
 
-        if (this.svg && this.svg.childNodes.length)
+        if (this.svg)
             this.rawXML = this.svg.outerHTML
 
         this.state.hydrated = true

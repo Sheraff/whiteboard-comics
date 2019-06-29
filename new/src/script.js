@@ -41,10 +41,7 @@ cards.forEach((card, key) => {
 cards.forEach(card => {
 	card.addEventListener('click', (e) => {
 		e.stopPropagation()
-		if (card.state.open)
-			cards.cardPop(card)
-		else
-			cards.cardPop(card)
+		cards.cardPop(card)
 	})
 	card.addEventListener('mouseenter', (e) => {
 		if (card.state.processed) {

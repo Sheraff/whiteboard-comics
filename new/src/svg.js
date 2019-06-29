@@ -1,8 +1,10 @@
 let LETTERS
+let SPEED
 export default class SVGAnim {
     constructor(letters) {
         LETTERS = letters
-
+        SPEED = localStorage.getItem('speed') || 5 // easy 1 - 10 scale for UI
+        
         const pythagore = (A, B) => Math.sqrt(Math.pow(A[0] - B[0], 2) + Math.pow(A[1] - B[1], 2))
 
         SVGElement.prototype.hasLength = function () {
@@ -41,7 +43,7 @@ export default class SVGAnim {
 
         const getLetter = letter => {
             return new Promise((resolve, reject) => {
-                letter = letter.toLowerCase()
+                letter = letter.toLowerCase() // TODO: regex is costly
                     .replace(/‘/g, "'")
                     .replace(/’/g, "'")
                     .replace(/“/g, '"')
@@ -66,7 +68,7 @@ export default class SVGAnim {
         const loopOverAllSpans = (element, callback) => {
             const texts = element.querySelectorAll('text')
             texts.forEach(text => {
-                const spans = [...text.querySelectorAll('tspan')]
+                const spans = text.querySelectorAll('tspan')
                 if (!spans.length) {
                     callback(text)
                 } else {
@@ -126,7 +128,7 @@ export default class SVGAnim {
     static reset(svg) {
         const callback = (element) => {
             if (element.dataset.type !== 'erase')
-                window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => { // TODO: better way to change style? This one is costly
                     element.style.transition = 'none'
                     element.style.strokeDashoffset = '0'
                     element.style.visibility = 'visible'
@@ -155,7 +157,6 @@ export default class SVGAnim {
     // TODO: decompose function (we'll need drawElementSVG for restart_from_where_it_paused)
     static animate(svg) {
         const FULL = svg.tagName.toLowerCase() === 'svg' // sending full SVG animates everything, sending a single SVGElement animates only the element
-        const SPEED = localStorage.getItem('speed') || 5 // easy 1 - 10 scale for UI
         let resolve, reject
 
         const drawElementSVG = (element) => {
