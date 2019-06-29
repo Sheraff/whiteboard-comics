@@ -12,16 +12,23 @@
 
 - [ ] find out how to switch to HTTP2
 - [ ] add service worker (exclusively for .svg requests): can cache raw .svg (well put stringified versions of PROCESSED svgs (w/ alphabet replaced) in IndexedDB)
+- [ ] Progressive Web App
 
 
 ## TODO LIST in order of priority
 
+- [ ] <aside> UI
+- [ ] overlay metadata
+- [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
+- [ ] allow for landed state based on URL (/archives, /graph_name, /contact)
+- [ ] URL rewriting when switching graph
 - [ ] prevent scrolling when an <card> is front
 - [ ] fix issue when graph is toggled OFF during animation and toggled back ON while animation isn't finished => isn't able to restart properly and we see the animation running from 2 ≠ timelines at the same time
 - [ ] figure out why first path of a replaces <span> is always late
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
+- [ ] auto SVG to GIF process
 
 ## PERF LIST for non-blocking performance improvements
 
@@ -34,6 +41,7 @@
 - [ ] preload all modules with <link> attributes
 - [ ] *??* perf => add event listeners to cards from within cards.js
 - [ ] in list mode, display <text>, in front mode, display <path data-type="writing"> to limit number of nodes (has to be done w/ display:none to get the perf enhancements, will need to wait for current animation to be over before switching)
+- [ ] reduce time-to-first-meaningful-paint (when we can see a graph)
 
 ## TRY LIST for things to investigate
 
