@@ -32,10 +32,11 @@
 - [ ] logo animation
 - [ ] auto SVG to GIF process
 - [ ] SEO, headers, favicon
+- [ ] max-width to section+aside and add empty margin after (for super wide screens)
 
 ## PERF LIST for non-blocking performance improvements
 
-- [ ] some cards get called twice on .alphabet(). This is fixed (using state.texted flag) but should be investigated for performance
+- [ ] some cards get called twice on .alphabet(). This is fixed (using state.texted flag) but should be investigated for performance & code sanity
 - [ ] optimization: remove querySelector as much as possible (and cache DOM into variables instead) (especially in the costly alphabet section) (other methods of getting DOM elements are barely faster, no need to optimize for this except in extreme cases)
 - [ ] use simple CSS selectors (id is best, classes are preferred, then tags, and then compositing many items)
 - [ ] boredom processing of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport? or do everything with the same priority but clearTimeout on more UI events) — worker can send a message every time it loads a graph that would have a ≠ structure (not get caught by any customWorkerResponses) and add to a list of graphs that can be bordedom processed
