@@ -11,7 +11,7 @@ class ElementState {
         // hydrated   : whether the card was hydrated with info from the database (php dump only for now)
         // front      : TODO ???
 
-        const states = ['hydrated', 'open', 'processed', 'texted', 'active', 'front']
+        const states = ['hydrated', 'processed', 'texted', 'open', 'active', 'front']
         states.forEach(prop => {
             this[`_${prop}`] = false
             Object.defineProperty(this, prop, { 
@@ -32,11 +32,21 @@ export default class SVGCard extends HTMLElement{
     constructor() {
         super()
 
-        this.svg = this.querySelector('svg')
+        // shadow DOM
+        this.attachShadow({mode: 'open'})
+        const style = document.createElement('link')
+        style.href = './svg.css'
+        style.type = "text/css"
+        style.rel = "stylesheet"
+        this.shadowRoot.appendChild(style)
+        this.shadowRoot.appendChild(document.createElement('slot'))
+
+        // meta
         this.state = new ElementState(this)
         this.info = {} // metadata about graph content (release date, author, tags...)
         this.registerToWorker()
 
+        // UX
         this.addEventListener('mouseenter', () => {
             if (this.state.processed) this.alphabet()
             else this.shouldProcessAlphabet = true
@@ -71,8 +81,9 @@ export default class SVGCard extends HTMLElement{
         this.info.author = graph.author
         this.name = graph.name
 
-        if (this.svg)
-            this.rawXML = this.svg.outerHTML
+        const shadowSVG = this.shadowRoot.childNodes[1].assignedElements()
+        if (shadowSVG.length)
+            this.rawXML = shadowSVG[0].outerHTML
 
         this.state.hydrated = true
         this.hydratePromise()
@@ -134,8 +145,9 @@ export default class SVGCard extends HTMLElement{
             // SVG is in DOM
             window.requestAnimationFrame(() => {
                 // put SVG into place
-                if(this.svg)
-                    this.replaceChild(svg, this.querySelector('svg'))
+                const shadowSVG = this.shadowRoot.childNodes[1].assignedElements()
+                if(shadowSVG.length)
+                    this.replaceChild(svg, shadowSVG[0])
                 else
                     this.appendChild(svg)
                 this.svg = svg
