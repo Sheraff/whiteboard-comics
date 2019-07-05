@@ -176,7 +176,7 @@ svg-card {
   cursor: pointer;
   box-shadow: 0 0 0.5px black;
 }
-svg-card.frontClassToUseForMainGraph {
+svg-card.front {
   position: fixed;
   top: 0;
   right: 0;
@@ -204,10 +204,6 @@ svg-card.texted > svg [data-type="writing"] {
 }
 svg-card.active {
   z-index: 1;
-}
-svg-card.front,
-svg-card.front:hover {
-  box-shadow: 0.5px 0 1.5px black;
 }
 svg-card:hover {
   box-shadow: 0.5px 0.5px 4px black;

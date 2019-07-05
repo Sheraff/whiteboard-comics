@@ -160,7 +160,7 @@ svg-card{
     padding: calc(.25 * var(--margin));
     cursor: pointer;
 
-    &.frontClassToUseForMainGraph{
+    &.front{
         position: fixed;
         top: 0;
         right: 0;
@@ -190,9 +190,6 @@ svg-card{
     }
     &.active{
         z-index: 1;
-    }
-    &.front, &.front:hover{
-        box-shadow: .5px 0 1.5px black;
     }
     &:hover{
         box-shadow: .5px .5px 4px black;

@@ -36,6 +36,7 @@
 
 ## PERF LIST for non-blocking performance improvements
 
+- [ ] host font on server and rel="preload"? (or does google have a way to still be faster than this?)
 - [ ] some cards get called twice on .alphabet(). This is fixed (using state.texted flag) but should be investigated for performance & code sanity
 - [ ] optimization: remove querySelector as much as possible (and cache DOM into variables instead) (especially in the costly alphabet section) (other methods of getting DOM elements are barely faster, no need to optimize for this except in extreme cases)
 - [ ] use simple CSS selectors (id is best, classes are preferred, then tags, and then compositing many items)

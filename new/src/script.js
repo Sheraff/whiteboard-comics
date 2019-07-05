@@ -38,17 +38,11 @@ cards.forEach((card, key) => {
 })
 
 
-cards.forEach(card => {
+cards.forEach(card => { // TODO: move to Layout or to Card ? 
 	card.addEventListener('click', (e) => {
 		e.stopPropagation()
 		cards.cardPop(card)
 	})
-	card.addEventListener('mouseenter', (e) => {
-		if (card.state.processed) {
-			card.alphabet()
-		} else
-			card.shouldProcessAlphabet = true
-	}, { once: true })
 })
 window.addEventListener('keyup', (e) => {
 	switch (e.key) {
@@ -85,3 +79,6 @@ const loadOnIntersection = (entries, observer) => {
 const loadIntersectionObserver = new IntersectionObserver(loadOnIntersection, { rootMargin: `${window.innerHeight}px` })
 
 cards.forEach(card => { loadIntersectionObserver.observe(card) })
+document.addEventListener('active', e => {
+	console.log(e)
+})

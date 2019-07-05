@@ -68,7 +68,6 @@ export default class CardArray extends Array{
         else {
             if (this.activeIndex!==-1 && this[this.activeIndex] !== card) {
                 this.cardPop(this[this.activeIndex], false)
-                this[this.activeIndex].classList.remove('active')
                 this[this.activeIndex].state.active = false
             }
             this.activeIndex = card.key
@@ -142,11 +141,10 @@ export default class CardArray extends Array{
             let orig 
             if(animate) orig = card.getBoundingClientRect()
             // apply
-            card.classList[on ? 'add' : 'remove']('frontClassToUseForMainGraph')
+            card.state.front = on
             if(on){
                 if(card.classList.contains('featured'))
                     this.placeholder.classList.add('featured')
-                card.classList.add('active')
                 card.state.active = true
                 card.parentNode.insertBefore(this.placeholder, card)
             } else {
@@ -180,10 +178,8 @@ export default class CardArray extends Array{
         }
     
         const after = (resolve) => {
-            if(!on) {
-                card.classList.remove('active')
+            if(!on)
                 card.state.active = false
-            }
             resolve()
             const queued = card.state.queued
             delete card.state.queued

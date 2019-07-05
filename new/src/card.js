@@ -1,20 +1,46 @@
 import SVGAnim from "./svg.js";
 
+class ElementState {
+    constructor(element) {
+        this.element = element
+
+        // processed  : whether the svg has been processed (content is created based on XML, erase path is put in front, size is calculated based on viewbox)
+        // texted     : whether the svg's <text> has been replaced w/ animatable <path> letters
+        // active     : whether the card is the current one (z-index higher, current keyboard selection, is open, was just open, or will be opened)
+        // open       : whether the card is in the grid, or poped-out to the front
+        // hydrated   : whether the card was hydrated with info from the database (php dump only for now)
+        // front      : TODO ???
+
+        const states = ['hydrated', 'open', 'processed', 'texted', 'active', 'front']
+        states.forEach(prop => {
+            this[`_${prop}`] = false
+            Object.defineProperty(this, prop, { 
+                set: function(bool) { 
+                    this[`_${prop}`] = bool
+                    this.element.classList[bool ? 'add' : 'remove'](prop)
+                    if(bool) document.dispatchEvent(new CustomEvent(prop, {detail: {card: this.element}}))
+                },
+                get: function() {
+                    return this[`_${prop}`]
+                }
+            })
+        })
+    }
+}
+
 export default class SVGCard extends HTMLElement{
     constructor() {
         super()
 
         this.svg = this.querySelector('svg')
-        this.state = {
-            // queued, // temporary state (TODO: shouldn't be a state, might not even be necessary (is a flag for choosing between two paths but is always true))
-            processed: false, // whether the svg has been processed (content is created based on XML, erase path is put in front, size is calculated based on viewbox)
-            texted:    false, // whether the svg's <text> has been replaced w/ animatable <path> letters
-            active:    false, // whether the card is the current one (z-index higher, current keyboard selection, is open, was just open, or will be opened)
-            open:      false, // whether the card is in the grid, or poped-out to the front
-            hydrated:  false, // whether the card was hydrated with info from the database (php dump only for now)
-        }
+        this.state = new ElementState(this)
         this.info = {} // metadata about graph content (release date, author, tags...)
         this.registerToWorker()
+
+        this.addEventListener('mouseenter', () => {
+            if (this.state.processed) this.alphabet()
+            else this.shouldProcessAlphabet = true
+        }, { once: true })
     }
 
     registerToWorker() {
@@ -77,7 +103,6 @@ export default class SVGCard extends HTMLElement{
         return promise.then(() => {
             delete this.shouldProcessAlphabet
             this.state.texted = true
-            this.classList.add('texted')
         })
     }
 
@@ -110,11 +135,10 @@ export default class SVGCard extends HTMLElement{
             window.requestAnimationFrame(() => {
                 // put SVG into place
                 if(this.svg)
-                    this.replaceChild(svg, this.querySelector('svg')) // here is the only place this._svg should be set (and use appendChild), for everywhere else, this.svg is fine and should point to a getter
+                    this.replaceChild(svg, this.querySelector('svg'))
                 else
                     this.appendChild(svg)
                 this.svg = svg
-                this.classList.add('processed')
                 this.state.processed = true
                 if(!this.shouldProcessAlphabet)
                     resolve(this)
@@ -155,22 +179,5 @@ export default class SVGCard extends HTMLElement{
         })
     
         return getRaw
-    }
-
-    // TODO: finish this function as 'get this card from any state to ready to play' and replace all other methods
-    makeReady = (card) => {
-        if(!card.state.processed)
-            return Promise.all([
-                card.getContent(),
-                document.fonts.load('1em Permanent Marker')
-            ])
-            .then(([xml]) => {
-                card.shouldProcessAlphabet = true
-                return card.processSVG(xml)
-            })
-        else if(!card.state.texted)
-            return card.alphabet()
-        else
-            return Promise.resolve()
     }
 }
