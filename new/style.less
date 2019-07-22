@@ -160,6 +160,14 @@ svg-card{
     padding: calc(.25 * var(--margin));
     cursor: pointer;
 
+    &.start-active {
+        &, &.processed {
+            & > svg {
+                opacity: 0;
+            }
+        }
+    }
+
     &.front{
         position: fixed;
         top: 0;

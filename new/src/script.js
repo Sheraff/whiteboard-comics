@@ -58,21 +58,33 @@ window.addEventListener('keyup', (e) => {
 	}
 })
 
+/////////////////////
+// SINGLE GRAPH PATH
+/////////////////////
 
+const landedActiveCard = document.querySelector('svg-card.front')
+if (landedActiveCard) {
+	landedActiveCard.immediate()
+}
+
+// TODO: if landedActiveCard, loadIntersectionObserver acts on requestIdleCallback to prevent heavy page initialization
+
+
+/////////////////////
 //// THUMBNAILS PATH
-
-
-
+/////////////////////
 
 const loadOnIntersection = (entries, observer) => {
 	entries.filter(entry => entry.isIntersecting)
 		.forEach(entry => {
 			observer.unobserve(entry.target)
-			Promise.all([
-				entry.target.getContent(),
-				document.fonts.load('1em Permanent Marker')
-			])
-				.then(([xml]) => entry.target.processSVG(xml))
+			if (!entry.target.state.processing) {
+				Promise.all([
+					entry.target.getContent(),
+					document.fonts.load('1em Permanent Marker')
+				])
+					.then(([xml]) => entry.target.processSVG(xml))
+			}
 		})
 }
 

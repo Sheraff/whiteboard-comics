@@ -116,7 +116,7 @@ export default class CardArray extends Array{
                 })
             }
         })
-        
+
         animate()
         // .then(() => { console.log('toggle and fill #overlay') })
         .then(() => {
@@ -168,7 +168,7 @@ export default class CardArray extends Array{
             card.style.transform = `translate(${orig.left - dest.left}px, ${orig.top - dest.top}px) scale(${wRatio}, ${hRatio})`
             card.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
             // release
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 card.style.transition = `transform ${duration}s linear`
                 card.svg.style.transition = `transform ${duration}s linear`
                 card.style.transform = `translate(0, 0) scale(1, 1)`

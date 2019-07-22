@@ -23,8 +23,7 @@
 - [ ] allow for landed state based on URL (/archives, /graph_name, /contact)
 - [ ] URL rewriting when switching graph
 - [ ] prevent scrolling when an <card> is front
-- [ ] fix issue when graph is toggled OFF during animation and toggled back ON while animation isn't finished => isn't able to restart properly and we see the animation running from 2 ≠ timelines at the same time
-- [ ] figure out why first path of a replaces <span> is always late
+- [ ] figure out why first path of a replaced <span> is always late
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
@@ -33,6 +32,7 @@
 - [ ] auto SVG to GIF process
 - [ ] SEO, headers, favicon
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
+- [ ] switch from `Timeout` to `AnimationFrame` in svg.js
 
 ## PERF LIST for non-blocking performance improvements
 
@@ -55,6 +55,7 @@
 - [ ] *??* separate immediately-needed JS and later-is-fine JS into 2 separate script files
 - [ ] *??* use onload="preloadFinished()" on <link> to start worker tasks
 - [ ] *??* what's worse: using more CPU but less RAM (don't store processed graphs, reprocess every time) or more RAM but less CPU (graphs are kept in "ready to play" state in memory)? Do I even gain any RAM by deleting procesed graphs (still need to display the basic SVG)? How does this relate to virtualization of grid/list? 
+- [ ] *??* `LETTERS` shouldn't be sent on every load. Store in indexedDB. Initialize within `SVGAnim` class instead of from main script. Fetch from server within class if not in DB.
 
 
 ----

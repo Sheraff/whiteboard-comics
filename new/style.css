@@ -176,6 +176,12 @@ svg-card {
   cursor: pointer;
   box-shadow: 0 0 0.5px black;
 }
+
+svg-card.start-active > svg,
+svg-card.start-active.processed > svg {
+  opacity: 0;
+}
+
 svg-card.front {
   position: fixed;
   top: 0;
