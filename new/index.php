@@ -22,7 +22,6 @@ $initial = 0;
 ?>
 
 <link rel="stylesheet" href="style.css">
-<link rel="preload" as="style" href="svg.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
 <link rel="preload" as="worker" href="src/worker.js">
 
