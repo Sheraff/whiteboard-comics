@@ -48,13 +48,11 @@
 - [ ] in list mode, display <text>, in front mode, display <path data-type="writing"> to limit number of nodes (has to be done w/ display:none to get the perf enhancements, will need to wait for current animation to be over before switching)
 - [ ] reduce time-to-first-meaningful-paint (when we can see a graph)
 - [ ] use `IdleDeadline.didTimeout` for shortening idleCallbacks ? 
-- [ ] virtualize grid items when scrolling (read method here: https://github.com/sergi/virtual-list/blob/master/vlist.js)
 
 ## TRY LIST for things to investigate
 
 - [ ] *??* separate immediately-needed JS and later-is-fine JS into 2 separate script files
 - [ ] *??* use onload="preloadFinished()" on <link> to start worker tasks
-- [ ] *??* what's worse: using more CPU but less RAM (don't store processed graphs, reprocess every time) or more RAM but less CPU (graphs are kept in "ready to play" state in memory)? Do I even gain any RAM by deleting procesed graphs (still need to display the basic SVG)? How does this relate to virtualization of grid/list? 
 
 
 ----
