@@ -134,35 +134,30 @@ export default class SVGCard extends HTMLElement {
 		return SVGAnim.reset(this.svg)
 	}
 
-	immediate() {
+	async immediate() {
 		this.state.processing = true
-		return Promise.all([
+		const [xml] = await Promise.all([
 			this.getContent(),
 			document.fonts.load('1em Permanent Marker')
-		])
-			.then(([xml]) => {
-				this.shouldProcessAlphabet = true
-				return this.processSVG(xml)
-			})
-			.then(() => SVGAnim.prepare(this.svg))
-			.then(() => {
-				requestAnimationFrame(() => {
-					delete this.state.processing
-					this.state.active = true
-					this.state.open = true
-					this.state.front = true
-					SVGAnim.animate(this.svg)
-					this.classList.remove('start-active')
-				})
-			})
+		]);
+		this.shouldProcessAlphabet = true;
+		await this.processSVG(xml);
+		SVGAnim.prepare(this.svg);
+		requestAnimationFrame(() => {
+			delete this.state.processing;
+			this.state.active = true;
+			this.state.open = true;
+			this.state.front = true;
+			SVGAnim.animate(this.svg);
+			this.classList.remove('start-active');
+		});
 	}
 
-	alphabet() {
+	async alphabet() {
 		const promise = this.state.texted ? Promise.resolve() : SVGAnim.textToSVGAlphabet(this.svg)
-		return promise.then(() => {
-			delete this.shouldProcessAlphabet
-			this.state.texted = true
-		})
+		await promise;
+		delete this.shouldProcessAlphabet;
+		this.state.texted = true;
 	}
 
 	processSVG(xml) {
