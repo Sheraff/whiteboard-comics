@@ -103,7 +103,6 @@ export default class SVGCard extends HTMLElement {
 			this.workerPromise,
 			this.hydratePromise
 		]).then(() => {
-			console.log(this)
 			// hydrate worker
 			requestIdleCallback(() => this._worker.postMessage(JSON.stringify({
 				type: 'hydrate',
@@ -117,10 +116,8 @@ export default class SVGCard extends HTMLElement {
 
 	set worker(worker) {
 		this._worker = worker
-		console.log(this._worker)
 		this.workerPromise.resolve()
 		delete this.workerPromise
-		console.log(this._worker)
 	}
 
 	set graph(graph) {
