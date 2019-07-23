@@ -2,9 +2,9 @@
 
 
 function article ($graph, $active=false, $canFeature = false) { ?>
-	<svg-card <?php echo "class='" . ($canFeature && rand(0,10)===0 ? "featured " : "") . ($active ? "front start-active" : "") . "'" ?>>
-        <?php if($graph[content]) echo $graph[content]; ?>
-        <!-- <div class='progress'></div> -->
+	<svg-card class="<?php echo ($canFeature && rand(0,10)===0 ? "featured " : "") . ($active ? "front start-active" : ""); ?>">
+		<?php if($graph[content]) echo $graph[content]; ?>
+		<a href="/<?php echo $graph[name]; ?>"></a>
 	</svg-card>
 <?php }
 

@@ -20,9 +20,8 @@
 - [ ] <aside> UI
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
-- [ ] allow for landed state based on URL (/archives, /graph_name, /contact)
-- [ ] URL rewriting when switching graph
-- [ ] prevent scrolling when an <card> is front
+- [x] allow for landed state based on URL (/archives, /graph_name, /contact)
+- [ ] prevent scrolling when a <card> is front
 - [ ] figure out why first path of a replaced <span> is always late
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process

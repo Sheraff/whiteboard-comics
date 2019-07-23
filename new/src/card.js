@@ -61,6 +61,7 @@ export default class SVGCard extends HTMLElement {
 		super()
 
 		this.svg = this.querySelector('svg')
+		this.anchor = this.querySelector('a')
 		this.state = new ElementState(this)
 		this.info = {} // metadata about graph content (release date, author, tags...)
 		this.registerToWorker()
@@ -98,9 +99,11 @@ export default class SVGCard extends HTMLElement {
 		this.info.credit = graph.credit
 		this.info.author = graph.author
 		this.name = graph.name
+		this.anchor.href = `/${graph.name}`
 
 		if (this.svg)
 			this.rawXML = this.svg.outerHTML
+
 
 		this.state.hydrated = true
 		this.hydratePromise()

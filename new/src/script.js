@@ -43,7 +43,11 @@ cards.forEach((card, key) => {
 ////////////////////
 
 cards.forEach(card => { // TODO: move to Layout or to Card ? 
-	card.addEventListener('click', (e) => {
+	// cards have an anchor overlay for SEO & "open in new tab" but don't use them in regular navigation
+	card.anchor.addEventListener('click', e => {
+		if(e.altKey || e.ctrlKey || e.shiftKey || e.metaKey)
+			return
+		e.preventDefault()
 		e.stopPropagation()
 		cards.cardPop(card)
 	})
@@ -63,14 +67,14 @@ window.addEventListener('keyup', (e) => {
 })
 
 const pushState = ({ name = 'archives', key = -1 }) => {
-	if (history.state.key === key)
+	if (history.state && history.state.key === key)
 		return
 	history.pushState({ name, key }, name, name)
 }
 
 window.addEventListener('popstate', ({ state: { name, key } }) => {
-	if(name === 'archives')
-		pushState({name, key})
+	if (name === 'archives')
+		pushState({ name, key })
 	else switch (cards.activeIndex) {
 		case key:
 			return;
@@ -88,6 +92,7 @@ document.addEventListener('open', ({ detail: { card } }) => pushState(card))
 const landedActiveCard = document.querySelector('svg-card.front')
 if (landedActiveCard) {
 	cards.activeIndex = landedActiveCard.key
+	console.dir(landedActiveCard)
 	landedActiveCard.immediate()
 	pushState(landedActiveCard)
 } else {

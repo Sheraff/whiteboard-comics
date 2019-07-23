@@ -158,7 +158,16 @@ svg-card{
     will-change: transform, opacity, box-shadow;
     background-color: white;
     padding: calc(.25 * var(--margin));
-    cursor: pointer;
+
+    &:not(.open) > a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        cursor: pointer;
+    }
 
     &.start-active {
         &, &.processed {
