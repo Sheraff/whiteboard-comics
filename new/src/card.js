@@ -61,9 +61,22 @@ class ElementState {
 // ])
 
 
+class TriggerPromise {
+    constructor() {
+        this._promise = new Promise(resolve => this.resolve = resolve)
+    }
+
+    then(callback) {
+        return this._promise.then(callback)
+    }
+}
+
+
 export default class SVGCard extends HTMLElement {
 	constructor() {
 		super()
+
+		//TODO: careful the <svg-card> placeholder will try to instantiate here like the other ones. Maybe make it a <div> instead
 
 		this.svg = this.querySelector('svg')
 		this.anchor = this.querySelector('a')
@@ -75,13 +88,22 @@ export default class SVGCard extends HTMLElement {
 			if (this.state.processed) this.alphabet()
 			else this.shouldProcessAlphabet = true
 		}, { once: true })
+
+		// external triggers
+		this.workerPromise = new TriggerPromise()
+		this.hydratePromise = new TriggerPromise()
+		this.alphabetPromise = new TriggerPromise()
+		// flags
+		this.shouldProcess = false
+		this.shouldAlphabet = false
 	}
 
 	registerToWorker() {
 		Promise.all([
-			new Promise(resolve => this.workerPromise = resolve),
-			new Promise(resolve => this.hydratePromise = resolve)
+			this.workerPromise,
+			this.hydratePromise
 		]).then(() => {
+			console.log(this)
 			// hydrate worker
 			requestIdleCallback(() => this._worker.postMessage(JSON.stringify({
 				type: 'hydrate',
@@ -95,8 +117,10 @@ export default class SVGCard extends HTMLElement {
 
 	set worker(worker) {
 		this._worker = worker
-		this.workerPromise()
+		console.log(this._worker)
+		this.workerPromise.resolve()
 		delete this.workerPromise
+		console.log(this._worker)
 	}
 
 	set graph(graph) {
@@ -115,7 +139,7 @@ export default class SVGCard extends HTMLElement {
 		})
 
 		this.state.hydrated = true
-		this.hydratePromise()
+		this.hydratePromise.resolve()
 		delete this.hydratePromise
 	}
 
@@ -219,7 +243,7 @@ export default class SVGCard extends HTMLElement {
 
 		requestIdleCallback(() => {
 			const svg = workInTemplate()
-			requestAnimationFrame(() => workInDom(svg)) 
+			requestAnimationFrame(() => workInDom(svg))
 		})
 
 		return promise
