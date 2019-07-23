@@ -1,10 +1,16 @@
 <?php
 
 
-function article ($graph, $active=false, $canFeature = false) { ?>
-	<svg-card <?php echo "class='" . ($canFeature && rand(0,10)===0 ? "featured" : "") . "'" ?>>
-        <?php if($graph[content]) echo $graph[content]; ?>
-        <!-- <div class='progress'></div> -->
+function article ($graph, $active=false, $canFeature = false) { 
+	$feature = ($canFeature && rand(0,10)===0);
+	$classes = ($feature ? "featured " : "") . ($active ? "front start-active" : "");
+	?>
+	<?php if($active) { ?>
+		<svg-card class="placeholder <?php echo ($feature ? "featured " : ""); ?>"></svg-card>
+	<?php } ?>
+	<svg-card class="<?php echo $classes; ?>">
+		<?php if($graph[content]) echo $graph[content]; ?>
+		<a href="/<?php echo $graph[name]; ?>"></a>
 	</svg-card>
 <?php }
 

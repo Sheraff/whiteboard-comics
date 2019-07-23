@@ -20,11 +20,9 @@
 - [ ] <aside> UI
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
-- [ ] allow for landed state based on URL (/archives, /graph_name, /contact)
-- [ ] URL rewriting when switching graph
-- [ ] prevent scrolling when an <card> is front
-- [ ] fix issue when graph is toggled OFF during animation and toggled back ON while animation isn't finished => isn't able to restart properly and we see the animation running from 2 ≠ timelines at the same time
-- [ ] figure out why first path of a replaces <span> is always late
+- [x] allow for landed state based on URL (/archives, /graph_name, /contact)
+- [ ] prevent scrolling when a <card> is front
+- [ ] figure out why first path of a replaced <span> is always late
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
 - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
@@ -33,13 +31,14 @@
 - [ ] auto SVG to GIF process
 - [ ] SEO, headers, favicon
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
+- [ ] switch from `Timeout` to `AnimationFrame` in svg.js
 
 ## PERF LIST for non-blocking performance improvements
 
-- [ ] implement *idle-until-urgent* pattern on all costly async code (parsing SVG, initializing worker, alphabetizing...) (see details here: https://philipwalton.com/articles/idle-until-urgent/)
+- [x] implement *idle-until-urgent* pattern on all costly async code (parsing SVG, initializing worker, alphabetizing...) (see details here: https://philipwalton.com/articles/idle-until-urgent/)
 - [ ] host font on server and rel="preload"? (or does google have a way to still be faster than this?)
 - [ ] look into using `contain: strict;` for <card> and possibly other elements to restrict layout / paint calculations (https://developers.google.com/web/updates/2016/06/css-containment)
-- [ ] some cards get called twice on .alphabet(). This is fixed (using state.texted flag) but should be investigated for performance & code sanity
+- [ ] some cards get called twice on .alphabet()
 - [ ] optimization: remove querySelector as much as possible (and cache DOM into variables instead) (especially in the costly alphabet section) (other methods of getting DOM elements are barely faster, no need to optimize for this except in extreme cases)
 - [ ] use simple CSS selectors (id is best, classes are preferred, then tags, and then compositing many items)
 - [ ] boredom processing of graphs => clearTimeout on IntersectionObserver, load graph on requestIdleCallback, make sure the entire SVG processing has a way to be done async in succession of requestIdleCallbacks (have a 'priority' flag argument for when the processing is for the viewport? or do everything with the same priority but clearTimeout on more UI events) — worker can send a message every time it loads a graph that would have a ≠ structure (not get caught by any customWorkerResponses) and add to a list of graphs that can be bordedom processed
@@ -58,6 +57,7 @@
 - [ ] *??* separate immediately-needed JS and later-is-fine JS into 2 separate script files
 - [ ] *??* use onload="preloadFinished()" on <link> to start worker tasks
 - [ ] *??* what's worse: using more CPU but less RAM (don't store processed graphs, reprocess every time) or more RAM but less CPU (graphs are kept in "ready to play" state in memory)? Do I even gain any RAM by deleting procesed graphs (still need to display the basic SVG)? How does this relate to virtualization of grid/list? 
+- [ ] *??* `LETTERS` shouldn't be sent on every load. Store in indexedDB. Initialize within `SVGAnim` class instead of from main script. Fetch from server within class if not in DB.
 
 
 ----

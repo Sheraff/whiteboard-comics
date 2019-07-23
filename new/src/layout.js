@@ -3,7 +3,7 @@ export default class CardArray extends Array{
     static querySelectorAll(selectors) {
         const cardArray = new CardArray(...document.querySelectorAll(selectors))
         cardArray.activeIndex = -1
-        cardArray.placeholder = document.createElement('svg-card')
+        cardArray.placeholder = document.querySelector('svg-card.placeholder') || document.createElement('svg-card')
         return cardArray
     }
 
@@ -60,15 +60,16 @@ export default class CardArray extends Array{
     
         // turn OFF case
         if (!on) {
-            if(this.activeIndex!==-1 && this[this.activeIndex] === card)
+            if(this.activeIndex!==-1 && this[this.activeIndex] === card) {
                 this.activeIndex = -1
+                document.dispatchEvent(new CustomEvent('open', { detail: { card: {} } }))
+            }
             return this.toggle(card, on, true)
         }
         // turn ON case
         else {
             if (this.activeIndex!==-1 && this[this.activeIndex] !== card) {
                 this.cardPop(this[this.activeIndex], false)
-                this[this.activeIndex].classList.remove('active')
                 this[this.activeIndex].state.active = false
             }
             this.activeIndex = card.key
@@ -117,7 +118,7 @@ export default class CardArray extends Array{
                 })
             }
         })
-        
+
         animate()
         // .then(() => { console.log('toggle and fill #overlay') })
         .then(() => {
@@ -142,11 +143,10 @@ export default class CardArray extends Array{
             let orig 
             if(animate) orig = card.getBoundingClientRect()
             // apply
-            card.classList[on ? 'add' : 'remove']('frontClassToUseForMainGraph')
+            card.state.front = on
             if(on){
                 if(card.classList.contains('featured'))
                     this.placeholder.classList.add('featured')
-                card.classList.add('active')
                 card.state.active = true
                 card.parentNode.insertBefore(this.placeholder, card)
             } else {
@@ -170,7 +170,7 @@ export default class CardArray extends Array{
             card.style.transform = `translate(${orig.left - dest.left}px, ${orig.top - dest.top}px) scale(${wRatio}, ${hRatio})`
             card.svg.style.transform = `translate(-50%, -50%) scale(${Math.min(wRatio, hRatio) / wRatio}, ${Math.min(wRatio, hRatio) / hRatio})`
             // release
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 card.style.transition = `transform ${duration}s linear`
                 card.svg.style.transition = `transform ${duration}s linear`
                 card.style.transform = `translate(0, 0) scale(1, 1)`
@@ -180,10 +180,8 @@ export default class CardArray extends Array{
         }
     
         const after = (resolve) => {
-            if(!on) {
-                card.classList.remove('active')
+            if(!on)
                 card.state.active = false
-            }
             resolve()
             const queued = card.state.queued
             delete card.state.queued
