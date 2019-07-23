@@ -60,8 +60,10 @@ export default class CardArray extends Array{
     
         // turn OFF case
         if (!on) {
-            if(this.activeIndex!==-1 && this[this.activeIndex] === card)
+            if(this.activeIndex!==-1 && this[this.activeIndex] === card) {
                 this.activeIndex = -1
+                document.dispatchEvent(new CustomEvent('open', { detail: { card: {} } }))
+            }
             return this.toggle(card, on, true)
         }
         // turn ON case

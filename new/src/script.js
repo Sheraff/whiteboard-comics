@@ -38,6 +38,10 @@ cards.forEach((card, key) => {
 })
 
 
+////////////////////
+// NAVIGATION & URL
+////////////////////
+
 cards.forEach(card => { // TODO: move to Layout or to Card ? 
 	card.addEventListener('click', (e) => {
 		e.stopPropagation()
@@ -58,21 +62,48 @@ window.addEventListener('keyup', (e) => {
 	}
 })
 
-/////////////////////
-// SINGLE GRAPH PATH
-/////////////////////
+const pushState = ({ name = 'archives', key = -1 }) => {
+	if (history.state.key === key)
+		return
+	history.pushState({ name, key }, name, name)
+}
+
+window.addEventListener('popstate', ({ state: { name, key } }) => {
+	if(name === 'archives')
+		pushState({name, key})
+	else switch (cards.activeIndex) {
+		case key:
+			return;
+		case -1:
+			cards.cardPop(cards[key], true)
+			break;
+		default:
+			cards.cardSwitch(cards[key], true)
+			break;
+	}
+})
+
+document.addEventListener('open', ({ detail: { card } }) => pushState(card))
 
 const landedActiveCard = document.querySelector('svg-card.front')
 if (landedActiveCard) {
+	cards.activeIndex = landedActiveCard.key
 	landedActiveCard.immediate()
+	pushState(landedActiveCard)
+} else {
+	pushState({})
 }
-
 // TODO: if landedActiveCard, loadIntersectionObserver acts on requestIdleCallback to prevent heavy page initialization
 
 
-/////////////////////
-//// THUMBNAILS PATH
-/////////////////////
+// ['hydrated', 'open', 'processed', 'texted', 'active', 'front'].forEach(prop => {
+// 	document.addEventListener(prop, ({detail}) => console.log(`${prop} card ${detail.card.key}`, detail))
+// })
+
+
+////////////////
+// LAZY LOADING
+////////////////
 
 const loadOnIntersection = (entries, observer) => {
 	entries.filter(entry => entry.isIntersecting)
@@ -87,10 +118,5 @@ const loadOnIntersection = (entries, observer) => {
 			}
 		})
 }
-
 const loadIntersectionObserver = new IntersectionObserver(loadOnIntersection, { rootMargin: `${window.innerHeight}px` })
-
 cards.forEach(card => { loadIntersectionObserver.observe(card) })
-document.addEventListener('active', e => {
-	console.log(e)
-})
