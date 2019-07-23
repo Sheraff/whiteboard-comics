@@ -3,7 +3,7 @@ export default class CardArray extends Array{
     static querySelectorAll(selectors) {
         const cardArray = new CardArray(...document.querySelectorAll(selectors))
         cardArray.activeIndex = -1
-        cardArray.placeholder = document.createElement('svg-card')
+        cardArray.placeholder = document.querySelector('svg-card.placeholder') || document.createElement('svg-card')
         return cardArray
     }
 

@@ -1,4 +1,4 @@
-export class IdlePromise {
+export default class IdlePromise {
     constructor(steps, {deadline = 15, init}) {
         this.steps = steps
         this.MIN_DEADLINE = deadline // how long will each operation (item in steps[]) need (in milliseconds)

@@ -30,7 +30,7 @@ worker.onmessage = e => {
 /////////////////////
 
 customElements.define('svg-card', SVGCard)
-const cards = CardArray.querySelectorAll('svg-card')
+const cards = CardArray.querySelectorAll('svg-card:not(.placeholder)')
 cards.forEach((card, key) => {
 	card.graph = GRAPHS[key]
 	card.key = key
@@ -89,7 +89,7 @@ window.addEventListener('popstate', ({ state: { name, key } }) => {
 
 document.addEventListener('open', ({ detail: { card } }) => pushState(card))
 
-const landedActiveCard = document.querySelector('svg-card.front')
+const landedActiveCard = document.querySelector('svg-card.front:not(.placeholder)')
 if (landedActiveCard) {
 	cards.activeIndex = landedActiveCard.key
 	console.dir(landedActiveCard)

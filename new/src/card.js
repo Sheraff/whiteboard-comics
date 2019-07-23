@@ -1,32 +1,6 @@
 import SVGAnim from "./svg.js";
+import IdlePromise from "./idlePromise.js"
 
-class StatePromise {
-	constructor(element) {
-		this.element = element
-	}
-
-	wrapAction(action) {
-		return new Promise(resolve => {
-			if (this[action] === true)
-				resolve()
-			else if (this[action])
-				this[action].push(resolve)
-			else {
-				this[action] = [resolve]
-				action.then(() => {
-					this[action].forEach(resolve => resolve())
-					this[action] = true
-				})
-			}
-		})
-	}
-
-	doSomething() {
-		return new Promise(resolve => {
-			setTimeout(resolve, 1000)
-		})
-	}
-}
 
 class ElementState {
 	constructor(element) {
@@ -55,6 +29,37 @@ class ElementState {
 		})
 	}
 }
+
+
+// playable = new IdlePromise([
+// 	// wait for worker, hydration, and DOM data
+// 	() => Promise.all([
+// 		new Promise(resolve => this.workerPromise = resolve),
+// 		new Promise(resolve => this.hydratePromise = resolve),
+// 		() => {
+// 			const svg = this.querySelector('svg')
+// 			if(svg)
+// 				this.rawXML = this.svg.outerHTML
+// 		},
+// 	]),
+// 	// notify worker
+// 	() => this.registerToWorker(),
+// 	// wait for SVG data, and font
+// 	() => Promise.all([
+// 		this.getContent(),
+// 		document.fonts.load('1em Permanent Marker')
+// 	]),
+// 	// sequentially do all necessary work on SVG
+// 	([xml]) => workInTemplate(xml),
+// 	(svg) => workInDom(svg),
+// 	// wait for alphabet to be required
+// 	(svg) => new Promise(resolve => this.alphabetPromise = () => {resolve(svg)}),
+// 	(svg) => alphabet(svg),
+// 	// decompose alphabet
+// 	// add extra step of calculating length of each SVGGraphicsElement
+// 	// return true at the end
+// ])
+
 
 export default class SVGCard extends HTMLElement {
 	constructor() {
@@ -104,6 +109,10 @@ export default class SVGCard extends HTMLElement {
 		if (this.svg)
 			this.rawXML = this.svg.outerHTML
 
+		this.classList.forEach(className => {
+			if (className in this.state)
+				this.state[className] = true
+		})
 
 		this.state.hydrated = true
 		this.hydratePromise()
@@ -161,10 +170,11 @@ export default class SVGCard extends HTMLElement {
 	}
 
 	processSVG(xml) {
-		let resolve, reject
+		let resolve
+		const promise = new Promise(res => resolve = res)
 
 		// SVG starts in template (doesn't trigger DOM)
-		requestIdleCallback(() => {
+		const workInTemplate = () => {
 			this.rawXML = xml
 			const template = document.createRange().createContextualFragment(xml) // TODO: add a fallback to new DOMParser().parseFromString ??
 			const svg = template.firstElementChild
@@ -185,30 +195,34 @@ export default class SVGCard extends HTMLElement {
 			else
 				svg.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
 
-			// SVG is in DOM
-			requestAnimationFrame(() => {
-				// put SVG into place
-				if (this.svg)
-					this.replaceChild(svg, this.querySelector('svg'))
-				else
-					this.appendChild(svg)
-				this.svg = svg
-				this.state.processed = true
-				if (!this.shouldProcessAlphabet)
-					resolve(this)
-				// replace <text> font elements, with <g> SVG elements (only if already requested before)
-				else
-					requestAnimationFrame(() => {
-						this.alphabet()
-							.then(() => resolve(this))
-					})
-			})
+			return svg
+		}
+
+		// SVG is in DOM
+		const workInDom = (svg) => {
+			// put SVG into place
+			if (this.svg)
+				this.replaceChild(svg, this.querySelector('svg'))
+			else
+				this.appendChild(svg)
+			this.svg = svg
+			this.state.processed = true
+			if (!this.shouldProcessAlphabet)
+				resolve(this)
+			// replace <text> font elements, with <g> SVG elements (only if already requested before)
+			else
+				requestAnimationFrame(() => {
+					this.alphabet()
+						.then(() => resolve(this))
+				})
+		}
+
+		requestIdleCallback(() => {
+			const svg = workInTemplate()
+			requestAnimationFrame(() => workInDom(svg)) 
 		})
 
-		return new Promise((res, rej) => {
-			resolve = res
-			reject = rej
-		})
+		return promise
 	}
 
 	getContent() {

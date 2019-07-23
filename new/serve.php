@@ -1,8 +1,14 @@
 <?php
 
 
-function article ($graph, $active=false, $canFeature = false) { ?>
-	<svg-card class="<?php echo ($canFeature && rand(0,10)===0 ? "featured " : "") . ($active ? "front start-active" : ""); ?>">
+function article ($graph, $active=false, $canFeature = false) { 
+	$feature = ($canFeature && rand(0,10)===0);
+	$classes = ($feature ? "featured " : "") . ($active ? "front start-active" : "");
+	?>
+	<?php if($active) { ?>
+		<svg-card class="placeholder <?php echo ($feature ? "featured " : ""); ?>"></svg-card>
+	<?php } ?>
+	<svg-card class="<?php echo $classes; ?>">
 		<?php if($graph[content]) echo $graph[content]; ?>
 		<a href="/<?php echo $graph[name]; ?>"></a>
 	</svg-card>
