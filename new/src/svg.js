@@ -138,21 +138,21 @@ export default class SVGAnim {
 	static reset(svg) {
 		const callback = (element) => {
 			if (element.dataset.type !== 'erase')
-				if (element.timer) {
-					return new Promise(resolve => {
-						requestAnimationFrame(() => { // TODO: better way to change style? This one is costly
-							element.style.transition = 'none'
-							element.style.strokeDashoffset = '0'
-							element.style.visibility = 'visible'
-							element.style.opacity = '1'
+				return new Promise(resolve => {
+					requestAnimationFrame(() => { // TODO: better way to change style? This one is costly
+						element.style.transition = 'none'
+						element.style.strokeDashoffset = '0'
+						element.style.visibility = 'visible'
+						element.style.opacity = '1'
 
+						if (element.timer) {
 							clearTimeout(element.timer)
 							delete element.timer
+						}
 
-							resolve()
-						})
+						resolve()
 					})
-				}
+				})
 			return Promise.resolve()
 		}
 		return SVGAnim.asyncWalkSVGTree(svg, callback)

@@ -152,12 +152,9 @@ export default class SVGCard extends HTMLElement {
 	}
 
 	erase() {
-		return new Promise(resolve => {
-			SVGAnim.freeze(this.svg)
-				.then(() => SVGAnim.prepare(this.erasePath, false))
-				.then(() => SVGAnim.animate(this.erasePath, false))
-				.then(resolve)
-		})
+		return SVGAnim.freeze(this.svg)
+			.then(() => SVGAnim.prepare(this.erasePath, false))
+			.then(() => SVGAnim.animate(this.erasePath, false))
 	}
 
 	unerase() {
