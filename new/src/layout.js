@@ -70,7 +70,7 @@ export default class CardArray extends Array{
                 this.activeIndex = -1
                 document.dispatchEvent(new CustomEvent('open', { detail: { card: {} } }))
             }
-            return this.toggle(card, on, true)
+            return this.toggle(card, false, true)
         }
         // turn ON case
         else {
@@ -80,7 +80,7 @@ export default class CardArray extends Array{
             }
             this.activeIndex = card.key
             return Promise.all([
-                this.toggle(card, on, true),
+                this.toggle(card, true, true),
                 card.erase()
             ])
             .then(() => this.afterTransition(card))
@@ -97,7 +97,7 @@ export default class CardArray extends Array{
         // turn OFF case
         if (!on) {
             return card.erase()
-                .then(() => this.toggle(card, on))
+                .then(() => this.toggle(card, false))
                 .then(() => card.unerase())
         // turn ON case
         } else {
@@ -106,7 +106,7 @@ export default class CardArray extends Array{
             const previous = this[this.activeIndex]
             this.activeIndex = card.key
             return this.cardSwitch(previous, false)
-                .then(() => this.toggle(card, on))
+                .then(() => this.toggle(card, true))
                 .then(() => this.afterTransition(card))
         }
     }

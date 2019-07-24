@@ -52,16 +52,14 @@ cards.forEach(card => { // TODO: move to Layout or to Card ?
 		cards.cardPop(card)
 	})
 })
-const navigate = direction => e => {
-	e && e.preventDefault()
-	const index = cards[direction ? 'next' : 'prev']()
-	previous.setAttribute('href', index===false || index===0            ? '' : cards[index-1].name)
-	next.setAttribute('href',     index===false || index===cards.length ? '' : cards[index+1].name)
-}
-const navigateNext = navigate(true)
-const navigatePrev = navigate(false)
-next.addEventListener('click', navigateNext)
-previous.addEventListener('click', navigatePrev)
+next.addEventListener('click', e => {
+	e.preventDefault()
+	cards.next()
+})
+previous.addEventListener('click', e => {
+	e.preventDefault()
+	cards.prev()
+})
 archives.addEventListener('click', e => {
 	e.preventDefault()
 	cards.cardPop(cards[cards.activeIndex], !cards[cards.activeIndex].state.open)
@@ -72,10 +70,10 @@ window.addEventListener('keyup', (e) => {
 			if (cards.activeIndex !== -1) cards.cardPop(cards[cards.activeIndex])
 			break
 		case 'ArrowLeft':
-			navigatePrev()
+			cards.prev()
 			break
 		case 'ArrowRight':
-			navigateNext()
+			cards.next()
 			break
 	}
 })
@@ -89,19 +87,27 @@ const pushState = ({ name = 'archives', key = -1 }) => {
 window.addEventListener('popstate', ({ state: { name, key } }) => {
 	if (name === 'archives')
 		pushState({ name, key })
-	else switch (cards.activeIndex) {
-		case key:
-			return;
-		case -1:
-			cards.cardPop(cards[key], true)
-			break;
-		default:
-			cards.cardSwitch(cards[key], true)
-			break;
+	else {
+		switch (cards.activeIndex) {
+			case key:
+				return;
+			case -1:
+				cards.cardPop(cards[key], true)
+				break;
+			default:
+				cards.cardSwitch(cards[key], true)
+				break;
+		}
+		previous.setAttribute('href', key || key===0     ? '' : cards[key-1].name)
+		next.setAttribute('href',     key===cards.length ? '' : cards[key+1].name)
 	}
 })
 
-document.addEventListener('open', ({ detail: { card } }) => pushState(card))
+document.addEventListener('open', ({ detail: { card } }) => {
+	pushState(card)
+	previous.setAttribute('href', card.key===0            ? '' : cards[card.key-1].name)
+	next.setAttribute('href',     card.key===cards.length ? '' : cards[card.key+1].name)
+})
 
 const landedActiveCard = document.querySelector('svg-card.front:not(.placeholder)')
 if (landedActiveCard) {

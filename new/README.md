@@ -21,6 +21,8 @@
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
 - [x] allow for landed state based on URL (/archives, /graph_name, /contact)
+- [ ] ::bug:: graphs flash before playing
+- [ ] ::bug:: quickly navigating causes issues => need better handling of promises and states
 - [ ] prevent scrolling when a <card> is front
 - [ ] figure out why first path of a replaced <span> is always late
 - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
