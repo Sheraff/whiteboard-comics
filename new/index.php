@@ -51,23 +51,13 @@ $initial = 0;
 			</a>
 			<nav id='navigation'>
 				<ul>
-					<li><a href="#">Prev</a></li>
-					<li><a href="#">Next</a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/menu.svg'); ?><span>Archive</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/settings.svg'); ?><span>Settings</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/previous.svg'); ?><span>Previous</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/next.svg'); ?><span>Next</span></a></li>
 				</ul>
 			</nav>
 		</header>
-		<div>
-			<p>
-			<p>
-		</div>
-		<nav id='menu'>
-			<ul>
-				<li><a href="#">Archive</a></li>
-				<li><a href="#">Settings</a></li>
-				<li><a href="#">RSS</a></li>
-				<li><a href="#">Facebook</a></li>
-			</ul>
-		</nav>
 		<nav id='tags'>
 			<ul>
 				
@@ -78,11 +68,23 @@ $initial = 0;
 				
 			</ul>
 		</nav>
+		<div id='blurb'>
+			<p>
+			<p>
+		</div>
 		<footer>
+			<nav id='menu'>
+				<ul>
+					<li><a href="#"><?php echo file_get_contents('./UI/rss.svg'); ?><span>RSS</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/facebook.svg'); ?><span>Facebook</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/instagram.svg'); ?><span>Instagram</span></a></li>
+					<li><a href="#"><?php echo file_get_contents('./UI/mail.svg'); ?><span>Contact</span></a></li>
+				</ul>
+			</nav>
 			<nav id='footer'>
 				<ul>
-					<li><a href="#">Author</a></li>
-					<li><a href="#">Contact</a></li>
+					<!-- <li><a href="#">Author</a></li> -->
+					<li><a href="http://florianpellet.com"><?php echo file_get_contents('./UI/copyright.svg'); ?><span>Florian Pellet</span></a></li>
 				</ul>
 			</nav>
 		</footer>

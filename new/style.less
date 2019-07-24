@@ -1,91 +1,90 @@
 html, body, ul, li, a {
-    text-decoration: none;
-    color: currentColor;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+	text-decoration: none;
+	color: currentColor;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 body{
-    display: flex;
+	display: flex;
 	margin: 0;
-    background-color: #D9D2CC;
+	background-color: #D9D2CC;
 
-    --aside: 300px;
-    --margin: 10px;
-    --popDuration: .5s;
+	--aside: 300px;
+	--margin: 10px;
+	--popDuration: .5s;
 }
 
 main{
-    position: relative;
-    flex: 1;
-    margin-left: calc(var(--aside) + var(--margin));
-    // width: calc(100vw - calc(var(--aside) + var(--margin)))
+	position: relative;
+	flex: 1;
+	margin-left: calc(var(--aside) + var(--margin));
 }
 
 #overlay{
-    position: fixed;
-    height: 100vh;
-    left: calc(var(--aside) + calc(var(--margin) * 1.5));
-    right: 0;
-    opacity: 0;
-    will-change: opacity;
-    transition: opacity .2s ease;
-    z-index: 999;
-    pointer-events: none;
-    &.front{
-        opacity: 1;
-    }
-    & > *{
-        position: absolute;
-        right: var(--margin);
-        pointer-events: initial;
-        
-        &:first-child{
-            top: var(--margin);
-        }
-        &:last-child{
-            bottom: var(--margin);
-        }
+	position: fixed;
+	height: 100vh;
+	left: calc(var(--aside) + calc(var(--margin) * 1.5));
+	right: 0;
+	opacity: 0;
+	will-change: opacity;
+	transition: opacity .2s ease;
+	z-index: 999;
+	pointer-events: none;
+	&.front{
+		opacity: 1;
+	}
+	& > *{
+		position: absolute;
+		right: var(--margin);
+		pointer-events: initial;
+		
+		&:first-child{
+			top: var(--margin);
+		}
+		&:last-child{
+			bottom: var(--margin);
+		}
 
-        &, a{
-            color: gray;
-        }
-    }
+		&, a{
+			color: gray;
+		}
+	}
 }
 
 #graphs{
-    margin: var(--margin);
+	margin: var(--margin);
 
-    display: grid;
-    grid-gap: var(--margin);
-    justify-content: space-around;
+	display: grid;
+	grid-gap: var(--margin);
+	justify-content: space-around;
 
-    // cells of equal width
-    --count: 9;
-    grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
-    grid-auto-rows: 1fr;
+	// cells of equal width
+	--count: 9;
+	grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
+	grid-auto-rows: 1fr;
 
-    // auto-layout around cells bigger than 1x1
-    grid-auto-flow: dense;
-    
-    // hack for square cells
-    &::before{
-        content: '';
-        width: 0;
-        padding-bottom: 100%;
-        grid-row: 1 / 1;
-        grid-column: 1 / 1;
-    }
-    // override hack so that 1st cell isn't blank
-    svg-card:first-child{
-        grid-column: 1 / 1 / span 3;
-        grid-row: 1 / 1 / span 3;
-    }
-    svg-card.featured{
-        grid-column-end: span 2;
-        grid-row-end: span 2;
-    }
+	// auto-layout around cells bigger than 1x1
+	grid-auto-flow: dense;
+	
+	// hack for square cells
+	&::before{
+		content: '';
+		width: 0;
+		padding-bottom: 100%;
+		grid-row: 1 / 1;
+		grid-column: 1 / 1;
+	}
+	// override hack so that 1st cell isn't blank
+	svg-card:first-child{
+		grid-column: 1 / 1 / span 3;
+		grid-row: 1 / 1 / span 3;
+	}
+	svg-card.featured{
+		grid-column-end: span 2;
+		grid-row-end: span 2;
+	}
 }
 @media screen and (max-width: 2000px) { #graphs{--count: 8;} }
 @media screen and (max-width: 1800px) { #graphs{--count: 7;} }
@@ -97,164 +96,197 @@ main{
 @media screen and (max-width: 600px)  { #graphs{--count: 1;} }
 
 @media screen and (max-width: 1200px){ 
-    svg-card:first-child{
-        grid-column: 1 / 1 / span 2;
-        grid-row: 1 / 1 / span 2;
-    }
-    svg-card.featured{
-        grid-column-end: span 1;
-        grid-row-end: span 1;
-    }
+	svg-card:first-child{
+		grid-column: 1 / 1 / span 2;
+		grid-row: 1 / 1 / span 2;
+	}
+	svg-card.featured{
+		grid-column-end: span 1;
+		grid-row-end: span 1;
+	}
 }
 
 
 #meta{
-    position: fixed;
-    order: -1;
-    width: var(--aside);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 var(--margin);
-    justify-content: space-between;
-    text-align: center;
+	position: fixed;
+	order: -1;
+	width: var(--aside);
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	padding: 0 var(--margin);
+	justify-content: space-between;
+	text-align: center;
 
-    --unit: 75px;
+	--unit: 75px;
 
-    h1{
-        height: var(--unit);
-        svg{
-            overflow: visible;
-        }
-    }
-    h2 {
-        height: var(--unit);
-    }
-    & > *:not(header) {
-        text-transform: lowercase;
-    }
-    #navigation, #menu {
-        height: var(--unit);
-        ul {
-            display: flex;
-            li {
-                flex: 1;
-            }
-        }
-    }
-    footer {
-        li {
-            height: var(--unit);
-        }
-    }
+	h1{
+		height: var(--unit);
+	}
+	h2 {
+		height: var(--unit);
+	}
+	& > *:not(header) {
+		text-transform: lowercase;
+	}
+	#navigation, #menu {
+		height: var(--unit);
+		ul {
+			display: flex;
+			height: 100%;
+			li {
+				flex: 1;
+			}
+		}
+		a {
+			display: block;
+			height: 100%;
+			position: relative;
+			svg {
+				max-width: 2em;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				transition: transform .2s;
+			}
+			span {
+				min-width: 100%;
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				opacity: 0;
+				transform: translate(-50%, 100%);
+				transition: transform .2s, opacity .2s;
+				pointer-events: none;
+			}
+			&:hover {
+				svg {
+					transform: translate(-50%, calc(-50% - 1em));
+				}
+				span {
+					opacity: 1;
+					transform: translate(-50%, 0);
+				}
+			}
+		}
+	}
+	footer {
+		li {
+			height: var(--unit);
+		}
+	}
+	svg{
+		overflow: visible;
+	}
 }
 
 
 svg-card{
-    position: relative;
-    overflow: hidden;
-    transform-origin: 0 0;
-    transition: transform var(--popDuration) linear, opacity var(--popDuration) ease, box-shadow .2s ease;
-    will-change: transform, opacity, box-shadow;
-    background-color: white;
-    padding: calc(.25 * var(--margin));
+	position: relative;
+	overflow: hidden;
+	transform-origin: 0 0;
+	transition: transform var(--popDuration) linear, opacity var(--popDuration) ease, box-shadow .2s ease;
+	will-change: transform, opacity, box-shadow;
+	background-color: white;
+	padding: calc(.25 * var(--margin));
 
-    &:not(.open) > a {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1;
-        cursor: pointer;
-    }
+	&:not(.open) > a {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 1;
+		cursor: pointer;
+	}
 
-    &.start-active {
-        &, &.processed {
-            & > svg {
-                opacity: 0;
-            }
-        }
-    }
+	&.start-active {
+		&, &.processed {
+			& > svg {
+				opacity: 0;
+			}
+		}
+	}
 
-    &.front{
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: calc(100vw - calc(var(--aside) + 2 * var(--margin)));
-        height: 100vh;
-        z-index: 1;
-    }
+	&.front{
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: calc(100vw - calc(var(--aside) + 2 * var(--margin)));
+		height: 100vh;
+		z-index: 1;
+	}
 
-    // loading classes
-    box-shadow: 0 0 .5px black;
-    & > svg{
-        opacity: 0;
-        transition: opacity .2s ease;
-        will-change: opacity;
-    }
-    &.processed{
-        box-shadow: 0 0 2.5px black;
-        & > svg{
-            opacity: 1;
-        }
-    }
-    &.texted{
-        & > svg{
-            tspan, text{ opacity: 0; }
-            [data-type="writing"]{ opacity: 1; }
-        }
-    }
-    &.active{
-        z-index: 1;
-    }
-    &:hover{
-        box-shadow: .5px .5px 4px black;
-    }
+	// loading classes
+	box-shadow: 0 0 .5px black;
+	& > svg{
+		opacity: 0;
+		transition: opacity .2s ease;
+		will-change: opacity;
+	}
+	&.processed{
+		box-shadow: 0 0 2.5px black;
+		& > svg{
+			opacity: 1;
+		}
+	}
+	&.texted{
+		& > svg{
+			tspan, text{ opacity: 0; }
+			[data-type="writing"]{ opacity: 1; }
+		}
+	}
+	&.active{
+		z-index: 1;
+	}
+	&:hover{
+		box-shadow: .5px .5px 4px black;
+	}
 
-    
-    // svg styling
-    & > svg{
-        max-height: 100%;
-        max-width: 100%;
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+	
+	// svg styling
+	& > svg{
+		max-height: 100%;
+		max-width: 100%;
+		position: relative;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 
-        white-space: pre;
-        overflow: visible;
-        
-        transform-origin: center center;
-        transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
-        will-change: transform, opacity;
-        path, line, polyline{
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-miterlimit: 10;
-            fill: none;
-            &:not([stroke]){
-                stroke: black;
-            }
-            &:not([stroke-width]){
-                stroke-width: 4;
-            }
-        }
-        tspan, text{
-            font-display: block;
-            font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
-            opacity: 1;
-            transition: opacity .2s ease;
-            will-change: opacity;
-        }
-        [data-type="writing"]{
-            opacity: 0;
-            transition: opacity .2s ease, stroke .2s linear;
-            will-change: opacity;
-        }
-        [data-type="erase"]{
-            stroke-linejoin: bevel;
-            stroke-linecap: butt;
-        }
-    }
+		white-space: pre;
+		overflow: visible;
+		
+		transform-origin: center center;
+		transition: transform var(--popDuration) linear, opacity var(--popDuration) ease;
+		will-change: transform, opacity;
+		path, line, polyline{
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-miterlimit: 10;
+			fill: none;
+			&:not([stroke]){
+				stroke: black;
+			}
+			&:not([stroke-width]){
+				stroke-width: 4;
+			}
+		}
+		tspan, text{
+			font-display: block;
+			font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
+			opacity: 1;
+			transition: opacity .2s ease;
+			will-change: opacity;
+		}
+		[data-type="writing"]{
+			opacity: 0;
+			transition: opacity .2s ease, stroke .2s linear;
+			will-change: opacity;
+		}
+		[data-type="erase"]{
+			stroke-linejoin: bevel;
+			stroke-linecap: butt;
+		}
+	}
 }

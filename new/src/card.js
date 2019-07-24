@@ -77,6 +77,7 @@ export default class SVGCard extends HTMLElement {
 		super()
 
 		//TODO: careful the <svg-card> placeholder will try to instantiate here like the other ones. Maybe make it a <div> instead
+		//TODO: remove start-active class once SVG is ready to be drawn
 
 		this.svg = this.querySelector('svg')
 		this.anchor = this.querySelector('a')
