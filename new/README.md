@@ -17,7 +17,7 @@
 
 ## TODO LIST in order of priority
 
-- [-] <aside> UI
+- [x] <aside> UI
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
 - [x] allow for landed state based on URL (/archives, /graph_name, /contact)
@@ -34,6 +34,7 @@
 - [ ] SEO, headers, favicon
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
 - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
+- [ ] mobile layout
 
 ## PERF LIST for non-blocking performance improvements
 
