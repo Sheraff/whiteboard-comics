@@ -118,6 +118,7 @@ main{
 	padding: 0 var(--margin);
 	justify-content: space-between;
 	text-align: center;
+	text-transform: lowercase;
 
 	--unit: 75px;
 
@@ -149,7 +150,7 @@ main{
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				transform: translate(-50%, -50%);
+				transform: translate3d(-50%, -50%, 0);
 				transition: transform .2s;
 				path{
 					stroke-width: .35em;
@@ -161,18 +162,22 @@ main{
 				bottom: 0;
 				left: 50%;
 				opacity: 0;
-				transform: translate(-50%, 100%);
+				transform: translate3d(-50%, 50%, 0);
 				transition: transform .2s, opacity .2s;
 				pointer-events: none;
 			}
 			&:hover {
 				svg {
-					transform: translate(-50%, calc(-50% - .5em));
+					transform: translate3d(-50%, calc(-50% - .25em), 0);
 				}
 				span {
 					opacity: 1;
-					transform: translate(-50%, 0);
+					transform: translate3d(-50%, 0, 0);
 				}
+			}
+			&[href=""], &:not([href]){
+				opacity: .3;
+				pointer-events: none;
 			}
 		}
 	}

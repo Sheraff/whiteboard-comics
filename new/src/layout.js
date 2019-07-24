@@ -8,13 +8,19 @@ export default class CardArray extends Array{
     }
 
     next() {
-        if(this.activeIndex!==-1 && this.activeIndex!==this.length-1) 
+        if(this.activeIndex!==-1 && this.activeIndex!==this.length-1) {
             this.cardSwitch(this[this.activeIndex+1])
+            return this.activeIndex
+        } else
+            return false
     }
 
     prev() {
-        if(this.activeIndex!==-1 && this.activeIndex!==0) 
+        if(this.activeIndex!==-1 && this.activeIndex!==0) {
             this.cardSwitch(this[this.activeIndex-1])
+            return this.activeIndex
+        } else
+            return false
     }
     
     

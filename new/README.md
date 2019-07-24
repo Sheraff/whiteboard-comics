@@ -17,7 +17,7 @@
 
 ## TODO LIST in order of priority
 
-- [ ] <aside> UI
+- [-] <aside> UI
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
 - [x] allow for landed state based on URL (/archives, /graph_name, /contact)

@@ -137,6 +137,7 @@ main {
   padding: 0 var(--margin);
   justify-content: space-between;
   text-align: center;
+  text-transform: lowercase;
   --unit: 75px;
 }
 #meta h1 {
@@ -174,7 +175,7 @@ main {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   transition: transform 0.2s;
 }
 #meta #navigation a svg path,
@@ -188,18 +189,25 @@ main {
   bottom: 0;
   left: 50%;
   opacity: 0;
-  transform: translate(-50%, 100%);
+  transform: translate3d(-50%, 50%, 0);
   transition: transform 0.2s, opacity 0.2s;
   pointer-events: none;
 }
 #meta #navigation a:hover svg,
 #meta #menu a:hover svg {
-  transform: translate(-50%, calc(-50% - 0.5em));
+  transform: translate3d(-50%, calc(-50% - 0.25em), 0);
 }
 #meta #navigation a:hover span,
 #meta #menu a:hover span {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translate3d(-50%, 0, 0);
+}
+#meta #navigation a[href=""],
+#meta #menu a[href=""],
+#meta #navigation a:not([href]),
+#meta #menu a:not([href]) {
+  opacity: 0.3;
+  pointer-events: none;
 }
 #meta #footer {
   font-size: 1rem;

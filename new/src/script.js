@@ -52,16 +52,30 @@ cards.forEach(card => { // TODO: move to Layout or to Card ?
 		cards.cardPop(card)
 	})
 })
+const navigate = direction => e => {
+	e && e.preventDefault()
+	const index = cards[direction ? 'next' : 'prev']()
+	previous.setAttribute('href', index===false || index===0            ? '' : cards[index-1].name)
+	next.setAttribute('href',     index===false || index===cards.length ? '' : cards[index+1].name)
+}
+const navigateNext = navigate(true)
+const navigatePrev = navigate(false)
+next.addEventListener('click', navigateNext)
+previous.addEventListener('click', navigatePrev)
+archives.addEventListener('click', e => {
+	e.preventDefault()
+	cards.cardPop(cards[cards.activeIndex], !cards[cards.activeIndex].state.open)
+})
 window.addEventListener('keyup', (e) => {
 	switch (e.key) {
 		case 'Escape':
 			if (cards.activeIndex !== -1) cards.cardPop(cards[cards.activeIndex])
 			break
 		case 'ArrowLeft':
-			cards.prev()
+			navigatePrev()
 			break
 		case 'ArrowRight':
-			cards.next()
+			navigateNext()
 			break
 	}
 })
