@@ -14,9 +14,10 @@ require 'serve.php';
 
 <?php
 $graphs = read_tsv();
-rsort($graphs);
-for($i=0; $i<5; $i++){
-	$graphs[$i][content] = file_get_contents($graphs[$i][path]);
+usort($graphs, function($a, $b) {
+	if($a[timestamp] === $b[timestamp]) return 0;
+	else return ($a[timestamp] < $b[timestamp]) ? 1 : -1;
+});
 }
 $initial = 0;
 ?>
