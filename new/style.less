@@ -4,6 +4,7 @@ html, body, ul, li, a {
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
 }
 
 body{
@@ -130,6 +131,7 @@ main{
 		text-transform: lowercase;
 	}
 	#navigation, #menu {
+		font-size: 1.3rem;
 		height: var(--unit);
 		ul {
 			display: flex;
@@ -143,12 +145,15 @@ main{
 			height: 100%;
 			position: relative;
 			svg {
-				max-width: 2em;
+				max-width: 1.6rem;
 				position: absolute;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
 				transition: transform .2s;
+				path{
+					stroke-width: .35em;
+				}
 			}
 			span {
 				min-width: 100%;
@@ -162,7 +167,7 @@ main{
 			}
 			&:hover {
 				svg {
-					transform: translate(-50%, calc(-50% - 1em));
+					transform: translate(-50%, calc(-50% - .5em));
 				}
 				span {
 					opacity: 1;
@@ -171,9 +176,26 @@ main{
 			}
 		}
 	}
-	footer {
+	#footer {
+		font-size: 1rem;
 		li {
 			height: var(--unit);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			a {
+				display: block;
+			}
+		}
+		svg {
+			display: inline;
+			width: 1em;
+			height: 1em;
+			vertical-align: middle;
+			padding-right: 0.5em;
+			path{
+				stroke-width: .4em;
+			}
 		}
 	}
 	svg{

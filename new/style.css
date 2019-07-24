@@ -8,6 +8,7 @@ a {
   margin: 0;
   padding: 0;
   list-style: none;
+  font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
 }
 body {
   display: flex;
@@ -149,6 +150,7 @@ main {
 }
 #meta #navigation,
 #meta #menu {
+  font-size: 1.3rem;
   height: var(--unit);
 }
 #meta #navigation ul,
@@ -168,12 +170,16 @@ main {
 }
 #meta #navigation a svg,
 #meta #menu a svg {
-  max-width: 2em;
+  max-width: 1.6rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   transition: transform 0.2s;
+}
+#meta #navigation a svg path,
+#meta #menu a svg path {
+  stroke-width: 0.35em;
 }
 #meta #navigation a span,
 #meta #menu a span {
@@ -188,15 +194,34 @@ main {
 }
 #meta #navigation a:hover svg,
 #meta #menu a:hover svg {
-  transform: translate(-50%, calc(-50% - 1em));
+  transform: translate(-50%, calc(-50% - 0.5em));
 }
 #meta #navigation a:hover span,
 #meta #menu a:hover span {
   opacity: 1;
   transform: translate(-50%, 0);
 }
-#meta footer li {
+#meta #footer {
+  font-size: 1rem;
+}
+#meta #footer li {
   height: var(--unit);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#meta #footer li a {
+  display: block;
+}
+#meta #footer svg {
+  display: inline;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  padding-right: 0.5em;
+}
+#meta #footer svg path {
+  stroke-width: 0.4em;
 }
 #meta svg {
   overflow: visible;
