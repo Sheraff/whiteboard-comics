@@ -346,5 +346,82 @@ export default class SVGAnim {
 
 		return depth(element)
 	}
+
+	static makeAllSVGFrames(svg) {
+		GRAPHS[index].gifBeingMade = true
+		var total_duration = get_svg_anim_duration(GRAPHS[index].content, false) * 1000
+		var nb_of_imgs = Math.floor(total_duration / 50) + 1
+		SVGAnim.makeSVGFrame(index, 100, (function(data, png_data_url, percent, callback) {
+			image = new Image()
+			image.src = png_data_url
+			uploadImage(graphName, frameNumber, image)
+		}))
+	}
+
+	static makeSVGFrame(index, percent, callback) { // OLD FUNCTION EXCTRACTED FROM OLD SCRIPT
+		// server_and_console.log('converting SVG to PNG')
+		// clone
+		var clone_svg = GRAPHS[index].content.cloneNode(true)
+		force_svg_animation_percent(clone_svg, percent)
+	
+		// style // debug, this should come from .css or from getComputedStyle
+		clone_svg.style.backgroundColor = 'white';
+		var el = clone_svg.querySelectorAll('path, line, polyline')
+		for (var i = 0; i < el.length; i++) {
+			el[i].style.fill = 'none'
+			el[i].style.strokeLinecap = 'round'
+			el[i].style.strokeLinejoin = 'round'
+			el[i].style.strokeMiterlimit = 10
+		}
+		var el = clone_svg.querySelectorAll(
+			'path:not([stroke]), line:not([stroke]), polyline:not([stroke])')
+		for (var i = 0; i < el.length; i++) {
+			el[i].style.stroke = 'black'
+		}
+		var el = clone_svg.querySelectorAll(
+			'path:not([stroke-width]), line:not([stroke-width]), polyline:not([stroke-width])'
+		)
+		for (var i = 0; i < el.length; i++) {
+			el[i].style.strokeWidth = 4;
+		}
+	
+		// add watermark on bottom left
+		var text = document.createElementNS(SVG_NAMESPACE, 'text')
+		text.textContent = 'whiteboard-comics.com' + (GRAPHS[index].author ? (
+			' & ' +
+			GRAPHS[index].author) : '')
+		text.setAttribute('id', 'watermark')
+		text.style.fontFamily = "'Droid Serif', Georgia, serif"
+		text.style.opacity = .8
+		clone_svg.appendChild(text)
+		var viewbox = clone_svg.getAttribute('viewBox')
+			.split(' ')
+		viewbox[3] = parseFloat(viewbox[3]) + 20
+		text.setAttribute('transform', 'translate(5,' + (viewbox[3] - 5) + ')')
+		clone_svg.setAttribute('viewBox', viewbox.join(' '))
+	
+		// create SVG => XML (img.src) => canvas => data => png
+		var svgString = new XMLSerializer()
+			.serializeToString(clone_svg)
+		var dimensions = {
+			width: 800,
+			height: 800 / viewbox[2] * viewbox[3]
+		}
+	
+		// this avoids creating an unnecessary BLOB, method found here: http://stackoverflow.com/questions/27619555/image-onload-not-working-with-img-and-blob
+		var img = new Image()
+		img.addEventListener('load', (function(img, dimensions, percent, callback) {
+				var canvas = document.createElement('canvas') // look into OffscreenCanvas() chrome API to move this operation to a worker
+				canvas.setAttribute('width', dimensions.width)
+				canvas.setAttribute('height', dimensions.height)
+				var context = canvas.getContext('2d')
+				context.drawImage(img, 0, 0, dimensions.width, dimensions.height)
+				var png_data_url = context.canvas.toDataURL('image/png', 1) // .toDataURL() might work just as fine, parameters are default
+				callback(png_data_url, percent, callback)
+				DOMURL.revokeObjectURL(png_data_url)
+			})
+			.bind(undefined, img, dimensions, percent, callback))
+		img.src = 'data:image/svg+xml;utf8,' + svgString
+	}
 }
 
