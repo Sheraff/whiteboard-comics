@@ -1,6 +1,11 @@
 let LETTERS
 let SPEED
 export default class SVGAnim {
+
+	// TODO: rename all static functions containing SVG because they *will* be called like this: SVGAnim.functionSVG()
+	// TODO: functions used only here shouldn't be static but just outside of class ? (unless they would be in `window` context then?)
+
+
 	constructor(letters) {
 		LETTERS = letters
 		SPEED = localStorage.getItem('speed') || 5 // easy 1 - 10 scale for UI
@@ -37,13 +42,17 @@ export default class SVGAnim {
 		}
 	}
 
+	static getViewbox(svg) {
+		const [, , width, height] = (svg.getAttribute('viewbox') || svg.getAttribute('viewBox')).split(' ')
+		return { width, height }
+	}
+
 	static textToSVGAlphabet(svg) {
 		// this is the costly operation. SVG must be part of DOM for it to work
 		const processLetterSVG = letter => {
 			const template = document.createRange().createContextualFragment(letter.content) // TODO: add a fallback to new DOMParser().parseFromString ??
 			const svg = template.firstElementChild
-			const [, , width, height] = (svg.getAttribute('viewbox') || svg.getAttribute('viewBox')).split(' ')
-			letter.viewbox = { width, height }
+			letter.viewbox = SVGAnim.getViewbox(svg)
 			letter.content = svg
 			return letter
 		}
@@ -358,58 +367,49 @@ export default class SVGAnim {
 		}))
 	}
 
-	static makeSVGFrame(index, percent, callback) { // OLD FUNCTION EXCTRACTED FROM OLD SCRIPT
-		// server_and_console.log('converting SVG to PNG')
-		// clone
-		var clone_svg = GRAPHS[index].content.cloneNode(true)
-		force_svg_animation_percent(clone_svg, percent)
+	static makeSVGFrame(svg, percent = 100, author = '', callback) { // OLD FUNCTION EXCTRACTED FROM OLD SCRIPT
+		
+		// clone in template
+		const template = document.createRange().createContextualFragment(svg).firstElementChild
+
+		// set at % of animation for this frame
+		SVGAnim.setSVGAnimPercent(template, percent)
 	
-		// style // debug, this should come from .css or from getComputedStyle
-		clone_svg.style.backgroundColor = 'white';
-		var el = clone_svg.querySelectorAll('path, line, polyline')
-		for (var i = 0; i < el.length; i++) {
+		// style
+		// TODO: find a way not to hardcode this and get it from getComputedStyle or CSSStyleSheet
+		template.style.backgroundColor = 'white';
+		template.querySelectorAll('path, line, polyline').forEach(el => {
 			el[i].style.fill = 'none'
 			el[i].style.strokeLinecap = 'round'
 			el[i].style.strokeLinejoin = 'round'
 			el[i].style.strokeMiterlimit = 10
-		}
-		var el = clone_svg.querySelectorAll(
-			'path:not([stroke]), line:not([stroke]), polyline:not([stroke])')
-		for (var i = 0; i < el.length; i++) {
-			el[i].style.stroke = 'black'
-		}
-		var el = clone_svg.querySelectorAll(
-			'path:not([stroke-width]), line:not([stroke-width]), polyline:not([stroke-width])'
-		)
-		for (var i = 0; i < el.length; i++) {
-			el[i].style.strokeWidth = 4;
-		}
+		})
+		template.querySelectorAll('path:not([stroke]), line:not([stroke]), polyline:not([stroke])').forEach(el => el.style.stroke = 'black')
+		template.querySelectorAll('path:not([stroke-width]), line:not([stroke-width]), polyline:not([stroke-width])').forEach(el => el.style.strokeWidth = 4)
 	
-		// add watermark on bottom left
+		// add watermark on bottom left and style it
 		var text = document.createElementNS(SVG_NAMESPACE, 'text')
-		text.textContent = 'whiteboard-comics.com' + (GRAPHS[index].author ? (
-			' & ' +
-			GRAPHS[index].author) : '')
-		text.setAttribute('id', 'watermark')
+		text.textContent = `whiteboard-comics.com${author ? ' & ' : ''}${author}`
+		// TODO: find a way not to hardcode this and get it from getComputedStyle or CSSStyleSheet
 		text.style.fontFamily = "'Droid Serif', Georgia, serif"
 		text.style.opacity = .8
-		clone_svg.appendChild(text)
-		var viewbox = clone_svg.getAttribute('viewBox')
-			.split(' ')
-		viewbox[3] = parseFloat(viewbox[3]) + 20
-		text.setAttribute('transform', 'translate(5,' + (viewbox[3] - 5) + ')')
-		clone_svg.setAttribute('viewBox', viewbox.join(' '))
+		template.appendChild(text)
+
+		// resize SVG properly
+		const viewbox = SVGAnim.getViewbox(template)
+		viewbox.height = parseFloat(viewbox.height) + 20
+		text.setAttribute('transform', 'translate(5,' + (viewbox.height - 5) + ')')
+		template.setAttribute('viewBox', `${viewbox.width} ${viewbox.height}`)
 	
 		// create SVG => XML (img.src) => canvas => data => png
-		var svgString = new XMLSerializer()
-			.serializeToString(clone_svg)
-		var dimensions = {
+		const svgString = new XMLSerializer().serializeToString(template)
+		const dimensions = {
 			width: 800,
-			height: 800 / viewbox[2] * viewbox[3]
+			height: 800 / viewbox.width * viewbox.height
 		}
-	
+		const img = new Image()
 		// this avoids creating an unnecessary BLOB, method found here: http://stackoverflow.com/questions/27619555/image-onload-not-working-with-img-and-blob
-		var img = new Image()
+		
 		img.addEventListener('load', (function(img, dimensions, percent, callback) {
 				var canvas = document.createElement('canvas') // look into OffscreenCanvas() chrome API to move this operation to a worker
 				canvas.setAttribute('width', dimensions.width)
