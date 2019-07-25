@@ -78,10 +78,10 @@ if($_GET[archives]) {
 			</a>
 			<nav id='navigation'>
 				<ul>
-					<li><a id="archives" href="/archives"><?php echo file_get_contents('./ui/menu.svg'); ?><span>Archives</span></a></li>
-					<li><a id="settings" href="#"><?php echo file_get_contents('./ui/settings.svg'); ?><span>Settings</span></a></li>
-					<li><a id="previous" href="<?php if($prev) echo '/'.$prev; ?>"><?php echo file_get_contents('./ui/previous.svg'); ?><span>Previous</span></a></li>
-					<li><a id="next"     href="<?php if($next) echo '/'.$next; ?>"><?php echo file_get_contents('./ui/next.svg');     ?><span>Next</span></a></li>
+					<li><a id="archives" href="/archives"><?php echo file_get_contents('/ui/menu.svg'); ?><span>Archives</span></a></li>
+					<li><a id="settings" href="#"><?php echo file_get_contents('/ui/settings.svg'); ?><span>Settings</span></a></li>
+					<li><a id="previous" href="<?php if($prev) echo '/'.$prev; ?>"><?php echo file_get_contents('/ui/previous.svg'); ?><span>Previous</span></a></li>
+					<li><a id="next"     href="<?php if($next) echo '/'.$next; ?>"><?php echo file_get_contents('/ui/next.svg');     ?><span>Next</span></a></li>
 				</ul>
 			</nav>
 		</header>
