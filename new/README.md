@@ -21,18 +21,19 @@
 - [ ] overlay metadata
 - [ ] PNG transparent overlay ? or svg & png & gif & mp4 links to put somewhere
 - [x] allow for landed state based on URL (/archives, /graph_name, /contact)
-- [ ] ::bug:: graphs flash before playing
-- [ ] ::bug:: quickly navigating causes issues => need better handling of promises and states
+- [ ] ::bug:: need better handling of promises and states
+    - [ ] ::bug:: graphs flash before playing
+    - [ ] ::bug:: quickly navigating causes issues
+    - [ ] figure out why first path of a replaced <span> is always late
+    - [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
+    - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] prevent scrolling when a <card> is front
-- [ ] figure out why first path of a replaced <span> is always late
-- [ ] make processArticleSVG stack callbacks if called several times (it takes time (a little) so it can potentially be called several times while executing)
-- [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
-- [ ] proper ordering of graphs
 - [ ] logo animation
 - [ ] auto SVG to GIF process
 - [ ] SEO, headers, favicon
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
+- [ ] archive tags list, UI, filtering, animation, scroll logic on tag change
 - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
 - [ ] mobile layout
 
