@@ -356,7 +356,7 @@ export default class SVGAnim {
 		return depth(element)
 	}
 
-	static makeAllSVGFrames(svg) {
+	static makeAllSVGFrames(svg) { // OLD FUNCTION EXCTRACTED FROM OLD SCRIPT
 		GRAPHS[index].gifBeingMade = true
 		var total_duration = get_svg_anim_duration(GRAPHS[index].content, false) * 1000
 		var nb_of_imgs = Math.floor(total_duration / 50) + 1
