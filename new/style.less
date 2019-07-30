@@ -127,6 +127,7 @@ main{
 	}
 	h2 {
 		height: var(--unit);
+		font-weight: 400;
 	}
 	& > *:not(header) {
 		text-transform: lowercase;
@@ -260,8 +261,13 @@ svg-card{
 	}
 	&.texted{
 		& > svg{
-			tspan, text{ opacity: 0; }
-			[data-type="writing"]{ opacity: 1; }
+			tspan, text{ 
+				fill-opacity: 0; 
+			}
+			[data-type="writing"]{ 
+				stroke-opacity: 1; 
+				animation: .2s ease-out fadein;
+			}
 		}
 	}
 	&.active{
@@ -302,14 +308,13 @@ svg-card{
 		tspan, text{
 			font-display: block;
 			font-family: 'Permanent Marker', 'Chalkboard', 'Comic Sans MS', arial;
-			opacity: 1;
-			transition: opacity .2s ease;
-			will-change: opacity;
+			transition: fill-opacity .2s ease-in;
+			will-change: fill-opacity;
 		}
 		[data-type="writing"]{
-			opacity: 0;
-			transition: opacity .2s ease, stroke .2s linear;
-			will-change: opacity;
+			stroke-opacity: 0;
+			transition: stroke-opacity .2s ease-out;
+			will-change: stroke-opacity;
 		}
 		[data-type="erase"]{
 			stroke-linejoin: bevel;
@@ -317,3 +322,5 @@ svg-card{
 		}
 	}
 }
+
+@keyframes fadein { from { stroke-opacity: 0; } to { stroke-opacity: 1; }  }
