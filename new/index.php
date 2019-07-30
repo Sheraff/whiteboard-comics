@@ -1,7 +1,4 @@
 <!-- ♡ <?php
-// PHP HEADER
-
-echo 'php v'.PHP_VERSION . ' ';
 
 if(array_shift((explode(".",$_SERVER['HTTP_HOST'])))==='www'){
 	header("HTTP/1.1 301 Moved Permanently");
@@ -44,7 +41,7 @@ if($_GET[archives]) {
 		$prev = $graphs[$initial-1][name];
 	}
 }
-?> -->
+?>-->
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
@@ -78,10 +75,10 @@ if($_GET[archives]) {
 			</a>
 			<nav id='navigation'>
 				<ul>
-					<li><a id="archives" href="/archives"><?php echo file_get_contents('/ui/menu.svg'); ?><span>Archives</span></a></li>
-					<li><a id="settings" href="#"><?php echo file_get_contents('/ui/settings.svg'); ?><span>Settings</span></a></li>
-					<li><a id="previous" href="<?php if($prev) echo '/'.$prev; ?>"><?php echo file_get_contents('/ui/previous.svg'); ?><span>Previous</span></a></li>
-					<li><a id="next"     href="<?php if($next) echo '/'.$next; ?>"><?php echo file_get_contents('/ui/next.svg');     ?><span>Next</span></a></li>
+					<li><a id="archives" href="/archives"><?php echo file_get_contents('./ui/menu.svg'); ?><span>Archives</span></a></li>
+					<li><a id="settings" href="#"><?php echo file_get_contents('./ui/settings.svg'); ?><span>Settings</span></a></li>
+					<li><a id="previous" href="<?php if($prev) echo '/'.$prev; ?>"><?php echo file_get_contents('./ui/previous.svg'); ?><span>Previous</span></a></li>
+					<li><a id="next"     href="<?php if($next) echo '/'.$next; ?>"><?php echo file_get_contents('./ui/next.svg');     ?><span>Next</span></a></li>
 				</ul>
 			</nav>
 		</header>
@@ -102,9 +99,9 @@ if($_GET[archives]) {
 		<footer>
 			<nav id='menu'>
 				<ul>
+					<li><a id="contact"   href="#"><?php echo file_get_contents('./ui/mail.svg');      ?><span>Contact</span></a></li>
 					<li><a id="facebook"  href="#"><?php echo file_get_contents('./ui/facebook.svg');  ?><span>Facebook</span></a></li>
 					<li><a id="instagram" href="#"><?php echo file_get_contents('./ui/instagram.svg'); ?><span>Instagram</span></a></li>
-					<li><a id="contact"   href="#"><?php echo file_get_contents('./ui/mail.svg');      ?><span>Contact</span></a></li>
 					<li><a id="rss"       href="#"><?php echo file_get_contents('./ui/rss.svg');       ?><span>RSS</span></a></li>
 				</ul>
 			</nav>
