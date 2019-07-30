@@ -33,6 +33,9 @@
     - [ ] logo animation on graph change
     - [ ] next/prev animation on nav
 - [ ] auto SVG to GIF process
+    - [ ] JS function for 'SVG at x% of animation'
+    - [ ] rewrite SVG to PNG function
+    - [ ] PNGs to GIF client-side using WebAssembly ImageMagick rewrite (https://github.com/KnicKnic/WASM-ImageMagick)
 - [ ] SEO, headers, favicon, google meta, facebook meta, JSON-LD structured data
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
 - [ ] archive tags list, UI, filtering, animation, scroll logic on tag change
