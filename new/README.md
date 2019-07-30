@@ -29,13 +29,19 @@
     - [ ] make a getter for SVGs in card.js to harmonize the process of querySelector || request from worker => process
 - [ ] prevent scrolling when a <card> is front
 - [ ] on pop-out, card animation seems to start w/ bigger height than 100vh => this is because card padding remains the same amount of px in list && in pop-out, instead it should grow proportionnaly
-- [ ] logo animation
+- [ ] UI micro-animations
+    - [ ] logo animation on graph change
+    - [ ] next/prev animation on nav
 - [ ] auto SVG to GIF process
-- [ ] SEO, headers, favicon
+- [ ] SEO, headers, favicon, google meta, facebook meta, JSON-LD structured data
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
 - [ ] archive tags list, UI, filtering, animation, scroll logic on tag change
 - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
 - [ ] mobile layout
+    - [ ] horizontal scrolling of cards
+    - [ ] process alphabet on intersectionObserver
+    - [ ] reduced aside UI
+    - [ ] switch to /archives when rotating to landscape?
 
 ## PERF LIST for non-blocking performance improvements
 
