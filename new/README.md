@@ -39,7 +39,10 @@
 - [ ] SEO, headers, favicon, google meta, facebook meta, JSON-LD structured data
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
 - [ ] archive tags list, UI, filtering, animation, scroll logic on tag change
-- [ ] switch from `Timeout` to `AnimationFrame` in svg.js
+- [ ] SVG animation
+    - [ ] add clip paths to alphabet for more precisely drawn font (https://www.cassie.codes/posts/creating-my-logo-animation/)
+    - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
+    - [ ] switch to full JS animation? 
 - [ ] mobile layout
     - [ ] horizontal scrolling of cards
     - [ ] process alphabet on intersectionObserver
