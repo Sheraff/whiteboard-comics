@@ -68,6 +68,7 @@
 - [ ] virtualize grid items when scrolling (read method here: https://github.com/sergi/virtual-list/blob/master/vlist.js)
 - [ ] look for more performant `JSON.parse` / `JSON.stringify` to communicate w/ worker
 - [ ] write `setArchivesLayout` function so that server can send single <svg-card> when not in archives mode, and JS can generate archives afterwards
+- [ ] change preload / lazyload / boredom load behavior based on connection (`navigator.connection.effectiveType` or `navigator.connection.saveData`)
 
 ## TRY LIST for things to investigate
 
