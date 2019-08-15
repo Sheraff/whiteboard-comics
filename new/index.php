@@ -113,6 +113,9 @@ if($_GET[archives]) {
 			</nav>
 		</footer>
 	</aside>
+	<div id="svg_defs">
+		<?php echo $clips; ?>
+	</div>
 </body>
 
 <script>const GRAPHS  = (<?php echo json_encode($graphs);  ?>)</script>

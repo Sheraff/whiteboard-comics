@@ -17,6 +17,12 @@ body{
 	--popDuration: .5s;
 }
 
+#svg_defs{
+	width: 0;
+	position: absolute;
+	z-index: -1;
+}
+
 main{
 	position: relative;
 	flex: 1;
@@ -311,10 +317,11 @@ svg-card{
 			transition: fill-opacity .2s ease-in;
 			will-change: fill-opacity;
 		}
-		[data-type="writing"]{
+		path[data-type="writing"]{
 			stroke-opacity: 0;
 			transition: stroke-opacity .2s ease-out;
 			will-change: stroke-opacity;
+			stroke-width: 6;
 		}
 		[data-type="erase"]{
 			stroke-linejoin: bevel;

@@ -40,7 +40,8 @@
 - [ ] max-width to section+aside and add empty margin after (for super wide screens)
 - [ ] archive tags list, UI, filtering, animation, scroll logic on tag change
 - [ ] SVG animation
-    - [ ] add clip paths to alphabet for more precisely drawn font (https://www.cassie.codes/posts/creating-my-logo-animation/)
+    - [x] add clip paths to alphabet for more precisely drawn font (https://www.cassie.codes/posts/creating-my-logo-animation/)
+    - [ ] adjust (x,y) position more precisely for each symbol of alphabet
     - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
     - [ ] switch to full JS animation? 
 - [ ] mobile layout
@@ -51,6 +52,7 @@
 
 ## PERF LIST for non-blocking performance improvements
 
+- [ ] optimize / auto clean-up SVG files (https://github.com/svg/svgo)
 - [x] implement *idle-until-urgent* pattern on all costly async code (parsing SVG, initializing worker, alphabetizing...) (see details here: https://philipwalton.com/articles/idle-until-urgent/)
 - [ ] host font on server and rel="preload"? (or does google have a way to still be faster than this?)
 - [ ] look into using `contain: strict;` for <card> and possibly other elements to restrict layout / paint calculations (https://developers.google.com/web/updates/2016/06/css-containment)

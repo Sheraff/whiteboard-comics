@@ -68,44 +68,21 @@ function display_date ($timestamp) {
 }
 
 // grab ALPHABET
-$globbed = glob("alphabet/*.svg");
+$globbed = glob("alphabet2/result/*.svg");
 $letters = array();
 foreach ($globbed as $key => $file) {
+	if(basename($file) === 'defs.svg')
+		continue;
     $letter = str_replace(['alphabet_', '.svg'], '', basename($file));
     $letter = str_replace(
         ['exclamation','question','coma','double','single','period','hashtag','dash','star','plus','equal','multiply','left_p','right_p','left_b','right_b','left_curly','right_curly','and','at','slash','percent','colon'],
         ['!','?',',','"',"'",'.','#','-','*','+','=','×','(',')','[',']','{','}','&','@','/','%',':'],
         $letter
-    );
-    $letters[$letter] = [
-        'content' => format_alphabet(file_get_contents($file))
+	);
+	$letters[$letter] = [
+        'content' => file_get_contents($file)
     ];
 }
-
-function format_alphabet($string){
-    $string = preg_replace([
-        '/ ?stroke-linejoin="round" ?/',
-        '/ ?stroke-linejoin="bevel" ?/',
-        '/ ?stroke-linecap="round" ?/',
-        '/ ?stroke-width="4" ?/',
-        '/ ?fill="none" ?/',
-        '/ ?stroke="#(0[0-1]){3}" ?/',
-        '/ ?stroke-miterlimit="10" ?/',
-        '/ +/',
-        '/d=" M/'
-    ], [
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        'd="M'
-    ], $string);
-    return $string;
-}
-
+$clips = file_get_contents("alphabet2/result/defs.svg");
 
 ?>
