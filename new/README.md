@@ -42,6 +42,7 @@
 - [ ] SVG animation
     - [x] add clip paths to alphabet for more precisely drawn font (https://www.cassie.codes/posts/creating-my-logo-animation/)
     - [ ] adjust (x,y) position more precisely for each symbol of alphabet
+    - [ ] paths order for letters K, N, R, Y, H, F, V
     - [ ] switch from `Timeout` to `AnimationFrame` in svg.js
     - [ ] switch to full JS animation? 
 - [ ] mobile layout
