@@ -72,6 +72,9 @@
 - [ ] look for more performant `JSON.parse` / `JSON.stringify` to communicate w/ worker
 - [ ] write `setArchivesLayout` function so that server can send single <svg-card> when not in archives mode, and JS can generate archives afterwards
 - [ ] change preload / lazyload / boredom load behavior based on connection (`navigator.connection.effectiveType` or `navigator.connection.saveData`)
+- [ ] lazy load svg clip paths for alphabet? (then needs to start out w/ smaller stroke-width while clip paths load)
+- [ ] if a variable is empty, don't send it: `class=""` in HTML, `frames: [], content: false` in SVG hydration
+- [ ] derive instead of hydrating whenever possible: `formatted_name` and `path` derive from `name`
 
 ## TRY LIST for things to investigate
 
