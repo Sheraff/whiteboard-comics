@@ -1,4 +1,19 @@
 <script src="script.js" type="module"></script>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
 
-<svg-card name="(life)⋂(death)=exercising"></svg-card>
+<svg-card name="(life)⋂(death)=exercising">
+	<a slot="inernal" href=""></a>
+	<a slot="external" href="">Author Name</a>
+</svg-card>
+
+<svg-card name="coucou">
+	<svg><text>coucou</text></svg>
+</svg-card>
+
+<template id="svg-card">
+	<link rel="stylesheet" href="/components/Card.css">
+	<slot name="inernal"></slot>
+	<slot name="external"></slot>
+	<div class='svg-slot'><slot></slot></div>
+</template>

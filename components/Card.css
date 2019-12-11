@@ -1,0 +1,22 @@
+:host{
+	display: block;
+	height: 100px;
+	width: 100px;
+	background-color: red;
+	contain: strict;
+}
+:root [slot=external]{
+	background-color: blue;
+}
+:root slot[name=external]{
+	background-color: blue;
+}
+:root svg{
+	box-shadow: 0 0 0 1px purple;
+}
+:root a{
+	background-color: yellow;
+}
+.svg-slot{
+	background-color: green;
+}

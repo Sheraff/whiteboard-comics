@@ -10,6 +10,7 @@ const URLS = [
 	'/modules/IdleStack.js',
 	'/data/graph_list.tsv',
 	'/components/Card.js',
+	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
 self.addEventListener('install', event => event.waitUntil(
