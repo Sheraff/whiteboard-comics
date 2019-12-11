@@ -4,16 +4,21 @@
 
 <svg-card name="(life)⋂(death)=exercising">
 	<a slot="inernal" href=""></a>
-	<a slot="external" href="">Author Name</a>
+	<a slot="external" href="">
+		<span>Author</span>
+		<p>Name</p>
+	</a>
 </svg-card>
 
 <svg-card name="coucou">
-	<svg><text>coucou</text></svg>
+	<svg><text x="30" y="35">coucou</text></svg>
 </svg-card>
+
+<svg-card></svg-card>
 
 <template id="svg-card">
 	<link rel="stylesheet" href="/components/Card.css">
 	<slot name="inernal"></slot>
 	<slot name="external"></slot>
-	<div class='svg-slot'><slot></slot></div>
+	<slot></slot>
 </template>

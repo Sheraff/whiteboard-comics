@@ -5,18 +5,9 @@
 	background-color: red;
 	contain: strict;
 }
-:root [slot=external]{
-	background-color: blue;
+::slotted(svg) {
+	background-color: pink;
 }
-:root slot[name=external]{
-	background-color: blue;
-}
-:root svg{
-	box-shadow: 0 0 0 1px purple;
-}
-:root a{
-	background-color: yellow;
-}
-.svg-slot{
+slot[name=external]::slotted(*) {
 	background-color: green;
 }
