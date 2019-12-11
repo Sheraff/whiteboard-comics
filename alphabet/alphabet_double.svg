@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 16.9 36.5" enable-background="new 0 0 16.9 36.5" xml:space="preserve">
-<path fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M7.5,5.3c0.1,0.9-2.4,5.9-2.6,6"/>
-<path fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-	M14.6,5.3c0.3,0.9-3.3,5.7-3.3,6"/>
+<g>
+	<defs>
+		<path id="SVGID_100_" d="M8.1,8.4C8.1,8.5,8,8.5,8,8.6c-0.1,0-0.1,0.1-0.2,0.2C7.7,8.9,7.7,9.1,7.7,9.1c0,0.1,0,0.1-0.1,0.1
+			c0,0,0,0-0.1,0.1c0,0-0.1,0.2-0.2,0.4C7.2,9.9,7,10.2,6.8,10.5c-0.2,0.3-0.3,0.6-0.4,0.9c-0.3,0.2-0.6,0.5-1,0.9
+			c-0.4,0.4-0.8,0.6-1.2,0.8C4,13,3.8,12.9,3.4,12.7c-0.4-0.2-0.8-0.4-1.1-0.6c-0.4-0.2-0.6-0.5-0.8-0.7s-0.2-0.5,0.1-0.7
+			c0.4-0.4,0.7-0.8,1-1.4C2.7,8.7,3,8.1,3.2,7.5c0.2-0.6,0.4-1.2,0.5-1.9C3.9,5,4,4.3,4.1,3.7c0.1,0.1,0.2,0.1,0.3,0.1
+			c0.1,0,0.2-0.1,0.2-0.2s0.1-0.2,0.2-0.3S5,3.2,5,3.2c0.1,0.1,0.3,0.2,0.6,0.4c0.3,0.1,0.6,0.3,0.9,0.4c0.3,0.1,0.6,0.2,0.9,0.3
+			c0.3,0.1,0.5,0.2,0.6,0.2c0.2,0.4,0.4,0.7,0.4,1c0,0.3,0.1,0.6,0.2,1C8.5,6.6,8.4,6.8,8.4,7c0,0.2,0,0.4-0.1,0.5
+			c0,0.2-0.1,0.3-0.1,0.3c0,0-0.1,0.1-0.1,0.3c0,0,0,0.1,0,0.2C8.1,8.3,8.1,8.4,8.1,8.4z"/>
+	</defs>
+	<clipPath id="SVGID_3_">
+		<use xlink:href="#SVGID_100_"  overflow="visible"/>
+	</clipPath>
+	
+		<path clip-path="url(#SVGID_3_)" fill="none" stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M6.1,5.3c0.1,0.9-2.4,5.9-2.6,6"/>
+</g>
+<g>
+	<defs>
+		<path id="SVGID_102_" d="M12.4,3.2c0.1,0.1,0.3,0.2,0.6,0.4s0.6,0.3,0.9,0.4c0.3,0.1,0.6,0.2,0.9,0.3s0.5,0.2,0.6,0.2
+			c0.2,0.4,0.3,0.7,0.3,1c0,0.3,0,0.6,0,1c-0.1,0.1-0.2,0.3-0.3,0.5c-0.1,0.2-0.1,0.4-0.1,0.5c0,0.2-0.1,0.3-0.2,0.3
+			c-0.1,0-0.1,0.1-0.2,0.3c0,0,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.2-0.2,0.2c-0.1,0-0.1,0.1-0.2,0.2
+			c-0.1,0.2-0.2,0.4-0.2,0.4c0,0.1,0,0.1-0.1,0.1c0,0,0,0-0.1,0.1c0,0-0.1,0.2-0.2,0.4c-0.2,0.3-0.4,0.6-0.6,0.9
+			c-0.2,0.3-0.4,0.6-0.5,0.9c-0.2,0.1-0.3,0.3-0.5,0.4c-0.2,0.2-0.4,0.3-0.6,0.5c-0.2,0.2-0.4,0.3-0.6,0.5s-0.4,0.2-0.6,0.3
+			c-0.2-0.1-0.5-0.2-0.8-0.4c-0.4-0.2-0.7-0.4-1-0.6c-0.3-0.2-0.6-0.5-0.7-0.7c-0.2-0.3-0.1-0.5,0.1-0.7c0.4-0.4,0.8-0.8,1.1-1.4
+			c0.3-0.5,0.6-1.1,0.9-1.7c0.3-0.6,0.5-1.2,0.7-1.9C11,5,11.2,4.3,11.4,3.7c0.1,0.1,0.2,0.1,0.2,0.1c0.1,0,0.2-0.1,0.2-0.2
+			s0.2-0.2,0.2-0.3S12.3,3.2,12.4,3.2z"/>
+	</defs>
+	<clipPath id="SVGID_5_">
+		<use xlink:href="#SVGID_102_"  overflow="visible"/>
+	</clipPath>
+	
+		<path clip-path="url(#SVGID_5_)" fill="none" stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M13.2,5.3c0.3,0.9-3.3,5.7-3.3,6"/>
+</g>
 </svg>
