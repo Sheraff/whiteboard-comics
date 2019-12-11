@@ -8,6 +8,19 @@ export default class IdleStack {
 		this.finishing = false
 	}
 
+	then(resolve) {
+		this.resolve = resolve
+		if(!this.stack.length)
+			this.callback()
+	}
+
+	callback() {
+		if(this.resolve) {
+			this.resolve(this.lastResult)
+			this.resolve = undefined
+		}
+	}
+
 	push(task) {
 		this.stack.push({task, id: ++this.id})
 		if(!this.idleCallbackId)
@@ -31,6 +44,8 @@ export default class IdleStack {
 			}
 			if(this.stack.length)
 				this.start()
+			else
+				this.callback()
 		})
 	}
 
@@ -49,7 +64,10 @@ export default class IdleStack {
 			reached = id === taskId
 			this.lastResult = await task(this.lastResult)
 		}
-		this.start()
+		if(this.stack.length)
+			this.start()
+		else
+			this.callback()
 		return this.lastResult
 	}
 
@@ -61,6 +79,7 @@ export default class IdleStack {
 			const { task } = this.stack.shift()
 			this.lastResult = await task(this.lastResult)
 		}
+		this.callback()
 		return this.lastResult
 	}
 }
