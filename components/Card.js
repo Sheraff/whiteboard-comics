@@ -5,9 +5,9 @@ export default class SVGCard extends HTMLElement {
 
 	connectedCallback() {
 		const template = document.getElementById('svg-card');
-		const node = document.importNode(template.content, true);
+		const fragment = document.importNode(template.content, true);
 		this.attachShadow({ mode: 'open' })
-		this.shadowRoot.appendChild(node)
+		this.shadowRoot.appendChild(fragment)
 		this.$svg = this.querySelector('svg')
 
 		// get raw SVG
