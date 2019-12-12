@@ -63,10 +63,10 @@ export default class IdleStack {
 	// insert after current task (and after all tasks already marked as 'next')
 	next(resolve, time, currentTask = this.currentTask) {
 		const insertBefore = currentTask.nextTask
-		if(insertBefore && insertBefore.next)
+		if (insertBefore && insertBefore.next)
 			return this.next(resolve, time, insertBefore)
 		currentTask.nextTask = { task: resolve, next: true, time }
-		if(!insertBefore)
+		if (!insertBefore)
 			this.lastTask = currentTask.nextTask
 		else
 			currentTask.nextTask.nextTask = insertBefore
@@ -84,16 +84,22 @@ export default class IdleStack {
 		this.idleCallbackId = requestIdleCallback(async idleDeadline => {
 			this.isExecuting = true
 			while (idleDeadline.timeRemaining() > (this.currentTask.time || IdleStack.PADDING)) {
-				await this.executeTask(this.currentTask)
-				if(!this.currentTask.nextTask)
+				if (Array.isArray(this.currentTask.task)) {
+					await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
+					if (this.currentTask.task.length)
+						continue
+				} else {
+					await this.executeTask(this.currentTask.task, this.currentTask)
+				}
+				if (!this.currentTask.nextTask)
 					break
 				this.currentTask.nextTask.previousResult = this.currentTask.result
 				this.currentTask = this.currentTask.nextTask
 			}
 			this.isExecuting = false
-			if(this.endOfTaskPromise)
+			if (this.endOfTaskPromise)
 				this.endOfTaskPromise()
-			else if(this.currentTask.nextTask)
+			else if (this.currentTask.nextTask)
 				this.start()
 			else
 				delete this.idleCallbackId
@@ -103,7 +109,7 @@ export default class IdleStack {
 	async finish() {
 		this.isFinishing = true
 
-		if(this.idleCallbackId) {
+		if (this.idleCallbackId) {
 			cancelIdleCallback(this.idleCallbackId)
 			delete this.idleCallbackId
 		}
@@ -115,8 +121,14 @@ export default class IdleStack {
 		return new Promise(async resolve => {
 			await waitToFinish
 			while (this.currentTask) {
-				await this.executeTask(this.currentTask)
-				if(!this.currentTask.nextTask)
+				if (Array.isArray(this.currentTask.task)) {
+					await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
+					if (this.currentTask.task.length)
+						continue
+				} else {
+					await this.executeTask(this.currentTask.task, this.currentTask)
+				}
+				if (!this.currentTask.nextTask)
 					break
 				this.currentTask.nextTask.previousResult = this.currentTask.result
 				this.currentTask = this.currentTask.nextTask
@@ -125,11 +137,15 @@ export default class IdleStack {
 		})
 	}
 
-	async executeTask(object) {
-		if(Array.isArray(object.task)) {
-			object.result = await Promise.all(object.task.map(async fn => await fn(object.previousResult, this)))
-		} else {
-			object.result = await object.task(object.previousResult, this)
+	async executeTask(task, object, push) {
+		const result = await task(object.previousResult, this)
+		if (push) {
+			if(!object.result)
+				object.result = [result]
+			else
+				object.result.push(result)
 		}
+		else
+			object.result = result
 	}
 }

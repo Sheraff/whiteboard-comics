@@ -76,7 +76,7 @@ const makeCharsElements = ({paths, viewBox}) => {
 
 export function parseAlphabet() {
 	const charsMap = {}
-	return new IdleStack(() => fetchChars(), 2)
+	return new IdleStack(() => fetchChars(), 3)
 		.then((chars, stack) => {
 			stack.next(chars.map(fetchSerializedHTML), 2)
 		}, 1)
