@@ -5,6 +5,8 @@ import IndexedDBManager from '/modules/IndexedDB.js'
 
 /**
  * scenario
+ * 
+ * 1. promise.all
  * - raw svg > processed svg
  * - parsed alphabet
  * - loaded font
