@@ -47,7 +47,7 @@ class Alphabet {
 					}
 				})
 				stack.next(subtasks)
-			})
+			}, 1)
 			.then((charsData, stack) => {
 				if (charsData.some(({ indexedDB }) => !indexedDB)) {
 					const charList = charsData.map(({ char }) => char)
@@ -57,17 +57,17 @@ class Alphabet {
 							return charsMap
 						})
 				} else {
-					stack.then(() => makeStringifiedCharsMap(charsData))
+					stack.then(() => makeStringifiedCharsMap(charsData), 2)
 						.then((charsMap, stack) => {
 							const subtasks = Object.values(charsMap).map(reviveCharData)
 							stack.next(subtasks)
 								.next(() => charsMap)
-						})
+						}, 1)
 				}
 				stack.then(charsMap => {
 					this.charsMap = charsMap
 					return charsMap
-				})
+				}, 1)
 			})
 
 		this.stack.finish().then(console.log)
