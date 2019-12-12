@@ -76,25 +76,25 @@ const makeCharsElements = ({paths, viewBox}) => {
 
 export function parseAlphabet() {
 	const charsMap = {}
-	return new IdleStack(() => fetchChars())
+	return new IdleStack(() => fetchChars(), 2)
 		.then((chars, stack) => {
-			stack.next(chars.map(fetchSerializedHTML))
-		})
-		.then((results) => results.map(makeDomFragments))
+			stack.next(chars.map(fetchSerializedHTML), 2)
+		}, 1)
+		.then((results) => results.map(makeDomFragments), 12)
 		.then((results, stack) => {
-			stack.next(results.map(extractElements).flat())
-		})
-		.then(extractedElements => ({ ...makeDefNode(), extractedElements }))
+			stack.next(results.map(extractElements).flat(), 3)
+		}, 1)
+		.then(extractedElements => ({ ...makeDefNode(), extractedElements }), 1)
 		.then(({ fragment, svg, defs, extractedElements }, stack) => {
 			const mapping = populateDefsAndChars({ charsMap, defs, svg })
-			stack.next(extractedElements.map(mapping))
-		})
+			stack.next(extractedElements.map(mapping), 5)
+		}, 1)
 		.then(([svg], stack) => {
 			const subtasks = Object.keys(charsMap).map(char => () => charsMap[char] = makeCharsElements(charsMap[char]))
-			stack.next(subtasks)
+			stack.next(subtasks, 4)
 				.next(() => ({
 				$definitions: svg,
 				charsMap
 			}))
-		})
+		}, 1)
 }

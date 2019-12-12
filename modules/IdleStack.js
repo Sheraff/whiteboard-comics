@@ -5,6 +5,7 @@
  * - they run sequentially, each receiving the results from the previous one
  * - at any point during execution you can ask to finish ASAP
  * - instead of providing a function, you can provide an array of functions, the next task will receive an array of results
+ * - you can provide a second argument (after your function / array of functions) to tell IdleStack how much time your task needs (in milliseconds)
  * 
  * There are only 4 methods you should use
  * - new IdleStack() to create a queue, takes a function as an argument
@@ -52,19 +53,19 @@ Promise.race([
 export default class IdleStack {
 	static PADDING = 5
 
-	constructor(resolve) {
-		this.currentTask = { task: resolve }
+	constructor(resolve, time) {
+		this.currentTask = { task: resolve, time }
 		this.lastTask = this.currentTask
 		this.start()
 		return this
 	}
 
 	// insert after current task (and after all tasks already marked as 'next')
-	next(resolve, currentTask = this.currentTask) {
+	next(resolve, time, currentTask = this.currentTask) {
 		const insertBefore = currentTask.nextTask
 		if(insertBefore && insertBefore.next)
-			return this.next(resolve, insertBefore)
-		currentTask.nextTask = { task: resolve, next: true }
+			return this.next(resolve, time, insertBefore)
+		currentTask.nextTask = { task: resolve, next: true, time }
 		if(!insertBefore)
 			this.lastTask = currentTask.nextTask
 		else
@@ -73,8 +74,8 @@ export default class IdleStack {
 	}
 
 	// insert after all tasks
-	then(resolve) {
-		this.lastTask.nextTask = { task: resolve }
+	then(resolve, time) {
+		this.lastTask.nextTask = { task: resolve, time }
 		this.lastTask = this.lastTask.nextTask
 		return this
 	}
