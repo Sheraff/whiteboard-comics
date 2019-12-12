@@ -8,7 +8,10 @@ const URLS = [
 	'/script.js',
 	'/modules/requestIdleNetwork.js',
 	'/modules/IdleStack.js',
+	'/modules/parseAlphabet.js',
+	'/modules/SVGAnim.js',
 	'/data/graph_list.tsv',
+	'/components/Card.css',
 	'/components/Card.js',
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]

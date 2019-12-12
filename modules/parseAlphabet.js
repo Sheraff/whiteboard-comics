@@ -1,12 +1,4 @@
-import IdleStack from '/modules/IdleStack.js'
-
 const svgNS = 'http://www.w3.org/2000/svg'
-
-const fetchChars = async () => {
-	const response = await fetch(`/data/alphabet.json`)
-	const { chars } = await response.json()
-	return chars
-}
 
 const fetchSerializedHTML = (char) => async () => {
 	const response = await fetch(`/alphabet/alphabet_${char}.svg`)
@@ -36,65 +28,53 @@ const extractElements = ({ groups, char, viewBox }) => (
 			const id = `${char}_${index}`
 			clip.removeAttribute('id')
 			path.setAttribute('clip-path', `url(#${id})`)
-			return { char, clip, path, id, group, viewBox }
+			return { char, clip, path, id, viewBox }
 		}
 	))
 )
 
-const makeDefNode = () => {
-	const fragment = new DocumentFragment()
-	const svg = document.createElementNS(svgNS, 'svg')
-	svg.setAttribute('id', 'defs')
-	const defs = document.createElementNS(svgNS, 'defs')
-	svg.appendChild(defs)
-	fragment.appendChild(svg)
-	return { fragment, svg, defs }
-}
-
-const populateDefsAndChars = ({ charsMap, defs, svg }) => ({ id, clip, char, path, group, viewBox }) => {
+const getClipsAndPaths = charsMap => ({ id, clip, char, path, viewBox }) => {
 	return () => { // 
 		const clipPath = document.createElementNS(svgNS, 'clipPath')
 		clipPath.setAttribute('id', id)
 		clipPath.appendChild(clip)
-		defs.appendChild(clipPath)
 
-		charsMap[char] = charsMap[char] || { id, viewBox, paths: [] }
+		charsMap[char] = charsMap[char] || { id, viewBox, paths: [], clips: [] }
 		charsMap[char].paths.push(path)
-
-		return svg
+		charsMap[char].clips.push(clipPath)
 	}
 }
 
 const makeCharsElements = ({paths, viewBox}) => {
 	const fragment = new DocumentFragment()
-	const svg = document.createElementNS(svgNS, 'svg')
-	svg.setAttribute('viewBox', viewBox)
-	fragment.appendChild(svg)
-	paths.forEach(path => svg.appendChild(path))
-	return svg
+	const charSvg = document.createElementNS(svgNS, 'svg')
+	charSvg.setAttribute('viewBox', viewBox)
+	fragment.appendChild(charSvg)
+	paths.forEach(path => charSvg.appendChild(path))
+	return charSvg
 }
 
-export function parseAlphabet() {
-	const charsMap = {}
-	return new IdleStack(() => fetchChars(), 3)
-		.then((chars, stack) => {
-			stack.next(chars.map(fetchSerializedHTML), 2)
+export function parseAlphabet(charsArray, stack) {
+	return stack
+		.then(() => {
+			stack.next(charsArray.map(fetchSerializedHTML), 2)
 		}, 1)
 		.then((results) => results.map(makeDomFragments), 12)
 		.then((results, stack) => {
 			stack.next(results.map(extractElements).flat(), 3)
 		}, 1)
-		.then(extractedElements => ({ ...makeDefNode(), extractedElements }), 1)
-		.then(({ fragment, svg, defs, extractedElements }, stack) => {
-			const mapping = populateDefsAndChars({ charsMap, defs, svg })
-			stack.next(extractedElements.map(mapping), 5)
+		.then((extractedElements, stack) => {
+			const charsMap = {}
+			stack.next(extractedElements.map(getClipsAndPaths(charsMap)), 5)
+				.next(() => charsMap)
 		}, 1)
-		.then(([svg], stack) => {
-			const subtasks = Object.keys(charsMap).map(char => () => charsMap[char] = makeCharsElements(charsMap[char]))
+		.then((charsMap, stack) => {
+			const subtasks = Object.values(charsMap).map(charData => () => charData.node = makeCharsElements(charData))
 			stack.next(subtasks, 4)
-				.next(() => ({
-				$definitions: svg,
-				charsMap
-			}))
+				.next(() => Object.keys(charsMap).forEach(char => {
+					const {clips, node} = charsMap[char]
+					charsMap[char] = {clips, node}
+				}))
+				.next(() => charsMap)
 		}, 1)
 }
