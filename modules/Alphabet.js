@@ -71,6 +71,19 @@ class Alphabet {
 					this.charsMap = charsMap
 					return charsMap
 				}, 1)
+					.then((charsData, stack) => {
+						const fragment = new DocumentFragment()
+						const svg = document.createElementNS(svgNS, 'svg')
+						svg.setAttribute('id', 'defs')
+						const defs = document.createElementNS(svgNS, 'defs')
+						const subtasks = Object.values(charsData).map(({clips}) => () => clips.forEach(clip => defs.appendChild(clip)))
+						stack.next(subtasks)
+							.next(() => {
+								svg.appendChild(defs)
+								fragment.appendChild(svg)
+								document.body.appendChild(fragment)
+							})
+					})
 			})
 
 		this.stack.finish().then(console.log)
