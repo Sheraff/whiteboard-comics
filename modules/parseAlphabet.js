@@ -1,14 +1,14 @@
 const svgNS = 'http://www.w3.org/2000/svg'
 
-const fetchSerializedHTML = (char) => async () => {
+const fetchSerializedXML = (char) => async () => {
 	const response = await fetch(`/alphabet/alphabet_${char}.svg`)
-	const serializedHTML = await response.text()
-	return { char, serializedHTML }
+	const serializedXML = await response.text()
+	return { char, serializedXML }
 }
 
-const makeDomFragments = ({ char, serializedHTML }) => {
-	const range = new Range()
-	const fragment = range.createContextualFragment(serializedHTML)
+const makeDomFragments = ({ char, serializedXML }) => {
+	var domparser = new DOMParser()
+	const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
 	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
 	return {
 		groups: fragment.querySelectorAll('svg>g'),
@@ -57,7 +57,7 @@ const makeCharsElements = ({paths, viewBox}) => {
 export function parseAlphabet(charsArray, stack) {
 	return stack
 		.then(() => {
-			stack.next(charsArray.map(fetchSerializedHTML), 2)
+			stack.next(charsArray.map(fetchSerializedXML), 2)
 		}, 1)
 		.then((results) => results.map(makeDomFragments), 12)
 		.then((results, stack) => {

@@ -10,6 +10,7 @@
 import IndexedDBManager from '/modules/IndexedDB.js'
 import { parseAlphabet } from '/modules/parseAlphabet.js'
 import IdleStack from '/modules/IdleStack.js'
+const svgNS = 'http://www.w3.org/2000/svg'
 
 async function fetchChars() {
 	const response = await fetch(`/data/alphabet.json`)
@@ -17,22 +18,29 @@ async function fetchChars() {
 	return chars
 }
 
+function getCharFromIndexed(char) {
+	return async () => {
+		const indexedDB = await this.IndexedDBManager.getChar(char)
+		return {
+			char, indexedDB
+		}
+	}
+}
+
 function makeStringifiedCharsMap(charsData) {
 	const charsMap = {}
 	charsData.forEach(({ char, indexedDB }) => charsMap[char] = {
 		node: indexedDB.node,
-		clips: JSON.parse(indexedDB.clips)
+		clips: indexedDB.clips
 	})
 	return charsMap
 }
 
 const reviveCharData = (charData) => () => {
-	const range = new Range()
-
-	const nodeFragment = range.createContextualFragment(charData.node)
+	var domparser = new DOMParser()
+	const nodeFragment = domparser.parseFromString(charData.node, 'image/svg+xml')
 	charData.node = nodeFragment.firstChild
-
-	charData.clips = charData.clips.map(clip => range.createContextualFragment(clip).firstChild)
+	charData.clips = charData.clips.map(clip => domparser.parseFromString(clip, 'image/svg+xml').firstChild)
 }
 
 class Alphabet {
@@ -40,12 +48,7 @@ class Alphabet {
 		this.IndexedDBManager = new IndexedDBManager()
 		this.stack = new IdleStack(fetchChars)
 			.then((charsList, stack) => {
-				const subtasks = charsList.map((char) => async () => {
-					const indexedDB = await this.IndexedDBManager.getChar(char)
-					return {
-						char, indexedDB
-					}
-				})
+				const subtasks = charsList.map(getCharFromIndexed.bind(this))
 				stack.next(subtasks)
 			}, 1)
 			.then((charsData, stack) => {

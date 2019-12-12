@@ -17,10 +17,11 @@ class IndexedDBManager {
 				const tx = db.transaction('graphs', 'readwrite')
 				const store = tx.objectStore('graphs')
 				const request = store.get(data.name)
+				const XMLS = new XMLSerializer()
 				request.onsuccess = () => {
 					const result = store.put({
 						name: data.name,
-						node: data.node.outerHTML
+						node: XMLS.serializeToString(data.node)
 					})
 					resolve(result)
 				}
@@ -34,15 +35,18 @@ class IndexedDBManager {
 			this.getDB().then(db => {
 				const tx = db.transaction('chars', 'readwrite')
 				const store = tx.objectStore('chars')
+				const XMLS = new XMLSerializer()
 				Promise.all(Object.keys(data).map(char => (
 					new Promise((resolve, reject) => {
 						const request = store.get(char)
 						request.onsuccess = () => {
 							const charData = data[char]
+							const node = XMLS.serializeToString(charData.node)
+							const clips = charData.clips.map(clip => XMLS.serializeToString(clip))
 							const result = store.put({
 								char,
-								node: charData.node.outerHTML,
-								clips: JSON.stringify(charData.clips.map(clip => clip.outerHTML))
+								node,
+								clips
 							})
 							resolve(result)
 						}

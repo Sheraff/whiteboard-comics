@@ -100,9 +100,9 @@ export default class SVGCard extends HTMLElement {
 		return this._svg
 	}
 
-	setInnerSvg(serializedHTML) {
-		const range = new Range()
-		const fragment = range.createContextualFragment(serializedHTML)
+	setInnerSvg(serializedXML) {
+		var domparser = new DOMParser()
+		const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
 		const node = this.processRawSvgNode(fragment.firstElementChild)
 		if (this.$svg)
 			this.replaceChild(node, this.$svg)
