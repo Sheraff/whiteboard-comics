@@ -1,0 +1,25 @@
+svg-card {
+	display   : block;
+	height    : 100px;
+	width     : 100px;
+	margin    : 10px;
+	contain   : strict;
+	box-shadow: 0 0 3px black;
+
+	&:not(.web-component) * {
+		display: none;
+	}
+
+	svg {
+		max-width : 100%;
+		max-height: 100%;
+		position  : absolute;
+		left      : 50%;
+		top       : 50%;
+		transform : translate(-50%, -50%);
+
+		text {
+			font-family: 'Permanent Marker';
+		}
+	}
+}

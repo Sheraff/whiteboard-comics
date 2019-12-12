@@ -1,13 +1,10 @@
 :host{
 	display: block;
-	height: 100px;
-	width: 100px;
-	background-color: red;
-	contain: strict;
 }
 ::slotted(svg) {
-	background-color: pink;
+
 }
+
 slot[name=external]::slotted(*) {
-	background-color: green;
+	
 }
