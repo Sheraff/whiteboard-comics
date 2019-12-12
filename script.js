@@ -1,7 +1,5 @@
 import SVGCard from '/components/Card.js'
-import { requestIdleNetwork, idleFetch } from './modules/requestIdleNetwork.js'
-import IdleStack from './modules/IdleStack.js'
-import { parseChar, parseAlphabet } from './modules/parseAlphabet.js'
+import { parseAlphabet } from './modules/parseAlphabet.js'
 
 if ('serviceWorker' in navigator) {
 	window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'))
@@ -9,11 +7,16 @@ if ('serviceWorker' in navigator) {
 
 customElements.define('svg-card', SVGCard)
 
-// parseChar('a')
-// parseChar('b')
-// parseChar('c')
-// parseChar('d')
-// parseChar('e')
-// parseChar('f').then(console.log)
+const stack = parseAlphabet()
 
-parseAlphabet().then(console.log)
+const simulateDelay = new Promise(resolve => setTimeout(
+	() => resolve(stack.finish())
+, 500))
+
+Promise.race([
+	stack,
+	simulateDelay,
+]).then(result => {
+	console.log(result)
+})
+

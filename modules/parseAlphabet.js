@@ -1,51 +1,100 @@
 import IdleStack from '/modules/IdleStack.js'
 
-export async function parseAlphabet() {
+const svgNS = 'http://www.w3.org/2000/svg'
+
+const fetchChars = async () => {
 	const response = await fetch(`/data/alphabet.json`)
-	const {chars} = await response.json()
-	Promise.all(chars.map(parseChar))
-	.then(results => {
-		const fragment = document.createDocumentFragment()
-		const svg = document.createElement('svg')
-		svg.setAttribute('id', 'defs')
-		const defs = document.createElement('defs')
-		svg.appendChild(defs)
-		fragment.appendChild(svg)
-		results.forEach(result => {
-			result.forEach(group => {
-				const clipPath = document.createElement('clipPath')
-				clipPath.setAttribute('id', group.id)
-				clipPath.appendChild(group.clip)
-				defs.appendChild(clipPath)
-			})
-		})
-		// stripAndWrite(`${resultFolder}/defs.svg`, document.body.innerHTML)
-		console.log(fragment)
-	})
+	const { chars } = await response.json()
+	return chars
 }
 
-export async function parseChar(char) {
-	const stack = new IdleStack()
-	stack.push(async () => {
-		const response = await fetch(`/alphabet/alphabet_${char}.svg`)
-		const serializedHTML = await response.text()
-		return serializedHTML
-	})
-	stack.push((serializedHTML) => {
-		const fragment = document.createRange().createContextualFragment(serializedHTML)
-		const groups = fragment.querySelectorAll('svg>g')
-		groups.forEach((group, index) => {
-			stack.push((result = []) =>  {
-				const clip = group.querySelector('defs>path')
-				const path = group.lastElementChild
-				const id = `${char}_${index}`
-				clip.removeAttribute('id')
-				path.setAttribute('clip-path', `url(#${id})`)
-				result.push({ char, clip, path, id, group })
+const fetchSerializedHTML = (char) => async () => {
+	const response = await fetch(`/alphabet/alphabet_${char}.svg`)
+	const serializedHTML = await response.text()
+	return { char, serializedHTML }
+}
 
-				return result
-			})
+const makeDomFragments = ({ char, serializedHTML }) => {
+	const range = new Range()
+	const fragment = range.createContextualFragment(serializedHTML)
+	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
+	return {
+		groups: fragment.querySelectorAll('svg>g'),
+		char,
+		viewBox
+	}
+}
+
+// for each {groups, char} from makeDomFragments
+const extractElements = ({ groups, char, viewBox }) => (
+	// for each group in groups
+	Array.from(groups).map((group, index) => (
+		// return function that extract elements
+		() => {
+			const clip = group.querySelector('defs>path')
+			const path = group.lastElementChild
+			const id = `${char}_${index}`
+			clip.removeAttribute('id')
+			path.setAttribute('clip-path', `url(#${id})`)
+			return { char, clip, path, id, group, viewBox }
+		}
+	))
+)
+
+const makeDefNode = () => {
+	const fragment = new DocumentFragment()
+	const svg = document.createElementNS(svgNS, 'svg')
+	svg.setAttribute('id', 'defs')
+	const defs = document.createElementNS(svgNS, 'defs')
+	svg.appendChild(defs)
+	fragment.appendChild(svg)
+	return { fragment, svg, defs }
+}
+
+const populateDefsAndChars = ({ charsMap, defs, svg }) => ({ id, clip, char, path, group, viewBox }) => {
+	return () => { // 
+		const clipPath = document.createElementNS(svgNS, 'clipPath')
+		clipPath.setAttribute('id', id)
+		clipPath.appendChild(clip)
+		defs.appendChild(clipPath)
+
+		charsMap[char] = charsMap[char] || { id, viewBox, paths: [] }
+		charsMap[char].paths.push(path)
+
+		return svg
+	}
+}
+
+const makeCharsElements = ({paths, viewBox}) => {
+	const fragment = new DocumentFragment()
+	const svg = document.createElementNS(svgNS, 'svg')
+	svg.setAttribute('viewBox', viewBox)
+	fragment.appendChild(svg)
+	paths.forEach(path => svg.appendChild(path))
+	return svg
+}
+
+export function parseAlphabet() {
+	const charsMap = {}
+	return new IdleStack(() => fetchChars())
+		.then((chars, stack) => {
+			stack.next(chars.map(fetchSerializedHTML))
 		})
-	})
-	return stack
+		.then((results) => results.map(makeDomFragments))
+		.then((results, stack) => {
+			stack.next(results.map(extractElements).flat())
+		})
+		.then(extractedElements => ({ ...makeDefNode(), extractedElements }))
+		.then(({ fragment, svg, defs, extractedElements }, stack) => {
+			const mapping = populateDefsAndChars({ charsMap, defs, svg })
+			stack.next(extractedElements.map(mapping))
+		})
+		.then(([svg], stack) => {
+			const subtasks = Object.keys(charsMap).map(char => () => charsMap[char] = makeCharsElements(charsMap[char]))
+			stack.next(subtasks)
+				.next(() => ({
+				$definitions: svg,
+				charsMap
+			}))
+		})
 }
