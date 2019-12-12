@@ -8,7 +8,15 @@ import IndexedDBManager from '/modules/IndexedDB.js'
  * - raw svg > processed svg
  * - parsed alphabet
  * - loaded font
- * |-> replace text
+ * |-> replace text 
+ * 
+ * 2.
+ * - fetch graph data > fill template
+ * 
+ * promise.all([1, 2])
+ * - store to indexedDB
+ * 
+ * promise.then(1)
  * - compute anim
  * - erase
  * - play
