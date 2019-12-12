@@ -14,6 +14,6 @@ customElements.define('svg-card', SVGCard)
 // parseChar('c')
 // parseChar('d')
 // parseChar('e')
-parseChar('f').then(console.log)
+// parseChar('f').then(console.log)
 
-parseAlphabet()
+parseAlphabet().then(console.log)

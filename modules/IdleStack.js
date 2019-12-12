@@ -8,16 +8,24 @@ export default class IdleStack {
 		this.finishing = false
 	}
 
+	// make thennable to use in Promise chains
 	then(resolve) {
 		this.resolve = resolve
 		if(!this.stack.length)
 			this.callback()
 	}
 
-	callback() {
+	async callback() {
 		if(this.resolve) {
-			this.resolve(this.lastResult)
+			await this.resolve(this.lastResult)
 			this.resolve = undefined
+		}
+		// restart if callback added stuff
+		if(this.stack.length) {
+			if(this.finishing)
+				this.finish()
+			else
+				this.start()
 		}
 	}
 
