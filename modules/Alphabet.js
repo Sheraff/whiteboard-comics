@@ -60,8 +60,8 @@ class Alphabet {
 					stack.then(() => makeStringifiedCharsMap(charsData), 2)
 						.then((charsMap, stack) => {
 							const subtasks = Object.values(charsMap).map(reviveCharData)
-							stack.next(subtasks)
-								.next(() => charsMap)
+							stack.next(subtasks, 10)
+								.next(() => charsMap, 1)
 						}, 1)
 				}
 				stack.then(charsMap => {
