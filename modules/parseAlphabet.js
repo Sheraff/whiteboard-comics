@@ -1,23 +1,31 @@
 import IdleStack from '/modules/IdleStack.js'
 
+const svgNS = 'http://www.w3.org/2000/svg'
+
 export async function parseAlphabet() {
 	const response = await fetch(`/data/alphabet.json`)
 	const {chars} = await response.json()
 	Promise.all(chars.map(parseChar))
 	.then(results => {
-		const fragment = document.createDocumentFragment()
-		const svg = document.createElement('svg')
+		const fragment = new DocumentFragment()
+		const svg = document.createElementNS(svgNS, 'svg')
 		svg.setAttribute('id', 'defs')
-		const defs = document.createElement('defs')
+		const defs = document.createElementNS(svgNS, 'defs')
 		svg.appendChild(defs)
 		fragment.appendChild(svg)
 		results.forEach(result => {
-			result.forEach(group => {
-				const clipPath = document.createElement('clipPath')
-				clipPath.setAttribute('id', group.id)
-				clipPath.appendChild(group.clip)
+			const fragment = new DocumentFragment()
+			const svg = document.createElementNS(svgNS, 'svg')
+			svg.setAttributeNS(svgNS, 'viewBox', result[0].viewBox)
+			fragment.appendChild(svg)
+			result.forEach(item => {
+				svg.appendChild(item.path)
+				const clipPath = document.createElementNS(svgNS, 'clipPath')
+				clipPath.setAttribute('id', item.id)
+				clipPath.appendChild(item.clip)
 				defs.appendChild(clipPath)
 			})
+			console.log(fragment)
 		})
 		// stripAndWrite(`${resultFolder}/defs.svg`, document.body.innerHTML)
 		console.log(fragment)
@@ -32,7 +40,9 @@ export async function parseChar(char) {
 		return serializedHTML
 	})
 	stack.push((serializedHTML) => {
-		const fragment = document.createRange().createContextualFragment(serializedHTML)
+		const range = new Range()
+		const fragment = range.createContextualFragment(serializedHTML)
+		const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
 		const groups = fragment.querySelectorAll('svg>g')
 		groups.forEach((group, index) => {
 			stack.push((result = []) =>  {
@@ -41,7 +51,7 @@ export async function parseChar(char) {
 				const id = `${char}_${index}`
 				clip.removeAttribute('id')
 				path.setAttribute('clip-path', `url(#${id})`)
-				result.push({ char, clip, path, id, group })
+				result.push({ char, clip, path, id, viewBox })
 
 				return result
 			})
