@@ -17,3 +17,8 @@ customElements.define('svg-card', SVGCard)
 // parseChar('f').then(console.log)
 
 parseAlphabet().then(console.log)
+
+// TODO: make IdleStack more like Promises ?
+// - add stuff w/ then()
+// - `finish` just cancels / skips all 'requestIdle'
+// - make "tree"? one node has array of functions, array of results, link to next node
