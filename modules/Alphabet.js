@@ -11,17 +11,16 @@ import IndexedDBManager from '/modules/IndexedDB.js'
 import { parseAlphabet } from '/modules/parseAlphabet.js'
 import IdleStack from '/modules/IdleStack.js'
 
-const fetchChars = async () => {
+async function fetchChars() {
 	const response = await fetch(`/data/alphabet.json`)
 	const { chars } = await response.json()
 	return chars
 }
 
-const makeStringifiedCharsMap = (charsData) => {
+function makeStringifiedCharsMap(charsData) {
 	const charsMap = {}
-	console.log(charsData)
-	charsData.forEach(({char, indexedDB}) => charsMap[char] = {
-		node: indexedDB.node, 
+	charsData.forEach(({ char, indexedDB }) => charsMap[char] = {
+		node: indexedDB.node,
 		clips: JSON.parse(indexedDB.clips)
 	})
 	return charsMap
@@ -29,7 +28,7 @@ const makeStringifiedCharsMap = (charsData) => {
 
 const reviveCharData = (charData) => () => {
 	const range = new Range()
-	
+
 	const nodeFragment = range.createContextualFragment(charData.node)
 	charData.node = nodeFragment.firstChild
 
@@ -40,36 +39,38 @@ class Alphabet {
 	constructor() {
 		this.IndexedDBManager = new IndexedDBManager()
 		this.stack = new IdleStack(fetchChars)
-		.then((charsList, stack) => {
-			const subtasks = charsList.map((char) => async () => ({
-				char,
-				indexedDB: await this.IndexedDBManager.getChar(char)
-			}))
-			stack.next(subtasks)
-		})
-		.then((charsData, stack) => {
-			if(charsData.some(({indexedDB}) => !indexedDB))
-				stack.next(() => parseAlphabet(
-					charsData.map(({char}) => char),
-					stack
-				))
-				.next(charsMap => {
-					this.IndexedDBManager.saveChars(charsMap)
+			.then((charsList, stack) => {
+				const subtasks = charsList.map((char) => async () => {
+					const indexedDB = await this.IndexedDBManager.getChar(char)
+					return {
+						char, indexedDB
+					}
+				})
+				stack.next(subtasks)
+			})
+			.then((charsData, stack) => {
+				if (charsData.some(({ indexedDB }) => !indexedDB)) {
+					const charList = charsData.map(({ char }) => char)
+					parseAlphabet(charList, stack)
+						.then(charsMap => {
+							this.IndexedDBManager.saveChars(charsMap)
+							return charsMap
+						})
+				} else {
+					stack.then(() => makeStringifiedCharsMap(charsData))
+						.then((charsMap, stack) => {
+							const subtasks = Object.values(charsMap).map(reviveCharData)
+							stack.next(subtasks)
+								.next(() => charsMap)
+						})
+				}
+				stack.then(charsMap => {
+					this.charsMap = charsMap
 					return charsMap
 				})
-			else {
-				stack.next(() => makeStringifiedCharsMap(charsData))
-					.next((charsMap, stack) => {
-						const subtasks = Object.values(charsMap).map(reviveCharData)
-						stack.next(subtasks)
-							.next(() => charsMap)
-					})
-			}
-		})
-		.then(charsMap => {
-			console.log(charsMap)
-			this.charsMap = charsMap
-		})
+			})
+
+		this.stack.finish().then(console.log)
 	}
 }
 
