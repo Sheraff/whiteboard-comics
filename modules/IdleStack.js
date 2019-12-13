@@ -7,12 +7,13 @@
  * - instead of providing a function, you can provide an array of functions, the next task will receive an array of results
  * - you can provide a second argument (after your function / array of functions) to tell IdleStack how much time your task needs (in milliseconds)
  * 
- * There are only 4 methods you should use
+ * There are the methods you should use:
  * - new IdleStack() to create a queue, takes a function as an argument
  * - .then() to add a task at the end of the queue
  * - .next() to add a task after the first task (and after any other task added with .next())
  * - .finish() takes over from requestIdleCallback and runs every task synchronously, returns a promise
  * - .onFinish() takes a function as argument, will call this function just before .finish() takes over from requestIdleCallback, giving you a change to switch how the task is handled
+ * - .promise returns a promise that resolves when the queue is completed
  * 
  * 
  * 
