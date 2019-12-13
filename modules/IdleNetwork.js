@@ -28,7 +28,7 @@ class IdleNetwork {
 		this.isListening = true
 		navigator.serviceWorker.addEventListener('message', ({ data }) => {
 			this.isListening = false
-			if (data.idle)
+			if (data.idle && data.availableConnections > 0)
 				this.manyRequests(data.availableConnections)
 			else
 				this.processBacklog()

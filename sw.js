@@ -37,18 +37,21 @@ self.addEventListener('fetch', event => event.respondWith(
 	caches.match(event.request).then(cached => {
 		// Cache hit - return response
 		if (cached)
-			return cached
+			return { response: cached, cached: true }
 
 		debouncer.startFetching()
 
 		// Request
 		const letter = matchAlphabetURL(event.request.url)
-		return letter
-			? fetchLetter(CACHE_NAME, letter)
-			: fetch(event.request)
+		return {
+			response: letter
+				? fetchLetter(CACHE_NAME, letter)
+				: fetch(event.request)
+		}
 
-	}).then(response => {
-		debouncer.endFetching()
+	}).then(({ response, cached }) => {
+		if (!cached)
+			debouncer.endFetching()
 
 		// Bad response, don't cache
 		if (!response || response.status !== 200 || response.type !== 'basic')

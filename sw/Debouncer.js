@@ -35,7 +35,8 @@ class Debouncer {
 	}
 
 	startFetching() {
-		this.currentConnections = Math.min(this.currentConnections + 1, Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS)
+		this.currentConnections++
+		this.currentConnections = Math.min(this.currentConnections, Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS)
 		if (this.debounceTimeoutId && this.currentConnections >= Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS) {
 			this.activeTimeout = false
 			clearTimeout(this.debounceTimeoutId)
@@ -43,7 +44,8 @@ class Debouncer {
 	}
 
 	endFetching() {
-		this.currentConnections = Math.max(this.currentConnections - 1, 0)
+		this.currentConnections--
+		this.currentConnections = Math.max(this.currentConnections, 0)
 		if (!this.debounceTimeoutId && this.currentConnections < Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS)
 			this.requestSlot()
 	}
