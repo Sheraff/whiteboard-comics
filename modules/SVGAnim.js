@@ -45,7 +45,7 @@ class SVGAnim {
 	}
 
 	get promise() {
-		return this.Alphabet.promise
+		return this.Alphabet.promise.then(() => this)
 	}
 }
 

@@ -86,6 +86,9 @@ class Alphabet {
 							})
 					})
 			})
+		this.stack.promise.then(() => {
+			this.isReady = true
+		})
 	}
 
 	finish() {
@@ -97,7 +100,11 @@ class Alphabet {
 	}
 
 	get promise() {
-		return this.stack.promise
+		return this.stack.promise.then(() => this)
+	}
+
+	getChar(char) {
+		return this.charsMap[char].node
 	}
 }
 
