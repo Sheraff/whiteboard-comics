@@ -93,8 +93,8 @@ export function parseAlphabet(charsArray, stack) {
 			const subtasks = Object.values(charsMap).map(charData => () => charData.node = makeCharsElements(charData))
 			stack.next(subtasks, 4)
 				.next(() => Object.keys(charsMap).forEach(char => {
-					const { clips, node } = charsMap[char]
-					charsMap[char] = { clips, node }
+					const { clips, node, viewBox } = charsMap[char]
+					charsMap[char] = { clips, node, viewBox }
 				}))
 				.next(() => charsMap)
 		}, 1)
