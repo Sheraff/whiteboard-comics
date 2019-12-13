@@ -1,9 +1,30 @@
+import IdleNetwork from '/modules/IdleNetwork.js'
+
 const svgNS = 'http://www.w3.org/2000/svg'
 
-const fetchSerializedXML = (char) => async () => {
-	const response = await fetch(`/alphabet/alphabet_${char}.svg`)
-	const serializedXML = await response.text()
-	return { char, serializedXML }
+const fetchSerializedXML = (charsArray, stack) => {
+	const idleNetwork = new IdleNetwork()
+	return async () => await Promise.all(charsArray.map(async char => {
+		let response
+		const charURL = `/alphabet/alphabet_${char}.svg`
+		if (stack.isFinishing) {
+			response = await fetch(charURL)
+		} else {
+			let idleRequestId
+			response = await Promise.race([
+				new Promise(resolve => {
+					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
+				}),
+				new Promise(resolve => stack.onFinish(async () => {
+					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
+					if (cancelable)
+						resolve(await fetch(charURL))
+				}))
+			])
+		}
+		const serializedXML = await response.text()
+		return { char, serializedXML }
+	}))
 }
 
 const makeDomFragments = ({ char, serializedXML }) => {
@@ -45,7 +66,7 @@ const getClipsAndPaths = charsMap => ({ id, clip, char, path, viewBox }) => {
 	}
 }
 
-const makeCharsElements = ({paths, viewBox}) => {
+const makeCharsElements = ({ paths, viewBox }) => {
 	const fragment = new DocumentFragment()
 	const charSvg = document.createElementNS(svgNS, 'svg')
 	charSvg.setAttribute('viewBox', viewBox)
@@ -57,7 +78,7 @@ const makeCharsElements = ({paths, viewBox}) => {
 export function parseAlphabet(charsArray, stack) {
 	return stack
 		.then(() => {
-			stack.next(charsArray.map(fetchSerializedXML), 2)
+			stack.next(fetchSerializedXML(charsArray, stack), 2)
 		}, 1)
 		.then((results) => results.map(makeDomFragments), 12)
 		.then((results, stack) => {
@@ -72,8 +93,8 @@ export function parseAlphabet(charsArray, stack) {
 			const subtasks = Object.values(charsMap).map(charData => () => charData.node = makeCharsElements(charData))
 			stack.next(subtasks, 4)
 				.next(() => Object.keys(charsMap).forEach(char => {
-					const {clips, node} = charsMap[char]
-					charsMap[char] = {clips, node}
+					const { clips, node } = charsMap[char]
+					charsMap[char] = { clips, node }
 				}))
 				.next(() => charsMap)
 		}, 1)

@@ -6,11 +6,12 @@ const URLS = [
 	'/',
 	'/style.css',
 	'/script.js',
-	'/modules/requestIdleNetwork.js',
+	'/modules/IdleNetwork.js',
 	'/modules/IdleStack.js',
 	'/modules/parseAlphabet.js',
 	'/modules/SVGAnim.js',
 	'/data/graph_list.tsv',
+	'/data/alphabet.json',
 	'/components/Card.css',
 	'/components/Card.js',
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
@@ -18,10 +19,7 @@ const URLS = [
 
 self.addEventListener('install', event => event.waitUntil(
 	caches.open(CACHE_NAME)
-		.then(async cache => Promise.all([
-			cache.addAll(URLS),
-			await cacheAlphabet(cache),
-		]))
+		.then(cache => cache.addAll(URLS))
 		.catch(() => console.warn('URLS list of forced caches is wrong'))
 ))
 
@@ -41,7 +39,7 @@ self.addEventListener('fetch', event => event.respondWith(
 		if (cached)
 			return cached
 
-		debouncer.pause()
+		debouncer.startFetching()
 
 		// Request
 		const letter = matchAlphabetURL(event.request.url)
@@ -50,7 +48,7 @@ self.addEventListener('fetch', event => event.respondWith(
 			: fetch(event.request)
 
 	}).then(response => {
-		debouncer.start()
+		debouncer.endFetching()
 
 		// Bad response, don't cache
 		if (!response || response.status !== 200 || response.type !== 'basic')

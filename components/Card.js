@@ -1,4 +1,4 @@
-import { requestIdleNetwork, cancelIdleNetwork } from '/modules/requestIdleNetwork.js'
+import IdleNetwork from '/modules/IdleNetwork.js'
 import IdleStack from '/modules/IdleStack.js'
 import SVGAnim from '/modules/SVGAnim.js'
 import IndexedDBManager from '/modules/IndexedDB.js'
@@ -28,6 +28,7 @@ export default class SVGCard extends HTMLElement {
 	connectedCallback() {
 		this.SVGAnim = new SVGAnim()
 		this.IndexedDBManager = new IndexedDBManager()
+		this.IdleNetwork = new IdleNetwork()
 
 		const template = document.getElementById('svg-card');
 		const fragment = document.importNode(template.content, true);
@@ -40,7 +41,7 @@ export default class SVGCard extends HTMLElement {
 		// get raw SVG
 		if (!this.$svg && this.hasAttribute('name')) {
 			// request whenever there is down time in the network
-			this.svgRequestId = requestIdleNetwork(`/graphs/graphs_${this.name}.svg`, async svg => {
+			this.svgRequestId = this.IdleNetwork.requestIdleNetwork(`/graphs/graphs_${this.name}.svg`, async svg => {
 				if (this.intersectionObserver) {
 					this.intersectionObserver.disconnect()
 					delete this.intersectionObserver
@@ -53,7 +54,7 @@ export default class SVGCard extends HTMLElement {
 					return
 				this.intersectionObserver.disconnect()
 				delete this.intersectionObserver
-				const isCanceled = cancelIdleNetwork(this.svgRequestId)
+				const isCanceled = this.IdleNetwork.cancelIdleNetwork(this.svgRequestId)
 				if (!this.$svg && isCanceled)
 					fetch(`/graphs/graphs_${this.name}.svg`).then(async svg => this.setInnerSvg(await svg.text()))
 			})
