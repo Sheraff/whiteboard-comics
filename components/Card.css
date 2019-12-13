@@ -1,10 +1,3 @@
-:host{
-	display: block;
-}
-::slotted(svg) {
-
-}
-
-slot[name=external]::slotted(*) {
-	
+:host {
+  display: block;
 }
