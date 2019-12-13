@@ -8,6 +8,9 @@ if ('serviceWorker' in navigator) {
 customElements.define('svg-card', SVGCard)
 
 window.alphabet = new Alphabet()
+window.alphabet.promise.then((alphabet) => {
+	console.log(alphabet.getChar('w'))
+})
 setTimeout(() => {
 	window.alphabet.finish().then(console.log)
 }, 500)
