@@ -7,7 +7,7 @@ import IndexedDBManager from '/modules/IndexedDB.js'
  * scenario
  * 
  * 1. promise.all
- * - raw svg > processed svg
+ * - raw svg > processed svg (first path to top, viewbox resize)
  * - parsed alphabet
  * - loaded font
  * |-> replace text 
@@ -25,14 +25,9 @@ import IndexedDBManager from '/modules/IndexedDB.js'
  */
 
 export default class SVGCard extends HTMLElement {
-	constructor() {
-		super()
+	connectedCallback() {
 		this.SVGAnim = new SVGAnim()
 		this.IndexedDBManager = new IndexedDBManager()
-	}
-
-	connectedCallback() {
-
 
 		const template = document.getElementById('svg-card');
 		const fragment = document.importNode(template.content, true);

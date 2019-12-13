@@ -2,18 +2,18 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=block">
 
-<svg-card name="(life)⋂(death)=exercising">
-	<a slot="inernal" href=""></a>
-	<a slot="external" href="">
-		<span>Author</span>
-		<p>Name</p>
-	</a>
+<svg-card name="(life)⋂(death)=exercising" data-tags="['exercising']">
+	<a slot="internal-link" href="/(life)⋂(death)=exercising"></a>
+	<span class="credits">
+		<span slot="author">Inspired by</span>
+		<a slot="external-link" href="">Author Name</a>
+	</span>
+	<span slot="date">2019-06-24</span>
 </svg-card>
 
-<svg-card name="graphs_earnings=f(age)">
-	<?xml version="1.0" encoding="utf-8"?>
-	<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg-card name="earnings=f(age)" data-tags="['money', 'growing up']">
+	<a slot="internal-link" href="/earnings=f(age)"></a>
+	<span slot="date">2016-04-18</span>
 	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 			viewBox="0 0 593.5 298" enable-background="new 0 0 593.5 298" xml:space="preserve">
 	<path fill="none" stroke="#FFFFFF" stroke-width="120" stroke-linejoin="bevel" stroke-miterlimit="10" d="M512.5,16.8
@@ -47,7 +47,11 @@
 
 <template id="svg-card">
 	<link rel="stylesheet" href="/components/Card.css">
-	<slot name="inernal"></slot>
-	<slot name="external"></slot>
+	<slot name="internal-link"></slot>
+	<span class="credits">
+		<slot name="author"></slot>
+		<slot name="external-link"></slot>
+	</span>
+	<slot name="date"></slot>
 	<slot></slot>
 </template>
