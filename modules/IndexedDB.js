@@ -1,13 +1,4 @@
 class IndexedDBManager {
-	save(data) {
-		switch (data.type) {
-			case 'graph':
-				saveGraph(data)
-				break;
-			default:
-				throw new Error(`Unknown table ${data.type}`)
-		}
-	}
 
 	saveGraph(data) {
 		return new Promise((resolve, reject) => {
@@ -92,12 +83,11 @@ class IndexedDBManager {
 	}
 }
 
-let singleton
-
-export default class {
+export default class Singleton {
+	static singleton
 	constructor() {
-		if (!singleton)
-			singleton = new IndexedDBManager()
-		return singleton
+		if (!Singleton.singleton)
+			Singleton.singleton = new IndexedDBManager()
+		return Singleton.singleton
 	}
 }

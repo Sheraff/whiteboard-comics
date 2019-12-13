@@ -35,14 +35,25 @@ class SVGAnim {
 			return this.staticTotalLength
 		}
 	}
+
+	finish() {
+		if(!this.readyPromise)
+			this.readyPromise = new Promise((resolve, reject) => {
+				this.Alphabet.finish().then(resolve)
+			})
+		return this.readyPromise
+	}
+
+	get promise() {
+		return this.Alphabet.promise
+	}
 }
 
-let singleton
-
-export default class {
+export default class Singleton {
+	static singleton
 	constructor() {
-		if (!singleton)
-			singleton = new SVGAnim()
-		return singleton
+		if (!Singleton.singleton)
+			Singleton.singleton = new SVGAnim()
+		return Singleton.singleton
 	}
 }

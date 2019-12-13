@@ -1,14 +1,17 @@
-svg-card {
-	display   : block;
-	height    : 100px;
-	width     : 100px;
-	margin    : 10px;
-	contain   : strict;
-	box-shadow: 0 0 3px black;
+body {}
 
-	&:not(.web-component) * {
-		display: none;
-	}
+svg-card {
+	display         : block;
+	height          : 300px;
+	width           : 300px;
+	margin          : 10px;
+	contain         : strict;
+	box-shadow      : 0 0 3px black;
+	background-color: white;
+
+	&:not(.web-component) * {}
+
+	&:not(:defined) {}
 
 	svg {
 		max-width : 100%;
@@ -20,6 +23,11 @@ svg-card {
 
 		text {
 			font-family: 'Permanent Marker';
+
 		}
+
+		[stroke="#FFFFFF"] {}
+
+		[stroke="#000000"] {}
 	}
 }

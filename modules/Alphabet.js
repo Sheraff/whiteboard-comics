@@ -82,20 +82,31 @@ class Alphabet {
 								svg.appendChild(defs)
 								fragment.appendChild(svg)
 								document.body.appendChild(fragment)
+								return this
 							})
 					})
 			})
+	}
 
-		this.stack.finish().then(console.log)
+	finish() {
+		if(!this.readyPromise)
+			this.readyPromise = new Promise((resolve, reject) => {
+				this.stack.finish().then(resolve)
+			})
+		return this.readyPromise
+	}
+
+	get promise() {
+		return this.stack.promise
 	}
 }
 
-let singleton
 
-export default class {
+export default class Singleton {
+	static singleton
 	constructor() {
-		if (!singleton)
-			singleton = new Alphabet()
-		return singleton
+		if (!Singleton.singleton)
+			Singleton.singleton = new Alphabet()
+		return Singleton.singleton
 	}
 }

@@ -57,6 +57,8 @@ export default class IdleStack {
 		this.currentTask = { task: resolve, time }
 		this.lastTask = this.currentTask
 		this.start()
+		this.completedStackPromise = new Promise(resolve => this.completedStackTrigger = resolve)
+			.then(() => this.lastTask.result)
 		return this
 	}
 
@@ -83,19 +85,8 @@ export default class IdleStack {
 	start() {
 		this.idleCallbackId = requestIdleCallback(async idleDeadline => {
 			this.isExecuting = true
-			while (idleDeadline.timeRemaining() > (this.currentTask.time || IdleStack.PADDING)) {
-				if (Array.isArray(this.currentTask.task)) {
-					await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
-					if (this.currentTask.task.length)
-						continue
-				} else {
-					await this.executeTask(this.currentTask.task, this.currentTask)
-				}
-				if (!this.currentTask.nextTask)
-					break
-				this.currentTask.nextTask.previousResult = this.currentTask.result
-				this.currentTask = this.currentTask.nextTask
-			}
+			console.log('request idle again')
+			await this.processSomeTasks(() => idleDeadline.timeRemaining() > (this.currentTask.time || IdleStack.PADDING))
 			this.isExecuting = false
 			if (this.endOfTaskPromise)
 				this.endOfTaskPromise()
@@ -120,32 +111,42 @@ export default class IdleStack {
 
 		return new Promise(async resolve => {
 			await waitToFinish
-			while (this.currentTask) {
-				if (Array.isArray(this.currentTask.task)) {
-					await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
-					if (this.currentTask.task.length)
-						continue
-				} else {
-					await this.executeTask(this.currentTask.task, this.currentTask)
-				}
-				if (!this.currentTask.nextTask)
-					break
-				this.currentTask.nextTask.previousResult = this.currentTask.result
-				this.currentTask = this.currentTask.nextTask
-			}
+			await this.processSomeTasks(() => !!this.currentTask)
 			resolve(this.lastTask.result)
 		})
+	}
+
+	async processSomeTasks(getFlag) {
+		while(getFlag()) {
+			if (Array.isArray(this.currentTask.task)) {
+				await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
+				if (this.currentTask.task.length)
+					continue
+			} else {
+				await this.executeTask(this.currentTask.task, this.currentTask)
+			}
+			if (!this.currentTask.nextTask) {
+				this.completedStackTrigger()
+				break
+			}
+			this.currentTask.nextTask.previousResult = this.currentTask.result
+			this.currentTask = this.currentTask.nextTask
+		}
 	}
 
 	async executeTask(task, object, push) {
 		const result = await task(object.previousResult, this)
 		if (push) {
-			if(!object.result)
+			if (!object.result)
 				object.result = [result]
 			else
 				object.result.push(result)
 		}
 		else
 			object.result = result
+	}
+
+	get promise() {
+		return this.completedStackPromise
 	}
 }

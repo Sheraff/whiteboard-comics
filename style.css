@@ -5,9 +5,7 @@ svg-card {
   margin: 10px;
   contain: strict;
   box-shadow: 0 0 3px black;
-}
-svg-card:not(.web-component) * {
-  display: none;
+  background-color: white;
 }
 svg-card svg {
   max-width: 100%;
