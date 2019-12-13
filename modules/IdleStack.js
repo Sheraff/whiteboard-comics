@@ -169,9 +169,13 @@ export default class IdleStack {
 	async processSomeTasks(getFlag) {
 		while (getFlag()) {
 			if (Array.isArray(this.currentTask.task)) {
-				await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
-				if (this.currentTask.task.length)
-					continue
+				if(this.isFinishing) {
+					await Promise.all(this.currentTask.task.map(async task => await this.executeTask(task, this.currentTask, true)))
+				} else {
+					await this.executeTask(this.currentTask.task.shift(), this.currentTask, true)
+					if (this.currentTask.task.length)
+						continue
+				}
 			} else {
 				await this.executeTask(this.currentTask.task, this.currentTask)
 			}
@@ -188,9 +192,8 @@ export default class IdleStack {
 		const result = await task(object.previousResult, this)
 		if (push) {
 			if (!object.result)
-				object.result = [result]
-			else
-				object.result.push(result)
+				object.result = []
+			object.result.push(result)
 		}
 		else
 			object.result = result
