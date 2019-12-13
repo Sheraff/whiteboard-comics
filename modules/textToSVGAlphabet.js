@@ -6,14 +6,21 @@ export default function textToSVGAlphabet(svg) {
 	const alphabet = new Alphabet()
 	const stack = new IdleStack()
 
-	const getChar = async char => {
-		return await alphabet.promise.then(() => alphabet.getChar(
-			char.toLowerCase()
-				.replace(/‘/g, "'")
-				.replace(/’/g, "'")
-				.replace(/“/g, '"')
-				.replace(/”/g, '"')
-		))
+	function charDisambiguation(char) {
+		return char.toLowerCase()
+			.replace(/‘/g, "'")
+			.replace(/’/g, "'")
+			.replace(/“/g, '"')
+			.replace(/”/g, '"')
+	}
+
+	async function getChar(rawChar, stack) {
+		const char = charDisambiguation(rawChar)
+		return () => {
+			if (!stack.isFinishing)
+				stack.onFinish(() => alphabet.finish())
+			return await alphabet.finish().then(() => alphabet.getChar(char))
+		}
 	}
 
 	const loopOverAllSpans = (element, callback) => {
