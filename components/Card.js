@@ -38,13 +38,15 @@ export default class SVGCard extends HTMLElement {
 	async findStep() {
 		const name = this.attributes.name && this.attributes.name.value
 
-		if(!name)
+		if (!name)
 			return
 
 		const cached = await this.IndexedDBManager.getGraph(name)
-		if (cached)
-			return await this.startFromStep('cached', { cached: cached.node, name })
-
+		if (cached) {
+			const domparser = new DOMParser()
+			const fragment = domparser.parseFromString(cached, 'image/svg+xml')
+			return await this.startFromStep('cached', { cached: fragment.firstElementChild, name })
+		}
 		const raw = this.querySelector('svg')
 		if (raw)
 			return await this.startFromStep('raw', { raw, name })
@@ -61,29 +63,29 @@ export default class SVGCard extends HTMLElement {
 					const domparser = new DOMParser()
 					const fragment = domparser.parseFromString(fetched, 'image/svg+xml')
 					raw = fragment.firstElementChild
+					this.appendChild(fragment.firstElementChild)
 				case 'raw':
 					cached = await this.process(raw)
 					await this.alphabetize(cached)
 					this.cache(name, cached)
 				case 'cached':
-					await this.use(cached, step === 'raw')
+					this.classList.add('alphabetized')
+					await this.use(cached)
 				case 'ready':
 					await resolve()
 			}
 		})
 	}
 
-	use(node, inplace) {
-		if(inplace)
-			return
-
-		if(typeof node !== 'string')
-			return this.appendChild(node)
-		
-		const domparser = new DOMParser()
-		const fragment = domparser.parseFromString(node, 'image/svg+xml')
-		this.appendChild(fragment.firstElementChild)
+	use(node) {
+		const previous = this.querySelector('svg')
+		if (previous)
+			this.replaceChild(node, previous)
+		else
+			this.appendChild(node)
+		return
 	}
+
 
 	cache(name, node) {
 		this.IndexedDBManager.saveGraph({ name, node })
@@ -95,14 +97,12 @@ export default class SVGCard extends HTMLElement {
 			alphabetizer.promise,
 			this.finishPromise.then(alphabetizer.finish)
 		])
-		this.classList.add('alphabetized')
 		return node
 	}
 
 	process(node) {
 		// resize
 		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
-		console.log(node)
 		const [, , width, height] = node.getAttribute('viewBox').split(' ')
 		if (width < height)
 			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
@@ -130,7 +130,7 @@ export default class SVGCard extends HTMLElement {
 				if (cancelable)
 					resolve(await fetch(graphURL))
 			}))
-		])
+		]).then(response => response.text())
 	}
 
 	finish() {
@@ -150,9 +150,7 @@ export default class SVGCard extends HTMLElement {
 		//	- on click, trigger all the way
 
 
-		document.fonts.load('1em Permanent Marker').then(() => {
-			this.classList.add('font-loaded')
-		})
+		document.fonts.load('1em Permanent Marker').then(() => this.classList.add('font-loaded'))
 
 		// request whenever there is down time in the network
 		this.findStep().then(() => {

@@ -1,5 +1,5 @@
-svg-card {
-  display: block;
+svg-card,
+.svg-card {
   height: 300px;
   width: 300px;
   margin: 10px;
@@ -7,7 +7,8 @@ svg-card {
   box-shadow: 0 0 3px black;
   background-color: white;
 }
-svg-card svg {
+svg-card svg,
+.svg-card svg {
   max-width: 100%;
   max-height: 100%;
   position: absolute;
@@ -15,15 +16,35 @@ svg-card svg {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-svg-card svg text {
+svg-card svg [data-erase],
+.svg-card svg [data-erase] {
+  display: none;
+}
+svg-card svg text,
+.svg-card svg text {
   font-family: 'Permanent Marker';
+  transition: fill 0.5s;
 }
-svg-card svg [data-erase] {
+svg-card svg [data-type="text"],
+.svg-card svg [data-type="text"] {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+svg-card:not(.font-loaded) text,
+.svg-card:not(.font-loaded) text {
   display: none;
 }
-svg-card:not(.font-loaded) text {
-  display: none;
+body.svg-defs svg-card.alphabetized [data-type="text"] {
+  opacity: 1;
 }
-svg-card:not(.alphabetized) [data-type="text"] {
-  display: none;
+body.svg-defs svg-card.alphabetized text {
+  fill: rgba(0, 0, 0, 0);
+}
+.svg-card {
+  position: absolute;
+  left: -100%;
+  top: -100%;
+}
+.svg-card text {
+  display: block !important;
 }

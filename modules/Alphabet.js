@@ -82,6 +82,7 @@ class Alphabet {
 								svg.appendChild(defs)
 								fragment.appendChild(svg)
 								document.body.appendChild(fragment)
+								document.body.classList.add('svg-defs')
 								return this
 							})
 					})
@@ -90,14 +91,15 @@ class Alphabet {
 
 	finish() {
 		if(!this.readyPromise)
-			this.readyPromise = new Promise((resolve, reject) => {
+			this.readyPromise = new Promise(resolve => {
 				this.stack.finish().then(resolve)
 			})
+			// this.readyPromise = this.stack.finish()
 		return this.readyPromise
 	}
 
 	get promise() {
-		return this.stack.promise.then(() => this)
+		return this.stack.promise
 	}
 
 	getChar(char) {

@@ -7,7 +7,16 @@ export default class TextToAlphabet {
 
 		this.Alphabet = new Alphabet()
 
-		this.stack = new IdleStack(() => this.uniqueCharFromNode(svg))
+		this.stack = new IdleStack(async () => {
+			if(svg.ownerDocument !== document) {
+				this.temp = document.createElement('div')
+				this.temp.classList.add('svg-card')
+				this.temp.appendChild(svg)
+				document.body.appendChild(this.temp)
+				await new Promise(resolve => requestAnimationFrame(resolve))
+			}
+		})
+			.then(() => this.uniqueCharFromNode(svg))
 			.then((chars) => {
 				this.charsMap = {}
 				const subtasks = chars.map(char => this.getChar(char, this.stack))
@@ -45,6 +54,9 @@ export default class TextToAlphabet {
 				const subtasks = Array.from(referencesMap.entries())
 					.map(([reference, fragment]) => this.placeFragmentBeforeRef(reference, fragment, this.stack))
 				this.stack.next(subtasks)
+			}).then(() => {
+				if(this.temp)
+					document.body.removeChild(this.temp)
 			})
 	}
 
@@ -100,7 +112,7 @@ export default class TextToAlphabet {
 			return {
 				...spanData,
 				height: this.charsMap[char].viewBox.split(' ').pop(),
-				position: spanData.text.getStartPositionOfChar(index),
+				position: spanData.text.getStartPositionOfChar(index), // SVG must be part of DOM for this function?!
 				children: Array.from(this.charsMap[char].node.cloneNode(true).children),
 			}
 		})
