@@ -85,6 +85,7 @@ export default class SVGCard extends HTMLElement {
 			this.dataset.viewBox = node.getAttribute('viewBox')
 			this.dataset.raw = true
 			this.TextToAlphabet = new TextToAlphabet(node)
+			this.TextToAlphabet.promise.then(() => console.log(`${this.name} finished`))
 			if(this.name)
 				this.IndexedDBManager.saveGraph({
 					name: this.name,
