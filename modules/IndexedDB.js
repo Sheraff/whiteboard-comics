@@ -21,6 +21,10 @@ class IndexedDBManager {
 		})
 	}
 
+	getGraph(name) {
+
+	}
+
 	saveChars(data) {
 		return new Promise((resolve, reject) => {
 			this.getDB().then(db => {
@@ -55,7 +59,7 @@ class IndexedDBManager {
 	getChar(char) {
 		return new Promise((resolve, reject) => {
 			this.getDB().then(db => {
-				const tx = db.transaction('chars', 'readwrite')
+				const tx = db.transaction('chars', 'readonly')
 				const store = tx.objectStore('chars')
 				const request = store.get(char)
 				request.onsuccess = () => {
