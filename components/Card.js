@@ -25,98 +25,152 @@ import IndexedDBManager from '/modules/IndexedDB.js'
  */
 
 export default class SVGCard extends HTMLElement {
-	connectedCallback() {
+
+	constructor() {
+		super()
 		this.SVGAnim = new SVGAnim()
 		this.IndexedDBManager = new IndexedDBManager()
 		this.IdleNetwork = new IdleNetwork()
+		this.finishPromise = new Promise(resolve => this.finishResolve = resolve)
+		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
+	}
 
+	async findStep() {
+		const name = this.attributes.name && this.attributes.name.value
+
+		if(!name)
+			return
+
+		const cached = await this.IndexedDBManager.getGraph(name)
+		if (cached)
+			return await this.startFromStep('cached', { cached: cached.node, name })
+
+		const raw = this.querySelector('svg')
+		if (raw)
+			return await this.startFromStep('raw', { raw, name })
+
+		return await this.startFromStep('named', { name })
+	}
+
+	startFromStep(step, args) {
+		let { name, raw, cached } = args
+		return new Promise(async resolve => {
+			switch (step) {
+				case 'named':
+					const fetched = await this.fetch(name)
+					const domparser = new DOMParser()
+					const fragment = domparser.parseFromString(fetched, 'image/svg+xml')
+					raw = fragment.firstElementChild
+				case 'raw':
+					cached = await this.process(raw)
+					await this.alphabetize(cached)
+					this.cache(name, cached)
+				case 'cached':
+					await this.use(cached, step === 'raw')
+				case 'ready':
+					await resolve()
+			}
+		})
+	}
+
+	use(node, inplace) {
+		if(inplace)
+			return
+
+		if(typeof node !== 'string')
+			return this.appendChild(node)
+		
+		const domparser = new DOMParser()
+		const fragment = domparser.parseFromString(node, 'image/svg+xml')
+		this.appendChild(fragment.firstElementChild)
+	}
+
+	cache(name, node) {
+		this.IndexedDBManager.saveGraph({ name, node })
+	}
+
+	async alphabetize(node) {
+		const alphabetizer = new TextToAlphabet(node)
+		await Promise.race([
+			alphabetizer.promise,
+			this.finishPromise.then(alphabetizer.finish)
+		])
+		this.classList.add('alphabetized')
+		return node
+	}
+
+	process(node) {
+		// resize
+		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
+		console.log(node)
+		const [, , width, height] = node.getAttribute('viewBox').split(' ')
+		if (width < height)
+			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
+		else
+			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
+		// TODO: resize should happen before caching AND BE CACHED somehow
+
+		// find and reorder "erase"
+		this.erase = node.firstElementChild
+		this.erase.dataset.erase = true
+		node.appendChild(this.erase)
+
+		return node
+	}
+
+	async fetch(name) {
+		let idleRequestId
+		const graphURL = `/graphs/graphs_${name}.svg`
+		return await Promise.race([
+			new Promise(resolve => {
+				idleRequestId = this.IdleNetwork.requestIdleNetwork(graphURL, resolve)
+			}),
+			new Promise(resolve => this.finishPromise.then(async () => {
+				const cancelable = this.IdleNetwork.cancelIdleNetwork(idleRequestId)
+				if (cancelable)
+					resolve(await fetch(graphURL))
+			}))
+		])
+	}
+
+	finish() {
+		this.finishResolve()
+		return this.readyPromise
+	}
+
+	connectedCallback() {
 		const template = document.getElementById('svg-card');
 		const fragment = document.importNode(template.content, true);
 		this.attachShadow({ mode: 'open' })
 		this.shadowRoot.appendChild(fragment)
-		this.$svg = this.querySelector('svg')
-		if(this.attributes.name)
-			this.name = this.attributes.name.value
 
-		// get raw SVG
-		if (!this.$svg && this.hasAttribute('name')) {
-			// request whenever there is down time in the network
-			this.svgRequestId = this.IdleNetwork.requestIdleNetwork(`/graphs/graphs_${this.name}.svg`, async svg => {
-				if (this.intersectionObserver) {
-					this.intersectionObserver.disconnect()
-					delete this.intersectionObserver
-				}
-				this.setInnerSvg(await svg.text())
-			})
-			// if in viewport, request immediately
-			this.intersectionObserver = new IntersectionObserver(([intersection]) => {
-				if (!intersection.isIntersecting)
-					return
-				this.intersectionObserver.disconnect()
-				delete this.intersectionObserver
-				const isCanceled = this.IdleNetwork.cancelIdleNetwork(this.svgRequestId)
-				if (!this.$svg && isCanceled)
-					fetch(`/graphs/graphs_${this.name}.svg`).then(async svg => this.setInnerSvg(await svg.text()))
-			})
-			this.intersectionObserver.observe(this);
-		}
+		// TODO: use ≠ promise triggers for the ≠ steps of the scenario
+		//	- on intersectionObserver, trigger up to raw svg
+		//	- on mouseOver, trigger up to alphabetized and processed
+		//	- on click, trigger all the way
 
-		// get font
+
 		document.fonts.load('1em Permanent Marker').then(() => {
 			this.classList.add('font-loaded')
 		})
 
-		//
-		this.classList.add('web-component')
+		// request whenever there is down time in the network
+		this.findStep().then(() => {
+			if (this.intersectionObserver) {
+				this.intersectionObserver.disconnect()
+				delete this.intersectionObserver
+			}
+		})
+		// if in viewport, request immediately
+		// this.intersectionObserver = new IntersectionObserver(([intersection]) => {
+		// 	if (!intersection.isIntersecting)
+		// 		return
+		// 	this.intersectionObserver.disconnect()
+		// 	delete this.intersectionObserver
+		// 	this.finish()
+		// })
+		// this.intersectionObserver.observe(this);
 
 	}
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		switch (name) {
-			default:
-				console.warn(`No handle defined for ${name} change`)
-				break
-		}
-	}
-
-	set $svg(node) {
-		this._svg = node
-		if(node) {
-			this.dataset.viewBox = node.getAttribute('viewBox')
-			this.dataset.raw = true
-			this.TextToAlphabet = new TextToAlphabet(node)
-			this.TextToAlphabet.promise.then(() => console.log(`${this.name} finished`))
-			if(this.name)
-				this.IndexedDBManager.saveGraph({
-					name: this.name,
-					node 
-				})
-		}
-	}
-
-	get $svg() {
-		return this._svg
-	}
-
-	setInnerSvg(serializedXML) {
-		var domparser = new DOMParser()
-		const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
-		const node = this.processRawSvgNode(fragment.firstElementChild)
-		if (this.$svg)
-			this.replaceChild(node, this.$svg)
-		else
-			this.appendChild(node)
-		this.$svg = node
-	}
-
-	processRawSvgNode(node) {
-		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
-		const viewbox = node.getAttribute('viewBox').split(' ')
-		const svgbox = node.getBoundingClientRect()
-		if (svgbox.width < svgbox.height)
-			node.style.width = (.9 * SIZE_FACTOR * viewbox[2] / 10) + '%'
-		else
-			node.style.height = (.9 * SIZE_FACTOR * viewbox[3] / 10) + '%'
-		return node
-	}
 }
