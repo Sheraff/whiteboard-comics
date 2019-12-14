@@ -18,20 +18,21 @@ async function fetchChars() {
 	return chars
 }
 
-function getCharFromIndexed(char) {
+function getCharFromIndexed([name, string]) {
 	return async () => {
-		const indexedDB = await this.IndexedDBManager.getChar(char)
+		const indexedDB = await this.IndexedDBManager.getChar(name)
 		return {
-			char, indexedDB
+			name, string, indexedDB
 		}
 	}
 }
 
 function makeStringifiedCharsMap(charsData) {
 	const charsMap = {}
-	charsData.forEach(({ char, indexedDB }) => charsMap[char] = {
+	charsData.forEach(({ name, string, indexedDB }) => charsMap[string] = {
 		node: indexedDB.node,
-		clips: indexedDB.clips
+		clips: indexedDB.clips,
+		name
 	})
 	return charsMap
 }
@@ -53,8 +54,7 @@ class Alphabet {
 			}, 1)
 			.then((charsData, stack) => {
 				if (charsData.some(({ indexedDB }) => !indexedDB)) {
-					const charList = charsData.map(({ char }) => char)
-					parseAlphabet(charList, stack)
+					parseAlphabet(charsData, stack)
 						.then(charsMap => {
 							this.IndexedDBManager.saveChars(charsMap)
 							return charsMap
@@ -104,7 +104,7 @@ class Alphabet {
 	}
 
 	getChar(char) {
-		return this.charsMap[char].node
+		return this.charsMap[char]
 	}
 }
 

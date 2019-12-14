@@ -2,11 +2,11 @@ import IdleNetwork from '/modules/IdleNetwork.js'
 
 const svgNS = 'http://www.w3.org/2000/svg'
 
-const fetchSerializedXML = (charsArray, stack) => {
+const fetchSerializedXML = (charsData, stack) => {
 	const idleNetwork = new IdleNetwork()
-	return async () => await Promise.all(charsArray.map(async char => {
+	return async () => await Promise.all(charsData.map(async ({ name, string }) => {
 		let response
-		const charURL = `/alphabet/alphabet_${char}.svg`
+		const charURL = `/alphabet/alphabet_${name}.svg`
 		if (stack.isFinishing) {
 			response = await fetch(charURL)
 		} else {
@@ -23,46 +23,47 @@ const fetchSerializedXML = (charsArray, stack) => {
 			])
 		}
 		const serializedXML = await response.text()
-		return { char, serializedXML }
+		return { name, string, serializedXML }
 	}))
 }
 
-const makeDomFragments = ({ char, serializedXML }) => {
+const makeDomFragments = ({ name, string, serializedXML }) => {
 	var domparser = new DOMParser()
 	const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
 	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
 	return {
 		groups: fragment.querySelectorAll('svg>g'),
-		char,
+		name,
+		string,
 		viewBox
 	}
 }
 
 // for each {groups, char} from makeDomFragments
-const extractElements = ({ groups, char, viewBox }) => (
+const extractElements = ({ groups, name, string, viewBox }) => (
 	// for each group in groups
 	Array.from(groups).map((group, index) => (
 		// return function that extract elements
 		() => {
 			const clip = group.querySelector('defs>path')
 			const path = group.lastElementChild
-			const id = `${char}_${index}`
+			const id = `${name}_${index}`
 			clip.removeAttribute('id')
 			path.setAttribute('clip-path', `url(#${id})`)
-			return { char, clip, path, id, viewBox }
+			return { name, string, clip, path, id, viewBox }
 		}
 	))
 )
 
-const getClipsAndPaths = charsMap => ({ id, clip, char, path, viewBox }) => {
+const getClipsAndPaths = charsMap => ({ id, clip, name, string, path, viewBox }) => {
 	return () => { // 
 		const clipPath = document.createElementNS(svgNS, 'clipPath')
 		clipPath.setAttribute('id', id)
 		clipPath.appendChild(clip)
 
-		charsMap[char] = charsMap[char] || { id, viewBox, paths: [], clips: [] }
-		charsMap[char].paths.push(path)
-		charsMap[char].clips.push(clipPath)
+		charsMap[string] = charsMap[string] || { id, viewBox, name, paths: [], clips: [] }
+		charsMap[string].paths.push(path)
+		charsMap[string].clips.push(clipPath)
 	}
 }
 
@@ -75,10 +76,10 @@ const makeCharsElements = ({ paths, viewBox }) => {
 	return charSvg
 }
 
-export function parseAlphabet(charsArray, stack) {
+export function parseAlphabet(charsData, stack) {
 	return stack
 		.then(() => {
-			stack.next(fetchSerializedXML(charsArray, stack), 2)
+			stack.next(fetchSerializedXML(charsData, stack), 2)
 		}, 1)
 		.then((results) => results.map(makeDomFragments), 12)
 		.then((results, stack) => {
@@ -92,9 +93,9 @@ export function parseAlphabet(charsArray, stack) {
 		.then((charsMap, stack) => {
 			const subtasks = Object.values(charsMap).map(charData => () => charData.node = makeCharsElements(charData))
 			stack.next(subtasks, 4)
-				.next(() => Object.keys(charsMap).forEach(char => {
-					const { clips, node, viewBox } = charsMap[char]
-					charsMap[char] = { clips, node, viewBox }
+				.next(() => Object.keys(charsMap).forEach(string => {
+					const { clips, node, viewBox, name } = charsMap[string]
+					charsMap[string] = { clips, node, viewBox, name }
 				}))
 				.next(() => charsMap)
 		}, 1)

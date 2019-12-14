@@ -27,17 +27,19 @@ class IndexedDBManager {
 				const tx = db.transaction('chars', 'readwrite')
 				const store = tx.objectStore('chars')
 				const XMLS = new XMLSerializer()
-				Promise.all(Object.keys(data).map(char => (
+				Promise.all(Object.keys(data).map(string => (
 					new Promise((resolve, reject) => {
-						const request = store.get(char)
+						const request = store.get(string)
 						request.onsuccess = () => {
-							const charData = data[char]
+							const charData = data[string]
 							const node = XMLS.serializeToString(charData.node)
 							const clips = charData.clips.map(clip => XMLS.serializeToString(clip))
 							const result = store.put({
-								char,
+								name: charData.name,
+								string,
 								node,
-								clips
+								clips,
+								viewBox: charData.viewBox
 							})
 							resolve(result)
 						}
@@ -72,7 +74,8 @@ class IndexedDBManager {
 			dbOpenRequest.onupgradeneeded = () => {
 				const db = dbOpenRequest.result
 				db.createObjectStore('graphs', { keyPath: 'name' })
-				db.createObjectStore('chars', { keyPath: 'char' })
+				const charsStore = db.createObjectStore('chars', { keyPath: 'string' })
+				// charsStore.createIndex("string", "string", { unique: true });
 			}
 			dbOpenRequest.onsuccess = () => {
 				this.idbDatabase = dbOpenRequest.result
