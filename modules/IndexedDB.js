@@ -1,5 +1,27 @@
 class IndexedDBManager {
 
+	getGraph(name) {
+		return this.getEntry('graphs', name)
+	}
+
+	getChar(char) {
+		return this.getEntry('chars', char)
+	}
+
+	getEntry(table, key) {
+		return new Promise((resolve, reject) => {
+			this.getDB().then(db => {
+				const tx = db.transaction(table, 'readonly')
+				const store = tx.objectStore(table)
+				const request = store.get(key)
+				request.onsuccess = () => {
+					resolve(request.result)
+				}
+				request.onerror = reject
+			})
+		})
+	}
+
 	saveGraph(data) {
 		return new Promise((resolve, reject) => {
 			this.getDB().then(db => {
@@ -19,10 +41,6 @@ class IndexedDBManager {
 				request.onerror = reject
 			})
 		})
-	}
-
-	getGraph(name) {
-
 	}
 
 	saveChars(data) {
@@ -56,20 +74,6 @@ class IndexedDBManager {
 		})
 	}
 
-	getChar(char) {
-		return new Promise((resolve, reject) => {
-			this.getDB().then(db => {
-				const tx = db.transaction('chars', 'readonly')
-				const store = tx.objectStore('chars')
-				const request = store.get(char)
-				request.onsuccess = () => {
-					resolve(request.result)
-				}
-				request.onerror = reject
-			})
-		})
-	}
-
 	getDB() {
 		return new Promise((resolve, reject) => {
 			if (this.idbDatabase)
@@ -78,8 +82,7 @@ class IndexedDBManager {
 			dbOpenRequest.onupgradeneeded = () => {
 				const db = dbOpenRequest.result
 				db.createObjectStore('graphs', { keyPath: 'name' })
-				const charsStore = db.createObjectStore('chars', { keyPath: 'string' })
-				// charsStore.createIndex("string", "string", { unique: true });
+				db.createObjectStore('chars', { keyPath: 'string' })
 			}
 			dbOpenRequest.onsuccess = () => {
 				this.idbDatabase = dbOpenRequest.result
