@@ -18,3 +18,12 @@ svg-card svg {
 svg-card svg text {
   font-family: 'Permanent Marker';
 }
+svg-card svg [data-erase] {
+  display: none;
+}
+svg-card:not(.font-loaded) text {
+  display: none;
+}
+svg-card:not(.alphabetized) [data-type="text"] {
+  display: none;
+}
