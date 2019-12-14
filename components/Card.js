@@ -1,5 +1,5 @@
 import IdleNetwork from '/modules/IdleNetwork.js'
-import IdleStack from '/modules/IdleStack.js'
+import TextToAlphabet from '/modules/TextToAlphabet.js'
 import SVGAnim from '/modules/SVGAnim.js'
 import IndexedDBManager from '/modules/IndexedDB.js'
 
@@ -84,6 +84,7 @@ export default class SVGCard extends HTMLElement {
 		if(node) {
 			this.dataset.viewBox = node.getAttribute('viewBox')
 			this.dataset.raw = true
+			this.TextToAlphabet = new TextToAlphabet(node)
 			if(this.name)
 				this.IndexedDBManager.saveGraph({
 					name: this.name,
