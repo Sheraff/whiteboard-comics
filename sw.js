@@ -3,18 +3,18 @@ self.importScripts('/sw/alphabetCaching.js')
 
 const CACHE_NAME = 'whiteboard-files-cache-v0'
 const URLS = [
-	'/',
-	'/style.css',
-	'/script.js',
-	'/modules/IdleNetwork.js',
-	'/modules/IdleStack.js',
-	'/modules/parseAlphabet.js',
-	'/modules/SVGAnim.js',
-	'/modules/TextToAlphabet.js',
+	// '/',
+	// '/style.css',
+	// '/script.js',
+	// '/modules/IdleNetwork.js',
+	// '/modules/IdleStack.js',
+	// '/modules/parseAlphabet.js',
+	// '/modules/SVGAnim.js',
+	// '/modules/TextToAlphabet.js',
 	'/data/graph_list.tsv',
 	'/data/alphabet.json',
-	'/components/Card.css',
-	'/components/Card.js',
+	// '/components/Card.css',
+	// '/components/Card.js',
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
