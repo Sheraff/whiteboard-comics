@@ -10,6 +10,7 @@ const URLS = [
 	'/modules/IdleStack.js',
 	'/modules/parseAlphabet.js',
 	'/modules/SVGAnim.js',
+	'/modules/TextToAlphabet.js',
 	'/data/graph_list.tsv',
 	'/data/alphabet.json',
 	'/components/Card.css',
