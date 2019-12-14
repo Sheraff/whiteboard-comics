@@ -190,6 +190,7 @@ export default class IdleStack {
 				await this.executeTask(this.currentTask.task, this.currentTask)
 			}
 			if (!this.currentTask.nextTask) {
+				delete this.currentTask
 				this.completedStackTrigger()
 				break
 			}
