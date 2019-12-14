@@ -77,8 +77,7 @@ class IdleNetwork {
 			return requestId
 		} else {
 			this.backlog.push({ id: ++this.id, request, callback })
-			if (this.isWorkerReady)
-				this.processBacklog()
+			this.processBacklog()
 			return this.id
 		}
 	}
@@ -96,8 +95,7 @@ class IdleNetwork {
 				}
 			} else {
 				this.backlog.push({ request, resolve, reject })
-				if (this.isWorkerReady)
-					this.processBacklog()
+				this.processBacklog()
 			}
 		})
 	}
