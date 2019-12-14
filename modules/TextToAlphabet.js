@@ -8,51 +8,60 @@ export default class TextToAlphabet {
 		this.Alphabet = new Alphabet()
 
 		this.stack = new IdleStack(() => this.uniqueCharFromNode(svg))
-			.then((chars, stack) => {
+			.then((chars) => {
 				this.charsMap = {}
-				const subtasks = chars.map(char => this.getChar(char, stack))
-				stack.next(subtasks)
+				const subtasks = chars.map(char => this.getChar(char, this.stack))
+				this.stack.next(subtasks)
 					.next(pairs => pairs.forEach(([char, node]) => this.charsMap[char] = node))
 			})
 			.then(() => Array.from(svg.querySelectorAll('text')))
-			.then((texts, stack) => {
+			.then((texts) => {
 				const subtasks = texts.map(text => () => this.getTextNodeData(text))
-				stack.next(subtasks)
+				this.stack.next(subtasks)
 					.next(spansData => spansData.flat())
 			})
-			.then((spansData, stack) => {
+			.then((spansData) => {
 				const subtasks = spansData.map(data => () => this.getSpansCharData(data))
-				stack.next(subtasks)
+				this.stack.next(subtasks)
 					.next(spansCharData => spansCharData.flat().filter(data => !!data))
 			})
-			.then((spansCharData, stack) => {
+			.then((spansCharData) => {
 				const subtasks = spansCharData.map(charNodeData => () => this.getCharNodesArray(charNodeData))
-				stack.next(subtasks)
+				this.stack.next(subtasks)
 					.next(charsNodesChilren => charsNodesChilren.flat())
 			})
-			.then((charsNodesChilren, stack) => {
+			.then((charsNodesChilren) => {
 				const referencesMap = new Map()
 				const subtasks = charsNodesChilren.map(({ child, reference }) => () => {
 					if (!referencesMap.has(reference))
 						referencesMap.set(reference, new DocumentFragment())
 					referencesMap.get(reference).appendChild(child)
 				})
-				stack.next(subtasks)
+				this.stack.next(subtasks)
 					.next(() => referencesMap)
 			})
-			.then((referencesMap, stack) => {
+			.then((referencesMap) => {
 				const subtasks = Array.from(referencesMap.entries())
-					.map(([reference, fragment]) => this.placeFragmentBeforeRef(reference, fragment, stack))
-				stack.next(subtasks)
+					.map(([reference, fragment]) => this.placeFragmentBeforeRef(reference, fragment, this.stack))
+				this.stack.next(subtasks)
 			})
+	}
 
-		return this.stack.promise.then(() => console.log('done'))
+	finish() {
+		if(!this.readyPromise)
+			this.readyPromise = new Promise(resolve => {
+				this.stack.finish().then(() => resolve(this))
+			})
+		return this.readyPromise
+	}
 
+	get promise() {
+		return this.stack.promise.then(() => this)
 	}
 
 	placeFragmentBeforeRef(reference, fragment, stack) {
 		const insertFunction = () => reference.parentNode.insertBefore(fragment, reference)
-		return async () => {
+		return async (_, onFinish) => {
 			if (stack.isFinishing)
 				return insertFunction()
 
@@ -64,7 +73,7 @@ export default class TextToAlphabet {
 						resolve()
 					})
 				}),
-				new Promise(resolve => stack.onFinish(() => {
+				new Promise(resolve => onFinish(() => {
 					cancelAnimationFrame(requestId)
 					insertFunction()
 					resolve()
@@ -127,9 +136,9 @@ export default class TextToAlphabet {
 
 	getChar(rawChar, stack) {
 		const char = this.charDisambiguation(rawChar)
-		return async () => {
+		return async (_, onFinish) => {
 			if (!stack.isFinishing)
-				stack.onFinish(() => this.Alphabet.finish())
+				onFinish(() => this.Alphabet.finish())
 			return [
 				rawChar,
 				await this.Alphabet.promise.then(() => this.Alphabet.getChar(char))

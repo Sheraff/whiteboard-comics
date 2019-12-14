@@ -12,7 +12,6 @@
  * - .then() to add a task at the end of the queue
  * - .next() to add a task after the first task (and after any other task added with .next())
  * - .finish() takes over from requestIdleCallback and runs every task synchronously, returns a promise
- * - .onFinish() takes a function as argument, will call this function just before .finish() takes over from requestIdleCallback, giving you a change to switch how the task is handled
  * - .promise returns a promise that resolves when the queue is completed
  * 
  * 
@@ -54,7 +53,7 @@ Promise.race([
 
 const fetchSerializedXML = (charsArray, stack) => {
 	const idleNetwork = new IdleNetwork()
-	return async () => await Promise.all(charsArray.map(async char => {
+	return async (_, onFinish) => await Promise.all(charsArray.map(async char => {
 		let response
 		const charURL = `/alphabet/alphabet_${char}.svg`
 		if (stack.isFinishing) {
@@ -65,7 +64,7 @@ const fetchSerializedXML = (charsArray, stack) => {
 				new Promise(resolve => {
 					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
 				}),
-				new Promise(resolve => stack.onFinish(async () => {
+				new Promise(resolve => onFinish(async () => {
 					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
 					if (cancelable)
 						resolve(await fetch(charURL))
@@ -97,13 +96,8 @@ export default class IdleStack {
 			this.completedStackTrigger = resolve
 		}).then(() => {
 			this.stackIsPending = false
-			this.lastTask.result
+			return this.lastTask.result
 		})
-
-		// allows for `stack.onFinish()` to cancel idle / lazy / delayed tasks and finish quicker
-		this.prepareForFinishingBacklog = []
-		
-		return this
 	}
 
 	// insert after current task (and after all tasks already marked as 'next')
@@ -111,7 +105,8 @@ export default class IdleStack {
 		const insertBefore = currentTask.nextTask
 		if (insertBefore && insertBefore.next)
 			return this.next(resolve, time, insertBefore)
-		currentTask.nextTask = { task: resolve, next: true, time }
+		const isArray = Array.isArray(resolve)
+		currentTask.nextTask = { task: resolve, next: true, time, isArray }
 		if (!insertBefore)
 			this.lastTask = currentTask.nextTask
 		else
@@ -121,9 +116,20 @@ export default class IdleStack {
 
 	// insert after all tasks
 	then(resolve, time) {
-		this.lastTask.nextTask = { task: resolve, time }
+		const isArray = Array.isArray(resolve)
+		this.lastTask.nextTask = { task: resolve, time, isArray }
 		this.lastTask = this.lastTask.nextTask
 		return this
+	}
+
+	shouldKeepProcessing() {
+		if(!this.currentTask || !this.currentTask.task)
+			return false
+		if(this.currentTask.isArray && this.currentTask.task.length)
+			return true
+		if(!this.currentTask.isArray)
+			return true
+		return false
 	}
 
 	start() {
@@ -133,7 +139,7 @@ export default class IdleStack {
 			this.isExecuting = false
 			if (this.endOfTaskPromise)
 				this.endOfTaskPromise()
-			else if (this.currentTask.nextTask)
+			else if (this.shouldKeepProcessing())
 				this.start()
 			else
 				delete this.idleCallbackId
@@ -148,8 +154,8 @@ export default class IdleStack {
 			delete this.idleCallbackId
 		}
 
-		if(this.stackIsPending)
-			this.prepareForFinishingBacklog.forEach(callback => callback(this))
+		if(this.stackIsPending && this.isExecuting && this.currentTask.onFinish.length)
+			this.currentTask.onFinish.forEach(callback => callback(this))
 
 		const waitToFinish = this.isExecuting
 			? new Promise(resolve => this.endOfTaskPromise = resolve)
@@ -158,18 +164,21 @@ export default class IdleStack {
 		return new Promise(async resolve => {
 			await waitToFinish
 			await this.processSomeTasks(() => !!this.currentTask)
-			// TODO: if isFinishing, arrays of tasks shouldn't run sequentially but in parallel (don't `.shift()` and `await` but `.map(await)`)
 			resolve(this.lastTask.result)
 		})
 	}
 
-	onFinish(callback) {
-		this.prepareForFinishingBacklog.push(callback)
+	getOnFinish(currentTask) {
+		if(!currentTask.onFinish)
+			currentTask.onFinish = []
+		return (callback) => {
+			currentTask.onFinish.push(callback)
+		}
 	}
 
 	async processSomeTasks(getFlag) {
 		while (getFlag()) {
-			if (Array.isArray(this.currentTask.task)) {
+			if (this.currentTask.isArray && this.currentTask.task.length) {
 				if(this.isFinishing) {
 					await Promise.all(this.currentTask.task.map(async task => await this.executeTask(task, this.currentTask, true)))
 				} else {
@@ -177,7 +186,7 @@ export default class IdleStack {
 					if (this.currentTask.task.length)
 						continue
 				}
-			} else {
+			} else if (!this.currentTask.isArray) {
 				await this.executeTask(this.currentTask.task, this.currentTask)
 			}
 			if (!this.currentTask.nextTask) {
@@ -190,7 +199,7 @@ export default class IdleStack {
 	}
 
 	async executeTask(task, object, push) {
-		const result = await task(object.previousResult, this)
+		const result = await task(object.previousResult, this.getOnFinish(object))
 		if (push) {
 			if (!object.result)
 				object.result = []

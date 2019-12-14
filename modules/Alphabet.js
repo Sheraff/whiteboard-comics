@@ -48,36 +48,36 @@ class Alphabet {
 	constructor() {
 		this.IndexedDBManager = new IndexedDBManager()
 		this.stack = new IdleStack(fetchChars)
-			.then((charsList, stack) => {
+			.then((charsList) => {
 				const subtasks = charsList.map(getCharFromIndexed.bind(this))
-				stack.next(subtasks)
+				this.stack.next(subtasks)
 			}, 1)
-			.then((charsData, stack) => {
+			.then((charsData) => {
 				if (charsData.some(({ indexedDB }) => !indexedDB)) {
-					parseAlphabet(charsData, stack)
+					parseAlphabet(charsData, this.stack)
 						.then(charsMap => {
 							this.IndexedDBManager.saveChars(charsMap)
 							return charsMap
 						})
 				} else {
-					stack.then(() => makeStringifiedCharsMap(charsData), 2)
-						.then((charsMap, stack) => {
+					this.stack.then(() => makeStringifiedCharsMap(charsData), 2)
+						.then((charsMap) => {
 							const subtasks = Object.values(charsMap).map(reviveCharData)
-							stack.next(subtasks, 10)
+							this.stack.next(subtasks, 10)
 								.next(() => charsMap, 1)
 						}, 1)
 				}
-				stack.then(charsMap => {
+				this.stack.then(charsMap => {
 					this.charsMap = charsMap
 					return charsMap
 				}, 1)
-					.then((charsData, stack) => {
+					.then((charsData) => {
 						const fragment = new DocumentFragment()
 						const svg = document.createElementNS(svgNS, 'svg')
 						svg.setAttribute('id', 'defs')
 						const defs = document.createElementNS(svgNS, 'defs')
 						const subtasks = Object.values(charsData).map(({clips}) => () => clips.forEach(clip => defs.appendChild(clip)))
-						stack.next(subtasks)
+						this.stack.next(subtasks)
 							.next(() => {
 								svg.appendChild(defs)
 								fragment.appendChild(svg)
@@ -86,9 +86,6 @@ class Alphabet {
 							})
 					})
 			})
-		this.stack.promise.then(() => {
-			this.isReady = true
-		})
 	}
 
 	finish() {

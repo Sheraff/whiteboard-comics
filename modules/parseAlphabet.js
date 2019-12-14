@@ -4,7 +4,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
 
 const fetchSerializedXML = (charsData, stack) => {
 	const idleNetwork = new IdleNetwork()
-	return async () => await Promise.all(charsData.map(async ({ name, string }) => {
+	return async (_, onFinish) => await Promise.all(charsData.map(async ({ name, string }) => {
 		let response
 		const charURL = `/alphabet/alphabet_${name}.svg`
 		if (stack.isFinishing) {
@@ -15,7 +15,7 @@ const fetchSerializedXML = (charsData, stack) => {
 				new Promise(resolve => {
 					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
 				}),
-				new Promise(resolve => stack.onFinish(async () => {
+				new Promise(resolve => onFinish(async () => {
 					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
 					if (cancelable)
 						resolve(await fetch(charURL))
@@ -82,15 +82,15 @@ export function parseAlphabet(charsData, stack) {
 			stack.next(fetchSerializedXML(charsData, stack), 2)
 		}, 1)
 		.then((results) => results.map(makeDomFragments), 12)
-		.then((results, stack) => {
+		.then((results) => {
 			stack.next(results.map(extractElements).flat(), 3)
 		}, 1)
-		.then((extractedElements, stack) => {
+		.then((extractedElements) => {
 			const charsMap = {}
 			stack.next(extractedElements.map(getClipsAndPaths(charsMap)), 5)
 				.next(() => charsMap)
 		}, 1)
-		.then((charsMap, stack) => {
+		.then((charsMap) => {
 			const subtasks = Object.values(charsMap).map(charData => () => charData.node = makeCharsElements(charData))
 			stack.next(subtasks, 4)
 				.next(() => Object.keys(charsMap).forEach(string => {
