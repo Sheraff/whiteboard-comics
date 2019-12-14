@@ -22,6 +22,7 @@ export default class TextToAlphabet {
 			})
 			.then((spansData) => {
 				const subtasks = spansData.map(data => () => this.getSpansCharData(data))
+				this.stack.next(async () => await document.fonts.load('1em Permanent Marker'))
 				this.stack.next(subtasks)
 					.next(spansCharData => spansCharData.flat().filter(data => !!data))
 			})
