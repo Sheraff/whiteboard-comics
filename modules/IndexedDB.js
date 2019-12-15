@@ -1,7 +1,10 @@
 class IndexedDBManager {
 
 	getGraph(name) {
-		return this.getEntry('graphs', name)
+		return this.getEntry('graphs', name).then(json => {
+			if(json && json.node)
+				return json
+		})
 	}
 
 	getChar(char) {
