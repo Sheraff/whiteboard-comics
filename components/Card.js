@@ -44,7 +44,7 @@ export default class SVGCard extends HTMLElement {
 		const cached = await this.IndexedDBManager.getGraph(name)
 		if (cached) {
 			const domparser = new DOMParser()
-			const fragment = domparser.parseFromString(cached, 'image/svg+xml')
+			const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
 			return await this.startFromStep('cached', { cached: fragment.firstElementChild, name })
 		}
 		const raw = this.querySelector('svg')
