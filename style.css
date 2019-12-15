@@ -4,6 +4,10 @@ svg-card,
   box-shadow: 0 0 3px black;
   background-color: white;
 }
+svg-card span,
+.svg-card span {
+  display: none;
+}
 svg-card svg,
 .svg-card svg {
   width: 90%;

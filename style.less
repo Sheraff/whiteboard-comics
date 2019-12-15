@@ -4,6 +4,10 @@ svg-card,
 	box-shadow      : 0 0 3px black;
 	background-color: white;
 
+	span {
+		display: none;
+	}
+
 	&:not(.web-component) * {}
 
 	&:not(:defined) {}
@@ -35,7 +39,6 @@ svg-card,
 	}
 
 	&:not(.font-loaded) {
-
 		text,
 		tspan {
 			display: none;
