@@ -43,6 +43,7 @@ export default class ReadyNode {
 			this.stack.next(() => {
 				const domparser = new DOMParser()
 				const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
+				requestAnimationFrame(() => this.parent.classList.add('sized'))
 				return ['cached', { cached: fragment.firstElementChild }]
 			})
 			return
@@ -65,9 +66,7 @@ export default class ReadyNode {
 				this.stack.then(() => this.fetch(this.name))
 				this.stack.then(result => raw = result)
 			case 'raw':
-				this.stack.then(() => {
-					cached = this.process(raw)
-				})
+				this.stack.then(() => { cached = this.process(raw) })
 				this.stack.then(async () => await this.alphabetize(cached))
 				this.stack.then(() => { this.cache(this.name, cached) })
 			case 'cached':
@@ -78,6 +77,8 @@ export default class ReadyNode {
 
 	async use(node) {
 		const previous = this.parent.querySelector('svg')
+		if(previous === node)
+			return
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
 				if (previous)
@@ -111,6 +112,7 @@ export default class ReadyNode {
 			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
 		else
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
+		requestAnimationFrame(() => this.parent.classList.add('sized'))
 
 		// find and reorder "erase"
 		this.erase = node.firstElementChild
