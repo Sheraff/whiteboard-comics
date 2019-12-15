@@ -24,19 +24,24 @@ const URLS = [
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
-self.addEventListener('install', event => event.waitUntil(
-	caches.open(CACHE_NAME)
-		.then(cache => cache.addAll(URLS))
-		.catch(() => console.warn('URLS list of forced caches is wrong'))
-))
+self.addEventListener('install', event => {
+	self.skipWaiting()
+	event.waitUntil(
+		caches.open(CACHE_NAME)
+			.then(cache => cache.addAll(URLS))
+			.catch(() => console.warn('URLS list of forced caches is wrong'))
+	)
+})
 
 // notify clients that SW can listen to messages
-self.addEventListener('activate', event => event.waitUntil(
-	self.clients.claim().then(async () => {
-		const clients = await self.clients.matchAll()
-		clients.forEach(client => client.postMessage({ active: true }))
-	})
-))
+self.addEventListener('activate', event => {
+	event.waitUntil(
+		self.clients.claim().then(async () => {
+			const clients = await self.clients.matchAll()
+			clients.forEach(client => client.postMessage({ active: true }))
+		})
+	)
+})
 
 const debouncer = new Debouncer(self)
 
