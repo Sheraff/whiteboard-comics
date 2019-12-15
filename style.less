@@ -1,8 +1,5 @@
 svg-card,
 .svg-card {
-	height          : 300px;
-	width           : 300px;
-	margin          : 10px;
 	contain         : strict;
 	box-shadow      : 0 0 3px black;
 	background-color: white;
@@ -12,14 +9,12 @@ svg-card,
 	&:not(:defined) {}
 
 	svg {
-		max-width : 100%;
-		max-height: 100%;
-		position  : absolute;
-		left      : 50%;
-		top       : 50%;
-		transform : translate(-50%, -50%);
-
-		
+		width    : 90%;
+		height   : 90%;
+		position : absolute;
+		left     : 50%;
+		top      : 50%;
+		transform: translate(-50%, -50%);
 
 		[stroke="#000000"] {}
 
@@ -29,11 +24,11 @@ svg-card,
 
 		text {
 			font-family: 'Permanent Marker';
-			transition: fill .5s;
+			transition : fill .5s;
 		}
 
 		[data-type="text"] {
-			opacity: 0;
+			opacity   : 0;
 			transition: opacity .5s;
 		}
 	}
@@ -44,6 +39,13 @@ svg-card,
 
 }
 
+svg#defs{
+	position: absolute;
+	left    : -100%;
+	top     : -100%;
+}
+
+// showing text only when appropriate
 body.svg-defs svg-card.alphabetized {
 	[data-type="text"] {
 		opacity: 1;
@@ -54,6 +56,7 @@ body.svg-defs svg-card.alphabetized {
 	}
 }
 
+// off-screen pseudo svg-card for DOM manipulation
 .svg-card {
 	position: absolute;
 	left    : -100%;
@@ -61,5 +64,36 @@ body.svg-defs svg-card.alphabetized {
 
 	text {
 		display: block !important;
+	}
+}
+
+// grid layout
+.cards {
+	--margin       : 10px;
+	display        : grid;
+	grid-gap       : var(--margin);
+	justify-content: space-around;
+
+	// cells of equal width
+	--count              : 3;
+	grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
+	grid-auto-rows       : 1fr;
+
+	// auto-layout around cells bigger than 1x1
+	grid-auto-flow: dense;
+
+	// hack for square cells
+	&::before {
+		content       : '';
+		width         : 0;
+		padding-bottom: 100%;
+		grid-row      : 1 / 1;
+		grid-column   : 1 / 1;
+	}
+
+	// override hack so that 1st cell isn't blank
+	*:first-child {
+		grid-column: 1 / 1 / span 1;
+		grid-row   : 1 / 1 / span 1;
 	}
 }
