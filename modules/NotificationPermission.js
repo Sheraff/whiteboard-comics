@@ -9,9 +9,9 @@ export default class NotificationPermission {
 			localStorage.setItem('visits', visits + 1)
 
 			this.ServiceWorkerInit.then(() => {
-				if(visits > 2)
+				if (visits > 2)
 					Notification.requestPermission(status => {
-						if(status === 'granted') {
+						if (status === 'granted') {
 							navigator.serviceWorker.controller.postMessage({ notifications: true })
 						}
 					})

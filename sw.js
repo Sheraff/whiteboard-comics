@@ -1,26 +1,29 @@
 self.importScripts('/sw/Debouncer.js')
 self.importScripts('/sw/alphabetCaching.js')
-self.importScripts('/sw/NotificationEmitter.js')
+// self.importScripts('/sw/NotificationEmitter.js')
 
 // new NotificationEmitter()
 
 const CACHE_NAME = 'whiteboard-files-cache-v0'
 const URLS = [
-	// '/',
-	// '/style.css',
-	// '/script.js',
-	// '/modules/Alphabet.js',
-	// '/modules/IdleNetwork.js',
-	// '/modules/IdleStack.js',
-	// '/modules/IndexedDB.js',
-	// '/modules/parseAlphabet.js',
-	// '/modules/ReadySVGNode.js',
-	// '/modules/SVGAnim.js',
-	// '/modules/TextToAlphabet.js',
+	'/',
+	'/style.css',
+	'/script.js',
+	'/modules/Alphabet.js',
+	'/modules/IdleNetwork.js',
+	'/modules/IdleStack.js',
+	'/modules/IndexedDB.js',
+	'/modules/parseAlphabet.js',
+	'/modules/ReadySVGNode.js',
+	'/modules/ServiceWorkerInit.js',
+	'/modules/SVGAnim.js',
+	'/modules/TextToAlphabet.js',
 	'/data/graph_list.tsv',
 	'/data/alphabet.json',
-	// '/components/Card.css',
-	// '/components/Card.js',
+	'/components/Card.css',
+	'/components/Card.js',
+	'/sw/Debouncer.js',
+	'/sw/alphabetCaching.js',
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 

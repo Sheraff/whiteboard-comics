@@ -6,7 +6,7 @@
 
 class NotificationEmitter {
 	constructor() {
-		
+
 		// Respond to user clicking notification
 		self.addEventListener('notificationclick', function (event) {
 			console.log('[Service Worker] Notification click Received.');
@@ -20,12 +20,12 @@ class NotificationEmitter {
 
 		// sending notif after background sync (NOT ON STANDARD TRACKS)
 		self.addEventListener('message', message => {
-					if (!message.data.notifications)
-						return
-					self.registration.sync.register('example-sync')
+			if (!message.data.notifications)
+				return
+			self.registration.sync.register('example-sync')
 		})
 		self.onsync = event => {
-			if(event.tag == 'example-sync') {
+			if (event.tag == 'example-sync') {
 				self.registration.showNotification('coucou')
 			}
 		}
@@ -36,7 +36,7 @@ class NotificationEmitter {
 				return
 			self.registration.pushManager.getSubscription()
 				.then(subscription => {
-					if(subscription)
+					if (subscription)
 						return subscription
 					const options = {
 						applicationServerKey: urlBase64ToUint8Array('MY_SECURE_KEY')
@@ -57,7 +57,7 @@ class NotificationEmitter {
 		})
 		self.addEventListener('push', event => {
 			self.registration.pushManager.getSubscription()
-				.then(function(subscription) {
+				.then(function (subscription) {
 					if (!subscription)
 						throw new Error('user not regstered')
 					return subscription.endpoint
@@ -74,11 +74,11 @@ class NotificationEmitter {
 
 function urlBase64ToUint8Array(base64String) {
 	// from https://gist.github.com/malko/ff77f0af005f684c44639e4061fa8019
-  const padding = '='.repeat((4 - base64String.length % 4) % 4)
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/')
-  ;
-  const rawData = atob(base64)
-  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)))
+	const padding = '='.repeat((4 - base64String.length % 4) % 4)
+	const base64 = (base64String + padding)
+		.replace(/\-/g, '+')
+		.replace(/_/g, '/')
+		;
+	const rawData = atob(base64)
+	return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)))
 }
