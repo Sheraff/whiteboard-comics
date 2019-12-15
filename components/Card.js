@@ -30,7 +30,7 @@ export default class SVGCard extends HTMLElement {
 		this.SVGAnim = new SVGAnim()
 	}
 
-	
+
 
 	connectedCallback() {
 		const template = document.getElementById('svg-card');
@@ -38,26 +38,32 @@ export default class SVGCard extends HTMLElement {
 		this.attachShadow({ mode: 'open' })
 		this.shadowRoot.appendChild(fragment)
 
-
 		document.fonts.load('1em Permanent Marker').then(() => this.classList.add('font-loaded'))
 
-		// request whenever there is down time in the network
 		this.ReadyNode.then(() => {
 			if (this.intersectionObserver) {
 				this.intersectionObserver.disconnect()
 				delete this.intersectionObserver
 			}
+			this.removeEventListener('mouseover', this.onMouseOver)
 		})
-		// if in viewport, request immediately
-		// this.intersectionObserver = new IntersectionObserver(([intersection]) => {
-		// 	if (!intersection.isIntersecting)
-		// 		return
-		// 	this.intersectionObserver.disconnect()
-		// 	delete this.intersectionObserver
-		// 	this.finish()
-		// })
-		// this.intersectionObserver.observe(this);
 
+		// if mouse over, immediately request playability in case of click
+		this.addEventListener('mouseover', this.onMouseOver, { once: true })
+
+		// if in viewport, immediately request something to display
+		this.intersectionObserver = new IntersectionObserver(([intersection]) => {
+			if (!intersection.isIntersecting)
+				return
+			this.intersectionObserver.disconnect()
+			delete this.intersectionObserver
+			this.ReadyNode.display()
+		})
+		this.intersectionObserver.observe(this);
+	}
+
+	onMouseOver() {
+		this.ReadyNode.finish()
 	}
 
 }
