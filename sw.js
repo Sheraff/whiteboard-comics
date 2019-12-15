@@ -1,5 +1,8 @@
 self.importScripts('/sw/Debouncer.js')
 self.importScripts('/sw/alphabetCaching.js')
+self.importScripts('/sw/NotificationEmitter.js')
+
+// new NotificationEmitter()
 
 const CACHE_NAME = 'whiteboard-files-cache-v0'
 const URLS = [
