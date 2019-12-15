@@ -30,8 +30,6 @@ export default class SVGCard extends HTMLElement {
 		this.SVGAnim = new SVGAnim()
 	}
 
-
-
 	connectedCallback() {
 		const template = document.getElementById('svg-card');
 		const fragment = document.importNode(template.content, true);
