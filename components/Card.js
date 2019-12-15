@@ -38,11 +38,6 @@ export default class SVGCard extends HTMLElement {
 		this.attachShadow({ mode: 'open' })
 		this.shadowRoot.appendChild(fragment)
 
-		// TODO: use ≠ promise triggers for the ≠ steps of the scenario
-		//	- on intersectionObserver, trigger up to raw svg
-		//	- on mouseOver, trigger up to alphabetized and processed
-		//	- on click, trigger all the way
-
 
 		document.fonts.load('1em Permanent Marker').then(() => this.classList.add('font-loaded'))
 
