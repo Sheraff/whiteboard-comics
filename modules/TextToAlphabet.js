@@ -123,12 +123,15 @@ export default class TextToAlphabet {
 		const tspans = Array.from(node.querySelectorAll('tspan'))
 		const data = {
 			transform: node.getAttribute('transform'),
-			color: node.getAttribute('fill') || node.parentElement.getAttribute('fill') || undefined,
+			color: node.getAttribute('fill') || undefined,
 			reference: node,
 			long: tspans.length ? 40 < node.getNumberOfChars() + tspans.length - 1 : false,
 		}
 		if (tspans.length)
-			return tspans.map(tspan => Object.assign({}, data, { text: tspan }))
+			return tspans.map(tspan => Object.assign({}, data, { 
+				text: tspan,
+				color: tspan.getAttribute('fill') || data.color,
+			}))
 		return Object.assign(data, { text: node })
 	}
 
