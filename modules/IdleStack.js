@@ -147,6 +147,9 @@ export default class IdleStack {
 	}
 
 	async finish() {
+		if(this.isFinishing)
+			return this.promise
+
 		this.isFinishing = true
 
 		if (this.idleCallbackId) {
@@ -189,7 +192,7 @@ export default class IdleStack {
 			} else if (!this.currentTask.isArray) {
 				await this.executeTask(this.currentTask.task, this.currentTask)
 			}
-			if (!this.currentTask || !this.currentTask.nextTask) {
+			if (!this.currentTask.nextTask) {
 				delete this.currentTask
 				this.completedStackTrigger()
 				break
