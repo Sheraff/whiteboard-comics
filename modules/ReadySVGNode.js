@@ -4,9 +4,6 @@ import IndexedDBManager from '/modules/IndexedDB.js'
 import IdleStack from '/modules/IdleStack.js'
 
 export default class ReadyNode {
-	// TODO: is it necessary to `cloneNode`?
-	// 	- for the 'in place' changes, w/ raw, alphabet is optimized already
-	// 	- for the fetched results, we could just not add them to the DOM until the end (and avoid flashing at ≠ sizes)
 	constructor(parent) {
 		this.parent = parent
 		this.name = this.parent.attributes.name && this.parent.attributes.name.value
@@ -15,22 +12,31 @@ export default class ReadyNode {
 		this.IndexedDBManager = new IndexedDBManager()
 		this.IdleNetwork = new IdleNetwork()
 
-		this.finishPromise = new Promise(resolve => this.finishResolve = resolve)
+		this.displayPromise = new Promise(resolve => this.displayResolve = resolve)
 		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
 
-		// TODO: use ≠ promise triggers for the ≠ steps of the scenario
-		//	- on intersectionObserver, trigger up to raw svg
-		//	- on mouseOver, trigger up to alphabetized and processed
-		//	- on click, trigger all the way
-
-		this.stack = new IdleStack(this.findStep.bind(this))
-			.then(this.startFromStep.bind(this))
-		
+		this.stacks = []
+		this.stacks.push(
+			new IdleStack(this.findStep.bind(this))
+				.then(this.startFromStep.bind(this))
+		)
 	}
 
-	finish() {
-		this.finishResolve()
-		return this.readyPromise
+	display() {
+		return this.displayPromise
+			.then(isCached => {
+				if (isCached)
+					return this.stacks[0].finish()
+				return this.stacks[0].finish()
+					.then(() => this.stacks[1].finish())
+			})
+	}
+
+	async finish() {
+		for (let i = 0; i < this.stacks.length; i++) {
+			console.log(`finishing stack ${i}`)
+			await this.stacks[i].finish()
+		}
 	}
 
 	then(resolve) {
@@ -39,45 +45,48 @@ export default class ReadyNode {
 
 	async findStep() {
 		const cached = await this.IndexedDBManager.getGraph(this.name)
+		this.displayResolve(!!cached)
 		if (cached) {
-			this.stack.next(() => {
+			this.stacks[0].next(() => {
 				const domparser = new DOMParser()
 				const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
-				requestAnimationFrame(() => this.parent.classList.add('sized'))
+				this.stacks[0].then((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
+				this.use(fragment.firstElementChild)
 				return ['cached', { cached: fragment.firstElementChild }]
 			})
 			return
 		}
 		const raw = this.parent.querySelector('svg')
-		if (raw) {
-			// const otherDoc = new Document()
-			// const clone = raw.cloneNode(true)
-			// otherDoc.adoptNode(clone)
-			// return ['raw', { raw: clone }]
+		if (raw)
 			return ['raw', { raw }]
-		}
 		return ['name', {}]
 	}
 
 	startFromStep([step, args]) {
 		let { raw, cached } = args
+		this.stacks.push(new IdleStack(async () => await this.stacks[0].promise))
 		switch (step) {
 			case 'name':
-				this.stack.then(() => this.fetch(this.name))
-				this.stack.then(result => raw = result)
+				this.stacks[1].then(() => this.fetch(this.name))
+				this.stacks[1].then(result => raw = result)
 			case 'raw':
-				this.stack.then(() => { cached = this.process(raw) })
-				this.stack.then(async () => await this.alphabetize(cached))
-				this.stack.then(() => { this.cache(this.name, cached) })
+				this.stacks[1].then(() => { cached = this.process(raw) })
+				this.stacks[1].then((_, onFinish) => this.addClass(this.stacks[1], onFinish, 'sized'))
+				this.stacks[1].then(() => { this.use(cached) })
+				// ASAP up to previous line on `display()`
+				this.stacks.push(new IdleStack(async () => await this.stacks[1].promise))
+				this.stacks[2].then(async (_, onFinish) => await this.alphabetize(onFinish, cached))
+				this.stacks[2].then(() => { this.cache(this.name, cached) })
 			case 'cached':
-				this.stack.then(() => requestAnimationFrame(() => this.parent.classList.add('alphabetized')))
-				this.stack.then(async () => await this.use(cached))
+				this.stacks[this.stacks.length - 1].then((_, onFinish) => this.addClass(this.stacks[this.stacks.length - 1], onFinish, 'alphabetized'))
+				this.stacks[this.stacks.length - 1].then(this.readyResolve)
+				// ASAP up to previous line on `finish()`
 		}
 	}
 
 	async use(node) {
 		const previous = this.parent.querySelector('svg')
-		if(previous === node)
+		if (previous === node)
 			return
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
@@ -95,13 +104,31 @@ export default class ReadyNode {
 		this.IndexedDBManager.saveGraph({ name, node })
 	}
 
-	async alphabetize(node) {
+	async alphabetize(onFinish, node) {
 		const alphabetizer = new TextToAlphabet(node)
+		if (this.stacks[2].isFinishing) {
+			await alphabetizer.finish()
+			return node
+		}
 		await Promise.race([
 			alphabetizer.promise,
-			this.finishPromise.then(alphabetizer.finish)
+			new Promise(resolve => onFinish(async () => {
+				alphabetizer.finish().then(resolve)
+			}))
 		])
 		return node
+	}
+
+	addClass(stack, onFinish, className) {
+		if (stack.isFinishing)
+			return this.parent.classList.add(className)
+		let idleRequestId = requestAnimationFrame(() => this.parent.classList.add(className))
+
+		onFinish(async () => {
+			cancelIdleNetwork(idleRequestId)
+			this.parent.classList.add(className)
+			resolve()
+		})
 	}
 
 	process(node) {
@@ -112,7 +139,6 @@ export default class ReadyNode {
 			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
 		else
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
-		requestAnimationFrame(() => this.parent.classList.add('sized'))
 
 		// find and reorder "erase"
 		this.erase = node.firstElementChild
@@ -125,22 +151,25 @@ export default class ReadyNode {
 	fetch(name) {
 		let idleRequestId
 		const graphURL = `/graphs/graphs_${name}.svg`
-		this.stack.next(async () => await Promise.race([
-			new Promise(resolve => {
-				idleRequestId = this.IdleNetwork.requestIdleNetwork(graphURL, resolve)
-			}),
-			new Promise(resolve => this.finishPromise.then(async () => {
-				const cancelable = this.IdleNetwork.cancelIdleNetwork(idleRequestId)
-				if (cancelable)
-					resolve(await fetch(graphURL))
-			}))
-		]))
+		this.stacks[1].next(async (_, onFinish) => {
+			if (this.stacks[1].isFinishing)
+				return await fetch(graphURL)
+			return await Promise.race([
+				new Promise(resolve => {
+					idleRequestId = this.IdleNetwork.requestIdleNetwork(graphURL, resolve)
+				}),
+				new Promise(resolve => onFinish(async () => {
+					const cancelable = this.IdleNetwork.cancelIdleNetwork(idleRequestId)
+					if (cancelable)
+						resolve(await fetch(graphURL))
+				}))
+			])
+		})
 			.next(response => response.text())
 			.next(fetched => {
 				const domparser = new DOMParser()
 				const fragment = domparser.parseFromString(fetched, 'image/svg+xml')
 				const raw = fragment.firstElementChild
-				// this.parent.appendChild(raw.cloneNode(true))
 				return raw
 			})
 	}
