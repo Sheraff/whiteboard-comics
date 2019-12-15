@@ -1,20 +1,13 @@
+import ServiceWorkerInit from '/modules/ServiceWorkerInit.js'
+
 class IdleNetwork {
 	constructor() {
-		this.isWorkerReady = navigator.serviceWorker
-			&& navigator.serviceWorker.controller
-			&& navigator.serviceWorker.controller.state === 'activated'
+		this.ServiceWorkerInit = new ServiceWorkerInit()
 		this.backlog = []
 		this.isListening = false
 		this.id = 0
 
-		if (!this.isWorkerReady) {
-			navigator.serviceWorker.addEventListener('message', () => {
-				this.isWorkerReady = true
-				this.processBacklog()
-			}, { once: true })
-		} else (
-			this.processBacklog()
-		)
+		this.ServiceWorkerInit.then(this.processBacklog.bind(this))
 	}
 
 	async findInCache(request) {
@@ -67,14 +60,14 @@ class IdleNetwork {
 	}
 
 	requestIdleNetwork(request, callback) {
-		if (!this.isWorkerReady) {
+		if (!this.ServiceWorkerInit.isReady) {
 			const requestId = ++this.id
 			this.findInCache(request).then(result => {
 				if (result)
 					callback(result)
 				else {
 					this.backlog.push({ id: requestId, request, callback })
-					if (this.isWorkerReady)
+					if (this.ServiceWorkerInit.isReady)
 						this.processBacklog()
 				}
 			})
@@ -88,13 +81,13 @@ class IdleNetwork {
 
 	idleFetch(request) {
 		return new Promise(async (resolve, reject) => {
-			if (!this.isWorkerReady) {
+			if (!this.ServiceWorkerInit.isReady) {
 				const result = await this.findInCache(request)
 				if (result)
 					resolve(result)
 				else {
 					this.backlog.push({ request, resolve, reject })
-					if (this.isWorkerReady)
+					if (this.ServiceWorkerInit.isReady)
 						this.processBacklog()
 				}
 			} else {
