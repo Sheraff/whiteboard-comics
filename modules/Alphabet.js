@@ -32,9 +32,9 @@ function getCharFromIndexed([name, string]) {
 function makeStringifiedCharsMap(charsData) {
 	const charsMap = {}
 	charsData.forEach(({ name, string, indexedDB }) => charsMap[string] = {
-		node: indexedDB.node,
-		clips: indexedDB.clips,
-		name
+		...indexedDB,
+		name,
+		string
 	})
 	return charsMap
 }
