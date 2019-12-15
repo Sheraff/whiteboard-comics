@@ -34,7 +34,6 @@ export default class ReadyNode {
 
 	async finish() {
 		for (let i = 0; i < this.stacks.length; i++) {
-			console.log(`finishing stack ${i}`)
 			await this.stacks[i].finish()
 		}
 	}
