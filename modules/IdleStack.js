@@ -189,7 +189,7 @@ export default class IdleStack {
 			} else if (!this.currentTask.isArray) {
 				await this.executeTask(this.currentTask.task, this.currentTask)
 			}
-			if (!this.currentTask.nextTask) {
+			if (!this.currentTask || !this.currentTask.nextTask) {
 				delete this.currentTask
 				this.completedStackTrigger()
 				break
