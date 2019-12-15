@@ -24,36 +24,40 @@ class IdleNetwork {
 	processBacklog() {
 		if (this.isListening)
 			return
-	
+
 		this.isListening = true
 		navigator.serviceWorker.addEventListener('message', ({ data }) => {
-			this.isListening = false
-			if (data.idle && data.availableConnections > 0)
-				this.manyRequests(data.availableConnections)
-			else
-				this.processBacklog()
+			requestIdleCallback(() => {
+				this.isListening = false
+				if (data.idle && data.availableConnections > 0)
+					this.manyRequests(data.availableConnections)
+				else
+					this.processBacklog()
+			})
 		}, { once: true })
 		navigator.serviceWorker.controller.postMessage({ idleRequest: true })
 	}
 
 	manyRequests(number) {
-		for (let count = number; count > 0 ; count--) {
-			if(!this.makeRequest())
+		for (let count = number; count > 0; count--) {
+			if (!this.makeRequest())
 				break
 		}
 	}
 
 	makeRequest() {
-		if (!this.backlog.length)
-			return false
-		const { request, callback, resolve, reject } = this.backlog.shift()
-		if (typeof callback === 'function')
-			fetch(request).then(callback).finally(this.processBacklog.bind(this))
-		else
-			fetch(request).catch(reject).then(resolve).finally(this.processBacklog.bind(this))
-		return true
+		requestIdleCallback(() => {
+			if (!this.backlog.length)
+				return false
+			const { request, callback, resolve, reject } = this.backlog.shift()
+			if (typeof callback === 'function')
+				fetch(request).then(callback).finally(this.processBacklog.bind(this))
+			else
+				fetch(request).catch(reject).then(resolve).finally(this.processBacklog.bind(this))
+			return true
+		})
 	}
-	
+
 	cancelIdleNetwork(id) {
 		const index = this.backlog.findIndex(item => item.id === id)
 		if (index === -1)
