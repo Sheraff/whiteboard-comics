@@ -1,4 +1,5 @@
 class Connection {
+	// TODO: use this to re-fetch graphs that were requested when offline and failed
 	constructor() {
 		this.connectionChange()
 		navigator.connection.addEventListener('change', this.connectionChange)
@@ -14,7 +15,7 @@ class Connection {
 
 	connectionChange() {
 		const online = navigator.connection.downlink > 0
-		if(online !== this.onlineStatus) {
+		if (online !== this.onlineStatus) {
 			this.onlineStatus = online
 			if (this.onlineStatus && this.onlineResolve)
 				this.onlineResolve()
