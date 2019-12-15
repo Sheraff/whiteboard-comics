@@ -2,17 +2,19 @@ class ServiceWorkerInit {
 	constructor() {
 		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
 
-		this.isWorkerReady = navigator.serviceWorker
-			&& navigator.serviceWorker.controller
-			&& navigator.serviceWorker.controller.state === 'activated'
+		if (navigator.serviceWorker) {
+			this.isWorkerReady = navigator.serviceWorker
+				&& navigator.serviceWorker.controller
+				&& navigator.serviceWorker.controller.state === 'activated'
 
-		if (!this.isWorkerReady) {
-			navigator.serviceWorker.addEventListener('message', () => {
+			if (!this.isWorkerReady) {
+				navigator.serviceWorker.addEventListener('message', () => {
+					this.readyResolve()
+				}, { once: true })
+			} else (
 				this.readyResolve()
-			}, { once: true })
-		} else (
-			this.readyResolve()
-		)
+			)
+		}
 	}
 
 	get isReady() {

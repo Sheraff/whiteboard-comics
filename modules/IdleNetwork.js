@@ -11,11 +11,13 @@ class IdleNetwork {
 	}
 
 	fetchInCache(request) {
+		if(!window.caches)
+			return Promise.reject()
 		return caches.match(request)
 	}
 
 	async race(request) {
-		if(this.ServiceWorkerInit.isReady)
+		if(this.ServiceWorkerInit.isReady || !window.caches)
 			return fetch(request)
 		else
 			return new Promise((resolve, reject) => {
@@ -105,7 +107,7 @@ class IdleNetwork {
 	requestIdleNetwork(request, callback) {
 		if (!this.ServiceWorkerInit.isReady) {
 			const requestId = ++this.id
-			this.fetchInCache(request).then(result => {
+			this.fetchInCache(request).finally(result => {
 				if (result)
 					callback(result)
 				else {
