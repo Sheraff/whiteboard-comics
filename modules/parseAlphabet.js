@@ -8,7 +8,7 @@ const fetchSerializedXML = (charsData, stack) => {
 		let response
 		const charURL = `/alphabet/alphabet_${name}.svg`
 		if (stack.isFinishing) {
-			response = await fetch(charURL)
+			response = await idleNetwork.race(charURL)
 		} else {
 			let idleRequestId
 			response = await Promise.race([
@@ -18,7 +18,7 @@ const fetchSerializedXML = (charsData, stack) => {
 				new Promise(resolve => onFinish(async () => {
 					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
 					if (cancelable)
-						resolve(await fetch(charURL))
+						resolve(await idleNetwork.race(charURL))
 				}))
 			])
 		}

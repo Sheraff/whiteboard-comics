@@ -10,8 +10,45 @@ class IdleNetwork {
 		this.ServiceWorkerInit.then(this.processBacklog.bind(this))
 	}
 
-	async findInCache(request) {
-		return await caches.match(request)
+	fetchInCache(request) {
+		return caches.match(request)
+	}
+
+	async race(request) {
+		if(this.ServiceWorkerInit.isReady)
+			return fetch(request)
+		else
+			return new Promise((resolve, reject) => {
+				let otherFailed = false
+				let resolved = false
+				fetch(request)
+					.catch(() => {
+						if(otherFailed)
+							reject()
+						else 
+							otherFailed = true
+					})
+					.then(result => {
+						if(!resolved) {
+							resolved = true
+							resolve(result)
+						}
+					})
+				this.fetchInCache(request)
+					.then(result => {
+						if(resolved)
+							return
+						if(result) {
+								resolved = true
+								resolve(result)
+						} else {
+							if(otherFailed)
+								reject()
+							else
+								otherFailed = true
+						}
+					})
+			})
 	}
 
 	processBacklog() {
@@ -44,9 +81,15 @@ class IdleNetwork {
 				return false
 			const { request, callback, resolve, reject } = this.backlog.shift()
 			if (typeof callback === 'function')
-				fetch(request).then(callback).finally(this.processBacklog.bind(this))
+				fetch(request)
+					.catch(() => this.backlog.unshift({ request, callback, resolve, reject }))
+					.then(callback)
+					.finally(this.processBacklog.bind(this))
 			else
-				fetch(request).catch(reject).then(resolve).finally(this.processBacklog.bind(this))
+				fetch(request)
+					.catch(reject)
+					.then(resolve)
+					.finally(this.processBacklog.bind(this))
 			return true
 		})
 	}
@@ -62,7 +105,7 @@ class IdleNetwork {
 	requestIdleNetwork(request, callback) {
 		if (!this.ServiceWorkerInit.isReady) {
 			const requestId = ++this.id
-			this.findInCache(request).then(result => {
+			this.fetchInCache(request).then(result => {
 				if (result)
 					callback(result)
 				else {
@@ -82,7 +125,7 @@ class IdleNetwork {
 	idleFetch(request) {
 		return new Promise(async (resolve, reject) => {
 			if (!this.ServiceWorkerInit.isReady) {
-				const result = await this.findInCache(request)
+				const result = await this.fetchInCache(request)
 				if (result)
 					resolve(result)
 				else {

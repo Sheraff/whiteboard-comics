@@ -10,17 +10,19 @@
 import IndexedDBManager from '/modules/IndexedDB.js'
 import { parseAlphabet } from '/modules/parseAlphabet.js'
 import IdleStack from '/modules/IdleStack.js'
+import IdleNetwork from '/modules/IdleNetwork.js'
 const svgNS = 'http://www.w3.org/2000/svg'
 
 async function fetchChars() {
-	const response = await fetch(`/data/alphabet.json`)
+	const idleNetwork = new IdleNetwork()
+	const response = await idleNetwork.race(`/data/alphabet.json`)
 	const { chars } = await response.json()
 	return chars
 }
 
 function getCharFromIndexed([name, string]) {
 	return async () => {
-		const indexedDB = await this.IndexedDBManager.getChar(name)
+		const indexedDB = await this.IndexedDBManager.getChar(string)
 		return {
 			name, string, indexedDB
 		}

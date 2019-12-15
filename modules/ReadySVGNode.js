@@ -152,7 +152,7 @@ export default class ReadyNode {
 		const graphURL = `/graphs/graphs_${name}.svg`
 		this.stacks[1].next(async (_, onFinish) => {
 			if (this.stacks[1].isFinishing)
-				return await fetch(graphURL)
+				return await this.IdleNetwork.race(graphURL)
 			return await Promise.race([
 				new Promise(resolve => {
 					idleRequestId = this.IdleNetwork.requestIdleNetwork(graphURL, resolve)
@@ -160,7 +160,7 @@ export default class ReadyNode {
 				new Promise(resolve => onFinish(async () => {
 					const cancelable = this.IdleNetwork.cancelIdleNetwork(idleRequestId)
 					if (cancelable)
-						resolve(await fetch(graphURL))
+						resolve(await this.IdleNetwork.race(graphURL))
 				}))
 			])
 		})
