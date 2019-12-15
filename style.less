@@ -9,12 +9,12 @@ svg-card,
 	&:not(:defined) {}
 
 	svg {
-		width    : 90%;
-		height   : 90%;
-		position : absolute;
-		left     : 50%;
-		top      : 50%;
-		transform: translate(-50%, -50%);
+		width     : 90%;
+		height    : 90%;
+		position  : absolute;
+		left      : 50%;
+		top       : 50%;
+		transform : translate(-50%, -50%);
 
 		[stroke="#000000"] {}
 
@@ -22,7 +22,8 @@ svg-card,
 			display: none;
 		}
 
-		text {
+		text,
+		tspan {
 			font-family: 'Permanent Marker';
 			transition : fill .5s;
 		}
@@ -33,13 +34,17 @@ svg-card,
 		}
 	}
 
-	&:not(.font-loaded) text {
-		display: none;
+	&:not(.font-loaded) {
+
+		text,
+		tspan {
+			display: none;
+		}
 	}
 
 }
 
-svg#defs{
+svg#defs {
 	position: absolute;
 	left    : -100%;
 	top     : -100%;
@@ -51,7 +56,8 @@ body.svg-defs svg-card.alphabetized {
 		opacity: 1;
 	}
 
-	text {
+	text,
+	tspan {
 		fill: rgba(0, 0, 0, 0)
 	}
 }
@@ -62,7 +68,8 @@ body.svg-defs svg-card.alphabetized {
 	left    : -100%;
 	top     : -100%;
 
-	text {
+	text,
+	tspan {
 		display: block !important;
 	}
 }

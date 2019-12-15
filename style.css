@@ -18,7 +18,9 @@ svg-card svg [data-erase],
   display: none;
 }
 svg-card svg text,
-.svg-card svg text {
+.svg-card svg text,
+svg-card svg tspan,
+.svg-card svg tspan {
   font-family: 'Permanent Marker';
   transition: fill 0.5s;
 }
@@ -28,7 +30,9 @@ svg-card svg [data-type="text"],
   transition: opacity 0.5s;
 }
 svg-card:not(.font-loaded) text,
-.svg-card:not(.font-loaded) text {
+.svg-card:not(.font-loaded) text,
+svg-card:not(.font-loaded) tspan,
+.svg-card:not(.font-loaded) tspan {
   display: none;
 }
 svg#defs {
@@ -39,7 +43,8 @@ svg#defs {
 body.svg-defs svg-card.alphabetized [data-type="text"] {
   opacity: 1;
 }
-body.svg-defs svg-card.alphabetized text {
+body.svg-defs svg-card.alphabetized text,
+body.svg-defs svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
 .svg-card {
@@ -47,7 +52,8 @@ body.svg-defs svg-card.alphabetized text {
   left: -100%;
   top: -100%;
 }
-.svg-card text {
+.svg-card text,
+.svg-card tspan {
   display: block !important;
 }
 .cards {
