@@ -12,8 +12,8 @@ export default class TextToAlphabet {
 				this.temp = document.createElement('div')
 				this.temp.classList.add('svg-card')
 				this.temp.appendChild(svg)
-				document.body.appendChild(this.temp)
-				await new Promise(resolve => requestAnimationFrame(resolve))
+				document.getElementById("dom-tricks").appendChild(this.temp)
+				await new Promise(resolve => requestAnimationFrame(resolve)) // TODO: is render this necessary? or just to be part of the DOM?
 			}
 		})
 			.then(() => this.uniqueCharFromNode(svg))
@@ -56,7 +56,7 @@ export default class TextToAlphabet {
 				this.stack.next(subtasks)
 			}).then(() => {
 				if(this.temp)
-					document.body.removeChild(this.temp)
+					document.getElementById("dom-tricks").removeChild(this.temp)
 			})
 	}
 

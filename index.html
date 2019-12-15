@@ -51,13 +51,15 @@
 	<svg-card name="toothpaste=f(time)"></svg-card>
 </div>
 
-<template id="svg-card">
-	<link rel="stylesheet" href="/components/Card.css">
-	<slot name="internal-link"></slot>
-	<span class="credits">
-		<slot name="author"></slot>
-		<slot name="external-link"></slot>
-	</span>
-	<slot name="date"></slot>
-	<slot></slot>
-</template>
+<div id="dom-tricks">
+	<template id="svg-card">
+		<link rel="stylesheet" href="/components/Card.css">
+		<slot name="internal-link"></slot>
+		<span class="credits">
+			<slot name="author"></slot>
+			<slot name="external-link"></slot>
+		</span>
+		<slot name="date"></slot>
+		<slot></slot>
+	</template>
+</div>

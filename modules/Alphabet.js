@@ -81,7 +81,7 @@ class Alphabet {
 							.next(() => {
 								svg.appendChild(defs)
 								fragment.appendChild(svg)
-								document.body.appendChild(fragment)
+								document.getElementById("dom-tricks").appendChild(fragment)
 								document.body.classList.add('svg-defs')
 								return this
 							})

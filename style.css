@@ -1,3 +1,9 @@
+#dom-tricks {
+  contain: strict;
+  position: absolute;
+  left: -100%;
+  top: -100%;
+}
 svg-card,
 .svg-card {
   contain: strict;
@@ -35,11 +41,6 @@ svg-card:not(.font-loaded) tspan,
 .svg-card:not(.font-loaded) tspan {
   display: none;
 }
-svg#defs {
-  position: absolute;
-  left: -100%;
-  top: -100%;
-}
 body.svg-defs svg-card.alphabetized [data-type="text"] {
   opacity: 1;
 }
@@ -48,9 +49,8 @@ body.svg-defs svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
 .svg-card {
-  position: absolute;
-  left: -100%;
-  top: -100%;
+  width: 300px;
+  height: 300px;
 }
 .svg-card text,
 .svg-card tspan {
