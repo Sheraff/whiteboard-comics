@@ -1,17 +1,31 @@
 import IdleNetwork from '/modules/IdleNetwork.js'
 import TextToAlphabet from '/modules/TextToAlphabet.js'
 import IndexedDBManager from '/modules/IndexedDB.js'
+import IdleStack from '/modules/IdleStack.js'
 
 export default class ReadyNode {
+	// TODO: is it necessary to `cloneNode`?
+	// 	- for the 'in place' changes, w/ raw, alphabet is optimized already
+	// 	- for the fetched results, we could just not add them to the DOM until the end (and avoid flashing at ≠ sizes)
 	constructor(parent) {
 		this.parent = parent
+		this.name = this.parent.attributes.name && this.parent.attributes.name.value
+		if (!this.name) return
+
 		this.IndexedDBManager = new IndexedDBManager()
 		this.IdleNetwork = new IdleNetwork()
 
 		this.finishPromise = new Promise(resolve => this.finishResolve = resolve)
 		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
 
-		this.findStep()
+		// TODO: use ≠ promise triggers for the ≠ steps of the scenario
+		//	- on intersectionObserver, trigger up to raw svg
+		//	- on mouseOver, trigger up to alphabetized and processed
+		//	- on click, trigger all the way
+
+		this.stack = new IdleStack(this.findStep.bind(this))
+			.then(this.startFromStep.bind(this))
+		
 	}
 
 	finish() {
@@ -24,50 +38,55 @@ export default class ReadyNode {
 	}
 
 	async findStep() {
-		const name = this.parent.attributes.name && this.parent.attributes.name.value
-
-		if (!name)
-			return
-
-		const cached = await this.IndexedDBManager.getGraph(name)
+		const cached = await this.IndexedDBManager.getGraph(this.name)
 		if (cached) {
-			const domparser = new DOMParser()
-			const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
-			return await this.startFromStep('cached', { cached: fragment.firstElementChild, name })
+			this.stack.next(() => {
+				const domparser = new DOMParser()
+				const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
+				return ['cached', { cached: fragment.firstElementChild }]
+			})
+			return
 		}
 		const raw = this.parent.querySelector('svg')
-		if (raw)
-			return await this.startFromStep('raw', { raw, name })
-
-		return await this.startFromStep('named', { name })
+		if (raw) {
+			// const otherDoc = new Document()
+			// const clone = raw.cloneNode(true)
+			// otherDoc.adoptNode(clone)
+			// return ['raw', { raw: clone }]
+			return ['raw', { raw }]
+		}
+		return ['name', {}]
 	}
 
-	startFromStep(step, args) {
-		let { name, raw, cached } = args
-		return new Promise(async resolve => {
-			switch (step) {
-				case 'named':
-					raw = await this.fetch(name)
-				case 'raw':
-					cached = await this.process(raw)
-					await this.alphabetize(cached)
-					this.cache(name, cached)
-				case 'cached':
-					this.parent.classList.add('alphabetized')
-					await this.use(cached)
-				case 'ready':
-					await resolve()
-			}
-		})
+	startFromStep([step, args]) {
+		let { raw, cached } = args
+		switch (step) {
+			case 'name':
+				this.stack.then(() => this.fetch(this.name))
+				this.stack.then(result => raw = result)
+			case 'raw':
+				this.stack.then(() => {
+					cached = this.process(raw)
+				})
+				this.stack.then(async () => await this.alphabetize(cached))
+				this.stack.then(() => { this.cache(this.name, cached) })
+			case 'cached':
+				this.stack.then(() => requestAnimationFrame(() => this.parent.classList.add('alphabetized')))
+				this.stack.then(async () => await this.use(cached))
+		}
 	}
 
-	use(node) {
+	async use(node) {
 		const previous = this.parent.querySelector('svg')
-		if (previous)
-			this.parent.replaceChild(node, previous)
-		else
-			this.parent.appendChild(node)
-		return
+		await new Promise(resolve => {
+			requestAnimationFrame(() => {
+				if (previous)
+					this.parent.replaceChild(node, previous)
+				else
+					this.parent.appendChild(node)
+				resolve()
+			})
+		})
 	}
 
 
@@ -101,10 +120,10 @@ export default class ReadyNode {
 		return node
 	}
 
-	async fetch(name) {
+	fetch(name) {
 		let idleRequestId
 		const graphURL = `/graphs/graphs_${name}.svg`
-		return await Promise.race([
+		this.stack.next(async () => await Promise.race([
 			new Promise(resolve => {
 				idleRequestId = this.IdleNetwork.requestIdleNetwork(graphURL, resolve)
 			}),
@@ -113,14 +132,14 @@ export default class ReadyNode {
 				if (cancelable)
 					resolve(await fetch(graphURL))
 			}))
-		]).then(response => response.text())
-		.then(fetched => {
-			const domparser = new DOMParser()
-			const fragment = domparser.parseFromString(fetched, 'image/svg+xml')
-			const raw = fragment.firstElementChild
-			this.parent.appendChild(fragment.firstElementChild)
-			console.log(name, raw)
-			return raw
-		})
+		]))
+			.next(response => response.text())
+			.next(fetched => {
+				const domparser = new DOMParser()
+				const fragment = domparser.parseFromString(fetched, 'image/svg+xml')
+				const raw = fragment.firstElementChild
+				// this.parent.appendChild(raw.cloneNode(true))
+				return raw
+			})
 	}
 }
