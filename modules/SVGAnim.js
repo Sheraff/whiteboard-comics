@@ -25,6 +25,7 @@ const SVGAnim = {
 	},
 
 	async animate(node) {
+		// TODO: add delay between .isGroup()
 		const length = node.getStaticTotalLength()
 		node.style.strokeDasharray = `${length} ${length}`
 		node.style.opacity = 1
@@ -34,7 +35,7 @@ const SVGAnim = {
 					strokeDashoffset: [length, 0]
 				}, {
 					duration: SVGAnim.getElementDuration(node, length),
-					endDelay: node.dataset.type === 'text' || length < 100 ? 0 : 200,
+					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
 					easing: node.dataset.type === 'text' ? 'ease-out' : 'linear',
 				})
 				animation.onfinish = resolve
@@ -44,6 +45,7 @@ const SVGAnim = {
 	},
 
 	getElementDuration(node, length) {
+		// TODO: improve duration function (some sort of log?)
 		let power = 1
 
 		if (node.dataset.type === 'text')
@@ -51,7 +53,7 @@ const SVGAnim = {
 		else if (node.dataset.type === 'erase')
 			power = .5
 
-		return Math.pow(length, power)
+		return Math.pow(length, power) * 1.2
 	}
 }
 
