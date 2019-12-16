@@ -9,15 +9,15 @@ export default function extendSVG() {
 	const pythagore = (A, B) => Math.sqrt(Math.pow(A[0] - B[0], 2) + Math.pow(A[1] - B[1], 2))
 
 	SVGElement.prototype.hasLength = function () {
-		return ['line', 'polyline', 'path'].includes(this.tagName.toLowerCase())
+		return ['line', 'polyline', 'path'].includes(this.tagName)
 	}
 
 	SVGElement.prototype.isGroup = function () {
-		return ['svg', 'g'].includes(this.tagName.toLowerCase())
+		return ['svg', 'g'].includes(this.tagName)
 	}
 
 	SVGElement.prototype.isText = function () {
-		return ['text', 'tspan'].includes(this.tagName.toLowerCase())
+		return ['text', 'tspan'].includes(this.tagName)
 	}
 
 	SVGLineElement.prototype.getTotalLength = function () {
