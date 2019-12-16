@@ -1,5 +1,6 @@
 import SVGAnim from '/modules/SVGAnim.js'
 import ReadyNode from '/modules/ReadySVGNode.js'
+import Alphabet from '/modules/Alphabet.js'
 
 /**
  * scenario
@@ -27,7 +28,7 @@ export default class SVGCard extends HTMLElement {
 	constructor() {
 		super()
 		this.ReadyNode = new ReadyNode(this)
-		this.SVGAnim = new SVGAnim()
+		this.Alphabet = new Alphabet()
 	}
 
 	connectedCallback() {
@@ -58,10 +59,22 @@ export default class SVGCard extends HTMLElement {
 			this.ReadyNode.display()
 		})
 		this.intersectionObserver.observe(this);
+
+		this.addEventListener('click', this.onClick)
 	}
 
 	onMouseOver() {
 		this.ReadyNode.finish()
+	}
+
+	onClick() {
+		Promise.all([
+			this.ReadyNode,
+			this.Alphabet.promise
+		]).then(() => {
+			this.svg = this.querySelector('svg')
+			SVGAnim.play(this.svg)
+		})
 	}
 
 }

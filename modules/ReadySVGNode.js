@@ -141,7 +141,7 @@ export default class ReadyNode {
 
 		// find and reorder "erase"
 		this.erase = node.firstElementChild
-		this.erase.dataset.erase = true
+		this.erase.dataset.type = 'erase'
 		node.appendChild(this.erase)
 
 		return node

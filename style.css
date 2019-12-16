@@ -17,8 +17,8 @@ svg-card svg,
   top: 50%;
   transform: translate(-50%, -50%);
 }
-svg-card svg [data-erase],
-.svg-card svg [data-erase] {
+svg-card svg [data-type="erase"],
+.svg-card svg [data-type="erase"] {
   display: none;
 }
 svg-card svg text,
