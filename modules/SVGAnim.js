@@ -27,7 +27,7 @@ const SVGAnim = {
 
 	async animate(node, previous, index) {
 		const length = node.getStaticTotalLength()
-		node.style.strokeDasharray = `${length} ${length}`
+		node.style.strokeDasharray = `${length} ${length + 1}`
 		node.style.opacity = 1
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
@@ -35,8 +35,8 @@ const SVGAnim = {
 					strokeDashoffset: [length, 0]
 				}, {
 					duration: SVGAnim.getElementDuration(node, length),
-					delay: previous.isGroup() && index === 0 ? 300 : 0,
-					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
+					delay: index === 0 && previous.isGroup() ? 300 : 0,
+					endDelay: node.dataset.type === 'text' || length < 75 ? 10 : 300,
 					easing: node.dataset.type === 'text' ? 'ease-out' : 'linear',
 					fill: 'backwards'
 				})
@@ -47,15 +47,10 @@ const SVGAnim = {
 	},
 
 	getElementDuration(node, length) {
-		// TODO: improve duration function (some sort of log?)
-		let power = 1
-
 		if (node.dataset.type === 'text')
-			power = node.dataset.paragraph ? .2 : .4
-		else if (node.dataset.type === 'erase')
-			power = .5
+			return length * 2.5 / 5
 
-		return Math.pow(length, power) * 1.2
+		return 25 * Math.log(Math.pow(length, 2))
 	}
 }
 
