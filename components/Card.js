@@ -2,10 +2,6 @@ import SVGAnim from '/modules/SVGAnim.js'
 import ReadyNode from '/modules/ReadySVGNode.js'
 import Alphabet from '/modules/Alphabet.js'
 
-/**
- * TODO: graph & erase should be in separate SVG tags for ease of animation / styling
- */
-
 export default class SVGCard extends HTMLElement {
 
 	constructor() {
