@@ -3,24 +3,7 @@ import ReadyNode from '/modules/ReadySVGNode.js'
 import Alphabet from '/modules/Alphabet.js'
 
 /**
- * scenario
- * 
- * 1. promise.all
- * - raw svg > processed svg (first path to top, viewbox resize)
- * - parsed alphabet
- * - loaded font
- * |-> replace text 
- * 
- * 2.
- * - fetch graph data > fill template
- * 
- * promise.all([1, 2])
- * - store to indexedDB
- * 
- * promise.then(1)
- * - compute anim
- * - erase
- * - play
+ * TODO: graph & erase should be in separate SVG tags for ease of animation / styling
  */
 
 export default class SVGCard extends HTMLElement {

@@ -20,26 +20,27 @@ const SVGAnim = {
 	},
 
 	prepare(node) {
-		node.style.transition = 'none'
 		node.style.opacity = 0
+		node.style.transition = 'none'
 	},
 
 	async animate(node) {
+		const length = node.getStaticTotalLength()
+		node.style.strokeDasharray = `${length} ${length}`
+		node.style.opacity = 1
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
-				const length = node.getStaticTotalLength()
-				const animation = node.animate([
-					{ opacity: 1, strokeDasharray: `${length} ${length}`, strokeDashoffset: length },
-					{ opacity: 1, strokeDasharray: `${length} ${length}`, strokeDashoffset: 0 }
-				], {
+				const animation = node.animate({ 
+					strokeDashoffset: [length, 0]
+				}, {
 					duration: SVGAnim.getElementDuration(node, length),
-					endDelay: node.dataset.type === 'text' ? 0 : 200,
+					endDelay: node.dataset.type === 'text' || length < 100 ? 0 : 200,
 					easing: node.dataset.type === 'text' ? 'ease-out' : 'linear',
-					fill: 'both'
 				})
 				animation.onfinish = resolve
 			})
 		})
+		node.style.strokeDashoffset = 0
 	},
 
 	getElementDuration(node, length) {
