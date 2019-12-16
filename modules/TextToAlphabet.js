@@ -13,8 +13,6 @@ export default class TextToAlphabet {
 				this.temp.classList.add('svg-card')
 				this.temp.appendChild(svg)
 				document.getElementById("dom-tricks").appendChild(this.temp)
-				// TODO: is render necessary? or just to be part of the DOM?
-				// await new Promise(resolve => requestAnimationFrame(resolve))
 			}
 		})
 			.then(() => this.uniqueCharFromNode(svg))
