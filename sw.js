@@ -10,6 +10,7 @@ const URLS = [
 	'/style.css',
 	'/script.js',
 	'/modules/Alphabet.js',
+	'/modules/extendSVG.js',
 	'/modules/IdleNetwork.js',
 	'/modules/IdleStack.js',
 	'/modules/IndexedDB.js',
