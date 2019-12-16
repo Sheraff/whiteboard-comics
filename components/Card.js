@@ -55,7 +55,7 @@ export default class SVGCard extends HTMLElement {
 			this.ReadyNode,
 			this.Alphabet.promise
 		]).then(() => {
-			this.svg = this.querySelector('svg')
+			this.svg = this.querySelector('svg[data-main]')
 			SVGAnim.play(this.svg)
 		})
 	}

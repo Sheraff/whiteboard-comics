@@ -49,9 +49,13 @@ export default class ReadyNode {
 			this.stacks[0].next(() => {
 				const domparser = new DOMParser()
 				const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
+				const eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml')
 				this.stacks[0].then((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
-				this.use(fragment.firstElementChild)
-				return ['cached', { cached: fragment.firstElementChild }]
+				this.use(fragment.firstElementChild, eraseFragment.firstElementChild)
+				return ['cached', {
+					cached: fragment.firstElementChild,
+					erase: eraseFragment.firstElementChild
+				}]
 			})
 			return
 		}
@@ -62,20 +66,25 @@ export default class ReadyNode {
 	}
 
 	startFromStep([step, args]) {
-		let { raw, cached } = args
+		let { raw, cached, erase } = args
 		this.stacks.push(new IdleStack(async () => await this.stacks[0].promise))
 		switch (step) {
 			case 'name':
 				this.stacks[1].then(() => this.fetch(this.name))
 				this.stacks[1].then(result => raw = result)
 			case 'raw':
-				this.stacks[1].then(() => { cached = this.process(raw) })
+				this.stacks[1].then(() => {
+					const result = this.process(raw)
+					cached = result.node
+					erase = result.erase
+
+				})
 				this.stacks[1].then((_, onFinish) => this.addClass(this.stacks[1], onFinish, 'sized'))
-				this.stacks[1].then(() => { this.use(cached) })
+				this.stacks[1].then(() => { this.use(cached, erase) })
 				// ASAP up to previous line on `display()`
 				this.stacks.push(new IdleStack(async () => await this.stacks[1].promise))
 				this.stacks[2].then(async (_, onFinish) => await this.alphabetize(onFinish, cached))
-				this.stacks[2].then(() => { this.cache(this.name, cached) })
+				this.stacks[2].then(() => { this.cache(this.name, cached, erase) })
 			case 'cached':
 				this.stacks[this.stacks.length - 1].then((_, onFinish) => this.addClass(this.stacks[this.stacks.length - 1], onFinish, 'alphabetized'))
 				this.stacks[this.stacks.length - 1].then(this.readyResolve)
@@ -83,12 +92,11 @@ export default class ReadyNode {
 		}
 	}
 
-	async use(node) {
+	async use(node, erase) {
 		const previous = this.parent.querySelector('svg')
-		if (previous === node)
-			return
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
+				this.parent.appendChild(erase)
 				if (previous)
 					this.parent.replaceChild(node, previous)
 				else
@@ -99,8 +107,8 @@ export default class ReadyNode {
 	}
 
 
-	cache(name, node) {
-		this.IndexedDBManager.saveGraph({ name, node, erase: this.eraseSlot })
+	cache(name, node, erase) {
+		this.IndexedDBManager.saveGraph({ name, node, erase })
 	}
 
 	async alphabetize(onFinish, node) {
@@ -139,15 +147,16 @@ export default class ReadyNode {
 		else
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
 
-		// find and reorder "erase"
+		// find and extract "erase"
 		const erase = node.firstElementChild
 		erase.dataset.type = 'erase'
-		this.eraseSlot = node.cloneNode(false)
-		this.eraseSlot.setAttribute('slot', 'erase')
-		this.eraseSlot.appendChild(erase)
-		this.parent.appendChild(this.eraseSlot)
+		const eraseSlot = node.cloneNode(false)
+		eraseSlot.setAttribute('slot', 'erase')
+		eraseSlot.appendChild(erase)
 
-		return node
+		node.dataset.main = true
+
+		return { node, erase: eraseSlot }
 	}
 
 	fetch(name) {
