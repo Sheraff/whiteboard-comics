@@ -2,7 +2,7 @@ class IndexedDBManager {
 
 	getGraph(name) {
 		return this.getEntry('graphs', name).then(json => {
-			if(json && json.node)
+			if(json && json.node && json.erase)
 				return json
 		})
 	}
@@ -37,7 +37,8 @@ class IndexedDBManager {
 				request.onsuccess = () => {
 					const result = store.put({
 						name: data.name,
-						node: XMLS.serializeToString(data.node)
+						node: XMLS.serializeToString(data.node),
+						erase: XMLS.serializeToString(data.erase),
 					})
 					resolve(result)
 				}

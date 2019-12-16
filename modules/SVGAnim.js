@@ -8,15 +8,18 @@ const SVGAnim = {
 		await SVGAnim.iterate(SVGAnim.animate, node)
 	},
 
-	async iterate(callback, node) {
+	async iterate(callback, node, data = {}) {
 		if (node.isText())
 			return
-		if (!node.isGroup())
-			await callback(node)
-		else
+		if (!node.isGroup()) {
+			await callback(node, data)
+			data.inGroup = false
+		} else {
+			data.inGroup = true
 			for (let child of node.children) {
-				await SVGAnim.iterate(callback, child)
+				await SVGAnim.iterate(callback, child, data)
 			}
+		}
 	},
 
 	prepare(node) {
@@ -24,8 +27,7 @@ const SVGAnim = {
 		node.style.transition = 'none'
 	},
 
-	async animate(node) {
-		// TODO: add delay between .isGroup()
+	async animate(node, data) {
 		const length = node.getStaticTotalLength()
 		node.style.strokeDasharray = `${length} ${length}`
 		node.style.opacity = 1
@@ -35,8 +37,10 @@ const SVGAnim = {
 					strokeDashoffset: [length, 0]
 				}, {
 					duration: SVGAnim.getElementDuration(node, length),
+					delay: data.inGroup ? 300 : 0,
 					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
 					easing: node.dataset.type === 'text' ? 'ease-out' : 'linear',
+					fill: 'backwards'
 				})
 				animation.onfinish = resolve
 			})

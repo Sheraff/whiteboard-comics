@@ -100,7 +100,7 @@ export default class ReadyNode {
 
 
 	cache(name, node) {
-		this.IndexedDBManager.saveGraph({ name, node })
+		this.IndexedDBManager.saveGraph({ name, node, erase: this.eraseSlot })
 	}
 
 	async alphabetize(onFinish, node) {
@@ -140,9 +140,12 @@ export default class ReadyNode {
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
 
 		// find and reorder "erase"
-		this.erase = node.firstElementChild
-		this.erase.dataset.type = 'erase'
-		node.appendChild(this.erase)
+		const erase = node.firstElementChild
+		erase.dataset.type = 'erase'
+		this.eraseSlot = node.cloneNode(false)
+		this.eraseSlot.setAttribute('slot', 'erase')
+		this.eraseSlot.appendChild(erase)
+		this.parent.appendChild(this.eraseSlot)
 
 		return node
 	}
