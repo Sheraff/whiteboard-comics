@@ -7,7 +7,13 @@ class IdleNetwork {
 		this.isListening = false
 		this.id = 0
 
-		this.ServiceWorkerInit.then(this.processBacklog.bind(this))
+		this.onMessage = this.onMessage.bind(this)
+
+		this.ServiceWorkerInit.then(() => {
+			navigator.serviceWorker.removeEventListener('message', this.onMessage)
+			this.isListening = false
+			this.processBacklog()
+		})
 	}
 
 	fetchInCache(request) {
@@ -56,18 +62,19 @@ class IdleNetwork {
 	processBacklog() {
 		if (this.isListening)
 			return
-
 		this.isListening = true
-		navigator.serviceWorker.addEventListener('message', ({ data }) => {
-			requestIdleCallback(() => {
-				this.isListening = false
-				if (data.idle && data.availableConnections > 0)
-					this.manyRequests(data.availableConnections)
-				else
-					this.processBacklog()
-			})
-		}, { once: true })
+		navigator.serviceWorker.addEventListener('message', this.onMessage, { once: true })
 		navigator.serviceWorker.controller.postMessage({ idleRequest: true })
+	}
+
+	onMessage({data}) {
+		requestIdleCallback(() => {
+			this.isListening = false
+			if (data.idle && data.availableConnections > 0)
+				this.manyRequests(data.availableConnections)
+			else
+				this.processBacklog()
+		})
 	}
 
 	manyRequests(number) {

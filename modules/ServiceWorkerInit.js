@@ -9,11 +9,12 @@ class ServiceWorkerInit {
 
 			if (!this.isWorkerReady) {
 				navigator.serviceWorker.addEventListener('message', () => {
+					this.isWorkerReady = true
 					this.readyResolve()
 				}, { once: true })
-			} else (
+			} else {
 				this.readyResolve()
-			)
+			}
 		}
 	}
 

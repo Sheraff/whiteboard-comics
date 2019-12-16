@@ -77,7 +77,6 @@ export default class ReadyNode {
 					const result = this.process(raw)
 					cached = result.node
 					erase = result.erase
-
 				})
 				this.stacks[1].then((_, onFinish) => this.addClass(this.stacks[1], onFinish, 'sized'))
 				this.stacks[1].then(() => { this.use(cached, erase) })
