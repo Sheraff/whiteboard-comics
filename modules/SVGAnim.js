@@ -15,7 +15,7 @@ const SVGAnim = {
 			await callback(node, previous, index)
 		} else {
 			for (let index = 0; index < node.children.length; index++) {
-				await SVGAnim.iterate(callback, node.children[index]	, node, index)
+				await SVGAnim.iterate(callback, node.children[index], node, index)
 			}
 		}
 	},
@@ -37,7 +37,7 @@ const SVGAnim = {
 					duration: SVGAnim.getElementDuration(node, length),
 					delay: index === 0 && previous.isGroup() ? 300 : 0,
 					endDelay: node.dataset.type === 'text' || length < 75 ? 10 : 300,
-					easing: node.dataset.type === 'text' ? 'ease-out' : 'linear',
+					easing: 'ease-out',
 					fill: 'backwards'
 				})
 				animation.onfinish = resolve
