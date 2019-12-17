@@ -22,8 +22,11 @@ svg-card,
 
 		[stroke="#000000"] {}
 
-		[data-type="erase"] {
-			display: none;
+		&[slot="erase"] {
+			pointer-events: none;
+			path {
+				stroke: transparent;
+			}
 		}
 
 		text,

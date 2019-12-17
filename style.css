@@ -17,9 +17,13 @@ svg-card svg,
   top: 50%;
   transform: translate(-50%, -50%);
 }
-svg-card svg [data-type="erase"],
-.svg-card svg [data-type="erase"] {
-  display: none;
+svg-card svg[slot="erase"],
+.svg-card svg[slot="erase"] {
+  pointer-events: none;
+}
+svg-card svg[slot="erase"] path,
+.svg-card svg[slot="erase"] path {
+  stroke: transparent;
 }
 svg-card svg text,
 .svg-card svg text,
