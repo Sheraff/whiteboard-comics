@@ -28,15 +28,16 @@ const fetchSerializedXML = (charsData, stack) => {
 }
 
 const makeDomFragments = ({ name, string, serializedXML }) => {
-	// TODO: split in stack?
-	var domparser = new DOMParser()
-	const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
-	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
-	return {
-		groups: fragment.querySelectorAll('svg>g'),
-		name,
-		string,
-		viewBox
+	return () => {
+		var domparser = new DOMParser()
+		const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
+		const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
+		return {
+			groups: fragment.querySelectorAll('svg>g'),
+			name,
+			string,
+			viewBox
+		}
 	}
 }
 
@@ -57,7 +58,7 @@ const extractElements = ({ groups, name, string, viewBox }) => (
 )
 
 const getClipsAndPaths = charsMap => ({ id, clip, name, string, path, viewBox }) => {
-	return () => { // 
+	return () => {
 		const clipPath = document.createElementNS(svgNS, 'clipPath')
 		clipPath.setAttribute('id', id)
 		clipPath.appendChild(clip)
@@ -82,7 +83,9 @@ export function parseAlphabet(charsData, stack) {
 		.then(() => {
 			stack.next(fetchSerializedXML(charsData, stack), 2)
 		}, 1)
-		.then((results) => results.map(makeDomFragments), 20)
+		.then((results) => {
+			stack.next(results.map(makeDomFragments), 10)
+		})
 		.then((results) => {
 			stack.next(results.map(extractElements).flat(), 3)
 		}, 1)

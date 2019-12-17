@@ -29,13 +29,13 @@ export default class TextToAlphabet {
 					.next(spansData => spansData.flat())
 			})
 			.then((spansData) => {
-				const subtasks = spansData.map(data => () => this.getSpansCharData(data))
+				const subtasks = spansData.map(data => () => this.getSpansCharData(data)).flat()
 				this.stack.next(async () => await document.fonts.load('1em Permanent Marker'))
 				this.stack.next(subtasks)
-					.next(spansCharData => spansCharData.flat().filter(data => !!data))
+				this.stack.next(subtasks => { this.stack.next(subtasks.flat()) })
 			})
 			.then((spansCharData) => {
-				const subtasks = spansCharData.map(charNodeData => () => this.getCharNodesArray(charNodeData))
+				const subtasks = spansCharData.flat().map(charNodeData => () => this.getCharNodesArray(charNodeData))
 				this.stack.next(subtasks)
 					.next(charsNodesChilren => charsNodesChilren.flat())
 			})
@@ -105,17 +105,18 @@ export default class TextToAlphabet {
 	}
 
 	getSpansCharData(spanData) {
-		// TODO: split in stack
-		return spanData.text.textContent.split('').map((char, index) => {
+		const subtasks = []
+		spanData.text.textContent.split('').forEach((char, index) => {
 			if (char === ' ')
 				return
-			return {
+			subtasks.push(() => ({
 				...spanData,
 				height: this.charsMap[char].viewBox.split(' ').pop(),
 				position: spanData.text.getStartPositionOfChar(index), // SVG must be part of DOM for this function?!
 				children: Array.from(this.charsMap[char].node.cloneNode(true).children),
-			}
+			}))
 		})
+		return subtasks
 	}
 
 	getTextNodeData(node) {
