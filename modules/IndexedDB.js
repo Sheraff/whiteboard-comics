@@ -1,3 +1,5 @@
+// TODO: launch worker w/ https://stackoverflow.com/questions/5408406/web-workers-without-a-separate-javascript-file
+
 class IndexedDBManager {
 
 	getGraph(name) {
