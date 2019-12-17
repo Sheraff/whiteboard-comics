@@ -7,10 +7,10 @@
  * - put defs in document.body
  */
 
-import IndexedDBManager from '/modules/IndexedDB.js'
-import { parseAlphabet } from '/modules/parseAlphabet.js'
-import IdleStack from '/modules/IdleStack.js'
-import IdleNetwork from '/modules/IdleNetwork.js'
+import IndexedDBManager from './IndexedDB.js'
+import { parseAlphabet } from './parseAlphabet.js'
+import IdleStack from './IdleStack.js'
+import IdleNetwork from './IdleNetwork.js'
 const svgNS = 'http://www.w3.org/2000/svg'
 
 async function fetchChars() {

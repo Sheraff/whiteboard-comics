@@ -1,6 +1,6 @@
-import SVGAnim from '/modules/SVGAnim.js'
-import ReadyNode from '/modules/ReadySVGNode.js'
-import Alphabet from '/modules/Alphabet.js'
+import SVGAnim from '../modules/SVGAnim.js'
+import ReadyNode from '../modules/ReadySVGNode.js'
+import Alphabet from '../modules/Alphabet.js'
 
 export default class SVGCard extends HTMLElement {
 

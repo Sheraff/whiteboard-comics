@@ -1,4 +1,4 @@
-import extendSVG from '/modules/extendSVG.js'
+import extendSVG from './extendSVG.js'
 extendSVG()
 
 const SVGAnim = {

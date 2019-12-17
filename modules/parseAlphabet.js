@@ -1,4 +1,4 @@
-import IdleNetwork from '/modules/IdleNetwork.js'
+import IdleNetwork from './IdleNetwork.js'
 
 const svgNS = 'http://www.w3.org/2000/svg'
 

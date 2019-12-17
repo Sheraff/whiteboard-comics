@@ -1,4 +1,4 @@
-const ALPHABET = '/data/alphabet.json'
+const ALPHABET = '../data/alphabet.json'
 
 function matchAlphabetURL(url) {
 	const match = url.match(/^\/alphabet\/alphabet_(.*)\.svg$/)

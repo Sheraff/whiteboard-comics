@@ -1,7 +1,7 @@
-import IdleNetwork from '/modules/IdleNetwork.js'
-import TextToAlphabet from '/modules/TextToAlphabet.js'
-import IndexedDBManager from '/modules/IndexedDB.js'
-import IdleStack from '/modules/IdleStack.js'
+import IdleNetwork from './IdleNetwork.js'
+import TextToAlphabet from './TextToAlphabet.js'
+import IndexedDBManager from './IndexedDB.js'
+import IdleStack from './IdleStack.js'
 
 export default class ReadyNode {
 	constructor(parent) {

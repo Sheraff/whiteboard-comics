@@ -1,4 +1,4 @@
-import ServiceWorkerInit from '/modules/ServiceWorkerInit.js'
+import ServiceWorkerInit from './ServiceWorkerInit.js'
 
 export default class NotificationPermission {
 	constructor() {

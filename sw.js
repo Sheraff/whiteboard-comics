@@ -1,6 +1,6 @@
-self.importScripts('/sw/Debouncer.js')
-self.importScripts('/sw/alphabetCaching.js')
-// self.importScripts('/sw/NotificationEmitter.js')
+self.importScripts('./sw/Debouncer.js')
+self.importScripts('./sw/alphabetCaching.js')
+// self.importScripts('./sw/NotificationEmitter.js')
 
 // new NotificationEmitter()
 

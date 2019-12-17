@@ -1,5 +1,5 @@
-import Alphabet from '/modules/Alphabet.js'
-import IdleStack from '/modules/IdleStack.js'
+import Alphabet from './Alphabet.js'
+import IdleStack from './IdleStack.js'
 
 export default class TextToAlphabet {
 
