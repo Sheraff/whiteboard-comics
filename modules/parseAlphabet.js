@@ -28,6 +28,7 @@ const fetchSerializedXML = (charsData, stack) => {
 }
 
 const makeDomFragments = ({ name, string, serializedXML }) => {
+	// TODO: split in stack?
 	var domparser = new DOMParser()
 	const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
 	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
@@ -81,7 +82,7 @@ export function parseAlphabet(charsData, stack) {
 		.then(() => {
 			stack.next(fetchSerializedXML(charsData, stack), 2)
 		}, 1)
-		.then((results) => results.map(makeDomFragments), 12)
+		.then((results) => results.map(makeDomFragments), 20)
 		.then((results) => {
 			stack.next(results.map(extractElements).flat(), 3)
 		}, 1)

@@ -48,14 +48,15 @@ export default class ReadyNode {
 		if (cached) {
 			this.stacks[0].next(() => {
 				const domparser = new DOMParser()
-				const fragment = domparser.parseFromString(cached.node, 'image/svg+xml')
-				const eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml')
-				this.stacks[0].then((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
-				this.use(fragment.firstElementChild, eraseFragment.firstElementChild)
-				return ['cached', {
+				let fragment, eraseFragment
+				this.stacks[0].next(() => { fragment = domparser.parseFromString(cached.node, 'image/svg+xml') }, 40)
+				this.stacks[0].next(() => { eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml') })
+				this.stacks[0].next((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
+				this.stacks[0].next(() => this.use(fragment.firstElementChild, eraseFragment.firstElementChild))
+				this.stacks[0].next(() => (['cached', {
 					cached: fragment.firstElementChild,
 					erase: eraseFragment.firstElementChild
-				}]
+				}]))
 			})
 			return
 		}
@@ -87,7 +88,7 @@ export default class ReadyNode {
 			case 'cached':
 				this.stacks[this.stacks.length - 1].then((_, onFinish) => this.addClass(this.stacks[this.stacks.length - 1], onFinish, 'alphabetized'))
 				this.stacks[this.stacks.length - 1].then(this.readyResolve)
-				// ASAP up to previous line on `finish()`
+			// ASAP up to previous line on `finish()`
 		}
 	}
 

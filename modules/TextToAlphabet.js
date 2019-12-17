@@ -105,6 +105,7 @@ export default class TextToAlphabet {
 	}
 
 	getSpansCharData(spanData) {
+		// TODO: split in stack
 		return spanData.text.textContent.split('').map((char, index) => {
 			if (char === ' ')
 				return
