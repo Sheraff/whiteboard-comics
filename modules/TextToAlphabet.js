@@ -8,7 +8,7 @@ export default class TextToAlphabet {
 		this.Alphabet = new Alphabet()
 
 		this.stack = new IdleStack(async () => {
-			if(svg.ownerDocument !== document) {
+			if(svg.ownerDocument !== document || !svg.isConnected) {
 				this.temp = document.createElement('div')
 				this.temp.classList.add('svg-card')
 				this.temp.appendChild(svg)

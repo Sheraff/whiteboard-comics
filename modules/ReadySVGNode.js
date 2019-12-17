@@ -88,7 +88,7 @@ export default class ReadyNode {
 			case 'cached':
 				this.stacks[this.stacks.length - 1].then((_, onFinish) => this.addClass(this.stacks[this.stacks.length - 1], onFinish, 'alphabetized'))
 				this.stacks[this.stacks.length - 1].then(this.readyResolve)
-			// ASAP up to previous line on `finish()`
+				// ASAP up to previous line on `finish()`
 		}
 	}
 
