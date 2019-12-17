@@ -1,0 +1,21 @@
+{
+	"name": "Whiteboard Comics",
+	"short_name": "Whiteboard Comics",
+	"icons": [
+		{
+			"src": "/icons/favicon.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/icons/favicon.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"start_url": "/index.html",
+	"display": "standalone",
+	"orientation": "portrait",
+	"background_color": "#FFFFFF",
+	"theme_color": "#AD123C"
+}
