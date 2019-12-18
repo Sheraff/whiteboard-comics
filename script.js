@@ -1,4 +1,5 @@
 import SVGCard from './components/Card.js'
+import GridLayout from './components/Grid.js'
 // import NotificationPermission from './modules/NotificationPermission.js'
 
 if ('serviceWorker' in navigator) {
@@ -6,5 +7,6 @@ if ('serviceWorker' in navigator) {
 }
 
 customElements.define('svg-card', SVGCard)
+customElements.define('grid-layout', GridLayout)
 
 // new NotificationPermission()

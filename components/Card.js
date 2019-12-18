@@ -2,7 +2,7 @@ import SVGAnim from '../modules/SVGAnim.js'
 import ReadyNode from '../modules/ReadySVGNode.js'
 import Alphabet from '../modules/Alphabet.js'
 
-export default class SVGCard extends HTMLElement {
+export default class Card extends HTMLElement {
 
 	constructor() {
 		super()
@@ -48,14 +48,5 @@ export default class SVGCard extends HTMLElement {
 
 	onMouseOver() {
 		this.ReadyNode.finish()
-	}
-
-	onClick() {
-		Promise.all([
-			this.ReadyNode,
-			this.Alphabet.promise
-		]).then(() => {
-			this.SVGAnim.toggle()
-		})
 	}
 }
