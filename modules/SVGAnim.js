@@ -7,7 +7,7 @@ export default class SVGAnim {
 		this.playing = false
 		this.paused = false
 	}
-	
+
 	async play() {
 		this.playing = true
 		this.promise = new Promise(resolve => this.resolve = resolve)
@@ -29,9 +29,9 @@ export default class SVGAnim {
 	}
 
 	toggle() {
-		if(this.playing && this.paused)
+		if (this.playing && this.paused)
 			this.resume()
-		else if(this.playing && !this.paused)
+		else if (this.playing && !this.paused)
 			this.pause()
 		else
 			this.play()
@@ -47,7 +47,7 @@ export default class SVGAnim {
 	}
 
 	then(resolve) {
-		if(this.promise)
+		if (this.promise)
 			this.promise.then(resolve)
 		else
 			resolve()
@@ -71,7 +71,7 @@ export default class SVGAnim {
 		node.style.opacity = 1
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
-				this.animation = node.animate({ 
+				this.animation = node.animate({
 					strokeDashoffset: [length, 0]
 				}, {
 					duration: SVGAnim.getElementDuration(node, length),

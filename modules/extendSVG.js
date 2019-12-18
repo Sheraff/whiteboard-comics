@@ -1,7 +1,7 @@
 let extended = false
 
 export default function extendSVG() {
-	if(extended)
+	if (extended)
 		return
 
 	extended = true
