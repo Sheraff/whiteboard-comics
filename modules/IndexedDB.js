@@ -1,101 +1,60 @@
-// TODO: launch worker w/ https://stackoverflow.com/questions/5408406/web-workers-without-a-separate-javascript-file
-
 class IndexedDBManager {
 
+	constructor() {
+		this.calls = {}
+		this.worker = new Worker('../workers/indexedDBWorker.js')
+		this.worker.addEventListener('message', this.onMessage.bind(this))
+	}
+
+	onMessage({ data }) {
+		const key = `${data.table}_${data.key}`
+		const resolve = this.calls[key]
+		if (resolve) {
+			delete this.calls[key]
+			resolve(data.result)
+		}
+	}
+
 	getGraph(name) {
-		return this.getEntry('graphs', name).then(json => {
-			if(json && json.node && json.erase)
-				return json
-		})
+		const promise = new Promise(resolve => this.calls[`graphs_${name}`] = resolve)
+		this.worker.postMessage({ table: 'graphs', key: name, method: 'GET' })
+		return promise
 	}
 
 	getChar(char) {
-		return this.getEntry('chars', char)
-	}
-
-	getEntry(table, key) {
-		return new Promise((resolve, reject) => {
-			this.getDB().then(db => {
-				const tx = db.transaction(table, 'readonly')
-				const store = tx.objectStore(table)
-				const request = store.get(key)
-				request.onsuccess = () => {
-					resolve(request.result)
-				}
-				request.onerror = reject
-			})
-		})
+		const promise = new Promise(resolve => this.calls[`chars_${char}`] = resolve)
+		this.worker.postMessage({ table: 'chars', key: char, method: 'GET' })
+		return promise
 	}
 
 	saveGraph(data) {
-		return new Promise((resolve, reject) => {
-			this.getDB().then(db => {
-				if (!data.name)
-					throw new Error(`Can't store graph without 'name' key`)
-				const tx = db.transaction('graphs', 'readwrite')
-				const store = tx.objectStore('graphs')
-				const request = store.get(data.name)
-				const XMLS = new XMLSerializer()
-				request.onsuccess = () => {
-					const result = store.put({
-						name: data.name,
-						node: XMLS.serializeToString(data.node),
-						erase: XMLS.serializeToString(data.erase),
-					})
-					resolve(result)
-				}
-				request.onerror = reject
-			})
+		requestIdleCallback(() => {
+			const XMLS = new XMLSerializer()
+			const entry = {
+				name: data.name,
+				node: XMLS.serializeToString(data.node),
+				erase: XMLS.serializeToString(data.erase),
+			}
+			this.worker.postMessage({ table: 'graphs', key: data.name, method: 'PUT', entry })
 		})
 	}
 
-	saveChars(data) {
-		return new Promise((resolve, reject) => {
-			this.getDB().then(db => {
-				const tx = db.transaction('chars', 'readwrite')
-				const store = tx.objectStore('chars')
-				const XMLS = new XMLSerializer()
-				Promise.all(Object.keys(data).map(string => (
-					new Promise((resolve, reject) => {
-						const request = store.get(string)
-						request.onsuccess = () => {
-							const charData = data[string]
-							const node = XMLS.serializeToString(charData.node)
-							const clips = charData.clips.map(clip => XMLS.serializeToString(clip))
-							const result = store.put({
-								name: charData.name,
-								string,
-								node,
-								clips,
-								viewBox: charData.viewBox
-							})
-							resolve(result)
-						}
-						request.onerror = reject
-					})
-				)))
-				.catch(reject)
-				.then(resolve)
-			})
+	saveChar(data) {
+		requestIdleCallback(() => {
+			const XMLS = new XMLSerializer()
+			const entry = {
+				name: data.name,
+				string: data.string,
+				viewBox: data.viewBox,
+				node: XMLS.serializeToString(data.node),
+				clips: data.clips.map(clip => XMLS.serializeToString(clip))
+			}
+			this.worker.postMessage({ table: 'chars', key: data.name, method: 'PUT', entry })
 		})
 	}
 
-	getDB() {
-		return new Promise((resolve, reject) => {
-			if (this.idbDatabase)
-				return resolve(this.idbDatabase)
-			const dbOpenRequest = indexedDB.open('whiteboard-db', 1)
-			dbOpenRequest.onupgradeneeded = () => {
-				const db = dbOpenRequest.result
-				db.createObjectStore('graphs', { keyPath: 'name' })
-				db.createObjectStore('chars', { keyPath: 'string' })
-			}
-			dbOpenRequest.onsuccess = () => {
-				this.idbDatabase = dbOpenRequest.result
-				resolve(this.idbDatabase)
-			}
-			dbOpenRequest.onerror = e => reject(e)
-		})
+	saveChars(charsMap) {
+		Object.entries(charsMap).forEach(([string, data]) => { this.saveChar({...data, string}) })
 	}
 }
 
