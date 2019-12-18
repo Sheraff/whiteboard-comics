@@ -19,10 +19,14 @@ export default class SVGCard extends HTMLElement {
 		document.fonts.load('1em Permanent Marker').then(() => this.classList.add('font-loaded'))
 
 		this.ReadyNode.then(() => {
+			this.svg = this.querySelector('svg[data-main]')
+			this.SVGAnim = new SVGAnim(this.svg)
+
 			if (this.intersectionObserver) {
 				this.intersectionObserver.disconnect()
 				delete this.intersectionObserver
 			}
+			
 			this.removeEventListener('mouseover', this.onMouseOver)
 		})
 
@@ -51,9 +55,7 @@ export default class SVGCard extends HTMLElement {
 			this.ReadyNode,
 			this.Alphabet.promise
 		]).then(() => {
-			this.svg = this.querySelector('svg[data-main]')
-			SVGAnim.play(this.svg)
+			this.SVGAnim.toggle()
 		})
 	}
-
 }
