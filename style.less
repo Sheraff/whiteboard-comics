@@ -71,6 +71,10 @@ svg-card,
 			opacity: 1;
 		}
 	}
+
+	path, line, polyline{
+		will-change: stroke-dashoffset, stroke-dasharray;
+	}
 }
 
 
@@ -139,6 +143,17 @@ grid-layout {
 	svg-card,
 	.svg-card {
 		transform-origin: top left;
+		backface-visibility: hidden;
+		perspective: 1000;
+		will-change: transform;
+
+		svg {
+			will-change: transform;
+		}
+
+		&[data-last-played=true] {
+			z-index: 1;
+		}
 
 		&[data-top=true] {
 			position: absolute;
@@ -146,7 +161,6 @@ grid-layout {
 			top     : var(--margin);
 			height  : calc(100vh - 2 * var(--margin));
 			width   : calc(100vw - 2 * var(--margin));
-			z-index : 1;
 		}
 	}
 }

@@ -142,10 +142,13 @@ export default class ReadyNode {
 		// resize
 		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
 		const [, , width, height] = node.getAttribute('viewBox').split(' ')
-		if (width < height)
+		if (width < height) {
 			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
-		else
+			node.dataset.bound = 'width'
+		} else {
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
+			node.dataset.bound = 'height'
+		}
 
 		// find and extract "erase"
 		const erase = node.firstElementChild
