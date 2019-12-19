@@ -22,6 +22,7 @@ export default class Card extends HTMLElement {
 			this.svg = this.querySelector('svg[data-main]')
 			this.erase = this.querySelector('svg[slot="erase"]')
 			this.SVGAnim = new SVGAnim(this.svg)
+			this.eraseAnim = new SVGAnim(this.erase)
 
 			if (this.intersectionObserver) {
 				this.intersectionObserver.disconnect()

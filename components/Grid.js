@@ -14,6 +14,12 @@ export default class Grid extends HTMLElement {
 			this.lastPlayed = card
 			this.lastPlayed.dataset['lastPlayed'] = true
 			requestAnimationFrame(async () => {
+				
+
+				await card.ReadyNode
+				card.eraseAnim.toggle()
+				await card.eraseAnim
+
 				if (card.dataset.top) {
 					this.removeChild(this.placeholder)
 				}
@@ -27,13 +33,13 @@ export default class Grid extends HTMLElement {
 					this.insertBefore(this.placeholder, card)
 				}
 
-				Promise.all([
-					card.ReadyNode,
+				await Promise.all([
 					card.Alphabet.promise,
 					new Promise(resolve => animation.onfinish = resolve)
-				]).then(() => {
-					// card.SVGAnim.toggle()
-				})
+				])
+
+				card.SVGAnim.toggle()
+
 			})
 		}
 	}
@@ -47,20 +53,8 @@ export default class Grid extends HTMLElement {
 		const scaleX = before.width / after.width
 		const scaleY = before.height / after.height
 
-		let svgScaleCompensation
-		if(card.svg.dataset.bound === 'width') {
-			svgScaleCompensation = `scaleX(${1 / scaleX})`
-		} else {
-			svgScaleCompensation = `scaleY(${1 / scaleY})`
-		}
-
-		card.svg.animate([
-			{ transform: `translate(-50%, -50%) ${svgScaleCompensation}` },
-			{ transform: 'translate(-50%, -50%)' }
-		], { duration: 2000 })
-
 		return card.animate([
-			{ transform: `translate(${before.left - after.left}px, ${before.top - after.top}px) scale(${scaleX}, ${scaleY})` },
+			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
 			{ transform: 'none' }
 		], { duration: 2000 })
 	}

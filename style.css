@@ -13,20 +13,17 @@ svg-card span,
 }
 svg-card svg,
 .svg-card svg {
-  width: 90%;
-  height: 90%;
+  max-width: 100%;
+  max-height: 100%;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
 }
 svg-card svg[slot="erase"],
 .svg-card svg[slot="erase"] {
   pointer-events: none;
-}
-svg-card svg[slot="erase"] path,
-.svg-card svg[slot="erase"] path {
-  stroke: transparent;
+  opacity: 0;
 }
 svg-card svg text,
 .svg-card svg text,
@@ -130,9 +127,12 @@ grid-layout .svg-card[data-last-played=true] {
 }
 grid-layout svg-card[data-top=true],
 grid-layout .svg-card[data-top=true] {
-  position: absolute;
+  position: fixed;
   left: var(--margin);
   top: var(--margin);
   height: calc(100vh - 2 * var(--margin));
   width: calc(100vw - 2 * var(--margin));
+}
+grid-layout .svg-card {
+  box-shadow: none;
 }

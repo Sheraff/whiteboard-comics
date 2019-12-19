@@ -17,21 +17,19 @@ svg-card,
 	&:not(:defined) {}
 
 	svg {
-		width    : 90%;
-		height   : 90%;
-		position : absolute;
-		left     : 50%;
-		top      : 50%;
-		transform: translate(-50%, -50%);
+		max-width : 100%;
+		max-height: 100%;
+		position  : absolute;
+		left      : 50%;
+		top       : 50%;
+		transform : translate3d(-50%, -50%, 0);
 
 		[stroke="#000000"] {}
 
 		&[slot="erase"] {
 			pointer-events: none;
 
-			path {
-				stroke: transparent;
-			}
+			opacity: 0;
 		}
 
 		text,
@@ -72,7 +70,9 @@ svg-card,
 		}
 	}
 
-	path, line, polyline{
+	path,
+	line,
+	polyline {
 		will-change: stroke-dashoffset, stroke-dasharray;
 	}
 }
@@ -142,10 +142,10 @@ grid-layout {
 
 	svg-card,
 	.svg-card {
-		transform-origin: top left;
+		transform-origin   : top left;
 		backface-visibility: hidden;
-		perspective: 1000;
-		will-change: transform;
+		perspective        : 1000;
+		will-change        : transform;
 
 		svg {
 			will-change: transform;
@@ -156,11 +156,15 @@ grid-layout {
 		}
 
 		&[data-top=true] {
-			position: absolute;
+			position: fixed;
 			left    : var(--margin);
 			top     : var(--margin);
 			height  : calc(100vh - 2 * var(--margin));
 			width   : calc(100vw - 2 * var(--margin));
 		}
+	}
+
+	.svg-card {
+		box-shadow: none;
 	}
 }
