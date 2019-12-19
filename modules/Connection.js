@@ -1,6 +1,10 @@
-class Connection {
+export default class Connection {
 	// TODO: use this to re-fetch graphs that were requested when offline and failed
 	constructor() {
+		if (!!Connection.instance) {
+			return Connection.instance;
+		}
+		Connection.instance = this
 		this.connectionChange()
 		navigator.connection.addEventListener('change', this.connectionChange)
 	}
@@ -22,14 +26,5 @@ class Connection {
 			if (!this.onlineStatus || !this.onlinePromise)
 				this.onlinePromise = new Promise(resolve => this.onlineResolve = resolve)
 		}
-	}
-}
-
-export default class Singleton {
-	static singleton
-	constructor() {
-		if (!Singleton.singleton)
-			Singleton.singleton = new Connection()
-		return Singleton.singleton
 	}
 }

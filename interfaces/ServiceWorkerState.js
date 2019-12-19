@@ -1,5 +1,9 @@
-class ServiceWorkerState {
+export default class ServiceWorkerState {
 	constructor() {
+		if (!!ServiceWorkerState.instance) {
+			return ServiceWorkerState.instance;
+		}
+		ServiceWorkerState.instance = this
 		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
 
 		if (navigator.serviceWorker) {
@@ -24,14 +28,5 @@ class ServiceWorkerState {
 
 	then(resolve) {
 		return this.readyPromise.then(resolve)
-	}
-}
-
-export default class Singleton {
-	static singleton
-	constructor() {
-		if (!Singleton.singleton)
-			Singleton.singleton = new ServiceWorkerState()
-		return Singleton.singleton
 	}
 }

@@ -1,7 +1,11 @@
 import ServiceWorkerState from './ServiceWorkerState.js'
 
-class IdleNetwork {
+export default class IdleNetwork {
 	constructor() {
+		if (!!IdleNetwork.instance) {
+			return IdleNetwork.instance;
+		}
+		IdleNetwork.instance = this
 		this.ServiceWorkerState = new ServiceWorkerState()
 		this.backlog = []
 		this.isListening = false
@@ -17,13 +21,13 @@ class IdleNetwork {
 	}
 
 	fetchInCache(request) {
-		if(!window.caches)
+		if (!window.caches)
 			return Promise.reject()
 		return caches.match(request)
 	}
 
 	async race(request) {
-		if(this.ServiceWorkerState.isReady || !window.caches)
+		if (this.ServiceWorkerState.isReady || !window.caches)
 			return fetch(request)
 		else
 			return new Promise((resolve, reject) => {
@@ -31,26 +35,26 @@ class IdleNetwork {
 				let resolved = false
 				fetch(request)
 					.catch(() => {
-						if(otherFailed)
+						if (otherFailed)
 							reject()
-						else 
+						else
 							otherFailed = true
 					})
 					.then(result => {
-						if(!resolved) {
+						if (!resolved) {
 							resolved = true
 							resolve(result)
 						}
 					})
 				this.fetchInCache(request)
 					.then(result => {
-						if(resolved)
+						if (resolved)
 							return
-						if(result) {
-								resolved = true
-								resolve(result)
+						if (result) {
+							resolved = true
+							resolve(result)
 						} else {
-							if(otherFailed)
+							if (otherFailed)
 								reject()
 							else
 								otherFailed = true
@@ -67,7 +71,7 @@ class IdleNetwork {
 		navigator.serviceWorker.controller.postMessage({ idleRequest: true })
 	}
 
-	onMessage({data}) {
+	onMessage({ data }) {
 		requestIdleCallback(() => {
 			this.isListening = false
 			if (data.idle && data.availableConnections > 0)
@@ -147,14 +151,5 @@ class IdleNetwork {
 				this.processBacklog()
 			}
 		})
-	}
-}
-
-export default class Singleton {
-	static singleton
-	constructor() {
-		if (!Singleton.singleton)
-			Singleton.singleton = new IdleNetwork()
-		return Singleton.singleton
 	}
 }

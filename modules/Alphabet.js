@@ -46,8 +46,12 @@ const reviveCharData = (charData) => () => {
 	charData.clips = charData.clips.map(clip => domparser.parseFromString(clip, 'image/svg+xml').firstChild)
 }
 
-class Alphabet {
+export default class Alphabet {
 	constructor() {
+		if (!!Alphabet.instance) {
+			return Alphabet.instance;
+		}
+		Alphabet.instance = this
 		this.IndexedDBManager = new IndexedDBManager()
 		this.stack = new IdleStack(fetchChars)
 			.then((charsList) => {
@@ -105,15 +109,5 @@ class Alphabet {
 
 	getChar(char) {
 		return this.charsMap[char]
-	}
-}
-
-
-export default class Singleton {
-	static singleton
-	constructor() {
-		if (!Singleton.singleton)
-			Singleton.singleton = new Alphabet()
-		return Singleton.singleton
 	}
 }

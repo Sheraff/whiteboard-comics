@@ -1,6 +1,10 @@
-class IndexedDBManager {
+export default class IndexedDBManager {
 
 	constructor() {
+		if (!!IndexedDBManager.instance) {
+			return IndexedDBManager.instance;
+		}
+		IndexedDBManager.instance = this
 		this.calls = {}
 		this.worker = new Worker('../workers/indexedDBWorker.js')
 		this.worker.addEventListener('message', this.onMessage.bind(this))
@@ -55,14 +59,5 @@ class IndexedDBManager {
 
 	saveChars(charsMap) {
 		Object.entries(charsMap).forEach(([string, data]) => { this.saveChar({...data, string}) })
-	}
-}
-
-export default class Singleton {
-	static singleton
-	constructor() {
-		if (!Singleton.singleton)
-			Singleton.singleton = new IndexedDBManager()
-		return Singleton.singleton
 	}
 }
