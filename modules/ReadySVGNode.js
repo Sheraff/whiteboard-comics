@@ -96,11 +96,11 @@ export default class ReadyNode {
 		const previous = this.parent.querySelector('svg')
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
-				this.parent.appendChild(erase)
 				if (previous)
 					this.parent.replaceChild(node, previous)
 				else
 					this.parent.appendChild(node)
+				this.parent.appendChild(erase)
 				resolve()
 			})
 		})
@@ -144,9 +144,11 @@ export default class ReadyNode {
 		const [, , width, height] = node.getAttribute('viewBox').split(' ')
 		if (width < height) {
 			node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
+			node.style.height = 'auto'
 			node.dataset.bound = 'width'
 		} else {
 			node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
+			node.style.width = 'auto'
 			node.dataset.bound = 'height'
 		}
 
