@@ -63,7 +63,6 @@ class NotificationEmitter {
 					return subscription.endpoint
 				})
 				.then(endpoint => fetch(`/push/${endpoint}`))
-				.then(response => response.text())
 				.then(data => {
 					self.registration.showNotification('coucou')
 				})

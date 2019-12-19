@@ -4,17 +4,20 @@
 // worker2.postMessage({port: port2}, [port2])
 
 const workerState = {
-	// ServiceWorkerState: new ServiceWorkerState(),
 	backlog: [],
 	isListening: false,
 	id: 0,
+	swIsReady: false
 }
 
-workerState.ServiceWorkerState.then(() => {
-	navigator.serviceWorker.removeEventListener('message', onMessage)
-	workerState.isListening = false
-	processBacklog()
-})
+function waitOnServiceWorker(port) {
+	port.onmessage = () => {
+		workerState.swIsReady = true
+		workerState.isListening = false
+		processBacklog()
+	}
+	port.postMessage({ query: 'then' })
+}
 
 function fetchInCache(request) {
 	if (!self.caches)
@@ -23,7 +26,7 @@ function fetchInCache(request) {
 }
 
 async function race(request) {
-	if (workerState.ServiceWorkerState.isReady || !self.caches)
+	if (workerState.swIsReady || !self.caches)
 		return fetch(request)
 	else
 		return new Promise((resolve, reject) => {
@@ -63,11 +66,11 @@ function processBacklog() {
 	if (workerState.isListening)
 		return
 	workerState.isListening = true
-	navigator.serviceWorker.addEventListener('message', onMessage, { once: true })
+	navigator.serviceWorker.addEventListener('message', onServiceWorkerMessage, { once: true })
 	navigator.serviceWorker.controller.postMessage({ idleRequest: true })
 }
 
-function onMessage({ data }) {
+function onServiceWorkerMessage({ data }) {
 	requestIdleCallback(() => {
 		workerState.isListening = false
 		if (data.idle && data.availableConnections > 0)
@@ -88,7 +91,10 @@ function makeRequest() {
 	requestIdleCallback(() => {
 		if (!workerState.backlog.length)
 			return false
-		const { request, callback, resolve, reject } = workerState.backlog.shift()
+		const index = workerState.backlog.findIndex(({ callback, resolve }) => callback || resolve)
+		if (index === -1)
+			return false
+		const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
 		if (typeof callback === 'function')
 			fetch(request)
 				.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
@@ -111,35 +117,43 @@ function cancelIdleNetwork(id) {
 	return true
 }
 
-function requestIdleNetwork(request, callback) {
-	if (!workerState.ServiceWorkerState.isReady) {
-		const requestId = ++workerState.id
-		fetchInCache(request).finally(result => {
-			if (result)
-				callback(result)
-			else {
-				workerState.backlog.push({ id: requestId, request, callback })
-				if (workerState.ServiceWorkerState.isReady)
-					processBacklog()
-			}
-		})
-		return requestId
-	} else {
-		workerState.backlog.push({ id: ++workerState.id, request, callback })
-		processBacklog()
-		return workerState.id
-	}
+function requestIdleNetwork(request) {
+	const id = ++workerState.id
+	workerState.backlog.push({ id, request })
+	return id
+}
+
+function resolveRequest(requestId) {
+	const backlogEntryIndex = workerState.backlog.findIndex(({ id }) => id === requestId)
+	const backlogEntry = workerState.backlog[backlogEntryIndex]
+	return new Promise(resolve => {
+		if (!workerState.swIsReady) {
+			return fetchInCache(backlogEntry.request).finally(result => {
+				if (result) {
+					workerState.backlog.splice(backlogEntryIndex, 1)
+					resolve(result)
+				} else {
+					Object.assign(backlogEntry, { callback: resolve })
+					if (workerState.swIsReady)
+						processBacklog()
+				}
+			})
+		} else {
+			Object.assign(backlogEntry, { callback: resolve })
+			processBacklog()
+		}
+	})
 }
 
 function idleFetch(request) {
 	return new Promise(async (resolve, reject) => {
-		if (!workerState.ServiceWorkerState.isReady) {
+		if (!workerState.swIsReady) {
 			const result = await fetchInCache(request)
 			if (result)
 				resolve(result)
 			else {
 				workerState.backlog.push({ request, resolve, reject })
-				if (workerState.ServiceWorkerState.isReady)
+				if (workerState.swIsReady)
 					processBacklog()
 			}
 		} else {
@@ -149,11 +163,28 @@ function idleFetch(request) {
 	})
 }
 
-async function onmessage ({ data: { id, fn, args, port } }) {
-	if(port) {
-		workerState.port = port
-	} else {
-		const response = await self[fn].call(self, ...args)
-		postMessage({ response, id })
+async function parseResponse(response, streamType) {
+	if(typeof response !== 'object')
+		return response
+	switch(streamType) {
+		case 'json':
+			return await response.json()
+		default:
+			return await response.text()
 	}
 }
+
+async function onWindowMessage({ data: { id, query, args, port } }) {
+	if (port) {
+		waitOnServiceWorker(port)
+	} else {
+		const response = await self[query].call(self, ...args)
+		if(!response)
+			postMessage({ id })
+
+		const text = await parseResponse(response, args[1] && args[1].streamType)
+		postMessage({ response: text, id })
+	}
+}
+
+self.onmessage = onWindowMessage

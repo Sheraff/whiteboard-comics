@@ -181,7 +181,6 @@ export default class ReadyNode {
 				}))
 			])
 		})
-			.next(response => response.text())
 			.next(fetched => {
 				const domparser = new DOMParser()
 				const fragment = domparser.parseFromString(fetched, 'image/svg+xml')

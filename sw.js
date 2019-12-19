@@ -78,5 +78,7 @@ self.addEventListener('fetch', event => event.respondWith(
 		caches.open(CACHE_NAME)
 			.then(cache => cache.put(event.request, responseToCache))
 		return response;
+	}).catch(() => {
+		console.error(event)
 	})
 ))

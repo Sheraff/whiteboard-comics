@@ -15,8 +15,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
 
 async function fetchChars() {
 	const idleNetwork = new IdleNetwork()
-	const response = await idleNetwork.race(`/data/alphabet.json`)
-	const { chars } = await response.json()
+	const { chars } = await idleNetwork.race(`/data/alphabet.json`, { streamType: 'json' })
 	return chars
 }
 
@@ -48,9 +47,8 @@ const reviveCharData = (charData) => () => {
 
 export default class Alphabet {
 	constructor() {
-		if (!!Alphabet.instance) {
-			return Alphabet.instance;
-		}
+		if (!!Alphabet.instance)
+			return Alphabet.instance
 		Alphabet.instance = this
 		this.IndexedDBManager = new IndexedDBManager()
 		this.stack = new IdleStack(fetchChars)
@@ -82,7 +80,7 @@ export default class Alphabet {
 						const svg = document.createElementNS(svgNS, 'svg')
 						svg.setAttribute('id', 'defs')
 						const defs = document.createElementNS(svgNS, 'defs')
-						const subtasks = Object.values(charsData).map(({clips}) => () => clips.forEach(clip => defs.appendChild(clip)))
+						const subtasks = Object.values(charsData).map(({ clips }) => () => clips.forEach(clip => defs.appendChild(clip)))
 						this.stack.next(subtasks)
 							.next(() => {
 								svg.appendChild(defs)
@@ -96,7 +94,7 @@ export default class Alphabet {
 	}
 
 	finish() {
-		if(!this.readyPromise)
+		if (!this.readyPromise)
 			this.readyPromise = new Promise(resolve => {
 				this.stack.finish().then(resolve)
 			})

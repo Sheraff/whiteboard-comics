@@ -1,9 +1,8 @@
 export default class Connection {
 	// TODO: use this to re-fetch graphs that were requested when offline and failed
 	constructor() {
-		if (!!Connection.instance) {
-			return Connection.instance;
-		}
+		if (!!Connection.instance)
+			return Connection.instance
 		Connection.instance = this
 		this.connectionChange()
 		navigator.connection.addEventListener('change', this.connectionChange)

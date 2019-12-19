@@ -1,32 +1,42 @@
 export default class ServiceWorkerState {
+
 	constructor() {
-		if (!!ServiceWorkerState.instance) {
+		if (!!ServiceWorkerState.instance)
 			return ServiceWorkerState.instance;
-		}
 		ServiceWorkerState.instance = this
-		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
+		this.calls = {}
+		this.worker = new Worker('../workers/serviceWorkerStateWorker.js')
+		this.worker.addEventListener('message', this.onMessage.bind(this))
+		this.id = 0
+	}
 
-		if (navigator.serviceWorker) {
-			this.isWorkerReady = navigator.serviceWorker
-				&& navigator.serviceWorker.controller
-				&& navigator.serviceWorker.controller.state === 'activated'
-
-			if (!this.isWorkerReady) {
-				navigator.serviceWorker.addEventListener('message', () => {
-					this.isWorkerReady = true
-					this.readyResolve()
-				}, { once: true })
-			} else {
-				this.readyResolve()
-			}
+	onMessage({ data: { id, response } }) {
+		const resolve = this.calls[id]
+		if (resolve) {
+			delete this.calls[key]
+			resolve(response)
 		}
 	}
 
-	get isReady() {
-		return this.isWorkerReady
+	async isReady() {
+		const id = ++this.id
+		const promise = new Promise(resolve => this.calls[id] = resolve)
+		this.worker.postMessage({ id, query: 'isReady' })
+		return promise
 	}
 
-	then(resolve) {
-		return this.readyPromise.then(resolve)
+	async then() {
+		const id = ++this.id
+		const promise = new Promise(resolve => this.calls[id] = resolve)
+		this.worker.postMessage({ id, query: 'then' })
+		return promise
+	}
+
+	connect(port) {
+		if(port)
+			return this.worker.postMessage({ port }, [port])
+		const {port1, port2} = new MessageChannel()
+		this.worker.postMessage({ port: port1 }, [port1])
+		return port2
 	}
 }

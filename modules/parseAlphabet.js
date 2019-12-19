@@ -5,13 +5,13 @@ const svgNS = 'http://www.w3.org/2000/svg'
 const fetchSerializedXML = (charsData, stack) => {
 	const idleNetwork = new IdleNetwork()
 	return async (_, onFinish) => await Promise.all(charsData.map(async ({ name, string }) => {
-		let response
+		let serializedXML
 		const charURL = `/alphabet/alphabet_${name}.svg`
 		if (stack.isFinishing) {
-			response = await idleNetwork.race(charURL)
+			serializedXML = await idleNetwork.race(charURL)
 		} else {
 			let idleRequestId
-			response = await Promise.race([
+			serializedXML = await Promise.race([
 				new Promise(resolve => {
 					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
 				}),
@@ -22,7 +22,6 @@ const fetchSerializedXML = (charsData, stack) => {
 				}))
 			])
 		}
-		const serializedXML = await response.text()
 		return { name, string, serializedXML }
 	}))
 }
