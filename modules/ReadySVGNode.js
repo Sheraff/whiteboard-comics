@@ -1,6 +1,6 @@
-import IdleNetwork from './IdleNetwork.js'
+import IdleNetwork from '../interfaces/IdleNetwork.js'
 import TextToAlphabet from './TextToAlphabet.js'
-import IndexedDBManager from './IndexedDB.js'
+import IndexedDBManager from '../interfaces/IndexedDB.js'
 import IdleStack from './IdleStack.js'
 
 export default class ReadyNode {
@@ -50,7 +50,7 @@ export default class ReadyNode {
 				const domparser = new DOMParser()
 				let fragment, eraseFragment
 				this.stacks[0].next(() => { fragment = domparser.parseFromString(cached.node, 'image/svg+xml') }, 40)
-				this.stacks[0].next(() => { eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml') })
+				this.stacks[0].next(() => { eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml') }, 15)
 				this.stacks[0].next((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
 				this.stacks[0].next(() => this.use(fragment.firstElementChild, eraseFragment.firstElementChild))
 				this.stacks[0].next(() => (['cached', {

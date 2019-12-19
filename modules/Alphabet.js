@@ -7,10 +7,10 @@
  * - put defs in document.body
  */
 
-import IndexedDBManager from './IndexedDB.js'
+import IndexedDBManager from '../interfaces/IndexedDB.js'
 import { parseAlphabet } from './parseAlphabet.js'
 import IdleStack from './IdleStack.js'
-import IdleNetwork from './IdleNetwork.js'
+import IdleNetwork from '../interfaces/IdleNetwork.js'
 const svgNS = 'http://www.w3.org/2000/svg'
 
 async function fetchChars() {
@@ -96,7 +96,6 @@ class Alphabet {
 			this.readyPromise = new Promise(resolve => {
 				this.stack.finish().then(resolve)
 			})
-			// this.readyPromise = this.stack.finish()
 		return this.readyPromise
 	}
 

@@ -1,4 +1,4 @@
-class ServiceWorkerInit {
+class ServiceWorkerState {
 	constructor() {
 		this.readyPromise = new Promise(resolve => this.readyResolve = resolve)
 
@@ -31,7 +31,7 @@ export default class Singleton {
 	static singleton
 	constructor() {
 		if (!Singleton.singleton)
-			Singleton.singleton = new ServiceWorkerInit()
+			Singleton.singleton = new ServiceWorkerState()
 		return Singleton.singleton
 	}
 }

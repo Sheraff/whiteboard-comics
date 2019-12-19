@@ -81,7 +81,7 @@ const fetchSerializedXML = (charsArray, stack) => {
  */
 
 export default class IdleStack {
-	static PADDING = 5
+	static PADDING = 10
 
 	constructor(resolve, time) {
 

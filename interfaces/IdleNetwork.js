@@ -1,15 +1,15 @@
-import ServiceWorkerInit from './ServiceWorkerInit.js'
+import ServiceWorkerState from './ServiceWorkerState.js'
 
 class IdleNetwork {
 	constructor() {
-		this.ServiceWorkerInit = new ServiceWorkerInit()
+		this.ServiceWorkerState = new ServiceWorkerState()
 		this.backlog = []
 		this.isListening = false
 		this.id = 0
 
 		this.onMessage = this.onMessage.bind(this)
 
-		this.ServiceWorkerInit.then(() => {
+		this.ServiceWorkerState.then(() => {
 			navigator.serviceWorker.removeEventListener('message', this.onMessage)
 			this.isListening = false
 			this.processBacklog()
@@ -23,7 +23,7 @@ class IdleNetwork {
 	}
 
 	async race(request) {
-		if(this.ServiceWorkerInit.isReady || !window.caches)
+		if(this.ServiceWorkerState.isReady || !window.caches)
 			return fetch(request)
 		else
 			return new Promise((resolve, reject) => {
@@ -112,14 +112,14 @@ class IdleNetwork {
 	}
 
 	requestIdleNetwork(request, callback) {
-		if (!this.ServiceWorkerInit.isReady) {
+		if (!this.ServiceWorkerState.isReady) {
 			const requestId = ++this.id
 			this.fetchInCache(request).finally(result => {
 				if (result)
 					callback(result)
 				else {
 					this.backlog.push({ id: requestId, request, callback })
-					if (this.ServiceWorkerInit.isReady)
+					if (this.ServiceWorkerState.isReady)
 						this.processBacklog()
 				}
 			})
@@ -133,13 +133,13 @@ class IdleNetwork {
 
 	idleFetch(request) {
 		return new Promise(async (resolve, reject) => {
-			if (!this.ServiceWorkerInit.isReady) {
+			if (!this.ServiceWorkerState.isReady) {
 				const result = await this.fetchInCache(request)
 				if (result)
 					resolve(result)
 				else {
 					this.backlog.push({ request, resolve, reject })
-					if (this.ServiceWorkerInit.isReady)
+					if (this.ServiceWorkerState.isReady)
 						this.processBacklog()
 				}
 			} else {

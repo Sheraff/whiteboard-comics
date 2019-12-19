@@ -1,14 +1,14 @@
-import ServiceWorkerInit from './ServiceWorkerInit.js'
+import ServiceWorkerState from '../interfaces/ServiceWorkerState.js'
 
 export default class NotificationPermission {
 	constructor() {
-		this.ServiceWorkerInit = new ServiceWorkerInit()
+		this.ServiceWorkerState = new ServiceWorkerState()
 
 		requestIdleCallback(() => {
 			const visits = +localStorage.getItem('visits')
 			localStorage.setItem('visits', visits + 1)
 
-			this.ServiceWorkerInit.then(() => {
+			this.ServiceWorkerState.then(() => {
 				if (visits > 2)
 					Notification.requestPermission(status => {
 						if (status === 'granted') {
