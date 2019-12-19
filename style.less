@@ -23,13 +23,16 @@ svg-card,
 		left      : 50%;
 		top       : 50%;
 		transform : translate3d(-50%, -50%, 0);
+		overflow  : visible;
 
 		[stroke="#000000"] {}
 
 		&[slot="erase"] {
 			pointer-events: none;
 
-			opacity: 0;
+			path {
+				opacity: 0;
+			}
 		}
 
 		text,
@@ -53,7 +56,7 @@ svg-card,
 	}
 
 	&.sized svg {
-		animation: .5s fadein ease;
+		// animation: .5s fadein ease;
 	}
 
 	&:not(.sized) svg {
@@ -146,10 +149,6 @@ grid-layout {
 		backface-visibility: hidden;
 		perspective        : 1000;
 		will-change        : transform;
-
-		svg {
-			will-change: transform;
-		}
 
 		&[data-last-played=true] {
 			z-index: 1;

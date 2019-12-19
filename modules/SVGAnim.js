@@ -6,16 +6,29 @@ export default class SVGAnim {
 		this.svg = svg
 		this.playing = false
 		this.paused = false
+		this.prepared = false
+
+		this.prepare = this.prepare.bind(this)
 	}
 
 	async play() {
+		if(this.playing)
+			await this.reset()
 		this.playing = true
 		this.promise = new Promise(resolve => this.resolve = resolve)
-		this.iterate(SVGAnim.prepare)
+		if(!this.prepared)
+			await this.iterate(SVGAnim.prepare)
 		await this.iterate(this.animate.bind(this))
 		this.resolve()
-		delete this.promise
-		this.playing = false
+		this.reset()
+	}
+
+	prepare() {
+		this.prepared = true
+		return new Promise(async resolve => {
+			await this.iterate(SVGAnim.prepare)
+			resolve()
+		})
 	}
 
 	pause() {
@@ -37,13 +50,15 @@ export default class SVGAnim {
 			this.play()
 	}
 
-	reset() {
+	async reset() {
 		delete this.resolve
 		delete this.promise
 		this.playing = false
 		this.paused = false
-		this.animation.cancel()
-		this.iterate(SVGAnim.resetNode)
+		this.prepared = false
+		if(this.animation)
+			this.animation.cancel()
+		await this.iterate(SVGAnim.resetNode)
 	}
 
 	then(resolve) {
@@ -66,17 +81,20 @@ export default class SVGAnim {
 	}
 
 	async animate(node, previous, index) {
+		if(this.paused)
+			return
 		const length = node.getStaticTotalLength()
 		node.style.strokeDasharray = `${length} ${length + 1}`
 		node.style.opacity = 1
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
 				this.animation = node.animate({
-					strokeDashoffset: [length, 0]
+					strokeDashoffset: [length, 0],
+					...(node.getAttribute('stroke') === '#FFFFFF' && {stroke: ['#F0F0F0', '#FFFFFF']})
 				}, {
 					duration: SVGAnim.getElementDuration(node, length),
 					delay: index === 0 && previous.isGroup() ? 300 : 0,
-					endDelay: node.dataset.type === 'text' || length < 75 ? 10 : 300,
+					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
 					easing: 'ease-out',
 					fill: 'backwards'
 				})
@@ -98,7 +116,9 @@ export default class SVGAnim {
 
 	static getElementDuration(node, length) {
 		if (node.dataset.type === 'text')
-			return length * 2.5 / 5
+			return length * 2.5 / 4
+		if (node.dataset.type === 'erase')
+			return 35 * Math.log(Math.pow(length, 2))
 
 		return 25 * Math.log(Math.pow(length, 2))
 	}

@@ -19,10 +19,14 @@ svg-card svg,
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
+  overflow: visible;
 }
 svg-card svg[slot="erase"],
 .svg-card svg[slot="erase"] {
   pointer-events: none;
+}
+svg-card svg[slot="erase"] path,
+.svg-card svg[slot="erase"] path {
   opacity: 0;
 }
 svg-card svg text,
@@ -42,10 +46,6 @@ svg-card:not(.font-loaded) text,
 svg-card:not(.font-loaded) tspan,
 .svg-card:not(.font-loaded) tspan {
   display: none;
-}
-svg-card.sized svg,
-.svg-card.sized svg {
-  animation: 0.5s fadein ease;
 }
 svg-card:not(.sized) svg,
 .svg-card:not(.sized) svg {
@@ -115,10 +115,6 @@ grid-layout .svg-card {
   transform-origin: top left;
   backface-visibility: hidden;
   perspective: 1000;
-  will-change: transform;
-}
-grid-layout svg-card svg,
-grid-layout .svg-card svg {
   will-change: transform;
 }
 grid-layout svg-card[data-last-played=true],

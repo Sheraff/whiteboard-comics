@@ -9,15 +9,12 @@ export default class Grid extends HTMLElement {
 
 	getOnClick(card) {
 		return () => {
-			if (this.lastPlayed && this.lastPlayed !== card)
-				delete this.lastPlayed.dataset['lastPlayed']
-			this.lastPlayed = card
-			this.lastPlayed.dataset['lastPlayed'] = true
 			requestAnimationFrame(async () => {
-				
+				if(card.SVGAnim.playing)
+					card.SVGAnim.pause()
 
 				await card.ReadyNode
-				card.eraseAnim.toggle()
+				card.eraseAnim.play()
 				await card.eraseAnim
 
 				if (card.dataset.top) {
@@ -33,12 +30,18 @@ export default class Grid extends HTMLElement {
 					this.insertBefore(this.placeholder, card)
 				}
 
+				if (this.lastPlayed && this.lastPlayed !== card)
+					delete this.lastPlayed.dataset['lastPlayed']
+				this.lastPlayed = card
+				this.lastPlayed.dataset['lastPlayed'] = true
+
 				await Promise.all([
+					card.SVGAnim.prepare().then(card.eraseAnim.prepare),
 					card.Alphabet.promise,
 					new Promise(resolve => animation.onfinish = resolve)
 				])
 
-				card.SVGAnim.toggle()
+				card.SVGAnim.play()
 
 			})
 		}
@@ -56,6 +59,6 @@ export default class Grid extends HTMLElement {
 		return card.animate([
 			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
 			{ transform: 'none' }
-		], { duration: 2000 })
+		], { duration: 500 })
 	}
 }
