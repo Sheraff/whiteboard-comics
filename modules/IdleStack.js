@@ -105,7 +105,7 @@ export default class IdleStack {
 		const insertBefore = currentTask.nextTask
 		if (insertBefore && insertBefore.next)
 			return this.next(resolve, time, insertBefore)
-		const isArray = Array.isArray(resolve)
+		const isArray = resolve instanceof Array
 		currentTask.nextTask = { task: resolve, next: true, time, isArray }
 		if (!insertBefore)
 			this.lastTask = currentTask.nextTask
@@ -116,7 +116,7 @@ export default class IdleStack {
 
 	// insert after all tasks
 	then(resolve, time) {
-		const isArray = Array.isArray(resolve)
+		const isArray = resolve instanceof Array
 		this.lastTask.nextTask = { task: resolve, time, isArray }
 		this.lastTask = this.lastTask.nextTask
 		return this

@@ -95,7 +95,7 @@ function makeRequest() {
 		if (index === -1)
 			return false
 		const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
-		if (typeof callback === 'function')
+		if (callback instanceof Function)
 			fetch(request)
 				.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
 				.then(callback)
@@ -164,7 +164,7 @@ function idleFetch(request) {
 }
 
 async function parseResponse(response, streamType) {
-	if(typeof response !== 'object')
+	if(!response instanceof Object)
 		return response
 	switch(streamType) {
 		case 'json':
