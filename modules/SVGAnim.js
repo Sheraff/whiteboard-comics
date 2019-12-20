@@ -9,6 +9,7 @@ export default class SVGAnim {
 		this.prepared = false
 
 		this.prepare = this.prepare.bind(this)
+		// TODO: load anim parameters in advance in an IdleStack, store in Map() w/ nodes as keys, .finish() when needed
 	}
 
 	async play() {

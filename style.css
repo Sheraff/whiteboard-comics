@@ -1,10 +1,11 @@
 body {
   margin: 0;
+  background-color: #edf2f7;
 }
 svg-card,
 .svg-card {
   contain: strict;
-  box-shadow: 0 0 3px black;
+  box-shadow: 0 0.8px 0.7px -6px rgba(0, 0, 0, 0.04), 0 1.9px 1.7px -6px rgba(0, 0, 0, 0.053), 0 3.6px 3.1px -6px rgba(0, 0, 0, 0.06), 0 6.5px 5.6px -6px rgba(0, 0, 0, 0.067), 0 12.1px 10.4px -6px rgba(0, 0, 0, 0.077), 0 29px 25px -6px rgba(0, 0, 0, 0.11), 0 0 0 1px #00000020;
   background-color: white;
 }
 svg-card span,
@@ -131,4 +132,5 @@ grid-layout .svg-card[data-top=true] {
 }
 grid-layout .svg-card {
   box-shadow: none;
+  background-color: transparent;
 }
