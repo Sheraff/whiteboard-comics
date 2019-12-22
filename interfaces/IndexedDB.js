@@ -38,6 +38,7 @@ export default class IndexedDBManager {
 				name: data.name,
 				node: XMLS.serializeToString(data.node),
 				erase: XMLS.serializeToString(data.erase),
+				color: data.color,
 			}
 			this.worker.postMessage({ table: 'graphs', key: data.name, method: 'PUT', entry })
 		})

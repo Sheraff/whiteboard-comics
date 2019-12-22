@@ -2,6 +2,7 @@ import IdleNetwork from '../interfaces/IdleNetwork.js'
 import TextToAlphabet from './TextToAlphabet.js'
 import IndexedDBManager from '../interfaces/IndexedDB.js'
 import IdleStack from './IdleStack.js'
+import hex2hsl from './hex2hsl.js'
 
 export default class ReadyNode {
 	constructor(parent) {
@@ -52,10 +53,11 @@ export default class ReadyNode {
 				this.stacks[0].next(() => { fragment = domparser.parseFromString(cached.node, 'image/svg+xml') }, 40)
 				this.stacks[0].next(() => { eraseFragment = domparser.parseFromString(cached.erase, 'image/svg+xml') }, 15)
 				this.stacks[0].next((_, onFinish) => this.addClass(this.stacks[0], onFinish, 'sized'))
-				this.stacks[0].next(() => this.use(fragment.firstElementChild, eraseFragment.firstElementChild))
+				this.stacks[0].next(() => this.use(fragment.firstElementChild, eraseFragment.firstElementChild, cached.color))
 				this.stacks[0].next(() => (['cached', {
 					cached: fragment.firstElementChild,
-					erase: eraseFragment.firstElementChild
+					erase: eraseFragment.firstElementChild,
+					color: cached.color
 				}]))
 			})
 			return
@@ -67,7 +69,7 @@ export default class ReadyNode {
 	}
 
 	startFromStep([step, args]) {
-		let { raw, cached, erase } = args
+		let { raw, cached, erase, color } = args
 		this.stacks.push(new IdleStack(async () => await this.stacks[0].promise))
 		switch (step) {
 			case 'name':
@@ -78,13 +80,14 @@ export default class ReadyNode {
 					const result = this.process(raw)
 					cached = result.node
 					erase = result.erase
+					color = result.color
 				})
 				this.stacks[1].then((_, onFinish) => this.addClass(this.stacks[1], onFinish, 'sized'))
-				this.stacks[1].then(() => { this.use(cached, erase) })
+				this.stacks[1].then(() => { this.use(cached, erase, color) })
 				// ASAP up to previous line on `display()`
 				this.stacks.push(new IdleStack(async () => await this.stacks[1].promise))
 				this.stacks[2].then(async (_, onFinish) => await this.alphabetize(onFinish, cached))
-				this.stacks[2].then(() => { this.cache(this.name, cached, erase) })
+				this.stacks[2].then(() => { this.cache(this.name, cached, erase, color) })
 			case 'cached':
 				this.stacks[this.stacks.length - 1].then((_, onFinish) => this.addClass(this.stacks[this.stacks.length - 1], onFinish, 'alphabetized'))
 				this.stacks[this.stacks.length - 1].then(this.readyResolve)
@@ -92,7 +95,7 @@ export default class ReadyNode {
 		}
 	}
 
-	async use(node, erase) {
+	async use(node, erase, color) {
 		const previous = this.parent.querySelector('svg')
 		await new Promise(resolve => {
 			requestAnimationFrame(() => {
@@ -101,14 +104,16 @@ export default class ReadyNode {
 				else
 					this.parent.appendChild(node)
 				this.parent.appendChild(erase)
+				const hsl = hex2hsl(color)
+				this.parent.style.color = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
 				resolve()
 			})
 		})
 	}
 
 
-	cache(name, node, erase) {
-		this.IndexedDBManager.saveGraph({ name, node, erase })
+	cache(name, node, erase, color) {
+		this.IndexedDBManager.saveGraph({ name, node, erase, color })
 	}
 
 	async alphabetize(onFinish, node) {
@@ -153,15 +158,26 @@ export default class ReadyNode {
 		}
 
 		// find and extract "erase"
-		const erase = node.firstElementChild
-		erase.dataset.type = 'erase'
-		const eraseSlot = node.cloneNode(false)
-		eraseSlot.setAttribute('slot', 'erase')
-		eraseSlot.appendChild(erase)
+		const erasePath = node.firstElementChild
+		erasePath.dataset.type = 'erase'
+		const erase = node.cloneNode(false)
+		erase.setAttribute('slot', 'erase')
+		erase.appendChild(erasePath)
 
+		// set attributes
 		node.dataset.main = true
 
-		return { node, erase: eraseSlot }
+		// find color
+		const firstColoredNode = node.querySelector(`
+			[stroke]:not([stroke="#FFFFFF"]):not([stroke="#000000"]):not([stroke="#010101"]):not([fill]), 
+			[stroke]:not([stroke="#FFFFFF"]):not([stroke="#000000"]):not([stroke="#010101"])[fill="none"], 
+			[fill]:not([fill="#FFFFFF"]):not([fill="#000000"]):not([fill="#010101"]):not([fill="#231F20"]):not([stroke])
+		`)
+		const stroke = firstColoredNode.getAttribute('stroke')
+		const fill = firstColoredNode.getAttribute('fill')
+		const color = stroke && stroke !== "none" ? stroke : fill
+
+		return { node, erase, color }
 	}
 
 	fetch(name) {
