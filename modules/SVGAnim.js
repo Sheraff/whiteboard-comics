@@ -96,10 +96,12 @@ export default class SVGAnim {
 				},
 				frames: {
 					strokeDashoffset: [length, 0],
-					...(isEraseStroke && { stroke: [
-						'#F0F0F0', 
-						'#FFFFFF', 
-					] }),
+					...(isEraseStroke && {
+						stroke: [
+							'#F0F0F0',
+							'#FFFFFF',
+						]
+					}),
 				},
 				options: {
 					duration: SVGAnim.getElementDuration(node, length),
@@ -122,8 +124,10 @@ export default class SVGAnim {
 		const { frames, options, before, after } = this.map.get(node)
 		Object.entries(before).forEach(([key, value]) => node.style[key] = value)
 		await new Promise(resolve => {
+			requestAnimationFrame(() => {
 				this.animation = node.animate(frames, options)
 				this.animation.onfinish = resolve
+			})
 		})
 		Object.entries(after).forEach(([key, value]) => node.style[key] = value)
 	}
