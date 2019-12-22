@@ -5,10 +5,11 @@ export default class TextToAlphabet {
 
 	constructor(svg) {
 
+		this.debug_svg = svg
 		this.Alphabet = new Alphabet()
 
 		this.stack = new IdleStack(async () => {
-			if(svg.ownerDocument !== document || !svg.isConnected) {
+			if (svg.ownerDocument !== document || !svg.isConnected) {
 				this.temp = document.createElement('div')
 				this.temp.classList.add('svg-card')
 				this.temp.appendChild(svg)
@@ -54,13 +55,13 @@ export default class TextToAlphabet {
 					.map(([reference, fragment]) => this.placeFragmentBeforeRef(reference, fragment, this.stack))
 				this.stack.next(subtasks)
 			}).then(() => {
-				if(this.temp)
+				if (this.temp)
 					document.getElementById("dom-tricks").removeChild(this.temp)
 			})
 	}
 
 	finish() {
-		if(!this.readyPromise)
+		if (!this.readyPromise)
 			this.readyPromise = new Promise(resolve => {
 				this.stack.finish().then(() => resolve(this))
 			})
@@ -109,12 +110,19 @@ export default class TextToAlphabet {
 		spanData.text.textContent.split('').forEach((char, index) => {
 			if (char === ' ')
 				return
-			subtasks.push(() => ({
-				...spanData,
-				height: this.charsMap[char].viewBox.split(' ').pop(),
-				position: spanData.text.getStartPositionOfChar(index), // SVG must be part of DOM for this function?!
-				children: Array.from(this.charsMap[char].node.cloneNode(true).children),
-			}))
+
+			subtasks.push(() => {
+				try {
+					return ({
+						...spanData,
+						height: this.charsMap[char].viewBox.split(' ').pop(),
+						position: spanData.text.getStartPositionOfChar(index), // SVG must be part of DOM for this function?!
+						children: Array.from(this.charsMap[char].node.cloneNode(true).children),
+					})
+				} catch {
+					console.log(`getStartPositionOfChar failed @ index: ${index} for char ${char} on svg`, this.debug_svg)
+				}
+			})
 		})
 		return subtasks
 	}
@@ -128,7 +136,7 @@ export default class TextToAlphabet {
 			long: tspans.length ? 40 < node.getNumberOfChars() + tspans.length - 1 : false,
 		}
 		if (tspans.length)
-			return tspans.map(tspan => Object.assign({}, data, { 
+			return tspans.map(tspan => Object.assign({}, data, {
 				text: tspan,
 				color: tspan.getAttribute('fill') || data.color,
 			}))
