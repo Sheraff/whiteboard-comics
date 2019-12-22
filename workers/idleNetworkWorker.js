@@ -164,7 +164,7 @@ function idleFetch(request) {
 }
 
 async function parseResponse(response, streamType) {
-	if(!response instanceof Object)
+	if(typeof response !== 'object')
 		return response
 	switch(streamType) {
 		case 'json':
