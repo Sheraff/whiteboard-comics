@@ -15,18 +15,17 @@ svg-card,
 	box-shadow: -10px 11px 9px -10px,
 		0 10px 11px rgba(0, 0, 0, 0.07);
 	background-color: white;
-
+  ;
+  
 	span {
 		display: none;
 	}
 
-	&:not(.web-component) * {}
-
 	&:not(:defined) {}
 
 	svg {
-		max-width : 100%;
-		max-height: 100%;
+		max-width : 90%;
+		max-height: 90%;
 		position  : absolute;
 		left      : 50%;
 		top       : 50%;
@@ -45,13 +44,12 @@ svg-card,
 
 		text,
 		tspan {
-			font-family: 'Permanent Marker';
-			transition : fill .5s;
+			font-family   : 'Permanent Marker';
+			pointer-events: all;
 		}
 
 		[data-type="text"] {
-			opacity   : 0;
-			transition: opacity .5s;
+			opacity      : 0;
 		}
 	}
 
@@ -59,7 +57,7 @@ svg-card,
 
 		text,
 		tspan {
-			display: none;
+			fill   : rgba(0, 0, 0, 0);
 		}
 	}
 
@@ -68,7 +66,7 @@ svg-card,
 	}
 
 	&:not(.sized) svg {
-		opacity: 0;
+		// opacity: 0;
 	}
 
 	@keyframes fadein {
@@ -97,7 +95,7 @@ body.svg-defs svg-card.alphabetized {
 
 	text,
 	tspan {
-		fill: rgba(0, 0, 0, 0)
+		fill   : rgba(0, 0, 0, 0);
 	}
 }
 
@@ -122,14 +120,18 @@ body.svg-defs svg-card.alphabetized {
 
 
 grid-layout {
+	--count        : 1;
+	--featured     : 1;
+	--first        : 1;
 	--margin       : 10px;
 	display        : grid;
 	grid-gap       : var(--margin);
 	justify-content: space-around;
 	margin         : var(--margin);
 
+	max-width: 2500px;
+
 	// cells of equal width
-	--count              : 3;
 	grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
 	grid-auto-rows       : 1fr;
 
@@ -146,9 +148,14 @@ grid-layout {
 	}
 
 	// override hack so that 1st cell isn't blank
-	*:first-child {
-		grid-column: 1 / 1 / span 1;
-		grid-row   : 1 / 1 / span 1;
+	:first-child {
+		grid-column: 1 / 1 / span var(--first);
+		grid-row   : 1 / 1 / span var(--first);
+	}
+
+	[featured] {
+		grid-column-end: span var(--featured);
+		grid-row-end   : span var(--featured);
 	}
 
 	svg-card,
@@ -172,7 +179,59 @@ grid-layout {
 	}
 
 	.svg-card {
-		box-shadow: none;
+		box-shadow      : none;
 		background-color: transparent;
+	}
+}
+
+@media (min-width: 375px) {
+	grid-layout {
+		--count: 2;
+	}
+}
+
+@media (min-width: 450px) {
+	grid-layout {
+		--count: 3;
+		--first: 2;
+	}
+}
+
+@media (min-width: 550px) {
+	grid-layout {
+		--count: 4;
+	}
+}
+
+@media (min-width: 750px) {
+	grid-layout {
+		--count: 5;
+	}
+}
+
+@media (min-width: 1000px) {
+	grid-layout {
+		--count   : 6;
+		--first   : 3;
+		--featured: 2;
+	}
+}
+
+@media (min-width: 1350px) {
+	grid-layout {
+		--count: 7;
+	}
+}
+
+@media (min-width: 1850px) {
+	grid-layout {
+		--count: 8;
+	}
+}
+
+@media (min-width: 2500px) {
+	grid-layout {
+		--count: 9;
+		--first: 4;
 	}
 }
