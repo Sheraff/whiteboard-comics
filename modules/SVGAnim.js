@@ -11,7 +11,7 @@ export default class SVGAnim {
 		this.prepare = this.prepare.bind(this)
 
 		this.map = new Map()
-		this.stack = new IdleStack(() => this.iterate(this.preprocess.bind(this)))
+		this.stack = new IdleStack(() => this.iterate.bind(this)(this.preprocess.bind(this)))
 
 		// TODO: load anim parameters in advance in an IdleStack, store in Map() w/ nodes as keys, .finish() when needed
 	}
@@ -88,11 +88,18 @@ export default class SVGAnim {
 	preprocess(node, index) {
 		this.stack.next(() => {
 			const length = node.getStaticTotalLength()
+			const isEraseStroke = node.getAttribute('stroke') === '#FFFFFF'
 			node.style.strokeDasharray = `${length} ${length + 1}`
 			this.map.set(node, {
+				before: {
+					opacity: 1,
+				},
 				frames: {
 					strokeDashoffset: [length, 0],
-					...(node.getAttribute('stroke') === '#FFFFFF' && { stroke: ['#F0F0F0', '#FFFFFF'] }),
+					...(isEraseStroke && { stroke: [
+						'#F0F0F0', 
+						'#FFFFFF', 
+					] }),
 				},
 				options: {
 					duration: SVGAnim.getElementDuration(node, length),
@@ -100,6 +107,9 @@ export default class SVGAnim {
 					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
 					easing: 'ease-out',
 					fill: 'backwards',
+				},
+				after: {
+					strokeDashoffset: 0,
 				}
 			})
 		})
@@ -109,15 +119,13 @@ export default class SVGAnim {
 		if (this.paused)
 			return
 
-		node.style.opacity = 1
+		const { frames, options, before, after } = this.map.get(node)
+		Object.entries(before).forEach(([key, value]) => node.style[key] = value)
 		await new Promise(resolve => {
-			requestAnimationFrame(() => {
-				const { frames, options } = this.map.get(node)
 				this.animation = node.animate(frames, options)
 				this.animation.onfinish = resolve
-			})
 		})
-		node.style.strokeDashoffset = 0
+		Object.entries(after).forEach(([key, value]) => node.style[key] = value)
 	}
 
 	static prepare(node) {
