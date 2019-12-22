@@ -55,7 +55,7 @@ function patchEntry(table, key, entry) {
 
 function getGraph (key) {
 	return getEntry('graphs', key).then(json => {
-		if(json && json.node && json.erase)
+		if(json && json.node && json.erase && json.color)
 			return json
 	})
 }
