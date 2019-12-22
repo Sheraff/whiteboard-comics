@@ -15,6 +15,7 @@ const URLS = [
 	// '/interfaces/ServiceWorkerState.js',
 	// '/modules/Alphabet.js',
 	// '/modules/extendSVG.js',
+	// '/modules/hex2hsl.js',
 	// '/modules/IdleStack.js',
 	// '/modules/parseAlphabet.js',
 	// '/modules/ReadySVGNode.js',
