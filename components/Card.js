@@ -50,5 +50,6 @@ export default class Card extends HTMLElement {
 
 	onMouseOver() {
 		this.ReadyNode.finish()
+		.then(() => this.ReadyNode.then(this.eraseAnim.finish))
 	}
 }

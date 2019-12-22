@@ -14,6 +14,7 @@ export default class Grid extends HTMLElement {
 					card.SVGAnim.pause()
 
 				await card.ReadyNode
+				await card.eraseAnim.stack.promise
 				card.eraseAnim.play()
 				await card.eraseAnim.promise
 
@@ -34,9 +35,15 @@ export default class Grid extends HTMLElement {
 				this.lastPlayed.dataset['lastPlayed'] = true
 
 				await Promise.all([
-					card.Alphabet.promise,
-					new Promise(resolve => animation.onfinish = resolve),
-					card.SVGAnim.prepare().then(card.eraseAnim.prepare),
+					new Promise(resolve => animation.onfinish = resolve)
+						.then(() => {
+							card.Alphabet.finish()
+							card.SVGAnim.stack.finish()
+						}),
+					Promise.all([
+						card.Alphabet.promise,
+						card.SVGAnim.stack.promise.then(card.SVGAnim.prepare),
+					]).then(card.eraseAnim.prepare),
 				])
 
 				card.SVGAnim.play()
@@ -57,7 +64,7 @@ export default class Grid extends HTMLElement {
 		return card.animate([
 			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
 			{ transform: 'none' }
-		], { duration: 1000, easing: 'cubic-bezier(.98,-0.56,.83,.67)' })
-		// ], { duration: 1000, easing: 'ease-in' })
+		], { duration: 1000, easing: 'cubic-bezier(.77,-0.3,.4,1)' })
+		// toggle back cubic-bezier(.5,.1,.4,1)
 	}
 }
