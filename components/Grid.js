@@ -9,6 +9,10 @@ export default class Grid extends HTMLElement {
 		})
 		this.placeholder = document.createElement('div')
 		this.placeholder.classList.add('svg-card')
+
+		// TODO: add states for transitions (.opening / .closing) and don't apply box-shadows while in transition
+		// TODO: don't apply box-shadow while on top
+		// TODO: placeholder should carry box-shadows of card it replaces
 	}
 
 	attributeChangedCallback(name, oldValue, value) {
