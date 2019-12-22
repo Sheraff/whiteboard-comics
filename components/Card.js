@@ -44,8 +44,6 @@ export default class Card extends HTMLElement {
 			this.ReadyNode.display()
 		})
 		this.intersectionObserver.observe(this);
-
-		this.addEventListener('click', this.onClick)
 	}
 
 	onMouseOver() {
