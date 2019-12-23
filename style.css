@@ -136,9 +136,9 @@ grid-layout .svg-card[data-top=true] {
   top: var(--margin);
   height: calc(100vh - 2 * var(--margin));
   width: calc(100vw - 2 * var(--margin));
+  box-shadow: none;
 }
 grid-layout .svg-card {
-  box-shadow: none;
   background-color: transparent;
 }
 @media (min-width: 375px) {
