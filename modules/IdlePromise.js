@@ -37,16 +37,16 @@ export default class IdlePromise {
 		})
 	}
 
-	
+
 	set onUrgent(callback) {
-		if(this.synchronous) callback()
+		if (this.synchronous) callback()
 		else this[IdlePromise.onUrgent].push(callback)
 	}
 
 	async finish() {
 		this.synchronous = true
 		if (this.idleCallbackId) cancelIdleCallback(this.idleCallbackId)
-		this[IdlePromise.onUrgent].forEach(callback => callback())
+		if (this[IdlePromise.onUrgent]) this[IdlePromise.onUrgent].forEach(callback => callback())
 		while (!this.done) await this.step()
 		return this.promise
 	}

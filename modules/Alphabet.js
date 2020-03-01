@@ -37,7 +37,7 @@ export default class Alphabet {
 	async * work(resolve, reject) {
 		const idleNetwork = new IdleNetwork()
 		const { chars } = await idleNetwork.race(`/data/alphabet.json`, { streamType: 'json' })
-		
+
 		yield
 		// getCharFromIndexed
 		const charsData = await Promise.all(chars.map(async ([name, string]) => {
@@ -58,11 +58,6 @@ export default class Alphabet {
 			elements.forEach(element => getClipsAndPaths(element, this.charsMap))
 			yield 4
 			Object.values(this.charsMap).forEach(charData => charData.node = makeCharsElements(charData))
-			yield
-			Object.entries(this.charsMap).forEach(([string, data]) => {
-				const { clips, node, viewBox, name } = data
-				this.charsMap[string] = { clips, node, viewBox, name }
-			})
 			yield
 			this.IndexedDBManager.saveChars(this.charsMap)
 		} else {
