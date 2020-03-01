@@ -1,6 +1,6 @@
 export default class IdlePromise {
 	static duration = Symbol('Next yield duration')
-	static onFinish = Symbol('Callbacks when finish()')
+	static onUrgent = Symbol('Callbacks when finish()')
 	static padding = 1
 
 	promise = new Promise((resolve, reject) => {
@@ -14,9 +14,13 @@ export default class IdlePromise {
 	constructor(generator) {
 		this.synchronous = false
 		this[IdlePromise.duration] = 0
-		this[IdlePromise.onFinish] = []
+		this[IdlePromise.onUrgent] = []
 		this.iterator = generator(this.resolve, this.reject)
 		this.run()
+		this.then(() => {
+			delete this[IdlePromise.onUrgent]
+			delete this.iterator
+		})
 	}
 
 	async step() {
@@ -34,14 +38,15 @@ export default class IdlePromise {
 	}
 
 	
-	set onFinish(callback) {
-		this[IdlePromise.onFinish].push(callback)
+	set onUrgent(callback) {
+		if(this.synchronous) callback()
+		else this[IdlePromise.onUrgent].push(callback)
 	}
 
 	async finish() {
 		this.synchronous = true
 		if (this.idleCallbackId) cancelIdleCallback(this.idleCallbackId)
-		this[IdlePromise.onFinish].forEach(callback => callback())
+		this[IdlePromise.onUrgent].forEach(callback => callback())
 		while (!this.done) await this.step()
 		return this.promise
 	}

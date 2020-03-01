@@ -58,7 +58,6 @@ export default class Alphabet {
 			elements.forEach(element => getClipsAndPaths(element, this.charsMap))
 			yield 4
 			Object.values(this.charsMap).forEach(charData => charData.node = makeCharsElements(charData))
-			console.log(this.charsMap)
 			yield
 			Object.entries(this.charsMap).forEach(([string, data]) => {
 				const { clips, node, viewBox, name } = data
@@ -115,7 +114,7 @@ const fetchSerializedXML = (charsData, urgent, idlePromise) => {
 				new Promise(resolve => {
 					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
 				}),
-				new Promise(resolve => idlePromise.onFinish = async () => {
+				new Promise(resolve => idlePromise.onUrgent = async () => {
 					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
 					if (cancelable)
 						resolve(await idleNetwork.race(charURL))
