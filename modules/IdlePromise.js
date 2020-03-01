@@ -37,7 +37,6 @@ export default class IdlePromise {
 		})
 	}
 
-
 	set onUrgent(callback) {
 		if (this.synchronous) callback()
 		else this[IdlePromise.onUrgent].push(callback)
