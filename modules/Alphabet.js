@@ -45,7 +45,7 @@ export default class Alphabet {
 				console.log('queried indexedDB')
 				if (!indexedDbCharData) {
 					yield
-					const serialized = await this.fetchSerializedXML(string, idlePromise)
+					const serialized = await this.fetchSerializedXML(name, idlePromise)
 					console.log('fetched XML')
 					yield
 					const { groups, viewBox } = this.makeDomFragments(serialized)
@@ -53,7 +53,7 @@ export default class Alphabet {
 					yield
 					const elements = this.extractElements(groups)
 					yield
-					const { clips, paths } = this.makeClipsAndLinkPaths(string, elements)
+					const { clips, paths } = this.makeClipsAndLinkPaths(name, elements)
 					charData.clips = clips
 					yield
 					const node = this.makeCharSvg(paths, viewBox)
@@ -90,12 +90,14 @@ export default class Alphabet {
 		})
 	}
 
-	async fetchSerializedXML(key, idlePromise) {
+	async fetchSerializedXML(name, idlePromise) {
 		const idleNetwork = new IdleNetwork()
-		const URL = `/alphabet/alphabet_${key}.svg`
+		const URL = `/alphabet/alphabet_${name}.svg`
 
 		if (idlePromise.urgent)
 			return idleNetwork.race(URL)
+
+		console.warn(`requestIdleNetwork doesn't do idle requests, only urgent ones`)
 
 		let idleRequestId
 		return await Promise.race([
@@ -127,13 +129,13 @@ export default class Alphabet {
 		})
 	}
 
-	makeClipsAndLinkPaths(key, elements) {
+	makeClipsAndLinkPaths(name, elements) {
 		const paths = []
 		const clips = []
 
 		elements.forEach(({ clip, path }, index) => {
 			const clipPath = document.createElementNS(svgNS, 'clipPath')
-			const id = `${key}_${index}`
+			const id = `${name}_${index}`
 			clip.removeAttribute('id')
 			path.setAttribute('clip-path', `url(#${id})`)
 			clipPath.setAttribute('id', id)
