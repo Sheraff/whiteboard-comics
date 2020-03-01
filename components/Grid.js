@@ -66,11 +66,11 @@ export default class Grid extends HTMLElement {
 			await Promise.all([
 				new Promise(resolve => animation.onfinish = resolve)
 					.then(() => {
-						card.Alphabet.finish()
+						// card.Alphabet.finish()
 						card.SVGAnim.stack.finish()
 					}),
 				Promise.all([
-					card.Alphabet.promise,
+					// card.Alphabet.promise,
 					card.SVGAnim.stack.promise.then(card.SVGAnim.prepare),
 				]).then(card.eraseAnim.prepare),
 			])

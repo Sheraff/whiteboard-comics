@@ -1,98 +1,84 @@
 import Alphabet from './Alphabet.js'
-import IdleStack from './IdleStack.js'
+import IdlePromise from './IdlePromise.js'
 
 export default class TextToAlphabet {
 
 	constructor(svg) {
-
-		this.debug_svg = svg
 		this.Alphabet = new Alphabet()
 
-		this.stack = new IdleStack(async () => {
-			if (svg.ownerDocument !== document || !svg.isConnected) {
-				this.temp = document.createElement('div')
-				this.temp.classList.add('svg-card')
-				this.temp.appendChild(svg)
-				document.getElementById("dom-tricks").appendChild(this.temp)
+		const idlePromise = new IdlePromise((async function* (resolve) {
+			if (svg.ownerDocument !== document || !svg.isConnected){
+				yield
+				this.tempnode = this.insertIntoDOM(svg)
 			}
-		})
-			.then(() => this.uniqueCharFromNode(svg))
-			.then((chars) => {
-				this.charsMap = {}
-				const subtasks = chars.map(char => this.getChar(char, this.stack))
-				this.stack.next(subtasks)
-					.next(pairs => pairs.forEach(([char, node]) => this.charsMap[char] = node))
-			})
-			.then(() => Array.from(svg.querySelectorAll('text')))
-			.then((texts) => {
-				const subtasks = texts.map(text => () => this.getTextNodeData(text))
-				this.stack.next(subtasks)
-					.next(spansData => spansData.flat())
-			})
-			.then((spansData) => {
-				const subtasks = spansData.map(data => () => this.getSpansCharData(data)).flat()
-				this.stack.next(async () => await document.fonts.load('1em Permanent Marker'))
-				this.stack.next(subtasks)
-				this.stack.next(subtasks => { this.stack.next(subtasks.flat()) })
-			})
-			.then((spansCharData) => {
-				const subtasks = spansCharData.flat().map(charNodeData => () => this.getCharNodesArray(charNodeData))
-				this.stack.next(subtasks)
-					.next(charsNodesChilren => charsNodesChilren.flat())
-			})
-			.then((charsNodesChilren) => {
-				const referencesMap = new Map()
-				const subtasks = charsNodesChilren.map(({ child, reference }) => () => {
-					if (!referencesMap.has(reference))
-						referencesMap.set(reference, new DocumentFragment())
-					referencesMap.get(reference).appendChild(child)
-				})
-				this.stack.next(subtasks)
-					.next(() => referencesMap)
-			})
-			.then((referencesMap) => {
-				const subtasks = Array.from(referencesMap.entries())
-					.map(([reference, fragment]) => this.placeFragmentBeforeRef(reference, fragment, this.stack))
-				this.stack.next(subtasks)
-			}).then(() => {
-				if (this.temp)
-					document.getElementById("dom-tricks").removeChild(this.temp)
-			})
+
+			yield
+			const charSet = this.uniqueCharFromNode(svg)
+
+			yield
+			this.charMap = new Map()
+			await Promise.all(charSet.map(async char => {
+				this.charMap.set(char, await this.getChar(char, idlePromise))
+			}))
+
+			await document.fonts.load('1em Permanent Marker')
+
+			yield
+			const texts = Array.from(svg.querySelectorAll('text'))
+			const textNodesData = texts.map(text => this.getTextNodeData(text)).flat()
+
+			const charNodesData = []
+			for(let nodeData of textNodesData) {
+				yield
+				charNodesData.push(...this.getSpansCharData(nodeData))
+			}
+			yield
+
+			yield
+			const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
+
+			const referencesMap = new Map()
+			for(let { child, reference } of charsNodesChilren) {
+				yield
+				if (!referencesMap.has(reference)) 
+					referencesMap.set(reference, new DocumentFragment())
+				referencesMap.get(reference).appendChild(child)
+			}
+
+			for(let [reference, fragment] of referencesMap) {
+				yield
+				await this.placeFragmentBeforeRef(reference, fragment, idlePromise)
+			}
+
+			resolve()
+
+			if (this.temp)
+				document.getElementById("dom-tricks").removeChild(this.temp)
+		}).bind(this))
+
+		return idlePromise
 	}
 
-	finish() {
-		if (!this.readyPromise)
-			this.readyPromise = new Promise(resolve => {
-				this.stack.finish().then(() => resolve(this))
-			})
-		return this.readyPromise
-	}
-
-	get promise() {
-		return this.stack.promise.then(() => this)
-	}
-
-	placeFragmentBeforeRef(reference, fragment, stack) {
+	async placeFragmentBeforeRef(reference, fragment, idlePromise) {
 		const insertFunction = () => reference.parentNode.insertBefore(fragment, reference)
-		return async (_, onFinish) => {
-			if (stack.isFinishing)
-				return insertFunction()
 
-			let requestId
-			return await Promise.race([
-				new Promise(resolve => {
-					requestId = requestAnimationFrame(() => {
-						insertFunction()
-						resolve()
-					})
-				}),
-				new Promise(resolve => onFinish(() => {
-					cancelAnimationFrame(requestId)
+		if (idlePromise.urgent)
+			return insertFunction()
+
+		let idleRequestId
+		return await Promise.race([
+			new Promise(resolve => {
+				idleRequestId = requestAnimationFrame(() => {
 					insertFunction()
 					resolve()
-				}))
-			])
-		}
+				})
+			}),
+			new Promise(resolve => idlePromise.onUrgent = () => {
+				cancelAnimationFrame(idleRequestId)
+				insertFunction()
+				resolve()
+			})
+		])
 	}
 
 	getCharNodesArray(charNodeData) {
@@ -105,26 +91,17 @@ export default class TextToAlphabet {
 		})
 	}
 
-	getSpansCharData(spanData) {
-		const subtasks = []
-		spanData.text.textContent.split('').forEach((char, index) => {
-			if (char === ' ')
-				return
-
-			subtasks.push(() => {
-				try {
-					return ({
-						...spanData,
-						height: this.charsMap[char].viewBox.split(' ').pop(),
-						position: spanData.text.getStartPositionOfChar(index), // SVG must be part of DOM for this function?!
-						children: Array.from(this.charsMap[char].node.cloneNode(true).children),
-					})
-				} catch {
-					console.log(`getStartPositionOfChar failed @ index: ${index} for char ${char} on svg`, this.debug_svg)
-				}
+	getSpansCharData(nodeData) {
+		return nodeData.text.textContent.split('')
+			.map((char, index) => {
+				if(char === ' ')
+					return
+				const height = this.charMap.get(char).viewBox.split(' ').pop()
+				const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
+				const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
+				return { ...nodeData, height, position, children }
 			})
-		})
-		return subtasks
+			.filter(data => !!data)
 	}
 
 	getTextNodeData(node) {
@@ -143,14 +120,6 @@ export default class TextToAlphabet {
 		return Object.assign(data, { text: node })
 	}
 
-	uniqueCharFromNode(node) {
-		return Array.from(new Set(
-			node.textContent.split('')
-				.map(char => char.trim())
-				.filter(char => char !== "")
-		))
-	}
-
 	charDisambiguation(char) {
 		return char.toLowerCase()
 			.replace(/‘/g, "'")
@@ -159,15 +128,25 @@ export default class TextToAlphabet {
 			.replace(/”/g, '"')
 	}
 
-	getChar(rawChar, stack) {
+	async getChar(rawChar, idlePromise) {
 		const char = this.charDisambiguation(rawChar)
-		return async (_, onFinish) => {
-			if (!stack.isFinishing)
-				onFinish(() => this.Alphabet.finish())
-			return [
-				rawChar,
-				await this.Alphabet.promise.then(() => this.Alphabet.getChar(char))
-			]
-		}
+		idlePromise.onUrgent = () => this.Alphabet.urgent(char)
+		return await this.Alphabet.get(char)
+	}
+
+	uniqueCharFromNode(node) {
+		return Array.from(new Set(
+			node.textContent.split('')
+				.map(char => char.trim())
+				.filter(char => char !== "")
+		))
+	}
+
+	insertIntoDOM(node) {
+		const container = document.createElement('div')
+		container.classList.add('svg-card')
+		container.appendChild(node)
+		document.getElementById("dom-tricks").appendChild(container)
+		return container
 	}
 }

@@ -126,7 +126,7 @@ export default class ReadyNode {
 			return node
 		}
 		await Promise.race([
-			alphabetizer.promise,
+			alphabetizer,
 			new Promise(resolve => onFinish(async () => {
 				alphabetizer.finish().then(resolve)
 			}))

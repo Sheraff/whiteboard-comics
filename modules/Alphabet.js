@@ -17,150 +17,153 @@ export default class Alphabet {
 		if (!!Alphabet.instance)
 			return Alphabet.instance
 		Alphabet.instance = this
-		this.IndexedDBManager = new IndexedDBManager()
-		this.idlePromise = new IdlePromise(this.work.bind(this))
+
+		this.charsMap = new Map()
+		this.run()
 	}
 
-	finish() {
-		this.idlePromise.finish()
-		return this.idlePromise
+	urgent(key) {
+		this.charsMap.get(key).finish()
 	}
 
-	get promise() {
-		return this.idlePromise
+	get(key) {
+		return this.charsMap.get(key)
 	}
 
-	getChar(char) {
-		return this.charsMap[char]
-	}
-
-	async * work(resolve, reject) {
+	async run() {
 		const idleNetwork = new IdleNetwork()
 		const { chars } = await idleNetwork.race(`/data/alphabet.json`, { streamType: 'json' })
 
-		yield
-		// getCharFromIndexed
-		const charsData = await Promise.all(chars.map(async ([name, string]) => {
-			const indexedDB = await this.IndexedDBManager.getChar(string)
-			return { name, string, indexedDB }
-		}))
+		chars.forEach(([name, string]) => {
+			const idlePromise = new IdlePromise((async function* (resolve) {
+				const charData = { name, string }
+				console.log('made iterator')
 
-		yield
-		this.charsMap = {}
-		if (charsData.some(({ indexedDB }) => !indexedDB)) {
-			const urgent = yield
-			const serialized = await fetchSerializedXML(charsData, urgent, this.idlePromise)
-			yield 2
-			const fragments = serialized.map(makeDomFragments, 10)
-			yield 3
-			const elements = fragments.map(extractElements).flat()
-			yield 5
-			elements.forEach(element => getClipsAndPaths(element, this.charsMap))
-			yield 4
-			Object.values(this.charsMap).forEach(charData => charData.node = makeCharsElements(charData))
-			yield
-			this.IndexedDBManager.saveChars(this.charsMap)
-		} else {
-			yield 2
-			// makeStringifiedCharsMap
-			charsData.forEach(({ name, string, indexedDB }) => this.charsMap[string] = { ...indexedDB, name, string })
+				yield
+				const indexedDBManager = new IndexedDBManager()
+				const indexedDbCharData = await indexedDBManager.getChar(string)
+				console.log('queried indexedDB')
+				if (!indexedDbCharData) {
+					yield
+					const serialized = await this.fetchSerializedXML(string, idlePromise)
+					console.log('fetched XML')
+					yield
+					const { groups, viewBox } = this.makeDomFragments(serialized)
+					charData.viewBox = viewBox
+					yield
+					const elements = this.extractElements(groups)
+					yield
+					const { clips, paths } = this.makeClipsAndLinkPaths(string, elements)
+					charData.clips = clips
+					yield
+					const node = this.makeCharSvg(paths, viewBox)
+					charData.node = node
+				} else {
+					charData.viewBox = indexedDbCharData.viewBox
+					yield
+					const { node, clips } = this.revivifyIndexedXML(indexedDbCharData.node, indexedDbCharData.clips)
+					charData.clips = clips
+					charData.node = node
+				}
 
-			yield
-			// reviveCharData
-			Object.values(this.charsMap).forEach(charData => {
-				var domparser = new DOMParser()
-				const nodeFragment = domparser.parseFromString(charData.node, 'image/svg+xml')
-				charData.node = nodeFragment.firstChild
-				charData.clips = charData.clips.map(clip => domparser.parseFromString(clip, 'image/svg+xml').firstChild)
+				if(!this.defs) {
+					yield
+					const fragment = new DocumentFragment()
+					const svg = document.createElementNS(svgNS, 'svg')
+					svg.setAttribute('id', 'defs')
+					this.defs = document.createElementNS(svgNS, 'defs')
+					svg.appendChild(this.defs)
+					fragment.appendChild(svg)
+					document.getElementById("dom-tricks").appendChild(fragment)
+					document.body.classList.add('svg-defs')
+				}
+
+				yield
+				this.appendClipsToDefs(charData.clips, this.defs)
+
+				resolve(charData)
+
+				if (!indexedDbCharData)
+					indexedDBManager.saveChar(charData)
+			}).bind(this))
+			this.charsMap.set(string, idlePromise)
+		})
+	}
+
+	async fetchSerializedXML(key, idlePromise) {
+		const idleNetwork = new IdleNetwork()
+		const URL = `/alphabet/alphabet_${key}.svg`
+
+		if (idlePromise.urgent)
+			return idleNetwork.race(URL)
+
+		let idleRequestId
+		return await Promise.race([
+			new Promise(resolve => {
+				idleRequestId = idleNetwork.requestIdleNetwork(URL, resolve)
+			}),
+			new Promise(resolve => idlePromise.onUrgent = async () => {
+				const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
+				if (cancelable)
+					resolve(idleNetwork.race(URL))
 			})
-		}
+		])
+	}
 
-		yield
+	makeDomFragments(serializedXML) {
+		const domparser = new DOMParser()
+		const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
+		return {
+			groups: Array.from(fragment.querySelectorAll('svg>g')),
+			viewBox: fragment.querySelector('svg').getAttribute('viewBox'),
+		}
+	}
+
+	extractElements(groups) {
+		return groups.map(group => {
+			const clip = group.querySelector('defs>path')
+			const path = group.lastElementChild
+			return { clip, path }
+		})
+	}
+
+	makeClipsAndLinkPaths(key, elements) {
+		const paths = []
+		const clips = []
+
+		elements.forEach(({ clip, path }, index) => {
+			const clipPath = document.createElementNS(svgNS, 'clipPath')
+			const id = `${key}_${index}`
+			clip.removeAttribute('id')
+			path.setAttribute('clip-path', `url(#${id})`)
+			clipPath.setAttribute('id', id)
+			clipPath.appendChild(clip)
+			paths.push(path)
+			clips.push(clipPath)
+		})
+
+		return { paths, clips }
+	}
+
+	makeCharSvg(paths, viewBox) {
 		const fragment = new DocumentFragment()
-		const svg = document.createElementNS(svgNS, 'svg')
-		svg.setAttribute('id', 'defs')
-		const defs = document.createElementNS(svgNS, 'defs')
-
-		yield
-		Object.values(this.charsMap).forEach(({ clips }) => clips.forEach(clip => defs.appendChild(clip)))
-
-		yield
-		svg.appendChild(defs)
-		fragment.appendChild(svg)
-		document.getElementById("dom-tricks").appendChild(fragment)
-		document.body.classList.add('svg-defs')
-
-		resolve()
+		const charSvg = document.createElementNS(svgNS, 'svg')
+		charSvg.setAttribute('viewBox', viewBox)
+		fragment.appendChild(charSvg)
+		paths.forEach(path => charSvg.appendChild(path))
+		return charSvg
 	}
-}
 
-
-
-const fetchSerializedXML = (charsData, urgent, idlePromise) => {
-	const idleNetwork = new IdleNetwork()
-	return Promise.all(charsData.map(async ({ name, string }) => {
-		let serializedXML
-		const charURL = `/alphabet/alphabet_${name}.svg`
-		if (urgent) {
-			serializedXML = await idleNetwork.race(charURL)
-		} else {
-			let idleRequestId
-			serializedXML = await Promise.race([
-				new Promise(resolve => {
-					idleRequestId = idleNetwork.requestIdleNetwork(charURL, resolve)
-				}),
-				new Promise(resolve => idlePromise.onUrgent = async () => {
-					const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
-					if (cancelable)
-						resolve(await idleNetwork.race(charURL))
-				})
-			])
-		}
-		return { name, string, serializedXML }
-	}))
-}
-
-const makeDomFragments = ({ name, string, serializedXML }) => {
-	var domparser = new DOMParser()
-	const fragment = domparser.parseFromString(serializedXML, 'image/svg+xml')
-	const viewBox = fragment.querySelector('svg').getAttribute('viewBox')
-	return {
-		groups: fragment.querySelectorAll('svg>g'),
-		name,
-		string,
-		viewBox
+	revivifyIndexedXML(serializedNode, serializedClips) {
+		const domparser = new DOMParser()
+		const node = domparser.parseFromString(serializedNode, 'image/svg+xml').firstChild
+		const clips = serializedClips.map(clip => domparser.parseFromString(clip, 'image/svg+xml').firstChild)
+		return { node, clips }
 	}
-}
 
-// for each {groups, char} from makeDomFragments
-const extractElements = ({ groups, name, string, viewBox }) => (
-	// for each group in groups
-	Array.from(groups).map((group, index) => {
-		// return function that extract elements
-		const clip = group.querySelector('defs>path')
-		const path = group.lastElementChild
-		const id = `${name}_${index}`
-		clip.removeAttribute('id')
-		path.setAttribute('clip-path', `url(#${id})`)
-		return { name, string, clip, path, id, viewBox }
-	})
-)
-
-const getClipsAndPaths = ({ id, clip, name, string, path, viewBox }, charsMap) => {
-	const clipPath = document.createElementNS(svgNS, 'clipPath')
-	clipPath.setAttribute('id', id)
-	clipPath.appendChild(clip)
-
-	charsMap[string] = charsMap[string] || { id, viewBox, name, paths: [], clips: [] }
-	charsMap[string].paths.push(path)
-	charsMap[string].clips.push(clipPath)
-}
-
-const makeCharsElements = ({ paths, viewBox }) => {
-	const fragment = new DocumentFragment()
-	const charSvg = document.createElementNS(svgNS, 'svg')
-	charSvg.setAttribute('viewBox', viewBox)
-	fragment.appendChild(charSvg)
-	paths.forEach(path => charSvg.appendChild(path))
-	return charSvg
+	appendClipsToDefs(clips, defs) {
+		const fragment = new DocumentFragment()
+		clips.forEach(clip => fragment.appendChild(clip))
+		defs.appendChild(fragment)
+	}
 }

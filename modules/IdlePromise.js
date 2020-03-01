@@ -12,7 +12,7 @@ export default class IdlePromise {
 	finally = this.promise.finally.bind(this.promise)
 
 	constructor(generator) {
-		this.synchronous = false
+		this.urgent = false
 		this[IdlePromise.duration] = 0
 		this[IdlePromise.onUrgent] = []
 		this.iterator = generator(this.resolve, this.reject)
@@ -24,7 +24,7 @@ export default class IdlePromise {
 	}
 
 	async step() {
-		const { value, done } = await this.iterator.next(this.synchronous)
+		const { value, done } = await this.iterator.next(this.urgent)
 		this.done = done
 		if (!done) this[IdlePromise.duration] = value || IdlePromise.padding
 	}
@@ -38,12 +38,12 @@ export default class IdlePromise {
 	}
 
 	set onUrgent(callback) {
-		if (this.synchronous) callback()
+		if (this.urgent) callback()
 		else this[IdlePromise.onUrgent].push(callback)
 	}
 
 	async finish() {
-		this.synchronous = true
+		this.urgent = true
 		if (this.idleCallbackId) cancelIdleCallback(this.idleCallbackId)
 		if (this[IdlePromise.onUrgent]) this[IdlePromise.onUrgent].forEach(callback => callback())
 		while (!this.done) await this.step()
