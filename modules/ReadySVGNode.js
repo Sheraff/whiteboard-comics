@@ -43,6 +43,9 @@ export default class ReadyNode {
 		return this.readyPromise.then(resolve)
 	}
 
+	// TODO: this can be refactored into a chain of promises
+	// current "steps" are promises, if step is completed, resolve with result, otherwise, resolve on previousStep.then
+
 	async findStep() {
 		const cached = await this.IndexedDBManager.getGraph(this.name)
 		this.displayResolve(!!cached)
