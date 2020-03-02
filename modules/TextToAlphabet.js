@@ -98,8 +98,12 @@ export default class TextToAlphabet {
 					return
 				const height = this.charMap.get(char).viewBox.split(' ').pop()
 				const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
-				const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
-				return { ...nodeData, height, position, children }
+				try {
+					const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
+					return { ...nodeData, height, position, children }
+				} catch (e) {
+					console.error(e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+				}
 			})
 			.filter(data => !!data)
 	}
