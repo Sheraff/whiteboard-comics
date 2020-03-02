@@ -10,13 +10,19 @@ const workerState = {
 	swIsReady: false
 }
 
-function waitOnServiceWorker(port) {
-	port.onmessage = () => {
-		workerState.swIsReady = true
-		workerState.isListening = false
-		processBacklog()
-	}
-	port.postMessage({ query: 'then' })
+function initBroadcast() {
+	const broadcast = new BroadcastChannel('SW_Channel')
+	broadcast.addEventListener('message', (event) => {
+		console.log(event)
+		const {data} = event
+		if(data.port) {
+			workerState.swIsReady = true
+			workerState.isListening = false
+			workerState.swPort = data.port
+			processBacklog()
+		}
+	})
+	broadcast.postMessage('')
 }
 
 function fetchInCache(request) {
@@ -25,7 +31,7 @@ function fetchInCache(request) {
 	return caches.match(request)
 }
 
-async function race(request) {
+function race(request) {
 	if (workerState.swIsReady || !self.caches)
 		return fetch(request)
 	else
@@ -66,8 +72,8 @@ function processBacklog() {
 	if (workerState.isListening)
 		return
 	workerState.isListening = true
-	navigator.serviceWorker.addEventListener('message', onServiceWorkerMessage, { once: true })
-	navigator.serviceWorker.controller.postMessage({ idleRequest: true })
+	workerState.swPort.addEventListener('message', onServiceWorkerMessage, { once: true })
+	workerState.swPort.postMessage({ idleRequest: true })
 }
 
 function onServiceWorkerMessage({ data }) {
@@ -176,7 +182,7 @@ async function parseResponse(response, streamType) {
 
 async function onWindowMessage({ data: { id, query, args, port } }) {
 	if (port) {
-		waitOnServiceWorker(port)
+		// waitOnServiceWorker(port)
 	} else {
 		const response = await self[query].call(self, ...args)
 		if(!response)
@@ -188,3 +194,4 @@ async function onWindowMessage({ data: { id, query, args, port } }) {
 }
 
 self.onmessage = onWindowMessage
+initBroadcast()

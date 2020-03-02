@@ -33,10 +33,10 @@ export default class ServiceWorkerState {
 	}
 
 	connect(port) {
-		if(port)
-			return this.worker.postMessage({ port }, [port])
-		const {port1, port2} = new MessageChannel()
-		this.worker.postMessage({ port: port1 }, [port1])
-		return port2
+		// if(port)
+		// 	return this.worker.postMessage({ port }, [port])
+		// const {port1, port2} = new MessageChannel()
+		// this.worker.postMessage({ port: port1 }, [port1])
+		// return port2
 	}
 }

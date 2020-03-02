@@ -3,13 +3,16 @@ class Debouncer {
 	static DEBOUNCE_TIME = 50
 	static MAX_CONCURRENT_SAME_ORIGIN_REQUESTS = 6
 
-	constructor(serviceWorker) {
+	constructor() {
 		this.debounceTimeoutId
 		this.debounceCallback = () => { }
 		this.currentConnections = 0
 		this.activeTimeout = false
+	}
 
-		serviceWorker.addEventListener('message', message => {
+	// add 'removeEventListener' for port too
+	listenToMessages(port) {
+		port.addEventListener('message', message => {
 			if (!message.data.idleRequest)
 				return
 			this.debounceCallback = () => message.source.postMessage({ 
