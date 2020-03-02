@@ -20,16 +20,16 @@ export default class ServiceWorkerState {
 		this.portMap = new Map()
 	}
 
-	connect(id) {
-		if(!this.portMap.has(id)) {
+	connect(id, target) {
+		if(!this.portMap.has(`${id}-${target}`)) {
 			const {port1, port2} = new MessageChannel()
 			this.promise.then(() => {
-				navigator.serviceWorker.controller.postMessage({ port: port1, id }, [port1])
+				navigator.serviceWorker.controller.postMessage({ port: port1, id, target }, [port1])
 			})
-			this.portMap.set(id, port2)
+			this.portMap.set(`${id}-${target}`, port2)
 			return port2
 		} else {
-			return this.portMap.get(id)
+			return this.portMap.get(`${id}-${target}`)
 		}
 	}
 }

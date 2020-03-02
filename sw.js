@@ -32,9 +32,15 @@ const URLS = [
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
-self.addEventListener('message', ({data: {port, id}}) => {
+self.addEventListener('message', ({data: {port, id, target}}) => {
 	if(!port) return
-	debouncer.listenToMessages(port, id)
+	switch(target) {
+		case 'debouncer':
+			debouncer.listenToMessages(port, id)
+			break;
+		default:
+			console.warn('Unknown message channel in SW:', target)
+	}
 })
 
 self.addEventListener('install', event => {
