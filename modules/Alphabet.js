@@ -83,6 +83,8 @@ export default class Alphabet {
 				if (!indexedDbCharData)
 					indexedDBManager.saveChar(charData)
 			}).bind(this))
+
+			idlePromise.addUrgentListener(() => console.log('urgent Alphabet'))
 			this.charsMap.set(string, idlePromise)
 		})
 	}
@@ -99,11 +101,11 @@ export default class Alphabet {
 			new Promise(resolve => {
 				idleRequestId = idleNetwork.requestIdleNetwork(URL, resolve)
 			}),
-			new Promise(resolve => idlePromise.onUrgent = async () => {
+			new Promise(resolve => idlePromise.addUrgentListener(() => {
 				const cancelable = idleNetwork.cancelIdleNetwork(idleRequestId)
 				if (cancelable)
 					resolve(idleNetwork.race(URL))
-			})
+			}))
 		])
 	}
 

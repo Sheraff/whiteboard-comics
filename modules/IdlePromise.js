@@ -16,11 +16,15 @@ export default class IdlePromise {
 		this[IdlePromise.duration] = 0
 		this[IdlePromise.onUrgent] = []
 		this.iterator = generator(this.resolve, this.reject)
-		this.run()
 		this.then(() => {
 			delete this[IdlePromise.onUrgent]
 			delete this.iterator
 		})
+		
+		this.finish = this.finish.bind(this)
+		this.addUrgentListener = this.addUrgentListener.bind(this)
+
+		this.run()
 	}
 
 	async step() {
@@ -37,7 +41,7 @@ export default class IdlePromise {
 		})
 	}
 
-	set onUrgent(callback) {
+	addUrgentListener(callback) {
 		if (this.urgent) callback()
 		else this[IdlePromise.onUrgent].push(callback)
 	}

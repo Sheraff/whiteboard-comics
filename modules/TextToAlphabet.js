@@ -5,58 +5,63 @@ export default class TextToAlphabet {
 
 	constructor(svg) {
 		this.Alphabet = new Alphabet()
+		this.svg = svg
 
-		const idlePromise = new IdlePromise((async function* (resolve) {
-			if (svg.ownerDocument !== document || !svg.isConnected){
-				yield
-				this.tempnode = this.insertIntoDOM(svg)
-			}
+		this.idlePromise = new IdlePromise(this.run.bind(this))
+		this.idlePromise.addUrgentListener(() => console.log('urgent TextToAlphabet'))
 
+		return this.idlePromise
+	}
+
+	async * run(resolve) {
+		if (this.svg.ownerDocument !== document || !this.svg.isConnected) {
 			yield
-			const charSet = this.uniqueCharFromNode(svg)
+			this.tempnode = this.insertIntoDOM(this.svg)
+		}
 
+		yield
+		const charSet = this.uniqueCharFromNode(this.svg)
+
+		yield
+		this.charMap = new Map()
+		await Promise.all(charSet.map(async char => {
+			this.charMap.set(char, await this.getChar(char, this.idlePromise))
+		}))
+
+		await document.fonts.load('1em Permanent Marker')
+
+		yield
+		const texts = Array.from(this.svg.querySelectorAll('text'))
+		const textNodesData = texts.map(text => this.getTextNodeData(text)).flat()
+
+		const charNodesData = []
+		for (let nodeData of textNodesData) {
 			yield
-			this.charMap = new Map()
-			await Promise.all(charSet.map(async char => {
-				this.charMap.set(char, await this.getChar(char, idlePromise))
-			}))
+			charNodesData.push(...this.getSpansCharData(nodeData))
+		}
+		yield
 
-			await document.fonts.load('1em Permanent Marker')
+		yield
+		const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
 
+		const referencesMap = new Map()
+		for (let { child, reference } of charsNodesChilren) {
 			yield
-			const texts = Array.from(svg.querySelectorAll('text'))
-			const textNodesData = texts.map(text => this.getTextNodeData(text)).flat()
+			if (!referencesMap.has(reference))
+				referencesMap.set(reference, new DocumentFragment())
+			referencesMap.get(reference).appendChild(child)
+		}
 
-			const charNodesData = []
-			for(let nodeData of textNodesData) {
-				yield
-				charNodesData.push(...this.getSpansCharData(nodeData))
-			}
+		for (let [reference, fragment] of referencesMap) {
 			yield
+			await this.placeFragmentBeforeRef(reference, fragment, this.idlePromise)
+		}
 
-			yield
-			const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
+		resolve()
 
-			const referencesMap = new Map()
-			for(let { child, reference } of charsNodesChilren) {
-				yield
-				if (!referencesMap.has(reference)) 
-					referencesMap.set(reference, new DocumentFragment())
-				referencesMap.get(reference).appendChild(child)
-			}
-
-			for(let [reference, fragment] of referencesMap) {
-				yield
-				await this.placeFragmentBeforeRef(reference, fragment, idlePromise)
-			}
-
-			resolve()
-
-			if (this.temp)
-				document.getElementById("dom-tricks").removeChild(this.temp)
-		}).bind(this))
-
-		return idlePromise
+		delete this.svg
+		if (this.temp)
+			document.getElementById("dom-tricks").removeChild(this.temp)
 	}
 
 	async placeFragmentBeforeRef(reference, fragment, idlePromise) {
@@ -73,11 +78,11 @@ export default class TextToAlphabet {
 					resolve()
 				})
 			}),
-			new Promise(resolve => idlePromise.onUrgent = () => {
+			new Promise(resolve => idlePromise.addUrgentListener(() => {
 				cancelAnimationFrame(idleRequestId)
 				insertFunction()
 				resolve()
-			})
+			}))
 		])
 	}
 
@@ -94,7 +99,7 @@ export default class TextToAlphabet {
 	getSpansCharData(nodeData) {
 		return nodeData.text.textContent.split('')
 			.map((char, index) => {
-				if(char === ' ')
+				if (char === ' ')
 					return
 				const height = this.charMap.get(char).viewBox.split(' ').pop()
 				const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
@@ -134,7 +139,7 @@ export default class TextToAlphabet {
 
 	async getChar(rawChar, idlePromise) {
 		const char = this.charDisambiguation(rawChar)
-		idlePromise.onUrgent = () => this.Alphabet.urgent(char)
+		idlePromise.addUrgentListener(() => this.Alphabet.urgent(char))
 		return await this.Alphabet.get(char)
 	}
 
