@@ -12,7 +12,6 @@ class Debouncer {
 		this.onMessage = this.onMessage.bind(this)
 	}
 
-	// add 'removeEventListener' for port too
 	listenToMessages(port, id) {
 		if(this.portsMap.has(id)) {
 			const oldPort = this.portsMap.get(id)
@@ -20,8 +19,7 @@ class Debouncer {
 		}
 		this.portsMap.set(id, port)
 		port.onmessage = (message) => this.onMessage(message, port)
-		port.postMessage('hello')
-		console.log('SW debouncer listens to', id, port)
+		port.postMessage('')
 	}
 
 	onMessage(message, port) {

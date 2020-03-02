@@ -40,6 +40,8 @@ export default class IdleNetwork {
 	}
 
 	async cancelIdleNetwork(id) {
+		if(!this.calls[id])
+			return
 		const requestId = this.calls[id].requestId
 		delete this.calls[id]
 		return this.callFunction('cancelIdleNetwork', [requestId])

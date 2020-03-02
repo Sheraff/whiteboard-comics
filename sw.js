@@ -55,10 +55,7 @@ self.addEventListener('install', event => {
 // notify clients that SW can listen to messages
 self.addEventListener('activate', event => {
 	event.waitUntil(
-		self.clients.claim().then(async () => {
-			const clients = await self.clients.matchAll()
-			clients.forEach(client => client.postMessage({ active: true }))
-		})
+		self.clients.claim()
 	)
 })
 

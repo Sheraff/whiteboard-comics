@@ -11,7 +11,8 @@ export default class ServiceWorkerState {
 			} else {
 				navigator.serviceWorker.oncontrollerchange = () => {
 					navigator.serviceWorker.controller.onstatechange = e => {
-						resolve(navigator.serviceWorker.controller)
+						if(navigator.serviceWorker.controller.state === 'activated')
+							resolve(navigator.serviceWorker.controller)
 					}
 				}
 			}
@@ -21,15 +22,14 @@ export default class ServiceWorkerState {
 	}
 
 	connect(id, target) {
-		if(!this.portMap.has(`${id}-${target}`)) {
-			const {port1, port2} = new MessageChannel()
-			this.promise.then(() => {
-				navigator.serviceWorker.controller.postMessage({ port: port1, id, target }, [port1])
-			})
-			this.portMap.set(`${id}-${target}`, port2)
-			return port2
-		} else {
+		if(this.portMap.has(`${id}-${target}`))
 			return this.portMap.get(`${id}-${target}`)
-		}
+
+		const {port1, port2} = new MessageChannel()
+		this.promise.then(() => {
+			navigator.serviceWorker.controller.postMessage({ port: port1, id, target }, [port1])
+		})
+		this.portMap.set(`${id}-${target}`, port2)
+		return port2
 	}
 }

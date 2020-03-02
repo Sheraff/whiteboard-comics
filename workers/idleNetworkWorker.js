@@ -1,8 +1,3 @@
-// calls to serviceWorkerState should be postMessages to workerState.port given by:
-// [port1, port2] = new MessageChannel()
-// worker1.postMessage({port: port1}, [port1])
-// worker2.postMessage({port: port2}, [port2])
-
 const workerState = {
 	backlog: [],
 	isListening: false,
