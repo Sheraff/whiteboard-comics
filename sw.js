@@ -32,22 +32,10 @@ const URLS = [
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
-function initBroadcast() {
-	const broadcast = new BroadcastChannel('SW_Channel')
-	broadcast.addEventListener('message', () => {
-		sendPort(broadcast)
-	})
-	sendPort(broadcast)
-}
-
-// entity not in SW should deal w/ broadcasting and attributing ports (1 to SW, 1 for everyone else)
-// SW should stop listening to previous port when new one arrives
-function sendPort(broadcast) {
-	const { port1, port2 } = new MessageChannel()
-	broadcast.postMessage({ port: port1 }, [port1])
-	debouncer.listenToMessages(port2)
-	// will we accumulate many ports over time ? memory leak ? 
-}
+self.addEventListener('message', ({data: {port, id}}) => {
+	if(!port) return
+	debouncer.listenToMessages(port, id)
+})
 
 self.addEventListener('install', event => {
 	self.skipWaiting()
@@ -62,7 +50,6 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
 	event.waitUntil(
 		self.clients.claim().then(async () => {
-			initBroadcast()
 			const clients = await self.clients.matchAll()
 			clients.forEach(client => client.postMessage({ active: true }))
 		})

@@ -12,7 +12,7 @@ export default class IdleNetwork {
 		this.id = 0
 
 		this.ServiceWorkerState = new ServiceWorkerState()
-		const port = this.ServiceWorkerState.connect()
+		const port = this.ServiceWorkerState.connect('IdleNetwork')
 		this.worker.postMessage({ port }, [port])
 	}
 

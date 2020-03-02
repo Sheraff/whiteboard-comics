@@ -8,20 +8,31 @@ class Debouncer {
 		this.debounceCallback = () => { }
 		this.currentConnections = 0
 		this.activeTimeout = false
+		this.portsMap = new Map()
+		this.onMessage = this.onMessage.bind(this)
 	}
 
 	// add 'removeEventListener' for port too
-	listenToMessages(port) {
-		port.addEventListener('message', message => {
-			if (!message.data.idleRequest)
-				return
-			this.debounceCallback = () => message.source.postMessage({ 
-				idle: true,
-				availableConnections: Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS - this.currentConnections
-			})
-			if (!this.debounceTimeoutId)
-				this.requestSlot()
+	listenToMessages(port, id) {
+		if(this.portsMap.has(id)) {
+			const oldPort = this.portsMap.get(id)
+			delete oldPort.onmessage
+		}
+		this.portsMap.set(id, port)
+		port.onmessage = (message) => this.onMessage(message, port)
+		port.postMessage('hello')
+		console.log('SW debouncer listens to', id, port)
+	}
+
+	onMessage(message, port) {
+		if (!message.data.idleRequest)
+			return
+		this.debounceCallback = () => port.postMessage({ 
+			idle: true,
+			availableConnections: Debouncer.MAX_CONCURRENT_SAME_ORIGIN_REQUESTS - this.currentConnections
 		})
+		if (!this.debounceTimeoutId)
+			this.requestSlot()
 	}
 
 	timedOut() {

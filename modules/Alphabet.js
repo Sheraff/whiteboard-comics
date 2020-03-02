@@ -37,16 +37,13 @@ export default class Alphabet {
 		chars.forEach(([name, string]) => {
 			const idlePromise = new IdlePromise((async function* (resolve) {
 				const charData = { name, string }
-				console.log('made iterator')
 
 				yield
 				const indexedDBManager = new IndexedDBManager()
 				const indexedDbCharData = await indexedDBManager.getChar(string)
-				console.log('queried indexedDB')
 				if (!indexedDbCharData) {
 					yield
 					const serialized = await this.fetchSerializedXML(name, idlePromise)
-					console.log('fetched XML')
 					yield
 					const { groups, viewBox } = this.makeDomFragments(serialized)
 					charData.viewBox = viewBox
@@ -96,8 +93,6 @@ export default class Alphabet {
 
 		if (idlePromise.urgent)
 			return idleNetwork.race(URL)
-
-		console.warn(`requestIdleNetwork doesn't do idle requests, only urgent ones`)
 
 		let idleRequestId
 		return await Promise.race([

@@ -10,19 +10,16 @@ const workerState = {
 	swIsReady: false
 }
 
-function initBroadcast() {
-	const broadcast = new BroadcastChannel('SW_Channel')
-	broadcast.addEventListener('message', (event) => {
-		console.log(event)
-		const {data} = event
-		if(data.port) {
-			workerState.swIsReady = true
-			workerState.isListening = false
-			workerState.swPort = data.port
-			processBacklog()
-		}
-	})
-	broadcast.postMessage('')
+function waitOnServiceWorker(port) {
+	console.log('SW idle worker waiting for', port)
+	workerState.swPort = port
+	port.onmessage = () => {
+		console.log('SW idle worker received message on port', port)
+		workerState.swIsReady = true
+		workerState.isListening = false
+		delete port.onmessage
+		processBacklog()
+	}
 }
 
 function fetchInCache(request) {
@@ -72,18 +69,17 @@ function processBacklog() {
 	if (workerState.isListening)
 		return
 	workerState.isListening = true
-	workerState.swPort.addEventListener('message', onServiceWorkerMessage, { once: true })
+	workerState.swPort.onmessage = onServiceWorkerMessage
 	workerState.swPort.postMessage({ idleRequest: true })
 }
 
 function onServiceWorkerMessage({ data }) {
-	requestIdleCallback(() => {
-		workerState.isListening = false
-		if (data.idle && data.availableConnections > 0)
-			manyRequests(data.availableConnections)
-		else
-			processBacklog()
-	})
+	delete workerState.swPort.onmessage
+	workerState.isListening = false
+	if (data.idle && data.availableConnections > 0)
+		manyRequests(data.availableConnections)
+	else
+		processBacklog()
 }
 
 function manyRequests(number) {
@@ -94,25 +90,23 @@ function manyRequests(number) {
 }
 
 function makeRequest() {
-	requestIdleCallback(() => {
-		if (!workerState.backlog.length)
-			return false
-		const index = workerState.backlog.findIndex(({ callback, resolve }) => callback || resolve)
-		if (index === -1)
-			return false
-		const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
-		if (callback instanceof Function)
-			fetch(request)
-				.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
-				.then(callback)
-				.finally(processBacklog)
-		else
-			fetch(request)
-				.catch(reject)
-				.then(resolve)
-				.finally(processBacklog)
-		return true
-	})
+	if (!workerState.backlog.length)
+		return false
+	const index = workerState.backlog.findIndex(({ callback, resolve }) => callback || resolve)
+	if (index === -1)
+		return false
+	const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
+	if (callback instanceof Function)
+		fetch(request)
+			.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
+			.then(callback)
+			.finally(processBacklog)
+	else
+		fetch(request)
+			.catch(reject)
+			.then(resolve)
+			.finally(processBacklog)
+	return true
 }
 
 function cancelIdleNetwork(id) {
@@ -170,9 +164,9 @@ function idleFetch(request) {
 }
 
 async function parseResponse(response, streamType) {
-	if(typeof response !== 'object')
+	if (typeof response !== 'object')
 		return response
-	switch(streamType) {
+	switch (streamType) {
 		case 'json':
 			return await response.json()
 		default:
@@ -182,10 +176,10 @@ async function parseResponse(response, streamType) {
 
 async function onWindowMessage({ data: { id, query, args, port } }) {
 	if (port) {
-		// waitOnServiceWorker(port)
+		waitOnServiceWorker(port)
 	} else {
 		const response = await self[query].call(self, ...args)
-		if(!response)
+		if (!response)
 			postMessage({ id })
 
 		const text = await parseResponse(response, args[1] && args[1].streamType)
@@ -194,4 +188,3 @@ async function onWindowMessage({ data: { id, query, args, port } }) {
 }
 
 self.onmessage = onWindowMessage
-initBroadcast()
