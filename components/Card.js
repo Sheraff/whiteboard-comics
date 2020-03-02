@@ -8,6 +8,7 @@ export default class Card extends HTMLElement {
 		super()
 		this.ReadyNode = new ReadyNode(this)
 		this.Alphabet = new Alphabet()
+		this.hover = this.hover.bind(this)
 	}
 
 	connectedCallback() {
@@ -24,16 +25,19 @@ export default class Card extends HTMLElement {
 			this.SVGAnim = new SVGAnim(this.svg)
 			this.eraseAnim = new SVGAnim(this.erase)
 
+			if(this.ReadyNode.urgent)
+				this.eraseAnim.stack.finish()
+
 			if (this.intersectionObserver) {
 				this.intersectionObserver.disconnect()
 				delete this.intersectionObserver
 			}
 			
-			this.removeEventListener('mouseover', this.onMouseOver)
+			this.removeEventListener('mouseover', this.hover)
 		})
 
 		// if mouse over, immediately request playability in case of click
-		this.addEventListener('mouseover', this.onMouseOver, { once: true })
+		this.addEventListener('mouseover', this.hover, { once: true })
 
 		// if in viewport, immediately request something to display
 		this.intersectionObserver = new IntersectionObserver(([intersection]) => {
@@ -46,8 +50,11 @@ export default class Card extends HTMLElement {
 		this.intersectionObserver.observe(this);
 	}
 
-	onMouseOver() {
+	hover() {
 		this.ReadyNode.finish()
-		.then(() => this.ReadyNode.then(this.eraseAnim.finish))
+		this.ReadyNode.then(() => {
+			if(this.eraseAnim)
+				this.eraseAnim.stack.finish()
+		})
 	}
 }
