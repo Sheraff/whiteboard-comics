@@ -12,8 +12,8 @@ export default class Card extends HTMLElement {
 	}
 
 	connectedCallback() {
-		const template = document.getElementById('svg-card');
-		const fragment = document.importNode(template.content, true);
+		const template = document.getElementById('svg-card')
+		const fragment = document.importNode(template.content, true)
 		this.attachShadow({ mode: 'open' })
 		this.shadowRoot.appendChild(fragment)
 
@@ -47,7 +47,7 @@ export default class Card extends HTMLElement {
 			delete this.intersectionObserver
 			this.ReadyNode.display()
 		})
-		this.intersectionObserver.observe(this);
+		this.intersectionObserver.observe(this)
 	}
 
 	hover() {

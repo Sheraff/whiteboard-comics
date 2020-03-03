@@ -24,7 +24,7 @@ export default class Grid extends HTMLElement {
 		}
 	}
 
-	static get observedAttributes() { return ['current']; }
+	static get observedAttributes() { return ['current'] }
 
 	getOnClick(card) {
 		return () => {

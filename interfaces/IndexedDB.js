@@ -1,9 +1,8 @@
 export default class IndexedDBManager {
 
 	constructor() {
-		if (!!IndexedDBManager.instance) {
-			return IndexedDBManager.instance;
-		}
+		if (!!IndexedDBManager.instance)
+			return IndexedDBManager.instance
 		IndexedDBManager.instance = this
 		this.calls = {}
 		this.worker = new Worker('../workers/indexedDBWorker.js')

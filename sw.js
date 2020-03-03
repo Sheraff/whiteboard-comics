@@ -37,7 +37,7 @@ self.addEventListener('message', ({data: {port, id, target}}) => {
 	switch(target) {
 		case 'debouncer':
 			debouncer.listenToMessages(port, id)
-			break;
+			break
 		default:
 			console.warn('Unknown message channel in SW:', target)
 	}
@@ -89,7 +89,7 @@ self.addEventListener('fetch', event => event.respondWith(
 		const responseToCache = response.clone()
 		caches.open(CACHE_NAME)
 			.then(cache => cache.put(event.request, responseToCache))
-		return response;
+		return response
 	}).catch(() => {
 		console.error(event)
 	})

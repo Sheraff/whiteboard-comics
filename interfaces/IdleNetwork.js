@@ -3,7 +3,7 @@ import ServiceWorkerState from './ServiceWorkerState.js'
 export default class IdleNetwork {
 	constructor() {
 		if (!!IdleNetwork.instance)
-			return IdleNetwork.instance;
+			return IdleNetwork.instance
 		IdleNetwork.instance = this
 
 		this.calls = {}
