@@ -45,7 +45,7 @@ export default class Grid extends HTMLElement {
 			card.eraseAnim.play()
 			await card.eraseAnim.promise
 
-			const animation = await this.toggleAnimation(card, () => {
+			const animation = this.toggleAnimation(card, () => {
 				if (card.dataset.top)
 					this.removeChild(this.placeholder)
 				if (card.dataset.top)
@@ -66,14 +66,10 @@ export default class Grid extends HTMLElement {
 
 			await Promise.all([
 				new Promise(resolve => animation.onfinish = resolve)
-					.then(() => {
-						// card.Alphabet.finish()
-						card.SVGAnim.stack.finish()
-					}),
-				Promise.all([
-					// card.Alphabet.promise,
-					card.SVGAnim.stack.promise.then(card.SVGAnim.prepare),
-				]).then(card.eraseAnim.prepare),
+					.then(() => card.SVGAnim.stack.finish()),
+				card.SVGAnim.stack.promise
+					.then(() => card.SVGAnim.prepare())
+					.then(() => card.eraseAnim.prepare()),
 			])
 
 			card.SVGAnim.play()
@@ -81,7 +77,7 @@ export default class Grid extends HTMLElement {
 		})
 	}
 
-	async toggleAnimation(card, callback) {
+	toggleAnimation(card, callback) {
 		const before = card.getBoundingClientRect()
 		callback()
 		const after = card.getBoundingClientRect() // TODO: might not need this bc we can know it beforehand
