@@ -53,6 +53,7 @@ export default class Grid extends HTMLElement {
 				else
 					card.dataset.top = true
 				if (card.dataset.top) {
+					this.placeholder.style.color = card.style.color
 					this.placeholder[card.attributes.featured ? 'setAttribute' : 'removeAttribute']('featured', true)
 					this.insertBefore(this.placeholder, card)
 				}
