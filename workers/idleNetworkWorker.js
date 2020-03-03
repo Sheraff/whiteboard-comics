@@ -1,3 +1,5 @@
+const CACHE_NAME = 'whiteboard-files-cache-v0'
+
 const workerState = {
 	backlog: [],
 	isListening: false,
@@ -17,10 +19,14 @@ function waitOnServiceWorker(port) {
 	}
 }
 
-function fetchInCache(request) {
+async function fetchInCache(request) {
 	if (!self.caches)
 		return Promise.reject()
-	return caches.match(request)
+	if(!workerState.cache)
+		workerState.cache = await caches.open(CACHE_NAME)
+	const result = await workerState.cache.match(request)
+	if (result) return result
+	throw new Error(`Not in cache: ${request}`)
 }
 
 function race(request) {
@@ -28,35 +34,13 @@ function race(request) {
 		return fetch(request)
 	else
 		return new Promise((resolve, reject) => {
-			let otherFailed = false
-			let resolved = false
-			fetch(request)
-				.catch(() => {
-					if (otherFailed)
-						reject()
-					else
-						otherFailed = true
-				})
-				.then(result => {
-					if (!resolved) {
-						resolved = true
-						resolve(result)
-					}
-				})
-			fetchInCache(request)
-				.then(result => {
-					if (resolved)
-						return
-					if (result) {
-						resolved = true
-						resolve(result)
-					} else {
-						if (otherFailed)
-							reject()
-						else
-							otherFailed = true
-					}
-				})
+			const {signal, abort} = new AbortController()
+			const networkPromise = fetch(request, {signal}).then(resolve)
+			const cachePromise = fetchInCache(request).then(result => {
+				resolve(result)
+				abort()
+			})
+			Promise.allSettled([networkPromise, cachePromise]).then(reject)
 		})
 }
 
@@ -93,13 +77,13 @@ function makeRequest() {
 	const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
 	if (callback instanceof Function)
 		fetch(request)
-			.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
 			.then(callback)
+			.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
 			.finally(processBacklog)
 	else
 		fetch(request)
-			.catch(reject)
 			.then(resolve)
+			.catch(reject)
 			.finally(processBacklog)
 	return true
 }
@@ -121,39 +105,34 @@ function requestIdleNetwork(request) {
 function resolveRequest(requestId) {
 	const backlogEntryIndex = workerState.backlog.findIndex(({ id }) => id === requestId)
 	const backlogEntry = workerState.backlog[backlogEntryIndex]
-	return new Promise(resolve => {
-		if (!workerState.swIsReady) {
-			return fetchInCache(backlogEntry.request).finally(result => {
-				if (result) {
-					workerState.backlog.splice(backlogEntryIndex, 1)
-					resolve(result)
-				} else {
-					Object.assign(backlogEntry, { callback: resolve })
-					if (workerState.swIsReady)
-						processBacklog()
-				}
-			})
-		} else {
+	return new Promise(async resolve => {
+		if (workerState.swIsReady) {
 			Object.assign(backlogEntry, { callback: resolve })
 			processBacklog()
+		} else try {
+			const result = await fetchInCache(backlogEntry.request)
+			workerState.backlog.splice(backlogEntryIndex, 1)
+			resolve(result)
+		} catch {
+			Object.assign(backlogEntry, { callback: resolve })
+			if (workerState.swIsReady)
+				processBacklog()
 		}
 	})
 }
 
 function idleFetch(request) {
 	return new Promise(async (resolve, reject) => {
-		if (!workerState.swIsReady) {
-			const result = await fetchInCache(request)
-			if (result)
-				resolve(result)
-			else {
-				workerState.backlog.push({ request, resolve, reject })
-				if (workerState.swIsReady)
-					processBacklog()
-			}
-		} else {
+		if (workerState.swIsReady) {
 			workerState.backlog.push({ request, resolve, reject })
 			processBacklog()
+		} else try {
+			const result = await fetchInCache(request)
+			resolve(result)
+		} catch {
+			workerState.backlog.push({ request, resolve, reject })
+			if (workerState.swIsReady)
+				processBacklog()
 		}
 	})
 }
