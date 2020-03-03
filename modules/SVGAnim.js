@@ -1,5 +1,5 @@
 import extendSVG from './extendSVG.js'
-import IdleStack from './IdleStack.js'
+import IdlePromise from './IdlePromise.js'
 
 export default class SVGAnim {
 	constructor(svg) {
@@ -11,9 +11,7 @@ export default class SVGAnim {
 		this.prepare = this.prepare.bind(this)
 
 		this.map = new Map()
-		this.stack = new IdleStack(() => this.iterate.bind(this)(this.preprocess.bind(this)))
-
-		// TODO: load anim parameters in advance in an IdleStack, store in Map() w/ nodes as keys, .finish() when needed
+		this.idlePromise = new IdlePromise(this.iterateGenerator.bind(this, this.preprocess.bind(this)))
 	}
 
 	async play() {
@@ -73,47 +71,70 @@ export default class SVGAnim {
 			resolve()
 	}
 
-	async iterate(callback, node = this.svg, index) {
-		if (node.isText())
-			return
-		if (!node.isGroup()) {
-			await callback(node, index)
-		} else {
-			for (let index = 0; index < node.children.length; index++) {
-				await this.iterate(callback, node.children[index], node, index)
+	async * iterateGenerator(callback, resolve) {
+		let context = { node: this.svg, index: 0 }
+		yield
+		while (true) {
+			const { node, index, parent } = context
+			const current = node.children[index]
+			if (!current) {
+				if (!parent) break
+				context = parent
+				context.index++
+				continue
+			} else if (current.isText()) {
+				context.index++
+			} else if (!current.isGroup()) {
+				yield
+				await callback(current, index)
+				context.index++
+			} else {
+				context = {
+					node: current,
+					index: 0,
+					parent: context
+				}
 			}
+		}
+		if(resolve)
+			resolve()
+	}
+
+	async iterate(callback) {
+		const iterator = this.iterateGenerator(callback)
+		while (true) {
+			const { done } = await iterator.next()
+			if (done) break
 		}
 	}
 
 	preprocess(node, index) {
-		this.stack.next(() => {
-			const length = node.getStaticTotalLength()
-			const isEraseStroke = node.getAttribute('stroke') === '#FFFFFF'
-			node.style.strokeDasharray = `${length} ${length + 1}`
-			this.map.set(node, {
-				before: {
-					opacity: 1,
-				},
-				frames: {
-					strokeDashoffset: [length, 0],
-					...(isEraseStroke && {
-						stroke: [
-							'#F0F0F0',
-							'#FFFFFF',
-						]
-					}),
-				},
-				options: {
-					duration: SVGAnim.getElementDuration(node, length),
-					delay: index === 0 ? 300 : 0,
-					endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
-					easing: 'ease-out',
-					fill: 'backwards',
-				},
-				after: {
-					strokeDashoffset: 0,
-				}
-			})
+		const length = node.getStaticTotalLength()
+		const isEraseStroke = node.getAttribute('stroke') === '#FFFFFF'
+		node.style.strokeDasharray = `${length} ${length + 1}`
+		this.map.set(node, {
+			before: {
+				opacity: 1,
+			},
+			frames: {
+				strokeDashoffset: [length, 0],
+				...(isEraseStroke && {
+					stroke: [
+						'#F0F0F0',
+						'#FFFFFF',
+					]
+				}),
+			},
+			options: {
+				duration: SVGAnim.getElementDuration(node, length),
+				delay: index === 0 ? 300 : 0,
+				endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
+				easing: 'ease-out',
+				fill: 'backwards',
+			},
+			after: {
+				strokeDashoffset: 0,
+			}
 		})
 	}
 

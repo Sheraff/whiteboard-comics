@@ -26,7 +26,7 @@ export default class Card extends HTMLElement {
 			this.eraseAnim = new SVGAnim(this.erase)
 
 			if(this.ReadyNode.urgent)
-				this.eraseAnim.stack.finish()
+				this.eraseAnim.idlePromise.finish()
 
 			if (this.intersectionObserver) {
 				this.intersectionObserver.disconnect()
@@ -54,7 +54,7 @@ export default class Card extends HTMLElement {
 		this.ReadyNode.finish()
 		this.ReadyNode.then(() => {
 			if(this.eraseAnim)
-				this.eraseAnim.stack.finish()
+				this.eraseAnim.idlePromise.finish()
 		})
 	}
 }

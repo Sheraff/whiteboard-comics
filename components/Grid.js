@@ -41,7 +41,7 @@ export default class Grid extends HTMLElement {
 				card.SVGAnim.pause()
 
 			await card.ReadyNode
-			await card.eraseAnim.stack.promise
+			await card.eraseAnim.idlePromise
 			card.eraseAnim.play()
 			await card.eraseAnim.promise
 
@@ -66,8 +66,8 @@ export default class Grid extends HTMLElement {
 
 			await Promise.all([
 				new Promise(resolve => animation.onfinish = resolve)
-					.then(() => card.SVGAnim.stack.finish()),
-				card.SVGAnim.stack.promise
+					.then(() => card.SVGAnim.idlePromise.finish()),
+				card.SVGAnim.idlePromise
 					.then(() => card.SVGAnim.prepare())
 					.then(() => card.eraseAnim.prepare()),
 			])
