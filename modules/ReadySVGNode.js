@@ -76,6 +76,9 @@ export default class ReadyNode {
 			await this.alphabetize(this.fullPromise, node)
 			yield
 			this.cache(this.name, node, erase, color)
+		} else {
+			await TextToAlphabet.defineClips(this.fullPromise, node)
+			yield
 		}
 		this.addClass(this.fullPromise, 'alphabetized')
 		resolve()
@@ -106,6 +109,7 @@ export default class ReadyNode {
 			const hsl = hex2hsl(color)
 			resolve(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`)
 		}).bind(this))
+
 		parentIdlePromise.addUrgentListener(idlePromise.finish)
 
 		return idlePromise
@@ -118,13 +122,9 @@ export default class ReadyNode {
 	alphabetize(idlePromise, node) {
 		const alphabetizer = new TextToAlphabet(node, this.name)
 		
-		if (idlePromise.urgent)
-			return alphabetizer.finish()
+		idlePromise.addUrgentListener(alphabetizer.finish)
 
-		return Promise.race([
-			alphabetizer,
-			new Promise(resolve => idlePromise.addUrgentListener(() => alphabetizer.finish().then(resolve)))
-		])
+		return alphabetizer
 	}
 
 	process(parentIdlePromise, node) {

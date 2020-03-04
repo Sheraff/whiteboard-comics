@@ -21,7 +21,7 @@ export default class TextToAlphabet {
 		}
 
 		yield
-		const charSet = this.uniqueCharFromNode(this.svg)
+		const charSet = Array.from(TextToAlphabet.uniqueCharFromNode(this.svg))
 
 		yield
 		this.charMap = new Map()
@@ -98,7 +98,8 @@ export default class TextToAlphabet {
 
 	getSpansCharData(nodeData) {
 		return nodeData.text.textContent.split('')
-			.map((char, index) => {
+			.map((rawChar, index) => {
+				const char = TextToAlphabet.charDisambiguation(rawChar)
 				if (char === ' ')
 					return
 				const height = this.charMap.get(char).viewBox.split(' ').pop()
@@ -129,33 +130,57 @@ export default class TextToAlphabet {
 		return Object.assign(data, { text: node })
 	}
 
-	charDisambiguation(char) {
+	static charDisambiguation(char) {
 		return char.toLowerCase()
 			.replace(/‘/g, "'")
 			.replace(/’/g, "'")
 			.replace(/“/g, '"')
 			.replace(/”/g, '"')
+			.replace(/\s/g, ' ')
 	}
 
-	async getChar(rawChar, idlePromise) {
-		const char = this.charDisambiguation(rawChar)
+	async getChar(char, idlePromise) {
 		idlePromise.addUrgentListener(() => this.Alphabet.urgent(char))
 		return await this.Alphabet.get(char)
 	}
 
-	uniqueCharFromNode(node) {
-		return Array.from(new Set(
-			node.textContent.split('')
-				.map(char => char.trim())
-				.filter(char => char !== "")
-		))
+	static uniqueCharFromNode(node) {
+		const chars = node.textContent
+			.replace(/\s/g,'')
+			.split('')
+			.map(TextToAlphabet.charDisambiguation)
+		return new Set(chars)
 	}
 
 	insertIntoDOM(node) {
 		const container = document.createElement('div')
 		container.classList.add('svg-card')
 		container.appendChild(node)
-		document.getElementById("dom-tricks").appendChild(container)
+		document.getElementById('dom-tricks').appendChild(container)
 		return container
+	}
+
+	static async defineClips(parentIdlePromise, node) {
+		const alphabet = new Alphabet()
+		const idlePromise = new IdlePromise(async function* (resolve) {
+			const promises = []
+
+			yield
+			const charSet = TextToAlphabet.uniqueCharFromNode(node)
+
+			for(const char of charSet) {
+				const promise = alphabet.get(char)
+				idlePromise.addUrgentListener(promise.finish)
+				promises.push(promise)
+				yield
+			}
+
+			await Promise.all(promises)
+			resolve()
+		})
+		
+		parentIdlePromise.addUrgentListener(idlePromise.finish)
+
+		return idlePromise
 	}
 }
