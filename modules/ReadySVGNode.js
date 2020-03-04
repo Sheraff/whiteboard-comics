@@ -36,7 +36,7 @@ export default class ReadyNode {
 
 		yield
 		const cached = await this.IndexedDBManager.getGraph(this.name)
-		this.wasInCache = !!cached
+		this.wasInCache = Boolean(cached)
 		
 		yield
 		if(this.wasInCache) {

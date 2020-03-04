@@ -33,7 +33,7 @@ export default class TextToAlphabet {
 
 		yield
 		const texts = Array.from(this.svg.querySelectorAll('text'))
-		const textNodesData = texts.map(text => this.getTextNodeData(text)).flat()
+		const textNodesData = texts.flatMap(text => this.getTextNodeData(text))
 
 		const charNodesData = []
 		for (let nodeData of textNodesData) {
@@ -42,7 +42,7 @@ export default class TextToAlphabet {
 		}
 
 		yield
-		const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
+		const charsNodesChilren = charNodesData.flatMap(nodeData => this.getCharNodesArray(nodeData))
 
 		const referencesMap = new Map()
 		for (let { child, reference } of charsNodesChilren) {
@@ -111,7 +111,7 @@ export default class TextToAlphabet {
 					console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
 				}
 			})
-			.filter(data => !!data)
+			.filter(Boolean)
 	}
 
 	getTextNodeData(node) {

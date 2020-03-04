@@ -32,7 +32,7 @@ export default class Alphabet {
 
 	async run() {
 		const idleNetwork = new IdleNetwork()
-		const { chars } = await idleNetwork.race(`/data/alphabet.json`, { streamType: 'json' })
+		const { chars } = await idleNetwork.race('/data/alphabet.json', { streamType: 'json' })
 
 		chars.forEach(([name, string]) => {
 			const idlePromise = new IdlePromise((async function* (resolve) {
@@ -71,7 +71,7 @@ export default class Alphabet {
 					this.defs = document.createElementNS(svgNS, 'defs')
 					svg.appendChild(this.defs)
 					fragment.appendChild(svg)
-					document.getElementById("dom-tricks").appendChild(fragment)
+					document.getElementById('dom-tricks').appendChild(fragment)
 				}
 
 				yield
