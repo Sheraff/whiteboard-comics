@@ -81,7 +81,6 @@ export default class SVGAnim {
 				if (!parent) break
 				context = parent
 				context.index++
-				continue
 			} else if (current.isText()) {
 				context.index++
 			} else if (!current.isGroup()) {

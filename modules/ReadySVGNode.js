@@ -107,7 +107,6 @@ export default class ReadyNode {
 			resolve(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`)
 		}).bind(this))
 		parentIdlePromise.addUrgentListener(idlePromise.finish)
-		idlePromise.addUrgentListener(() => console.log('urgent ReadyNode use'))
 
 		return idlePromise
 	}
@@ -173,7 +172,6 @@ export default class ReadyNode {
 		})
 
 		parentIdlePromise.addUrgentListener(idlePromise.finish)
-		idlePromise.addUrgentListener(() => console.log('urgent ReadyNode process'))
 
 		return idlePromise
 	}
