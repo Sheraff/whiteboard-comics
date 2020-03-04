@@ -3,9 +3,10 @@ import IdlePromise from './IdlePromise.js'
 
 export default class TextToAlphabet {
 
-	constructor(svg) {
+	constructor(svg, name) {
 		this.Alphabet = new Alphabet()
 		this.svg = svg
+		this.name = name
 
 		this.idlePromise = new IdlePromise(this.run.bind(this))
 		this.idlePromise.addUrgentListener(() => console.log('urgent TextToAlphabet'))
@@ -106,7 +107,7 @@ export default class TextToAlphabet {
 					const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
 					return { ...nodeData, height, position, children }
 				} catch (e) {
-					console.error(e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+					console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
 				}
 			})
 			.filter(data => !!data)

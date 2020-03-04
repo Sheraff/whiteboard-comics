@@ -116,7 +116,7 @@ export default class ReadyNode {
 	}
 
 	alphabetize(idlePromise, node) {
-		const alphabetizer = new TextToAlphabet(node)
+		const alphabetizer = new TextToAlphabet(node, this.name)
 		
 		if (idlePromise.urgent)
 			return alphabetizer.finish()
