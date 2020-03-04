@@ -72,7 +72,6 @@ export default class Alphabet {
 					svg.appendChild(this.defs)
 					fragment.appendChild(svg)
 					document.getElementById("dom-tricks").appendChild(fragment)
-					document.body.classList.add('svg-defs')
 				}
 
 				yield

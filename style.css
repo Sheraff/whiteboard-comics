@@ -52,13 +52,15 @@ svg-card:not(.font-loaded) tspan,
 .svg-card:not(.font-loaded) tspan {
   fill: rgba(0, 0, 0, 0);
 }
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+svg-card.alphabetized [data-type="text"],
+.svg-card.alphabetized [data-type="text"] {
+  opacity: 1;
+}
+svg-card.alphabetized text,
+.svg-card.alphabetized text,
+svg-card.alphabetized tspan,
+.svg-card.alphabetized tspan {
+  fill: rgba(0, 0, 0, 0);
 }
 svg-card path,
 .svg-card path,
@@ -67,13 +69,6 @@ svg-card line,
 svg-card polyline,
 .svg-card polyline {
   will-change: stroke-dashoffset, stroke-dasharray;
-}
-body.svg-defs svg-card.alphabetized [data-type="text"] {
-  opacity: 1;
-}
-body.svg-defs svg-card.alphabetized text,
-body.svg-defs svg-card.alphabetized tspan {
-  fill: rgba(0, 0, 0, 0);
 }
 #dom-tricks {
   contain: strict;

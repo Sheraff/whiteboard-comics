@@ -61,22 +61,20 @@ svg-card,
 		}
 	}
 
-	&.sized svg {
-		// animation: .5s fadein ease;
-	}
-
-	&:not(.sized) svg {
-		// opacity: 0;
-	}
-
-	@keyframes fadein {
-		from {
-			opacity: 0;
-		}
-
-		to {
+	// showing text only when appropriate
+	&.alphabetized {
+		[data-type="text"] {
 			opacity: 1;
 		}
+
+		text,
+		tspan {
+			fill   : rgba(0, 0, 0, 0);
+		}
+	}
+
+	&.sized svg {
+		// animation: .5s fadein ease;
 	}
 
 	path,
@@ -85,20 +83,6 @@ svg-card,
 		will-change: stroke-dashoffset, stroke-dasharray;
 	}
 }
-
-
-// showing text only when appropriate
-body.svg-defs svg-card.alphabetized {
-	[data-type="text"] {
-		opacity: 1;
-	}
-
-	text,
-	tspan {
-		fill   : rgba(0, 0, 0, 0);
-	}
-}
-
 
 #dom-tricks {
 	contain : strict;
