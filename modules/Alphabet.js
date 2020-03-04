@@ -63,8 +63,8 @@ export default class Alphabet {
 					charData.node = node
 				}
 
+				yield
 				if(!this.defs) {
-					yield
 					const fragment = new DocumentFragment()
 					const svg = document.createElementNS(svgNS, 'svg')
 					svg.setAttribute('id', 'defs')
