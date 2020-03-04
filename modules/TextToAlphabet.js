@@ -21,11 +21,12 @@ export default class TextToAlphabet {
 		}
 
 		yield
-		const charSet = Array.from(TextToAlphabet.uniqueCharFromNode(this.svg))
+		const charSet = TextToAlphabet.uniqueCharFromNode(this.svg)
+		charSet.delete(' ')
 
 		yield
 		this.charMap = new Map()
-		await Promise.all(charSet.map(async char => {
+		await Promise.all(Array.from(charSet).map(async char => {
 			this.charMap.set(char, await this.getChar(char, this.idlePromise))
 		}))
 
@@ -146,7 +147,6 @@ export default class TextToAlphabet {
 
 	static uniqueCharFromNode(node) {
 		const chars = node.textContent
-			.replace(/\s/g,'')
 			.split('')
 			.map(TextToAlphabet.charDisambiguation)
 		return new Set(chars)
@@ -169,6 +169,8 @@ export default class TextToAlphabet {
 			const charSet = TextToAlphabet.uniqueCharFromNode(node)
 
 			for(const char of charSet) {
+				if(char === ' ')
+					continue
 				const promise = alphabet.get(char)
 				idlePromise.addUrgentListener(promise.finish)
 				promises.push(promise)
