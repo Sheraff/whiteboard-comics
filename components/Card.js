@@ -1,13 +1,11 @@
 import SVGAnim from '../modules/SVGAnim.js'
 import ReadyNode from '../modules/ReadySVGNode.js'
-import Alphabet from '../modules/Alphabet.js'
 
 export default class Card extends HTMLElement {
 
 	constructor() {
 		super()
 		this.ReadyNode = new ReadyNode(this)
-		this.Alphabet = new Alphabet()
 		this.hover = this.hover.bind(this)
 	}
 

@@ -39,7 +39,6 @@ export default class TextToAlphabet {
 			yield
 			charNodesData.push(...this.getSpansCharData(nodeData))
 		}
-		yield
 
 		yield
 		const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
