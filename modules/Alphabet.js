@@ -44,7 +44,7 @@ export default class Alphabet {
 				if (!indexedDbCharData) {
 					yield
 					const serialized = await this.fetchSerializedXML(name, idlePromise)
-					yield
+					yield 45
 					const { groups, viewBox } = this.makeDomFragments(serialized)
 					charData.viewBox = viewBox
 					yield
@@ -57,7 +57,7 @@ export default class Alphabet {
 					charData.node = node
 				} else {
 					charData.viewBox = indexedDbCharData.viewBox
-					yield
+					yield 45
 					const { node, clips } = this.revivifyIndexedXML(indexedDbCharData.node, indexedDbCharData.clips)
 					charData.clips = clips
 					charData.node = node

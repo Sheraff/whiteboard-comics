@@ -41,8 +41,9 @@ export default class ReadyNode {
 		yield
 		if(this.wasInCache) {
 			const domparser = new DOMParser()
+			yield 45
 			node = domparser.parseFromString(cached.node, 'image/svg+xml').firstElementChild
-			yield
+			yield 20
 			erase = domparser.parseFromString(cached.erase, 'image/svg+xml').firstElementChild
 			color = cached.color
 		} else {
@@ -52,6 +53,7 @@ export default class ReadyNode {
 				const fetched = await this.fetch(this.displayPromise, this.name)
 				yield
 				const domparser = new DOMParser()
+				yield 45
 				raw = domparser.parseFromString(fetched, 'image/svg+xml').firstElementChild
 			}
 			yield

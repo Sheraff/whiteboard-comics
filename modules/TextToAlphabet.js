@@ -99,20 +99,20 @@ export default class TextToAlphabet {
 
 	getSpansCharData(nodeData) {
 		return nodeData.text.textContent.split('')
-			.map((rawChar, index) => {
+			.reduce((array, rawChar, index) => {
 				const char = TextToAlphabet.charDisambiguation(rawChar)
-				if (char === ' ')
-					return
-				const height = this.charMap.get(char).viewBox.split(' ').pop()
-				const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
-				try {
-					const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
-					return { ...nodeData, height, position, children }
-				} catch (e) {
-					console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+				if (char !== ' ') {
+					const height = this.charMap.get(char).viewBox.split(' ').pop()
+					const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
+					try {
+						const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
+						array.push({ ...nodeData, height, position, children })
+					} catch (e) {
+						console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+					}
 				}
-			})
-			.filter(Boolean)
+				return array
+			}, [])
 	}
 
 	getTextNodeData(node) {
@@ -146,9 +146,7 @@ export default class TextToAlphabet {
 	}
 
 	static uniqueCharFromNode(node) {
-		const chars = node.textContent
-			.split('')
-			.map(TextToAlphabet.charDisambiguation)
+		const chars = TextToAlphabet.charDisambiguation(node.textContent).split('')
 		return new Set(chars)
 	}
 
@@ -168,8 +166,8 @@ export default class TextToAlphabet {
 			yield
 			const charSet = TextToAlphabet.uniqueCharFromNode(node)
 
-			for(const char of charSet) {
-				if(char === ' ')
+			for (const char of charSet) {
+				if (char === ' ')
 					continue
 				const promise = alphabet.get(char)
 				idlePromise.addUrgentListener(promise.finish)
@@ -180,7 +178,7 @@ export default class TextToAlphabet {
 			await Promise.all(promises)
 			resolve()
 		})
-		
+
 		parentIdlePromise.addUrgentListener(idlePromise.finish)
 
 		return idlePromise
