@@ -36,13 +36,14 @@ export default class ReadyNode {
 
 		yield
 		const cached = await this.IndexedDBManager.getGraph(this.name)
-		this.wasInCache = !!cached
+		this.wasInCache = Boolean(cached)
 		
 		yield
 		if(this.wasInCache) {
 			const domparser = new DOMParser()
+			yield 45
 			node = domparser.parseFromString(cached.node, 'image/svg+xml').firstElementChild
-			yield
+			yield 20
 			erase = domparser.parseFromString(cached.erase, 'image/svg+xml').firstElementChild
 			color = cached.color
 		} else {
@@ -52,6 +53,7 @@ export default class ReadyNode {
 				const fetched = await this.fetch(this.displayPromise, this.name)
 				yield
 				const domparser = new DOMParser()
+				yield 45
 				raw = domparser.parseFromString(fetched, 'image/svg+xml').firstElementChild
 			}
 			yield
@@ -76,6 +78,9 @@ export default class ReadyNode {
 			await this.alphabetize(this.fullPromise, node)
 			yield
 			this.cache(this.name, node, erase, color)
+		} else {
+			await TextToAlphabet.defineClips(this.fullPromise, node)
+			yield
 		}
 		this.addClass(this.fullPromise, 'alphabetized')
 		resolve()
@@ -106,6 +111,7 @@ export default class ReadyNode {
 			const hsl = hex2hsl(color)
 			resolve(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`)
 		}).bind(this))
+
 		parentIdlePromise.addUrgentListener(idlePromise.finish)
 
 		return idlePromise
@@ -118,13 +124,9 @@ export default class ReadyNode {
 	alphabetize(idlePromise, node) {
 		const alphabetizer = new TextToAlphabet(node, this.name)
 		
-		if (idlePromise.urgent)
-			return alphabetizer.finish()
+		idlePromise.addUrgentListener(alphabetizer.finish)
 
-		return Promise.race([
-			alphabetizer,
-			new Promise(resolve => idlePromise.addUrgentListener(() => alphabetizer.finish().then(resolve)))
-		])
+		return alphabetizer
 	}
 
 	process(parentIdlePromise, node) {

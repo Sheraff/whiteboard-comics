@@ -1,7 +1,7 @@
 export default class IdlePromise {
 	static duration = Symbol('Next yield duration')
 	static onUrgent = Symbol('Callbacks when finish()')
-	static padding = 1
+	static padding = 10
 
 	promise = new Promise((resolve, reject) => {
 		this.resolve = resolve

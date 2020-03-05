@@ -21,11 +21,12 @@ export default class TextToAlphabet {
 		}
 
 		yield
-		const charSet = this.uniqueCharFromNode(this.svg)
+		const charSet = TextToAlphabet.uniqueCharFromNode(this.svg)
+		charSet.delete(' ')
 
 		yield
 		this.charMap = new Map()
-		await Promise.all(charSet.map(async char => {
+		await Promise.all(Array.from(charSet).map(async char => {
 			this.charMap.set(char, await this.getChar(char, this.idlePromise))
 		}))
 
@@ -33,7 +34,7 @@ export default class TextToAlphabet {
 
 		yield
 		const texts = Array.from(this.svg.querySelectorAll('text'))
-		const textNodesData = texts.map(text => this.getTextNodeData(text)).flat()
+		const textNodesData = texts.flatMap(text => this.getTextNodeData(text))
 
 		const charNodesData = []
 		for (let nodeData of textNodesData) {
@@ -42,7 +43,7 @@ export default class TextToAlphabet {
 		}
 
 		yield
-		const charsNodesChilren = charNodesData.map(nodeData => this.getCharNodesArray(nodeData)).flat()
+		const charsNodesChilren = charNodesData.flatMap(nodeData => this.getCharNodesArray(nodeData))
 
 		const referencesMap = new Map()
 		for (let { child, reference } of charsNodesChilren) {
@@ -98,19 +99,20 @@ export default class TextToAlphabet {
 
 	getSpansCharData(nodeData) {
 		return nodeData.text.textContent.split('')
-			.map((char, index) => {
-				if (char === ' ')
-					return
-				const height = this.charMap.get(char).viewBox.split(' ').pop()
-				const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
-				try {
-					const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
-					return { ...nodeData, height, position, children }
-				} catch (e) {
-					console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+			.reduce((array, rawChar, index) => {
+				const char = TextToAlphabet.charDisambiguation(rawChar)
+				if (char !== ' ') {
+					const height = this.charMap.get(char).viewBox.split(' ').pop()
+					const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
+					try {
+						const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
+						array.push({ ...nodeData, height, position, children })
+					} catch (e) {
+						console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+					}
 				}
-			})
-			.filter(data => !!data)
+				return array
+			}, [])
 	}
 
 	getTextNodeData(node) {
@@ -129,33 +131,56 @@ export default class TextToAlphabet {
 		return Object.assign(data, { text: node })
 	}
 
-	charDisambiguation(char) {
+	static charDisambiguation(char) {
 		return char.toLowerCase()
 			.replace(/‘/g, "'")
 			.replace(/’/g, "'")
 			.replace(/“/g, '"')
 			.replace(/”/g, '"')
+			.replace(/\s/g, ' ')
 	}
 
-	async getChar(rawChar, idlePromise) {
-		const char = this.charDisambiguation(rawChar)
+	async getChar(char, idlePromise) {
 		idlePromise.addUrgentListener(() => this.Alphabet.urgent(char))
 		return await this.Alphabet.get(char)
 	}
 
-	uniqueCharFromNode(node) {
-		return Array.from(new Set(
-			node.textContent.split('')
-				.map(char => char.trim())
-				.filter(char => char !== "")
-		))
+	static uniqueCharFromNode(node) {
+		const chars = TextToAlphabet.charDisambiguation(node.textContent).split('')
+		return new Set(chars)
 	}
 
 	insertIntoDOM(node) {
 		const container = document.createElement('div')
 		container.classList.add('svg-card')
 		container.appendChild(node)
-		document.getElementById("dom-tricks").appendChild(container)
+		document.getElementById('dom-tricks').appendChild(container)
 		return container
+	}
+
+	static async defineClips(parentIdlePromise, node) {
+		const alphabet = new Alphabet()
+		const idlePromise = new IdlePromise(async function* (resolve) {
+			const promises = []
+
+			yield
+			const charSet = TextToAlphabet.uniqueCharFromNode(node)
+
+			for (const char of charSet) {
+				if (char === ' ')
+					continue
+				const promise = alphabet.get(char)
+				idlePromise.addUrgentListener(promise.finish)
+				promises.push(promise)
+				yield
+			}
+
+			await Promise.all(promises)
+			resolve()
+		})
+
+		parentIdlePromise.addUrgentListener(idlePromise.finish)
+
+		return idlePromise
 	}
 }

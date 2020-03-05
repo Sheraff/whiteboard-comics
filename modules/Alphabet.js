@@ -32,7 +32,7 @@ export default class Alphabet {
 
 	async run() {
 		const idleNetwork = new IdleNetwork()
-		const { chars } = await idleNetwork.race(`/data/alphabet.json`, { streamType: 'json' })
+		const { chars } = await idleNetwork.race('/data/alphabet.json', { streamType: 'json' })
 
 		chars.forEach(([name, string]) => {
 			const idlePromise = new IdlePromise((async function* (resolve) {
@@ -44,7 +44,7 @@ export default class Alphabet {
 				if (!indexedDbCharData) {
 					yield
 					const serialized = await this.fetchSerializedXML(name, idlePromise)
-					yield
+					yield 45
 					const { groups, viewBox } = this.makeDomFragments(serialized)
 					charData.viewBox = viewBox
 					yield
@@ -57,7 +57,7 @@ export default class Alphabet {
 					charData.node = node
 				} else {
 					charData.viewBox = indexedDbCharData.viewBox
-					yield
+					yield 45
 					const { node, clips } = this.revivifyIndexedXML(indexedDbCharData.node, indexedDbCharData.clips)
 					charData.clips = clips
 					charData.node = node
@@ -71,7 +71,7 @@ export default class Alphabet {
 					this.defs = document.createElementNS(svgNS, 'defs')
 					svg.appendChild(this.defs)
 					fragment.appendChild(svg)
-					document.getElementById("dom-tricks").appendChild(fragment)
+					document.getElementById('dom-tricks').appendChild(fragment)
 				}
 
 				yield
