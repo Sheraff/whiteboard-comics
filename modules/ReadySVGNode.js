@@ -2,7 +2,7 @@ import IdleNetwork from '../interfaces/IdleNetwork.js'
 import TextToAlphabet from './TextToAlphabet.js'
 import IndexedDBManager from '../interfaces/IndexedDB.js'
 import IdlePromise from './IdlePromise.js'
-import hex2hsl from './hex2hsl.js'
+import hex2hsl from '../functions/hex2hsl.js'
 
 export default class ReadyNode {
 	constructor(parent) {
@@ -57,11 +57,13 @@ export default class ReadyNode {
 				raw = domparser.parseFromString(fetched, 'image/svg+xml').firstElementChild
 			}
 			yield
-			const processed = await this.process(this.displayPromise, raw)
+			const processed = await this.process(this.displayPromise, raw, this.parent)
 			node = processed.node
 			erase = processed.erase
 			color = processed.color
 		}
+		yield
+		this.applySize(node, this.parent)
 		yield
 		this.addClass(this.displayPromise, 'sized')
 		const hslString = await this.use(this.displayPromise, node, erase, color)
@@ -83,7 +85,7 @@ export default class ReadyNode {
 			yield
 		}
 		this.addClass(this.fullPromise, 'alphabetized')
-		resolve()
+		resolve({node, erase, color})
 	}
 
 	addClass(idlePromise, className) {
@@ -97,8 +99,17 @@ export default class ReadyNode {
 		})
 	}
 
+	applySize(node, parent) {
+		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
+		const [, , width, height] = node.getAttribute('viewBox').split(' ')
+		if (width < height)
+			parent.style.setProperty('--bound-width', (.9 * SIZE_FACTOR * width / 10) + '%')
+		else
+			parent.style.setProperty('--bound-height', (.9 * SIZE_FACTOR * height / 10) + '%')
+	}
+
 	use(parentIdlePromise, node, erase, color) {
-		const idlePromise =  new IdlePromise((async function* (resolve) {
+		const idlePromise = new IdlePromise((async function* (resolve) {
 			const previous = this.parent.querySelector('svg')
 			yield
 			if (previous)
@@ -129,24 +140,9 @@ export default class ReadyNode {
 		return alphabetizer
 	}
 
-	process(parentIdlePromise, node) {
+	process(parentIdlePromise, node, parent) {
 
 		const idlePromise =  new IdlePromise(async function* (resolve) {
-			// resize
-			const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
-
-			yield
-			const [, , width, height] = node.getAttribute('viewBox').split(' ')
-			if (width < height) {
-				node.style.width = (.9 * SIZE_FACTOR * width / 10) + '%'
-				node.style.height = 'auto'
-				node.dataset.bound = 'width'
-			} else {
-				node.style.height = (.9 * SIZE_FACTOR * height / 10) + '%'
-				node.style.width = 'auto'
-				node.dataset.bound = 'height'
-			}
-
 			yield
 			// find and extract "erase"
 			const erasePath = node.firstElementChild

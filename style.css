@@ -2,16 +2,22 @@ body {
   margin: 0;
   font-family: 'Permanent Marker';
   background-color: #f8f4fd;
+  padding-top: 200px;
 }
 header {
   text-transform: lowercase;
   text-align: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 svg-card,
 .svg-card {
   contain: strict;
   box-shadow: -10px 11px 9px -10px, 0 10px 11px rgba(0, 0, 0, 0.07);
   background-color: white;
+  --bound-width: auto;
+  --bound-height: auto;
 }
 svg-card span,
 .svg-card span {
@@ -26,6 +32,8 @@ svg-card svg,
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
   overflow: visible;
+  width: var(--bound-width);
+  height: var(--bound-height);
 }
 svg-card svg[slot="erase"],
 .svg-card svg[slot="erase"] {
@@ -62,6 +70,14 @@ svg-card.alphabetized tspan,
 .svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
+svg-card.static-img:not([data-live]) [data-main],
+.svg-card.static-img:not([data-live]) [data-main] {
+  display: none;
+}
+svg-card.static-img[data-live] img,
+.svg-card.static-img[data-live] img {
+  display: none;
+}
 svg-card path,
 .svg-card path,
 svg-card line,
@@ -69,6 +85,19 @@ svg-card line,
 svg-card polyline,
 .svg-card polyline {
   will-change: stroke-dashoffset, stroke-dasharray;
+}
+svg-card img,
+.svg-card img {
+  object-fit: contain;
+  width: var(--bound-width);
+  height: var(--bound-height);
+  max-width: 90%;
+  max-height: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 #dom-tricks {
   contain: strict;
@@ -119,19 +148,32 @@ grid-layout .svg-card {
   backface-visibility: hidden;
   perspective: 1000;
   will-change: transform;
+  transition: transform 0.3s ease-in-out;
 }
-grid-layout svg-card[data-last-played=true],
-grid-layout .svg-card[data-last-played=true] {
+grid-layout svg-card[data-last-played],
+grid-layout .svg-card[data-last-played] {
   z-index: 1;
 }
-grid-layout svg-card[data-top=true],
-grid-layout .svg-card[data-top=true] {
+grid-layout svg-card[data-top],
+grid-layout .svg-card[data-top] {
   position: fixed;
   left: var(--margin);
   top: var(--margin);
   height: calc(100vh - 2 * var(--margin));
   width: calc(100vw - 2 * var(--margin));
   box-shadow: none;
+}
+grid-layout svg-card:not([data-top]).move-up,
+grid-layout .svg-card:not([data-top]).move-up {
+  transform: translateY(-300px);
+}
+grid-layout svg-card:not([data-top]).move-down,
+grid-layout .svg-card:not([data-top]).move-down {
+  transform: translateY(300px);
+}
+grid-layout svg-card:not([data-top]).node-down svg,
+grid-layout .svg-card:not([data-top]).node-down svg {
+  display: none;
 }
 grid-layout .svg-card {
   background-color: transparent;

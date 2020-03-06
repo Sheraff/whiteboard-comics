@@ -1,5 +1,6 @@
 import SVGAnim from '../modules/SVGAnim.js'
 import ReadyNode from '../modules/ReadySVGNode.js'
+import svgToPng from '../functions/SVGToPNG.js'
 
 export default class Card extends HTMLElement {
 
@@ -7,6 +8,17 @@ export default class Card extends HTMLElement {
 		super()
 		this.ReadyNode = new ReadyNode(this)
 		this.hover = this.hover.bind(this)
+		this.ReadyNode
+			.then(({node}) => svgToPng(node))
+			.then(dataURL => {
+				const img = document.createElement('img')
+				img.setAttribute('slot', 'static')
+				img.src = dataURL
+				img.addEventListener('load', () => {
+					this.classList.add('static-img')
+				})
+				this.appendChild(img)
+			})
 	}
 
 	connectedCallback() {

@@ -1,4 +1,4 @@
-import extendSVG from './extendSVG.js'
+import extendSVG from '../functions/extendSVG.js'
 import IdlePromise from './IdlePromise.js'
 
 export default class SVGAnim {

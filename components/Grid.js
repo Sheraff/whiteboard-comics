@@ -40,6 +40,8 @@ export default class Grid extends HTMLElement {
 			if(card.SVGAnim.playing)
 				card.SVGAnim.pause()
 
+			card.dataset.live = true
+
 			await card.ReadyNode
 			await card.eraseAnim.idlePromise
 			card.eraseAnim.play()
@@ -73,6 +75,7 @@ export default class Grid extends HTMLElement {
 			])
 
 			card.SVGAnim.play()
+				.then(() => delete card.dataset.live)
 
 		})
 	}
@@ -88,7 +91,8 @@ export default class Grid extends HTMLElement {
 		return card.animate([
 			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
 			{ transform: 'none' }
-		], { duration: 1000, easing: 'cubic-bezier(.77,-0.3,.4,1)' })
+		], { duration: 500 })
+		// ], { duration: 1000, easing: 'cubic-bezier(.77,-0.3,.4,1)' })
 		// toggle back cubic-bezier(.5,.1,.4,1)
 	}
 }
