@@ -1,7 +1,6 @@
 export default function SVGToPNG(node) {
 
 	return new Promise(resolve => {
-		// create .svg-card in #dom-tricks
 		const clone = node.cloneNode(true)
 		const elements = node.querySelectorAll(':scope *:not(text):not(tspan)')
 		const clonedElements = Array.from(clone.querySelectorAll(':scope *:not(text):not(tspan)'))
@@ -25,7 +24,7 @@ export default function SVGToPNG(node) {
 		})
 		Array.from(clone.querySelectorAll('text')).forEach(text => text.style.display = 'none')
 
-		// create SVG => XML (img.src) => canvas => data => png
+		// SVG => XML (img.src) => canvas => data => png
 		const svgString = new XMLSerializer().serializeToString(clone)
 		const [, , width, height] = clone.getAttribute('viewBox').split(' ')
 		const dimensions = {
