@@ -31,7 +31,6 @@ svg-card svg,
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
-  overflow: visible;
   width: var(--bound-width);
   height: var(--bound-height);
 }
@@ -70,12 +69,20 @@ svg-card.alphabetized tspan,
 .svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
-svg-card.static-img:not([data-live]) [data-main],
-.svg-card.static-img:not([data-live]) [data-main] {
+svg-card.static-img:not([data-top]):not([data-live]) [data-main],
+.svg-card.static-img:not([data-top]):not([data-live]) [data-main] {
   display: none;
 }
-svg-card.static-img[data-live] img,
-.svg-card.static-img[data-live] img {
+svg-card.static-img:not([data-top])[data-live] img,
+.svg-card.static-img:not([data-top])[data-live] img {
+  display: none;
+}
+svg-card[data-top] svg,
+.svg-card[data-top] svg {
+  overflow: visible;
+}
+svg-card[data-top] img,
+.svg-card[data-top] img {
   display: none;
 }
 svg-card path,
