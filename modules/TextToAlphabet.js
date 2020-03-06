@@ -170,7 +170,11 @@ export default class TextToAlphabet {
 				if (char === ' ')
 					continue
 				const promise = alphabet.get(char)
-				idlePromise.addUrgentListener(promise.finish)
+				try {
+					idlePromise.addUrgentListener(promise.finish)
+				} catch (e) {
+					console.error('yo:', char, e)
+				}
 				promises.push(promise)
 				yield
 			}
