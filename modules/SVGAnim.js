@@ -11,7 +11,7 @@ export default class SVGAnim {
 		this.prepare = this.prepare.bind(this)
 
 		this.map = new Map()
-		this.idlePromise = new IdlePromise(this.iterateGenerator.bind(this, this.preprocess.bind(this)))
+		this.idlePromise = new IdlePromise(this.iterateGenerator.bind(this, this.preprocess.bind(this), 20))
 	}
 
 	async play() {
@@ -71,7 +71,7 @@ export default class SVGAnim {
 			resolve()
 	}
 
-	async * iterateGenerator(callback, resolve) {
+	async * iterateGenerator(callback, taskDuration = IdlePromise.padding, resolve) {
 		let context = { node: this.svg, index: 0 }
 		yield
 		while (true) {
@@ -84,7 +84,7 @@ export default class SVGAnim {
 			} else if (current.isText()) {
 				context.index++
 			} else if (!current.isGroup()) {
-				yield
+				yield taskDuration
 				await callback(current, index)
 				context.index++
 			} else {

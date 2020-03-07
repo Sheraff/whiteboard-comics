@@ -38,11 +38,12 @@ export default class Alphabet {
 
 		chars.forEach(([name, string]) => {
 			const idlePromise = new IdlePromise((async function* (resolve) {
-				const charData = { name, string }
-
+				
 				yield
+				const charData = { name, string }
 				const indexedDBManager = new IndexedDBManager()
 				const indexedDbCharData = await indexedDBManager.getChar(string)
+
 				if (!indexedDbCharData) {
 					yield
 					const serialized = await this.fetchSerializedXML(name, idlePromise)
@@ -73,6 +74,7 @@ export default class Alphabet {
 					this.defs = document.createElementNS(svgNS, 'defs')
 					svg.appendChild(this.defs)
 					fragment.appendChild(svg)
+					yield
 					document.getElementById('dom-tricks').appendChild(fragment)
 				}
 
@@ -85,7 +87,6 @@ export default class Alphabet {
 					indexedDBManager.saveChar(charData)
 			}).bind(this))
 
-			idlePromise.addUrgentListener(() => console.log('urgent Alphabet'))
 			this.charsMap.set(string, idlePromise)
 		})
 		this.resolve()

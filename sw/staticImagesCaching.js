@@ -30,8 +30,7 @@ class JpegBlobUploader {
 		port.postMessage('')
 	}
 
-	onMessage(message, port) {
-		const { data: { url, data } } = message
+	onMessage({ data: { url, data } }, port) {
 		if(!url)
 			return
 		caches.open(CACHE_NAME)

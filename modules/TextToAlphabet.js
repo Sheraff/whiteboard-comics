@@ -9,7 +9,6 @@ export default class TextToAlphabet {
 		this.name = name
 
 		this.idlePromise = new IdlePromise(this.run.bind(this))
-		this.idlePromise.addUrgentListener(() => console.log('urgent TextToAlphabet'))
 
 		return this.idlePromise
 	}
@@ -103,18 +102,10 @@ export default class TextToAlphabet {
 			.reduce((array, rawChar, index) => {
 				const char = TextToAlphabet.charDisambiguation(rawChar)
 				if (char !== ' ') {
-					try {
-						const height = this.charMap.get(char).viewBox.split(' ').pop()
-						const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
-						try {
-							const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
-							array.push({ ...nodeData, height, position, children })
-						} catch (e) {
-							console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
-						}
-					} catch (e) {
-						console.error('yo', char, this.charMap, this.debugCharSet, e)
-					}
+					const height = this.charMap.get(char).viewBox.split(' ').pop()
+					const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
+					const position = nodeData.text.getStartPositionOfChar(index) // 🚧 SVG must be part of DOM for this function 🚧
+					array.push({ ...nodeData, height, position, children })
 				}
 				return array
 			}, [])

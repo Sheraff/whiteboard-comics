@@ -18,9 +18,6 @@ export default class ReadyNode {
 		this.displayPromise = new IdlePromise(this.runDisplay.bind(this))
 		this.fullPromise = new IdlePromise(this.runFull.bind(this))
 
-		this.displayPromise.addUrgentListener(() => console.log('urgent ReadyNode display'))
-		this.fullPromise.addUrgentListener(() => console.log('urgent ReadyNode full'))
-
 		this.fullPromise.addUrgentListener(this.displayPromise.finish)
 		this.then = this.fullPromise.then
 		this.display = this.displayPromise.finish

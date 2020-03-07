@@ -22,7 +22,7 @@ function waitOnServiceWorker(port) {
 async function fetchInCache(request) {
 	if (!self.caches)
 		return Promise.reject()
-	if(!workerState.cache)
+	if (!workerState.cache)
 		workerState.cache = await caches.open(CACHE_NAME)
 	const result = await workerState.cache.match(request)
 	if (result) return result
@@ -34,8 +34,8 @@ function race(request) {
 		return fetch(request)
 	else
 		return new Promise((resolve, reject) => {
-			const {signal, abort} = new AbortController()
-			const networkPromise = fetch(request, {signal}).then(resolve)
+			const { signal, abort } = new AbortController()
+			const networkPromise = fetch(request, { signal }).then(resolve)
 			const cachePromise = fetchInCache(request).then(result => {
 				resolve(result)
 				abort()
