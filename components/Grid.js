@@ -1,14 +1,21 @@
+import Routing from '../modules/Routing.js'
+
 export default class Grid extends HTMLElement {
 	constructor() {
 		super()
-		this.cards = {}
+		this.cards = new Map()
 		this.querySelectorAll('svg-card').forEach(card => {
 			const name = card.getAttribute('name')
-			this.cards[name] = card
+			this.cards.set(name, card)
 			card.addEventListener('click', this.getOnClick(card))
 		})
 		this.placeholder = document.createElement('div')
 		this.placeholder.classList.add('svg-card')
+
+		this.routing = new Routing(this.attributes.current && this.attributes.current.value)
+		this.routing.addChangeListener((name = '') => {
+			this.setAttribute('current', name)
+		})
 
 		// TODO: add states for transitions (.opening / .closing) and don't apply box-shadows while in transition
 		// TODO: don't apply box-shadow while on top
@@ -16,26 +23,36 @@ export default class Grid extends HTMLElement {
 	}
 
 	attributeChangedCallback(name, oldValue, value) {
-		if(name === 'current' && oldValue !== value) {
-			if(value)
-				this.setCurrent(this.cards[value])
-			else
-				this.setCurrent(this.cards[oldValue])
-		}
+		if(name === 'current' && oldValue !== value)
+			this.changeCurrent(value, oldValue)
 	}
 
 	static get observedAttributes() { return ['current'] }
 
 	getOnClick(card) {
 		return () => {
-			if(this.attributes.current && this.attributes.current.value === card.attributes.name.value)
+			if(this.attributes.current && this.attributes.current.value === card.attributes.name.value) {
 				this.setAttribute('current', '')
-			else
+				this.routing.push()
+			} else {
 				this.setAttribute('current', card.attributes.name.value)
+				this.routing.push(card.attributes.name.value)
+			}
 		}
 	}
 
-	async setCurrent(card) {
+	changeCurrent(value, oldValue) {
+		if(value)
+			this.setCardAsCurrent(this.cards.get(value))
+		else
+			this.setCardAsCurrent(this.cards.get(oldValue))
+
+		// change from oldValue to /
+		// change from / to value
+		// change from oldValue to value
+	}
+
+	async setCardAsCurrent(card) {
 		await card.ReadyNode
 		requestAnimationFrame(async () => {
 			if(card.SVGAnim.playing)
