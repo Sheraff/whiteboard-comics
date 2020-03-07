@@ -1,4 +1,4 @@
-import ServiceWorkerState from './ServiceWorkerState.js'
+import SWState from './SWState.js'
 
 export default class IdleNetwork {
 	constructor() {
@@ -11,8 +11,8 @@ export default class IdleNetwork {
 		this.worker.addEventListener('message', this.onMessage.bind(this))
 		this.id = 0
 
-		this.ServiceWorkerState = new ServiceWorkerState()
-		const port = this.ServiceWorkerState.connect('IdleNetwork', 'debouncer')
+		this.SWState = new SWState()
+		const port = this.SWState.connect('IdleNetwork', 'debouncer')
 		this.worker.postMessage({ port }, [port])
 	}
 

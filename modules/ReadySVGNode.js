@@ -1,8 +1,8 @@
 import IdleNetwork from '../interfaces/IdleNetwork.js'
 import IndexedDBManager from '../interfaces/IndexedDB.js'
-import ServiceWorkerCacheUploader from '../interfaces/ServiceWorkerCacheUploader.js'
+import SWJpegBlobUploader from '../interfaces/SWJpegBlobUploader.js'
 import hex2hsl from '../functions/hex2hsl.js'
-import svgToPng from '../functions/SVGToPNG.js'
+import svgToImageBlob from '../functions/svgToImageBlob.js'
 import TextToAlphabet from './TextToAlphabet.js'
 import IdlePromise from './IdlePromise.js'
 
@@ -197,27 +197,37 @@ export default class ReadyNode {
 	}
 
 	makeStatic({ node }) {
-		return new Promise(async (resolve, reject) => {
-			const src = `/static/graphs_${this.name}.png`
-			const serviceWorkerCacheUploader = new ServiceWorkerCacheUploader()
-			const cached = await serviceWorkerCacheUploader.has(src)
+		return new IdlePromise((async function* (resolve, reject) {
+			const src = `/static/graphs_${this.name}.jpg`
+			const jpegBlobUploader = new SWJpegBlobUploader()
 
+			yield
+			const cached = await jpegBlobUploader.has(src)
+
+			yield
 			const img = document.createElement('img')
 			img.setAttribute('slot', 'static')
-			img.addEventListener('load', () => resolve(img), { once: true })
-			img.addEventListener('error', reject, { once: true })
 
-			if(cached) {
+			const loadPromise = new Promise(resolve => {
+				img.addEventListener('load', resolve, { once: true })
+				img.addEventListener('error', reject, { once: true })
+			})
+
+			if (cached) {
 				img.src = src
 			} else {
-				const dataURL = await svgToPng(node)
-				img.src = dataURL
-				serviceWorkerCacheUploader.put(src, dataURL)
+				yield
+				const buffer = await svgToImageBlob(node)
+				yield
+				jpegBlobUploader.put(src, buffer, src => img.src = src)
 			}
-		}).then((img) => {
-			this.parent.classList.add('static-img')
-			this.parent.appendChild(img)
-		})
 
+			await loadPromise
+
+			yield
+			this.parent.appendChild(img)
+			this.parent.classList.add('static-img')
+			resolve()
+		}).bind(this))
 	}
 }

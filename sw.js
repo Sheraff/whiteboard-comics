@@ -1,5 +1,4 @@
 self.importScripts('./sw/Debouncer.js')
-self.importScripts('./sw/CacheUploader.js')
 self.importScripts('./sw/alphabetCaching.js')
 self.importScripts('./sw/staticImagesCaching.js')
 // self.importScripts('./sw/NotificationEmitter.js')
@@ -17,7 +16,7 @@ const URLS = [
 	// '/functions/SVGToPNG.js',
 	// '/interfaces/IdleNetwork.js',
 	// '/interfaces/IndexedDB.js',
-	// '/interfaces/ServiceWorkerState.js',
+	// '/interfaces/SWState.js',
 	// '/modules/Alphabet.js',
 	// '/modules/IdlePromise.js',
 	// '/modules/ReadySVGNode.js',
@@ -39,8 +38,9 @@ self.addEventListener('message', ({data: {port, id, target}}) => {
 		case 'debouncer':
 			debouncer.listenToMessages(port, id)
 			break
-		case 'cacheUploader':
-			cacheUploader.listenToMessages(port, id)
+		case 'jpegBlobUploader':
+			console.log('passing SW message to Jpeg Blob Uploader', id, port)
+			jpegBlobUploader.listenToMessages(port, id)
 			break
 		default:
 			console.warn('Unknown message channel in SW:', target)
@@ -64,7 +64,7 @@ self.addEventListener('activate', event => {
 })
 
 const debouncer = new Debouncer(self)
-const cacheUploader = new CacheUploader(self)
+const jpegBlobUploader = new JpegBlobUploader(self)
 
 self.addEventListener('fetch', event => event.respondWith(
 	caches.match(event.request).then(cached => {
@@ -90,7 +90,7 @@ self.addEventListener('fetch', event => event.respondWith(
 			debouncer.endFetching()
 
 		// Bad response, don't cache
-		if (!response || response.status !== 200 || response.type !== 'basic')
+		if (!response || response.status !== 200 || (response.type !== 'basic' && response.type !== 'default'))
 			return response
 
 		// Cache response // TODO: not caching anything...

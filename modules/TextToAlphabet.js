@@ -22,6 +22,7 @@ export default class TextToAlphabet {
 
 		yield
 		const charSet = TextToAlphabet.uniqueCharFromNode(this.svg)
+		this.debugCharSet = charSet
 		charSet.delete(' ')
 
 		yield
@@ -112,7 +113,7 @@ export default class TextToAlphabet {
 							console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
 						}
 					} catch (e) {
-						console.error('yo', char, e)
+						console.error('yo', char, this.charMap, this.debugCharSet, e)
 					}
 				}
 				return array
@@ -145,8 +146,9 @@ export default class TextToAlphabet {
 	}
 
 	async getChar(char, idlePromise) {
+		const promise = this.Alphabet.get(char)
 		idlePromise.addUrgentListener(() => this.Alphabet.urgent(char))
-		return await this.Alphabet.get(char)
+		return await promise
 	}
 
 	static uniqueCharFromNode(node) {
