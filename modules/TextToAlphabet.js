@@ -173,12 +173,12 @@ export default class TextToAlphabet {
 			for (const char of charSet) {
 				if (char === ' ')
 					continue
-				const promise = alphabet.get(char)
-				try {
-					idlePromise.addUrgentListener(promise.finish)
-				} catch (e) {
-					console.error('yo:', char, e)
-				}
+				let promise = alphabet.get(char)
+				
+				if(!promise)
+					promise = this.getChar(char, idlePromise)
+
+				idlePromise.addUrgentListener(promise.finish)
 				promises.push(promise)
 				yield
 			}
