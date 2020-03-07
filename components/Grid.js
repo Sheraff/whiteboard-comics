@@ -35,7 +35,8 @@ export default class Grid extends HTMLElement {
 		}
 	}
 
-	setCurrent(card) {
+	async setCurrent(card) {
+		await card.ReadyNode
 		requestAnimationFrame(async () => {
 			if(card.SVGAnim.playing)
 				card.SVGAnim.pause()

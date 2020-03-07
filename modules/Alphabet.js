@@ -20,6 +20,8 @@ export default class Alphabet {
 
 		this.charsMap = new Map()
 		this.run()
+
+		this.promise = new Promise(resolve => this.resolve = resolve)
 	}
 
 	urgent(key) {
@@ -86,6 +88,7 @@ export default class Alphabet {
 			idlePromise.addUrgentListener(() => console.log('urgent Alphabet'))
 			this.charsMap.set(string, idlePromise)
 		})
+		this.resolve()
 	}
 
 	async fetchSerializedXML(name, idlePromise) {

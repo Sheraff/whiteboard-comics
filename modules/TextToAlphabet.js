@@ -146,6 +146,7 @@ export default class TextToAlphabet {
 	}
 
 	async getChar(char, idlePromise) {
+		await this.Alphabet.promise
 		const promise = this.Alphabet.get(char)
 		idlePromise.addUrgentListener(() => this.Alphabet.urgent(char))
 		return await promise
@@ -165,8 +166,8 @@ export default class TextToAlphabet {
 	}
 
 	static async defineClips(parentIdlePromise, node) {
-		const alphabet = new Alphabet()
 		const idlePromise = new IdlePromise(async function* (resolve) {
+			const alphabet = new Alphabet()
 			const promises = []
 
 			yield
@@ -175,12 +176,10 @@ export default class TextToAlphabet {
 			for (const char of charSet) {
 				if (char === ' ')
 					continue
-				let promise = alphabet.get(char)
-				
-				if(!promise)
-					promise = this.getChar(char, idlePromise)
 
-				idlePromise.addUrgentListener(promise.finish)
+				await alphabet.promise
+				const promise = alphabet.get(char)
+				idlePromise.addUrgentListener(() => alphabet.urgent(char))
 				promises.push(promise)
 				yield
 			}
