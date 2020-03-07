@@ -1,8 +1,10 @@
 import IdleNetwork from '../interfaces/IdleNetwork.js'
-import TextToAlphabet from './TextToAlphabet.js'
 import IndexedDBManager from '../interfaces/IndexedDB.js'
-import IdlePromise from './IdlePromise.js'
+import ServiceWorkerCacheUploader from '../interfaces/ServiceWorkerCacheUploader.js'
 import hex2hsl from '../functions/hex2hsl.js'
+import svgToPng from '../functions/SVGToPNG.js'
+import TextToAlphabet from './TextToAlphabet.js'
+import IdlePromise from './IdlePromise.js'
 
 export default class ReadyNode {
 	constructor(parent) {
@@ -23,23 +25,25 @@ export default class ReadyNode {
 		this.then = this.fullPromise.then
 		this.display = this.displayPromise.finish
 		this.finish = this.fullPromise.finish
+
+		this.then(this.makeStatic.bind(this))
 	}
 
 	get urgent() {
 		return this.fullPromise.urgent
 	}
-	
+
 	// TODO: add SVGO cleanup step (and store only cleaned-up state in IndexedDB) before alphabetization
-	
+
 	async * runDisplay(resolve) {
 		let node, erase, color
 
 		yield
 		const cached = await this.IndexedDBManager.getGraph(this.name)
 		this.wasInCache = Boolean(cached)
-		
+
 		yield
-		if(this.wasInCache) {
+		if (this.wasInCache) {
 			const domparser = new DOMParser()
 			yield 45
 			node = domparser.parseFromString(cached.node, 'image/svg+xml').firstElementChild
@@ -48,7 +52,7 @@ export default class ReadyNode {
 			color = cached.color
 		} else {
 			let raw = this.parent.querySelector('svg')
-			if(!raw) {
+			if (!raw) {
 				yield
 				const fetched = await this.fetch(this.displayPromise, this.name)
 				yield
@@ -69,14 +73,14 @@ export default class ReadyNode {
 		const hslString = await this.use(this.displayPromise, node, erase, color)
 		yield
 		this.parent.style.color = hslString
-		resolve({node, erase, color})
+		resolve({ node, erase, color })
 	}
 
 	async * runFull(resolve) {
 		yield
-		const {node, erase, color} = await this.displayPromise
+		const { node, erase, color } = await this.displayPromise
 		yield
-		if(!this.wasInCache) {
+		if (!this.wasInCache) {
 			await this.alphabetize(this.fullPromise, node)
 			yield
 			this.cache(this.name, node, erase, color)
@@ -85,7 +89,7 @@ export default class ReadyNode {
 			yield
 		}
 		this.addClass(this.fullPromise, 'alphabetized')
-		resolve({node, erase, color})
+		resolve({ node, erase, color })
 	}
 
 	addClass(idlePromise, className) {
@@ -134,7 +138,7 @@ export default class ReadyNode {
 
 	alphabetize(idlePromise, node) {
 		const alphabetizer = new TextToAlphabet(node, this.name)
-		
+
 		idlePromise.addUrgentListener(alphabetizer.finish)
 
 		return alphabetizer
@@ -142,7 +146,7 @@ export default class ReadyNode {
 
 	process(parentIdlePromise, node, parent) {
 
-		const idlePromise =  new IdlePromise(async function* (resolve) {
+		const idlePromise = new IdlePromise(async function* (resolve) {
 			yield
 			// find and extract "erase"
 			const erasePath = node.firstElementChild
@@ -190,5 +194,30 @@ export default class ReadyNode {
 					resolve(this.IdleNetwork.race(URL))
 			}))
 		])
+	}
+
+	makeStatic({ node }) {
+		return new Promise(async (resolve, reject) => {
+			const src = `/static/graphs_${this.name}.png`
+			const serviceWorkerCacheUploader = new ServiceWorkerCacheUploader()
+			const cached = await serviceWorkerCacheUploader.has(src)
+
+			const img = document.createElement('img')
+			img.setAttribute('slot', 'static')
+			img.addEventListener('load', () => resolve(img), { once: true })
+			img.addEventListener('error', reject, { once: true })
+
+			if(cached) {
+				img.src = src
+			} else {
+				const dataURL = await svgToPng(node)
+				img.src = dataURL
+				serviceWorkerCacheUploader.put(src, dataURL)
+			}
+		}).then((img) => {
+			this.parent.classList.add('static-img')
+			this.parent.appendChild(img)
+		})
+
 	}
 }

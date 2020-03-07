@@ -102,13 +102,17 @@ export default class TextToAlphabet {
 			.reduce((array, rawChar, index) => {
 				const char = TextToAlphabet.charDisambiguation(rawChar)
 				if (char !== ' ') {
-					const height = this.charMap.get(char).viewBox.split(' ').pop()
-					const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
 					try {
-						const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
-						array.push({ ...nodeData, height, position, children })
+						const height = this.charMap.get(char).viewBox.split(' ').pop()
+						const children = Array.from(this.charMap.get(char).node.cloneNode(true).children)
+						try {
+							const position = nodeData.text.getStartPositionOfChar(index) // SVG must be part of DOM for this function?!
+							array.push({ ...nodeData, height, position, children })
+						} catch (e) {
+							console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+						}
 					} catch (e) {
-						console.error(this.name, e, nodeData, nodeData.reference.textContent, nodeData.text.textContent, `char ${char}`, index, nodeData.reference.closest('svg'))
+						console.error('yo', char, e)
 					}
 				}
 				return array
