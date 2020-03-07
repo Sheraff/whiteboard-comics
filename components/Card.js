@@ -44,6 +44,8 @@ export default class Card extends HTMLElement {
 			this.intersectionObserver.disconnect()
 			delete this.intersectionObserver
 			this.ReadyNode.display()
+		}, {
+			rootMargin: '300px 0px 300px 0px'
 		})
 		this.intersectionObserver.observe(this)
 	}

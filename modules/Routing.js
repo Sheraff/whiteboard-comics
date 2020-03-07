@@ -1,6 +1,10 @@
 export default class Router {
 
 	constructor(initialState) {
+		if (!!Router.instance)
+			return Router.instance
+		Router.instance = this
+
 		history.replaceState(initialState, initialState, location.pathname)
 		addEventListener('popstate', this.popStateListener.bind(this))
 		this.listeners = new Set()
