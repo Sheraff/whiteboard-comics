@@ -1,6 +1,6 @@
 export default function SVGToPNG(node) {
 
-	return new Promise(resolve => {
+	return new Promise(async resolve => {
 		const clone = node.cloneNode(true)
 		const elements = node.querySelectorAll(':scope *:not(text):not(tspan)')
 		const clonedElements = Array.from(clone.querySelectorAll(':scope *:not(text):not(tspan)'))
@@ -36,21 +36,22 @@ export default function SVGToPNG(node) {
 		const blobDataURL = URL.createObjectURL(blob)
 
 		const img = new Image()
-		img.addEventListener('load', () => {
-			console.log('loaded')
-			const canvas = document.createElement('canvas')
-			canvas.setAttribute('width', dimensions.width)
-			canvas.setAttribute('height', dimensions.height)
-
-			const context = canvas.getContext('2d')
-			context.drawImage(img, 0, 0, dimensions.width, dimensions.height)
-
-			const pngDataURL = context.canvas.toDataURL('image/png', 1)
-
-			URL.revokeObjectURL(blobDataURL)
-			resolve(pngDataURL)
-			URL.revokeObjectURL(pngDataURL)
-		})
 		img.src = blobDataURL
+
+		await new Promise(resolve => img.addEventListener('load', resolve))
+		
+		console.log('loaded')
+		const canvas = document.createElement('canvas')
+		canvas.setAttribute('width', dimensions.width)
+		canvas.setAttribute('height', dimensions.height)
+
+		const context = canvas.getContext('2d')
+		context.drawImage(img, 0, 0, dimensions.width, dimensions.height)
+
+		const pngDataURL = context.canvas.toDataURL('image/png', 1)
+
+		URL.revokeObjectURL(blobDataURL)
+		resolve(pngDataURL)
+		URL.revokeObjectURL(pngDataURL)
 	})
 }
