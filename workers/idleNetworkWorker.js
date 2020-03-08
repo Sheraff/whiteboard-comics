@@ -2,6 +2,7 @@ const CACHE_NAME = 'whiteboard-files-cache-v0'
 
 const workerState = {
 	backlog: [],
+	current: [],
 	isListening: false,
 	id: 0,
 	swIsReady: false
@@ -37,8 +38,8 @@ function race(request) {
 			const { signal, abort } = new AbortController()
 			const networkPromise = fetch(request, { signal }).then(resolve)
 			const cachePromise = fetchInCache(request).then(result => {
-				resolve(result)
 				abort()
+				resolve(result)
 			})
 			Promise.allSettled([networkPromise, cachePromise]).then(reject)
 		})
@@ -74,13 +75,16 @@ function makeRequest() {
 	const index = workerState.backlog.findIndex(({ callback, resolve }) => callback || resolve)
 	if (index === -1)
 		return false
-	const { request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
-	if (callback instanceof Function)
-		fetch(request)
+	const { id, request, callback, resolve, reject } = workerState.backlog.splice(index, 1)[0]
+	if (callback instanceof Function) {
+		const { abort, signal } = new AbortController()
+		workerState.current.push({ id, abort })
+		fetch(request, { signal })
 			.then(callback)
-			.catch(() => workerState.backlog.unshift({ request, callback, resolve, reject }))
+			.finally(() => removeRequestFromStateArray(workerState.current, id))
+			.catch(() => workerState.backlog.unshift({ id, request, callback, resolve, reject }))
 			.finally(processBacklog)
-	else
+	} else
 		fetch(request)
 			.then(resolve)
 			.catch(reject)
@@ -88,12 +92,23 @@ function makeRequest() {
 	return true
 }
 
+function removeRequestFromStateArray(array, id) {
+	const index = array.findIndex(item => item.id === id)
+	if (index !== -1)
+		return array.splice(index, 1)[0]
+}
+
 function cancelIdleNetwork(id) {
-	const index = workerState.backlog.findIndex(item => item.id === id)
-	if (index === -1)
-		return false
-	workerState.backlog.splice(index, 1)
-	return true
+	const backlogItem = removeRequestFromStateArray(workerState.backlog, id)
+	if(backlogItem) return true
+
+	const currentItem = removeRequestFromStateArray(workerState.current, id)
+	if(currentItem) {
+		currentItem.abort()
+		return true
+	}
+
+	return false
 }
 
 function requestIdleNetwork(request) {
