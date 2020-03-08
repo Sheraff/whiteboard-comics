@@ -1,6 +1,7 @@
 export default class IdlePromise {
 	static duration = Symbol('Next yield duration')
 	static onUrgent = Symbol('Callbacks when finish()')
+	static onCancel = Symbol('Callbacks when cancel()')
 	static padding = 10
 
 	promise = new Promise((resolve, reject) => {
@@ -51,6 +52,20 @@ export default class IdlePromise {
 		if (this.idleCallbackId) cancelIdleCallback(this.idleCallbackId)
 		if (this[IdlePromise.onUrgent]) this[IdlePromise.onUrgent].forEach(callback => callback())
 		while (!this.done) await this.step()
+		return this.promise
+	}
+
+	addCancelListener(callback) {
+		if(this.canceled) callback()
+		if(!this[IdlePromise.onCancel]) this[IdlePromise.onCancel] = []
+		this[IdlePromise.onCancel].push(callback)
+	}
+
+	cancel() {
+		this.canceled = true
+		if (this.idleCallbackId) cancelIdleCallback(this.idleCallbackId)
+		if (this[IdlePromise.onCancel]) this[IdlePromise.onCancel].forEach(callback => callback())
+		this.reject()
 		return this.promise
 	}
 }
