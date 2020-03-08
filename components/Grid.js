@@ -54,13 +54,13 @@ export default class Grid extends HTMLElement {
 
 	async setCardAsCurrent(card) {
 		await card.ReadyNode
+		// TODO: awaits shouldn't be in requestAnimationFrame?
 		requestAnimationFrame(async () => {
 			if(card.SVGAnim.playing)
 				card.SVGAnim.pause()
 
 			card.dataset.live = true
 
-			await card.ReadyNode
 			await card.eraseAnim.idlePromise
 			card.eraseAnim.play()
 			await card.eraseAnim.promise
