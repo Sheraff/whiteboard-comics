@@ -28,7 +28,7 @@ export default class Router {
 		if(!name)
 			document.title = 'Whiteboard Comics'
 		else
-			document.title = `Whiteboard Comics - ${this.cleanTitle(name)}`
+			document.title = `Whiteboard Comics — ${this.cleanTitle(name)}`
 	}
 
 	cleanTitle(name) {
