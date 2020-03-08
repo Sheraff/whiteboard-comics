@@ -20,6 +20,9 @@ export default class ReadyNode {
 
 		this.fullPromise.addUrgentListener(this.displayPromise.finish)
 		this.then = this.fullPromise.then
+		this.catch = this.fullPromise.catch
+		this.finally = this.fullPromise.finally
+
 		this.display = this.displayPromise.finish
 		this.finish = this.fullPromise.finish
 
@@ -33,20 +36,20 @@ export default class ReadyNode {
 	// TODO: add SVGO cleanup step (and store only cleaned-up state in IndexedDB) before alphabetization
 
 	async * runDisplay(resolve) {
-		let node, erase, color
+		let node, erase, color, date
 
 		yield
 		const cached = await this.IndexedDBManager.getGraph(this.name)
-		this.wasInCache = Boolean(cached)
 
 		yield
-		if (this.wasInCache) {
+		if (Boolean(cached)) {
 			const domparser = new DOMParser()
 			yield 45
 			node = domparser.parseFromString(cached.node, 'image/svg+xml').firstElementChild
 			yield 20
 			erase = domparser.parseFromString(cached.erase, 'image/svg+xml').firstElementChild
 			color = cached.color
+			date = cached.date
 		} else {
 			let raw = this.parent.querySelector('svg')
 			if (!raw) {
@@ -62,6 +65,7 @@ export default class ReadyNode {
 			node = processed.node
 			erase = processed.erase
 			color = processed.color
+			date = Date.now()
 		}
 		yield
 		this.applySize(node, this.parent)
@@ -70,17 +74,17 @@ export default class ReadyNode {
 		const hslString = await this.use(this.displayPromise, node, erase, color)
 		yield
 		this.parent.style.color = hslString
-		resolve({ node, erase, color })
+		resolve({ name: this.name, node, erase, color, date, cached: Boolean(cached) })
 	}
 
 	async * runFull(resolve) {
 		yield
-		const { node, erase, color } = await this.displayPromise
+		const { node, erase, color, date, cached } = await this.displayPromise
 		yield
-		if (!this.wasInCache) {
+		if (!cached) {
 			await this.alphabetize(this.fullPromise, node)
 			yield
-			this.cache(this.name, node, erase, color)
+			this.cache(this.name, node, erase, color, date)
 		} else {
 			await TextToAlphabet.defineClips(this.fullPromise, node)
 			yield
@@ -129,8 +133,8 @@ export default class ReadyNode {
 		return idlePromise
 	}
 
-	cache(name, node, erase, color) {
-		this.IndexedDBManager.saveGraph({ name, node, erase, color })
+	cache(name, node, erase, color, date) {
+		this.IndexedDBManager.saveGraph({ name, node, erase, color, date })
 	}
 
 	alphabetize(idlePromise, node) {
