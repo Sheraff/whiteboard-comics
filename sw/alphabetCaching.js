@@ -2,7 +2,8 @@ const ALPHABET = '../data/alphabet.json'
 
 function matchAlphabetURL(url) {
 	const match = url.match(/\/alphabet\/alphabet_(.*)\.svg$/)
-	if(!match) return false
+	if (!match)
+		return
 	return match[1]
 }
 
@@ -12,7 +13,7 @@ function makeAlphabetURL(char) {
 
 async function fetchAndCache(cache, url) {
 	const response = await fetch(url)
-	if (!response || response.status !== 200)
+	if (response.status !== 200)
 		return
 	const responseToCache = response.clone()
 	cache.put(url, responseToCache)
@@ -28,15 +29,19 @@ async function cacheOrFetch(cache, url) {
 
 async function cacheAlphabet(cache) {
 	const response = await cacheOrFetch(cache, ALPHABET)
+	if (!response)
+		return
 	const fetched = await response.json()
 	const data = fetched.chars
 	return cache.addAll(data.map(makeAlphabetURL))
 }
 
 async function fetchLetter(CACHE_NAME, char) {
-	if(!self.charMap) {
+	if (!self.charMap) {
 		const cache = await caches.open(CACHE_NAME)
 		const alphabet = await fetchAndCache(cache, ALPHABET)
+		if (!alphabet)
+			return
 		const fetched = await alphabet.json()
 		self.charMap = new Map(fetched.chars)
 	}

@@ -1,16 +1,16 @@
 function matchStaticImageURL(url) {
 	const match = url.match(/\/static\/graphs_(.*)\.jpg$/)
-	if (!match) return false
-	console.log('matched static image', url)
+	if (!match)
+		return
 	return match[1]
 }
 
 async function fetchStaticImage(CACHE_NAME, url) {
 	const cache = await caches.open(CACHE_NAME)
 	const cached = await cache.match(url)
-	if (cached)
-		return cached
-	return new Response(false, { status: 404 })
+	if (!cached)
+		return
+	return cached
 }
 
 class JpegBlobUploader {
@@ -31,18 +31,17 @@ class JpegBlobUploader {
 	}
 
 	onMessage({ data: { url, data } }, port) {
-		if(!url)
+		if (!url)
 			return
 		caches.open(CACHE_NAME)
 			.then(cache => cache.put(url, new Response(data, {
 				status: 200,
-				type: 'basic',
 				headers: new Headers({
 					'Content-Type': 'image/jpeg',
 				})
 			})).then(() => {
 				port.postMessage({ url })
 			}))
-			
+
 	}
 }

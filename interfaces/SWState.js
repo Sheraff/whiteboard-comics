@@ -17,6 +17,7 @@ export default class SWState {
 					console.log('SW controller change', navigator.serviceWorker.controller, navigator.serviceWorker.controller.state)
 					navigator.serviceWorker.controller.onstatechange = e => {
 						console.log('SW state change', navigator.serviceWorker.controller, navigator.serviceWorker.controller.state)
+						// "installing" | "installed" | "activating" | "activated" | "redundant"
 						if(navigator.serviceWorker.controller.state === 'activated')
 							resolve(navigator.serviceWorker.controller)
 					}

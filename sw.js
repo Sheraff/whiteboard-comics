@@ -32,9 +32,9 @@ const URLS = [
 	'https://fonts.googleapis.com/css?family=Permanent+Marker&display=block',
 ]
 
-self.addEventListener('message', ({data: {port, id, target}}) => {
-	if(!port) return
-	switch(target) {
+self.addEventListener('message', ({ data: { port, id, target } }) => {
+	if (!port) return
+	switch (target) {
 		case 'debouncer':
 			debouncer.listenToMessages(port, id)
 			break
@@ -67,38 +67,35 @@ const debouncer = new Debouncer(self)
 const jpegBlobUploader = new JpegBlobUploader(self)
 
 self.addEventListener('fetch', event => event.respondWith(
-	caches.match(event.request).then(cached => {
-		// Cache hit - return response
+	caches.match(event.request).then(async (cached) => {
 		if (cached)
-			return { response: cached, cached: true }
+			return cached
 
 		debouncer.startFetching()
+		const response = await dispatchRequest(event.request)
+		debouncer.endFetching()
 
-		// Request
-		const letter = matchAlphabetURL(event.request.url)
-		if(letter)
-			return { response: fetchLetter(CACHE_NAME, letter) }
-
-		const staticImg = matchStaticImageURL(event.request.url)
-		if(staticImg)
-			return { response: fetchStaticImage(CACHE_NAME, event.request.url) }
-
-		return { response: fetch(event.request) }
-
-	}).then(({ response, cached }) => {
-		if (!cached)
-			debouncer.endFetching()
-
-		// Bad response, don't cache
-		if (!response || response.status !== 200 || (response.type !== 'basic' && response.type !== 'default'))
+		if (response)
 			return response
 
-		// Cache response // TODO: not caching anything...
-		const responseToCache = response.clone()
-		caches.open(CACHE_NAME)
-			.then(cache => cache.put(event.request, responseToCache))
-		return response
-	}).catch(() => {
-		console.error(event)
+		return new Response(null)
 	})
 ))
+
+async function dispatchRequest(request) {
+
+	const letter = matchAlphabetURL(request.url)
+	if (letter)
+		return await fetchLetter(CACHE_NAME, letter)
+
+	const staticImg = matchStaticImageURL(request.url)
+	if (staticImg)
+		return await fetchStaticImage(CACHE_NAME, request.url)
+
+	const response = await fetch(request)
+	if (response.status === 200 && (response.type === 'basic' || response.type === 'default')) {
+		const responseToCache = response.clone()
+		caches.open(CACHE_NAME).then(cache => cache.put(request, responseToCache))
+	}
+	return response
+}
