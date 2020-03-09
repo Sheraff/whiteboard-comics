@@ -26,7 +26,7 @@ export default class ReadyNode {
 		this.display = this.displayPromise.finish
 		this.finish = this.fullPromise.finish
 
-		this.then(this.makeStatic.bind(this))
+		this.makeStatic()
 	}
 
 	get urgent() {
@@ -197,7 +197,7 @@ export default class ReadyNode {
 		])
 	}
 
-	makeStatic({ node }) {
+	makeStatic() {
 		return new IdlePromise((async function* (resolve, reject) {
 			const src = `/static/graphs_${this.name}.jpg`
 			const jpegBlobUploader = new SWJpegBlobUploader()
@@ -217,6 +217,7 @@ export default class ReadyNode {
 			if (cached) {
 				img.src = src
 			} else {
+				const { node } = await this.fullPromise
 				yield
 				const buffer = await svgToImageBlob(node)
 				yield

@@ -7,7 +7,7 @@ export default class SWState {
 
 		this.promise = new Promise((resolve, reject) => {
 			if(!navigator.serviceWorker) {
-				console.error('navigator.serviceWorker', navigator.serviceWorker)
+				console.error('navigator.serviceWorker: old browser or missing HTTPS connection', navigator.serviceWorker)
 				reject('serviceWorker ability not found')
 			} else if(navigator.serviceWorker.controller) {
 				console.log('SW already setup', navigator.serviceWorker.controller, navigator.serviceWorker.controller.state)
