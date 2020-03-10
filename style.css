@@ -69,8 +69,8 @@ svg-card.alphabetized tspan,
 .svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
-svg-card.static-img:not([data-top]):not([data-live]) [data-main],
-.svg-card.static-img:not([data-top]):not([data-live]) [data-main] {
+svg-card.static-img:not([data-top]):not([data-live]):not(.svg-card) [data-main],
+.svg-card.static-img:not([data-top]):not([data-live]):not(.svg-card) [data-main] {
   display: none;
 }
 svg-card.static-img:not([data-top])[data-live] img,
