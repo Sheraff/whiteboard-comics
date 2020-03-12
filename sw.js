@@ -66,21 +66,26 @@ self.addEventListener('activate', event => {
 const debouncer = new Debouncer(self)
 const jpegBlobUploader = new JpegBlobUploader(self)
 
-self.addEventListener('fetch', event => event.respondWith(
-	caches.match(event.request).then(async (cached) => {
-		if (cached)
-			return cached
+self.addEventListener('fetch', event => {
+	// TODO: can we intercept fetches of './' if service worker was previously installed?
+	// useful to fetch updates only instead of full page
+	// console.log(event.request, location.origin)
+	return event.respondWith(
+		caches.match(event.request).then(async (cached) => {
+			if (cached)
+				return cached
 
-		debouncer.startFetching()
-		const response = await dispatchRequest(event.request)
-		debouncer.endFetching()
+			debouncer.startFetching()
+			const response = await dispatchRequest(event.request)
+			debouncer.endFetching()
 
-		if (response)
-			return response
+			if (response)
+				return response
 
-		return new Response(null)
-	})
-))
+			return new Response(null)
+		})
+	)
+})
 
 async function dispatchRequest(request) {
 
