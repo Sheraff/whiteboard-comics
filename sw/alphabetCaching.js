@@ -27,6 +27,8 @@ async function cacheOrFetch(cache, url) {
 	return fetchAndCache(cache, url)
 }
 
+// TODO: store cache and fetch promises in a single state object to avoid sending 20x the same request
+
 async function cacheAlphabet(cache) {
 	const response = await cacheOrFetch(cache, ALPHABET)
 	if (!response)
