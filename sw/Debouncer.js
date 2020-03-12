@@ -1,7 +1,7 @@
 class Debouncer {
 
 	static DEBOUNCE_TIME = 50
-	static MAX_CONCURRENT_SAME_ORIGIN_REQUESTS = 6
+	static MAX_CONCURRENT_SAME_ORIGIN_REQUESTS = 10 // in HTTP/1, 6 concurrent is recommended max
 
 	constructor() {
 		this.debounceTimeoutId
