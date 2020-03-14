@@ -224,6 +224,7 @@ export default class ReadyNode {
 			yield
 			const img = document.createElement('img')
 			img.setAttribute('slot', 'static')
+			img.setAttribute('alt', `static version of animated SVG graph ${this.name}`)
 
 			const loadPromise = new Promise(resolve => {
 				img.addEventListener('load', resolve, { once: true })
