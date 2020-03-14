@@ -94,6 +94,7 @@ export default class Grid extends HTMLElement {
 
 		await new Promise(resolve => requestAnimationFrame(async () => {
 			const transition = this.createTransition(card, () => {
+				card.dataset.live = true
 				delete card.dataset.top
 			})
 
