@@ -67,7 +67,13 @@ export default class ReadyNode {
 			date = Date.now()
 		}
 		yield
-		this.applySize(node, this.parent)
+		const { width, height, boundWidth, boundHeight } = this.applySize(node, this.parent)
+		this.parent.dimensions = {
+			width, 
+			height,
+			boundHeight: boundHeight || 100,
+			boundWidth: boundWidth || 100,
+		}
 		yield
 		this.addClass(this.displayPromise, 'sized')
 		const hslString = await this.use(this.displayPromise, node, erase, color)
@@ -106,10 +112,17 @@ export default class ReadyNode {
 	applySize(node, parent) {
 		const SIZE_FACTOR = 1.4 // this formula assumes a max SVG size of 1000x1000px in Illustrator
 		const [, , width, height] = node.getAttribute('viewBox').split(' ')
-		if (width < height)
-			parent.style.setProperty('--bound-width', (.9 * SIZE_FACTOR * width / 10) + '%')
-		else
-			parent.style.setProperty('--bound-height', (.9 * SIZE_FACTOR * height / 10) + '%')
+		const result = { width, height }
+		if (width < height) {
+			const boundWidth = .9 * SIZE_FACTOR * width / 10
+			parent.style.setProperty('--bound-width', `${boundWidth}%`)
+			result.boundWidth = boundWidth
+		} else {
+			const boundHeight = .9 * SIZE_FACTOR * height / 10
+			parent.style.setProperty('--bound-height', `${boundHeight}%`)
+			result.boundHeight = boundHeight
+		}
+		return result
 	}
 
 	use(parentIdlePromise, node, erase, color) {

@@ -14,12 +14,13 @@ export default class Card extends HTMLElement {
 		const fragment = document.importNode(template.content, true)
 		this.attachShadow({ mode: 'open' })
 		this.shadowRoot.appendChild(fragment)
+		this.background = this.shadowRoot.querySelector('.background')
 
 		document.fonts.load('1em Permanent Marker').then(() => this.classList.add('font-loaded'))
 
 		this.ReadyNode.then(() => {
 			this.svg = this.querySelector('svg[data-main]')
-			this.erase = this.querySelector('svg[slot="erase"]')
+			this.erase = this.querySelector('svg[slot=erase]')
 			this.SVGAnim = new SVGAnim(this.svg)
 			this.eraseAnim = new SVGAnim(this.erase)
 

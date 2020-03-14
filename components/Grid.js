@@ -4,10 +4,12 @@ export default class Grid extends HTMLElement {
 	constructor() {
 		super()
 		this.cards = new Map()
-		this.querySelectorAll('svg-card').forEach(card => {
+		this.querySelectorAll('svg-card').forEach(async card => {
 			const name = card.getAttribute('name')
 			this.cards.set(name, card)
-			card.addEventListener('click', this.getOnClick(card))
+
+			await customElements.whenDefined('svg-card')
+			card.background.addEventListener('click', this.getOnClick(card))
 		})
 		this.placeholder = document.createElement('div')
 		this.placeholder.classList.add('svg-card')
@@ -41,82 +43,127 @@ export default class Grid extends HTMLElement {
 		}
 	}
 
-	changeCurrent(value, oldValue) {
-		if(value)
-			this.setCardAsCurrent(this.cards.get(value))
-		else
-			this.setCardAsCurrent(this.cards.get(oldValue))
-
-		// change from oldValue to /
-		// change from / to value
-		// change from oldValue to value
+	async changeCurrent(value, oldValue) {
+		if(value) {
+			const card = this.cards.get(value)
+			await this.popCardOut(card)
+			await card.SVGAnim.play()
+			delete card.dataset.live
+		} else {
+			const card = this.cards.get(oldValue)
+			await this.pullCardIn(card)
+			await card.SVGAnim.play()
+			delete card.dataset.live
+		}
 	}
 
-	async setCardAsCurrent(card) {
-		await card.ReadyNode
-		// TODO: awaits shouldn't be in requestAnimationFrame?
-		requestAnimationFrame(async () => {
-			if(card.SVGAnim.playing)
-				card.SVGAnim.pause()
+	async popCardOut(card) {
+		if(!card.SVGAnim)
+			await card.ReadyNode
+		else if(card.SVGAnim.playing)
+			card.SVGAnim.pause()
 
-			card.dataset.live = true
+		await card.eraseAnim.idlePromise
 
-			await card.eraseAnim.idlePromise
-			card.eraseAnim.play()
-			await card.eraseAnim.promise
-
-			const animation = this.toggleAnimation(card, () => {
-				if (card.dataset.top)
-					this.removeChild(this.placeholder)
-				if (card.dataset.top)
-					delete card.dataset.top
-				else
-					card.dataset.top = true
-				if (card.dataset.top) {
-					this.placeholder.style.color = card.style.color
-					this.placeholder[card.attributes.featured ? 'setAttribute' : 'removeAttribute']('featured', true)
-					this.insertBefore(this.placeholder, card)
-				}
+		await new Promise(resolve => requestAnimationFrame(async () => {
+			const transition = this.createTransition(card, () => {
+				card.dataset.live = true
+				card.dataset.top = true
 			})
-			
-			if (this.lastPlayed && this.lastPlayed !== card)
-				delete this.lastPlayed.dataset['lastPlayed']
-			this.lastPlayed = card
-			this.lastPlayed.dataset['lastPlayed'] = true
 
 			await Promise.all([
-				new Promise(resolve => animation.onfinish = resolve)
-					.then(() => card.SVGAnim.idlePromise.finish()),
-				card.SVGAnim.idlePromise
+				transition,
+				card.eraseAnim.play()
+					.then(() => card.SVGAnim.idlePromise.finish())
 					.then(() => card.SVGAnim.prepare())
 					.then(() => card.eraseAnim.prepare()),
+				card.SVGAnim.idlePromise,
 			])
 
-			card.SVGAnim.play()
-				.then(() => delete card.dataset.live)
-
-		})
+			resolve()
+		}))
 	}
 
-	toggleAnimation(card, callback) {
-		const before = card.getBoundingClientRect()
-		callback()
-		const after = card.getBoundingClientRect() // TODO: might not need this bc we can know it beforehand
+	async pullCardIn(card) {
+		if(!card.SVGAnim)
+			await card.ReadyNode
+		else if(card.SVGAnim.playing)
+			card.SVGAnim.pause()
 
-		const scaleX = before.width / after.width
-		const scaleY = before.height / after.height
+		await card.eraseAnim.idlePromise
 
-		// TODO: should animate SVGs and card background separately, so that SVGs aren't distorted and we can zoom in/out *while* erasing
-		// this means that 
-		// - all SVGs should have the same zoom animation and trigger at the same time
-		// - <svg-card> itself shouldn't be animated, and should take up the whole screen during zoom (in or out) and during "full screen" mode
-		// - we should add another (pseudo-)element to be the animatable background
+		await new Promise(resolve => requestAnimationFrame(async () => {
+			const transition = this.createTransition(card, () => {
+				delete card.dataset.top
+			})
 
-		return card.animate([
-			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
+			await Promise.all([
+				transition,
+				card.eraseAnim.play()
+					.then(() => card.SVGAnim.idlePromise.finish())
+					.then(() => card.SVGAnim.prepare())
+					.then(() => card.eraseAnim.prepare()),
+				card.SVGAnim.idlePromise,
+			])
+
+			resolve()
+		}))
+	}
+
+	async swapCards(oldCard, newCard) {
+
+	}
+
+	createTransition(card, transformation) {
+		const backgroundBeforeState = card.background.getBoundingClientRect()
+		const svgBeforeState = card.svg.getBoundingClientRect()
+
+		transformation()
+
+		const backgroundAfterState = card.background.getBoundingClientRect()
+		const svgAfterState = card.svg.getBoundingClientRect()
+
+		const backgroundOffsetX = backgroundBeforeState.left - backgroundAfterState.left
+		const backgroundOffsetY = backgroundBeforeState.top - backgroundAfterState.top
+		const backgroundScaleX = backgroundBeforeState.width / backgroundAfterState.width
+		const backgroundScaleY = backgroundBeforeState.height / backgroundAfterState.height
+		const backgroundKeyframe = `translate3d(${backgroundOffsetX}px, ${backgroundOffsetY}px, 0) scale(${backgroundScaleX}, ${backgroundScaleY})`
+
+		const svgOffsetX = svgBeforeState.left - svgAfterState.left
+		const svgOffsetY = svgBeforeState.top - svgAfterState.top
+		const contentRatio = card.dimensions.width / card.dimensions.height
+		const boxRatioBefore = svgBeforeState.width / svgBeforeState.height
+		const boxRatioAfter = svgAfterState.width / svgAfterState.height
+		let svgScale
+		if(boxRatioBefore > contentRatio && boxRatioAfter > contentRatio)
+			svgScale = svgBeforeState.height / svgAfterState.height
+		else if(boxRatioBefore > contentRatio && boxRatioAfter < contentRatio)
+			svgScale = contentRatio * svgBeforeState.height / svgAfterState.width
+		else if(boxRatioBefore < contentRatio && boxRatioAfter > contentRatio)
+			svgScale = svgBeforeState.width / svgAfterState.height / contentRatio
+		else if(boxRatioBefore < contentRatio && boxRatioAfter < contentRatio)
+			svgScale = svgBeforeState.width / svgAfterState.width
+		const svgKeyframe = `translate3d(${svgOffsetX}px, ${svgOffsetY}px, 0) scale(${svgScale})`
+
+		const transitionOptions = { duration: 1000 }
+
+		const backgroundTransition = card.background.animate([
+			{ transform: backgroundKeyframe },
 			{ transform: 'none' }
-		], { duration: 500 })
-		// ], { duration: 1000, easing: 'cubic-bezier(.77,-0.3,.4,1)' })
-		// toggle back cubic-bezier(.5,.1,.4,1)
+		], transitionOptions)
+		const mainSVGTransition = card.svg.animate([
+			{ transform: svgKeyframe },
+			{ transform: 'none' }
+		], transitionOptions)
+		const eraseSVGTransition = card.erase.animate([
+			{ transform: svgKeyframe },
+			{ transform: 'none' }
+		], transitionOptions)
+
+		return Promise.all([
+			new Promise(resolve => backgroundTransition.onfinish = resolve), 
+			new Promise(resolve => mainSVGTransition.onfinish = resolve),
+			new Promise(resolve => eraseSVGTransition.onfinish = resolve),
+		])
 	}
 }

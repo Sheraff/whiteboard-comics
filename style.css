@@ -11,100 +11,44 @@ header {
   top: 0;
   width: 100%;
 }
-svg-card,
-.svg-card {
-  contain: strict;
+svg-card {
+  display: block;
   box-shadow: -10px 11px 9px -10px, 0 10px 11px rgba(0, 0, 0, 0.07);
+  --bound-width: 100%;
+  --bound-height: 100%;
+  transition: opacity 0.3s;
+}
+svg-card:not(:defined),
+svg-card:not(.sized) {
   background-color: white;
-  --bound-width: auto;
-  --bound-height: auto;
-}
-svg-card span,
-.svg-card span {
-  display: none;
-}
-svg-card svg,
-.svg-card svg {
-  max-width: 90%;
-  max-height: 90%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate3d(-50%, -50%, 0);
-  width: var(--bound-width);
-  height: var(--bound-height);
-}
-svg-card svg[slot="erase"],
-.svg-card svg[slot="erase"] {
-  pointer-events: none;
-}
-svg-card svg[slot="erase"] path,
-.svg-card svg[slot="erase"] path {
   opacity: 0;
 }
 svg-card svg text,
-.svg-card svg text,
-svg-card svg tspan,
-.svg-card svg tspan {
+svg-card svg tspan {
   font-family: 'Permanent Marker';
   pointer-events: all;
 }
-svg-card svg [data-type="text"],
-.svg-card svg [data-type="text"] {
+svg-card svg [data-type=text] {
+  opacity: 0;
+}
+svg-card svg path,
+svg-card svg line,
+svg-card svg polyline {
+  will-change: stroke-dashoffset, stroke-dasharray;
+}
+svg-card svg[slot=erase] path {
   opacity: 0;
 }
 svg-card:not(.font-loaded) text,
-.svg-card:not(.font-loaded) text,
-svg-card:not(.font-loaded) tspan,
-.svg-card:not(.font-loaded) tspan {
+svg-card:not(.font-loaded) tspan {
   fill: rgba(0, 0, 0, 0);
 }
-svg-card.alphabetized [data-type="text"],
-.svg-card.alphabetized [data-type="text"] {
+svg-card.alphabetized [data-type="text"] {
   opacity: 1;
 }
 svg-card.alphabetized text,
-.svg-card.alphabetized text,
-svg-card.alphabetized tspan,
-.svg-card.alphabetized tspan {
+svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
-}
-svg-card.static-img:not([data-top]):not([data-live]):not(.svg-card) [data-main],
-.svg-card.static-img:not([data-top]):not([data-live]):not(.svg-card) [data-main] {
-  display: none;
-}
-svg-card.static-img:not([data-top])[data-live] img,
-.svg-card.static-img:not([data-top])[data-live] img {
-  display: none;
-}
-svg-card[data-top] svg,
-.svg-card[data-top] svg {
-  overflow: visible;
-}
-svg-card[data-top] img,
-.svg-card[data-top] img {
-  display: none;
-}
-svg-card path,
-.svg-card path,
-svg-card line,
-.svg-card line,
-svg-card polyline,
-.svg-card polyline {
-  will-change: stroke-dashoffset, stroke-dasharray;
-}
-svg-card img,
-.svg-card img {
-  object-fit: contain;
-  width: var(--bound-width);
-  height: var(--bound-height);
-  max-width: 90%;
-  max-height: 90%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
 }
 #dom-tricks {
   contain: strict;
@@ -118,6 +62,7 @@ svg-card img,
 }
 #dom-tricks .svg-card text,
 #dom-tricks .svg-card tspan {
+  font-family: 'Permanent Marker';
   display: block !important;
 }
 grid-layout {
@@ -149,41 +94,17 @@ grid-layout [featured] {
   grid-column-end: span var(--featured);
   grid-row-end: span var(--featured);
 }
-grid-layout svg-card,
-grid-layout .svg-card {
-  transform-origin: top left;
-  backface-visibility: hidden;
-  perspective: 1000;
-  will-change: transform;
-  transition: transform 0.3s ease-in-out;
-}
-grid-layout svg-card[data-last-played],
-grid-layout .svg-card[data-last-played] {
+grid-layout svg-card[data-last-played] {
   z-index: 1;
 }
-grid-layout svg-card[data-top],
-grid-layout .svg-card[data-top] {
-  position: fixed;
-  left: var(--margin);
-  top: var(--margin);
-  height: calc(100vh - 2 * var(--margin));
-  width: calc(100vw - 2 * var(--margin));
-  box-shadow: none;
-}
-grid-layout svg-card:not([data-top]).move-up,
-grid-layout .svg-card:not([data-top]).move-up {
+grid-layout svg-card:not([data-top]).move-up {
   transform: translateY(-300px);
 }
-grid-layout svg-card:not([data-top]).move-down,
-grid-layout .svg-card:not([data-top]).move-down {
+grid-layout svg-card:not([data-top]).move-down {
   transform: translateY(300px);
 }
-grid-layout svg-card:not([data-top]).node-down svg,
-grid-layout .svg-card:not([data-top]).node-down svg {
+grid-layout svg-card:not([data-top]).node-down svg {
   display: none;
-}
-grid-layout .svg-card {
-  background-color: transparent;
 }
 @media (min-width: 375px) {
   grid-layout {

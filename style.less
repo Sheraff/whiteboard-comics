@@ -1,73 +1,63 @@
 body {
-	margin          : 0;
-	font-family     : 'Permanent Marker';
+	margin: 0;
+	font-family: 'Permanent Marker';
 	background-color: rgb(248, 244, 253);
-	padding-top     : 200px;
+	padding-top: 200px;
 }
 
 header {
 	text-transform: lowercase;
-	text-align    : center;
-	position      : fixed;
-	top           : 0;
-	width         : 100%;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	width: 100%;
 }
 
-svg-card,
-.svg-card {
-	contain: strict;
+svg-card {
+	display: block;
 	box-shadow: -10px 11px 9px -10px,
 		0 10px 11px rgba(0, 0, 0, 0.07);
-	background-color: white;
-	--bound-width   : auto;
-	--bound-height  : auto;
+	--bound-width: 100%;
+	--bound-height: 100%;
 
-	span {
-		display: none;
+	transition: opacity .3s;
+	&:not(:defined), &:not(.sized) {
+		background-color: white;
+		opacity: 0;
 	}
 
-	&:not(:defined) {}
-
 	svg {
-		max-width : 90%;
-		max-height: 90%;
-		position  : absolute;
-		left      : 50%;
-		top       : 50%;
-		transform : translate3d(-50%, -50%, 0);
-		width     : var(--bound-width);
-		height    : var(--bound-height);
-
-		[stroke="#000000"] {}
-
-		&[slot="erase"] {
-			pointer-events: none;
-
-			path {
-				opacity: 0;
-			}
-		}
-
 		text,
 		tspan {
-			font-family   : 'Permanent Marker';
+			font-family: 'Permanent Marker';
 			pointer-events: all;
 		}
 
-		[data-type="text"] {
+		[data-type=text] {
 			opacity: 0;
+		}
+
+		path,
+		line,
+		polyline {
+			will-change: stroke-dashoffset, stroke-dasharray;
 		}
 	}
 
+	svg[slot=erase] {
+		path {
+			opacity: 0;
+		}
+	}
+	
+	// showing text only when appropriate
 	&:not(.font-loaded) {
-
 		text,
 		tspan {
 			fill: rgba(0, 0, 0, 0);
 		}
 	}
 
-	// showing text only when appropriate
 	&.alphabetized {
 		[data-type="text"] {
 			opacity: 1;
@@ -78,67 +68,22 @@ svg-card,
 			fill: rgba(0, 0, 0, 0);
 		}
 	}
-
-	&.sized svg {
-		// animation: .5s fadein ease;
-	}
-
-	&.static-img:not([data-top]) {
-		&:not([data-live]):not(.svg-card) {
-			[data-main] {
-				display: none;
-			}
-		}
-
-		&[data-live] {
-			img {
-				display: none;
-			}
-		}
-	}
-
-	&[data-top] {
-		svg {
-			overflow  : visible;
-		}
-		img {
-			display: none;
-		}
-	}
-
-	path,
-	line,
-	polyline {
-		will-change: stroke-dashoffset, stroke-dasharray;
-	}
-
-	img {
-		object-fit    : contain;
-		width         : var(--bound-width);
-		height        : var(--bound-height);
-		max-width     : 90%;
-		max-height    : 90%;
-		position      : absolute;
-		top           : 50%;
-		left          : 50%;
-		transform     : translate(-50%, -50%);
-		pointer-events: none;
-	}
 }
 
 #dom-tricks {
-	contain : strict;
+	contain: strict;
 	position: absolute;
-	left    : -100%;
-	top     : -100%;
+	left: -100%;
+	top: -100%;
 
 	// off-screen pseudo svg-card for DOM manipulation
 	.svg-card {
-		width : 300px;
+		width: 300px;
 		height: 300px;
 
 		text,
 		tspan {
+			font-family: 'Permanent Marker';
 			display: block !important;
 		}
 	}
@@ -146,63 +91,48 @@ svg-card,
 
 
 grid-layout {
-	--count        : 1;
-	--featured     : 1;
-	--first        : 1;
-	--margin       : 10px;
-	display        : grid;
-	grid-gap       : var(--margin);
+	--count: 1;
+	--featured: 1;
+	--first: 1;
+	--margin: 10px;
+	display: grid;
+	grid-gap: var(--margin);
 	justify-content: space-around;
-	margin         : var(--margin);
+	margin: var(--margin);
 
 	max-width: 2500px;
 
 	// cells of equal width
 	grid-template-columns: repeat(auto-fill, minmax(auto, calc(calc(100% - calc(var(--margin) * calc(var(--count) - 1))) / var(--count))));
-	grid-auto-rows       : 1fr;
+	grid-auto-rows: 1fr;
 
 	// auto-layout around cells bigger than 1x1
 	grid-auto-flow: dense;
 
 	// hack for square cells
 	&::before {
-		content       : '';
-		width         : 0;
+		content: '';
+		width: 0;
 		padding-bottom: 100%;
-		grid-row      : 1 / 1;
-		grid-column   : 1 / 1;
+		grid-row: 1 / 1;
+		grid-column: 1 / 1;
 	}
 
 	// override hack so that 1st cell isn't blank
 	:first-child {
 		grid-column: 1 / 1 / span var(--first);
-		grid-row   : 1 / 1 / span var(--first);
+		grid-row: 1 / 1 / span var(--first);
 	}
 
 	[featured] {
 		grid-column-end: span var(--featured);
-		grid-row-end   : span var(--featured);
+		grid-row-end: span var(--featured);
 	}
 
-	svg-card,
-	.svg-card {
-		transform-origin   : top left;
-		backface-visibility: hidden;
-		perspective        : 1000;
-		will-change        : transform;
-		transition         : transform .3s ease-in-out;
+	svg-card {
 
 		&[data-last-played] {
 			z-index: 1;
-		}
-
-		&[data-top] {
-			position  : fixed;
-			left      : var(--margin);
-			top       : var(--margin);
-			height    : calc(100vh - 2 * var(--margin));
-			width     : calc(100vw - 2 * var(--margin));
-			box-shadow: none;
 		}
 
 		&:not([data-top]) {
@@ -220,10 +150,6 @@ grid-layout {
 				}
 			}
 		}
-	}
-
-	.svg-card {
-		background-color: transparent;
 	}
 }
 
@@ -254,8 +180,8 @@ grid-layout {
 
 @media (min-width: 1000px) {
 	grid-layout {
-		--count   : 6;
-		--first   : 3;
+		--count: 6;
+		--first: 3;
 		--featured: 2;
 	}
 }

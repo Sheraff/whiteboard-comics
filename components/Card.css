@@ -1,3 +1,87 @@
 :host {
+  pointer-events: none;
+  contain: strict;
+}
+.containment {
+  contain: strict;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:host([data-live]),
+:host([data-live]) .containment {
+  contain: size layout;
+}
+::slotted(svg),
+::slotted([slot=static]) {
+  max-width: calc(100% - var(--margin));
+  max-height: calc(100% - var(--margin));
+  position: absolute;
+  width: var(--bound-width);
+  height: var(--bound-height);
+  transform-origin: top left;
+}
+.background {
+  content: '';
   display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: -1;
+  pointer-events: all;
+  transform-origin: top left;
+}
+::slotted(svg),
+.background {
+  backface-visibility: hidden;
+  will-change: transform;
+}
+::slotted([slot=internal-link]),
+::slotted([slot=author]),
+::slotted([slot=external-link]),
+::slotted([slot=date]),
+span {
+  display: none;
+}
+::slotted([slot=static]) {
+  object-fit: contain;
+  pointer-events: none;
+}
+:host([data-top]) {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  box-shadow: none;
+  top: 0;
+  left: 0;
+}
+:host([data-top]) .background,
+:host([data-top]) .containment {
+  left: var(--margin);
+  right: var(--margin);
+  top: var(--margin);
+  bottom: var(--margin);
+}
+:host([data-top]) ::slotted(svg) {
+  overflow: visible;
+  width: calc(var(--bound-width) - var(--margin) * 2);
+  height: calc(var(--bound-height) - var(--margin) * 2);
+}
+:host([data-top]) ::slotted([slot=static]) {
+  display: none;
+}
+:host(.static-img:not([data-top]):not([data-live])) ::slotted(svg:not([slot])) {
+  display: none;
+}
+:host(.static-img:not([data-top])[data-live]) ::slotted([slot=static]) {
+  display: none;
 }
