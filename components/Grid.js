@@ -34,7 +34,7 @@ export default class Grid extends HTMLElement {
 	getOnClick(card) {
 		return () => {
 			if(this.attributes.current && this.attributes.current.value === card.attributes.name.value) {
-				this.setAttribute('current', '')
+				this.removeAttribute('current')
 				this.routing.push()
 			} else {
 				this.setAttribute('current', card.attributes.name.value)
@@ -67,8 +67,9 @@ export default class Grid extends HTMLElement {
 
 		await new Promise(resolve => requestAnimationFrame(async () => {
 
+			card.dataset.live = true
+			delete card.dataset.top
 			const transition = this.createTransition(card, () => {
-				card.dataset.live = true
 				card.dataset.top = true
 				card.dataset.last = true
 
@@ -101,6 +102,8 @@ export default class Grid extends HTMLElement {
 		await new Promise(resolve => requestAnimationFrame(async () => {
 			this.removeChild(this.placeholder)
 
+			card.dataset.top = true
+			delete card.dataset.live
 			const transition = this.createTransition(card, () => {
 				card.dataset.live = true
 				delete card.dataset.top
@@ -140,8 +143,8 @@ export default class Grid extends HTMLElement {
 		const backgroundScaleY = backgroundBeforeState.height / backgroundAfterState.height
 		const backgroundKeyframe = `translate3d(${backgroundOffsetX}px, ${backgroundOffsetY}px, 0) scale(${backgroundScaleX}, ${backgroundScaleY})`
 
-		const svgOffsetX = svgBeforeState.left - svgAfterState.left
-		const svgOffsetY = svgBeforeState.top - svgAfterState.top
+		const svgOffsetX = (svgBeforeState.right + svgBeforeState.left) / 2 - (svgAfterState.right + svgAfterState.left) / 2
+		const svgOffsetY = (svgBeforeState.bottom + svgBeforeState.top) / 2 - (svgAfterState.bottom + svgAfterState.top) / 2
 		const contentRatio = card.dimensions.width / card.dimensions.height
 		const boxRatioBefore = svgBeforeState.width / svgBeforeState.height
 		const boxRatioAfter = svgAfterState.width / svgAfterState.height

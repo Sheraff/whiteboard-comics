@@ -5,10 +5,10 @@
 .containment {
   contain: strict;
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  left: var(--margin);
+  right: var(--margin);
+  top: var(--margin);
+  bottom: var(--margin);
   pointer-events: none;
   display: flex;
   justify-content: center;
@@ -20,12 +20,12 @@
 }
 ::slotted(svg),
 ::slotted([slot=static]) {
-  max-width: calc(100% - var(--margin));
-  max-height: calc(100% - var(--margin));
+  max-width: 100%;
+  max-height: 100%;
   position: absolute;
   width: var(--bound-width);
   height: var(--bound-height);
-  transform-origin: top left;
+  transform-origin: center center;
 }
 .background {
   content: '';
@@ -64,8 +64,7 @@ span {
   top: 0;
   left: 0;
 }
-:host([data-top]) .background,
-:host([data-top]) .containment {
+:host([data-top]) .background {
   left: var(--margin);
   right: var(--margin);
   top: var(--margin);
