@@ -106,6 +106,12 @@ export default class Grid extends HTMLElement {
 		const scaleX = before.width / after.width
 		const scaleY = before.height / after.height
 
+		// TODO: should animate SVGs and card background separately, so that SVGs aren't distorted and we can zoom in/out *while* erasing
+		// this means that 
+		// - all SVGs should have the same zoom animation and trigger at the same time
+		// - <svg-card> itself shouldn't be animated, and should take up the whole screen during zoom (in or out) and during "full screen" mode
+		// - we should add another (pseudo-)element to be the animatable background
+
 		return card.animate([
 			{ transform: `translate3d(${before.left - after.left}px, ${before.top - after.top}px, 0) scale(${scaleX}, ${scaleY})` },
 			{ transform: 'none' }
