@@ -13,7 +13,6 @@ export default class ReadyNode {
 		if (!this.name) return
 
 		this.IndexedDBManager = new IndexedDBManager()
-		this.IdleNetwork = new IdleNetwork()
 
 		this.displayPromise = new IdlePromise(this.runDisplay.bind(this))
 		this.fullPromise = new IdlePromise(this.runFull.bind(this))
@@ -181,6 +180,10 @@ export default class ReadyNode {
 
 	fetch(idlePromise, name) {
 		const URL = `/graphs/graphs_${name}.svg`
+
+		if(!this.IdleNetwork)
+			this.IdleNetwork = new IdleNetwork()
+
 		if (idlePromise.urgent)
 			return this.IdleNetwork.race(URL)
 
