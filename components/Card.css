@@ -71,7 +71,6 @@ span {
   bottom: var(--margin);
 }
 :host([data-top]) ::slotted(svg) {
-  overflow: visible;
   width: calc(var(--bound-width) - var(--margin) * 2);
   height: calc(var(--bound-height) - var(--margin) * 2);
 }

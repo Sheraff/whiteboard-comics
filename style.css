@@ -13,7 +13,7 @@ header {
 }
 svg-card {
   display: block;
-  box-shadow: -10px 11px 9px -10px, 0 10px 11px rgba(0, 0, 0, 0.07);
+  box-shadow: -10px 11px 13px -11px;
   --bound-width: 100%;
   --bound-height: 100%;
   transition: opacity 0.3s;
