@@ -66,9 +66,15 @@ export default class Grid extends HTMLElement {
 		await card.eraseAnim.idlePromise
 
 		await new Promise(resolve => requestAnimationFrame(async () => {
+
 			const transition = this.createTransition(card, () => {
 				card.dataset.live = true
 				card.dataset.top = true
+				card.dataset.last = true
+
+				this.placeholder.style.color = card.style.color
+				this.placeholder[card.attributes.featured ? 'setAttribute' : 'removeAttribute']('featured', true)
+				this.insertBefore(this.placeholder, card)
 			})
 
 			await Promise.all([
@@ -93,6 +99,8 @@ export default class Grid extends HTMLElement {
 		await card.eraseAnim.idlePromise
 
 		await new Promise(resolve => requestAnimationFrame(async () => {
+			this.removeChild(this.placeholder)
+
 			const transition = this.createTransition(card, () => {
 				card.dataset.live = true
 				delete card.dataset.top
@@ -106,6 +114,8 @@ export default class Grid extends HTMLElement {
 					.then(() => card.eraseAnim.prepare()),
 				card.SVGAnim.idlePromise,
 			])
+
+			delete card.dataset.last
 
 			resolve()
 		}))

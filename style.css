@@ -50,6 +50,9 @@ svg-card.alphabetized text,
 svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
+svg-card[data-last] {
+  z-index: 1;
+}
 #dom-tricks {
   contain: strict;
   position: absolute;
