@@ -20,20 +20,20 @@ svg-card {
 	--shadow-delay: .3s;
 	will-change: box-shadow;
 	&.shadow-zoom-in {
-		animation: var(--shadow-duration) linear var(--shadow-delay) shadow-zoom forwards;
+		animation: var(--shadow-duration) cubic-bezier(.69,.01,.88,.65) var(--shadow-delay) shadow-zoom forwards;
 	}
 	&.shadow-zoom-out {
-		animation: var(--shadow-duration) linear var(--shadow-delay) reverse shadow-zoom backwards;
+		animation: var(--shadow-duration) cubic-bezier(.69,.01,.88,.65) var(--shadow-delay) reverse shadow-zoom backwards;
 	}
 	@keyframes shadow-zoom { 
 		from { 
 			box-shadow: -10px 11px 13px -11px; 
 		}
 		50% {
-			box-shadow: -50px 50px 100px 0px;
+			box-shadow: -20px 50px 100px -50px;
 		} 
 		to {
-			box-shadow: -70px 70px 200px 0px #FFFFFF00;
+			box-shadow: -30px 70px 200px -70px #FFFFFF00;
 		}
 	}
 }
