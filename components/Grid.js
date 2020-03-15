@@ -25,7 +25,7 @@ export default class Grid extends HTMLElement {
 	}
 
 	attributeChangedCallback(name, oldValue, value) {
-		if(name === 'current' && oldValue !== value)
+		if (name === 'current' && oldValue !== value)
 			this.changeCurrent(value, oldValue)
 	}
 
@@ -33,7 +33,7 @@ export default class Grid extends HTMLElement {
 
 	getOnClick(card) {
 		return () => {
-			if(this.attributes.current && this.attributes.current.value === card.attributes.name.value) {
+			if (this.attributes.current && this.attributes.current.value === card.attributes.name.value) {
 				this.removeAttribute('current')
 				this.routing.push()
 			} else {
@@ -44,7 +44,7 @@ export default class Grid extends HTMLElement {
 	}
 
 	async changeCurrent(value, oldValue) {
-		if(value) {
+		if (value) {
 			const card = this.cards.get(value)
 			await this.popCardOut(card)
 			await card.SVGAnim.play()
@@ -58,77 +58,78 @@ export default class Grid extends HTMLElement {
 	}
 
 	async popCardOut(card) {
-		if(!card.SVGAnim)
-			await card.ReadyNode
-		else if(card.SVGAnim.playing)
-			card.SVGAnim.pause()
-
-		await card.eraseAnim.idlePromise
-
-		await new Promise(resolve => requestAnimationFrame(async () => {
-
-			card.dataset.live = true
-			delete card.dataset.top
-			const transition = this.createTransition(card, () => {
+		await this.transitionCard(
+			card,
+			() => {
+				card.dataset.live = true
+				delete card.dataset.top
+			},
+			() => {
 				card.dataset.top = true
 				card.dataset.last = true
-
 				this.placeholder.style.color = card.style.color
 				this.placeholder[card.attributes.featured ? 'setAttribute' : 'removeAttribute']('featured', true)
 				this.insertBefore(this.placeholder, card)
-			})
-
-			await Promise.all([
-				transition,
-				card.eraseAnim.play()
-					.then(() => card.SVGAnim.idlePromise.finish())
-					.then(() => card.SVGAnim.prepare())
-					.then(() => card.eraseAnim.prepare()),
-				card.SVGAnim.idlePromise,
-			])
-
-			resolve()
-		}))
+			}
+		)
 	}
 
 	async pullCardIn(card) {
-		if(!card.SVGAnim)
-			await card.ReadyNode
-		else if(card.SVGAnim.playing)
-			card.SVGAnim.pause()
-
-		await card.eraseAnim.idlePromise
-
-		await new Promise(resolve => requestAnimationFrame(async () => {
-			this.removeChild(this.placeholder)
-
-			card.dataset.top = true
-			delete card.dataset.live
-			const transition = this.createTransition(card, () => {
+		await this.transitionCard(
+			card,
+			() => {
+				this.removeChild(this.placeholder)
+				card.dataset.top = true
+				delete card.dataset.live
+			},
+			() => {
 				card.dataset.live = true
 				delete card.dataset.top
-			})
-
-			await Promise.all([
-				transition,
-				card.eraseAnim.play()
-					.then(() => card.SVGAnim.idlePromise.finish())
-					.then(() => card.SVGAnim.prepare())
-					.then(() => card.eraseAnim.prepare()),
-				card.SVGAnim.idlePromise,
-			])
-
-			delete card.dataset.last
-
-			resolve()
-		}))
+			},
+			() => {
+				delete card.dataset.last
+			}
+		)
 	}
 
 	async swapCards(oldCard, newCard) {
 
 	}
 
-	createTransition(card, transformation) {
+	async transitionCard(card, before, toggle, after) {
+		if (!card.SVGAnim)
+			await card.ReadyNode
+		else if (card.SVGAnim.playing)
+			card.SVGAnim.pause()
+
+		await card.eraseAnim.idlePromise
+
+		await new Promise(resolve => requestAnimationFrame(async () => {
+
+			before()
+
+			const transition = this.createTransition(card, toggle, {
+				delay: card.eraseAnim.duration / 4,
+				duration: card.eraseAnim.duration * 3 / 4,
+			})
+
+			await Promise.all([
+				transition,
+				card.eraseAnim.play()
+					.then(() => card.SVGAnim.idlePromise.finish())
+					.then(() => card.SVGAnim.prepare())
+					.then(() => card.eraseAnim.prepare()),
+				card.SVGAnim.idlePromise,
+			])
+
+			if (after instanceof Function)
+				after()
+
+			resolve()
+		}))
+	}
+
+	createTransition(card, transformation, options = {}) {
 		const backgroundBeforeState = card.background.getBoundingClientRect()
 		const svgBeforeState = card.svg.getBoundingClientRect()
 
@@ -149,17 +150,21 @@ export default class Grid extends HTMLElement {
 		const boxRatioBefore = svgBeforeState.width / svgBeforeState.height
 		const boxRatioAfter = svgAfterState.width / svgAfterState.height
 		let svgScale
-		if(boxRatioBefore > contentRatio && boxRatioAfter > contentRatio)
+		if (boxRatioBefore > contentRatio && boxRatioAfter > contentRatio)
 			svgScale = svgBeforeState.height / svgAfterState.height
-		else if(boxRatioBefore > contentRatio && boxRatioAfter < contentRatio)
+		else if (boxRatioBefore > contentRatio && boxRatioAfter < contentRatio)
 			svgScale = contentRatio * svgBeforeState.height / svgAfterState.width
-		else if(boxRatioBefore < contentRatio && boxRatioAfter > contentRatio)
+		else if (boxRatioBefore < contentRatio && boxRatioAfter > contentRatio)
 			svgScale = svgBeforeState.width / svgAfterState.height / contentRatio
-		else if(boxRatioBefore < contentRatio && boxRatioAfter < contentRatio)
+		else if (boxRatioBefore < contentRatio && boxRatioAfter < contentRatio)
 			svgScale = svgBeforeState.width / svgAfterState.width
 		const svgKeyframe = `translate3d(${svgOffsetX}px, ${svgOffsetY}px, 0) scale(${svgScale})`
 
-		const transitionOptions = { duration: 1000 }
+		const transitionOptions = Object.assign({
+			duration: 1000,
+			easing: 'cubic-bezier(.69,.01,.88,.65)',
+			fill: 'backwards',
+		}, options)
 
 		const backgroundTransition = card.background.animate([
 			{ transform: backgroundKeyframe },
@@ -175,7 +180,7 @@ export default class Grid extends HTMLElement {
 		], transitionOptions)
 
 		return Promise.all([
-			new Promise(resolve => backgroundTransition.onfinish = resolve), 
+			new Promise(resolve => backgroundTransition.onfinish = resolve),
 			new Promise(resolve => mainSVGTransition.onfinish = resolve),
 			new Promise(resolve => eraseSVGTransition.onfinish = resolve),
 		])
