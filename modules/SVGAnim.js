@@ -9,6 +9,7 @@ export default class SVGAnim {
 		this.paused = false
 		this.prepared = false
 		this.prepare = this.prepare.bind(this)
+		this.duration = 0
 
 		this.map = new Map()
 		this.idlePromise = new IdlePromise(this.iterateGenerator.bind(this, this.preprocess.bind(this), 20))
@@ -110,6 +111,9 @@ export default class SVGAnim {
 	preprocess(node, index) {
 		const length = node.getStaticTotalLength()
 		const isEraseStroke = node.getAttribute('stroke') === '#FFFFFF'
+		const delay = index === 0 ? 300 : 0
+		const endDelay = node.dataset.type === 'text' || length < 75 ? 0 : 300
+		const duration = SVGAnim.getElementDuration(node, length)
 		node.style.strokeDasharray = `${length} ${length + 1}`
 		this.map.set(node, {
 			before: {
@@ -125,9 +129,9 @@ export default class SVGAnim {
 				}),
 			},
 			options: {
-				duration: SVGAnim.getElementDuration(node, length),
-				delay: index === 0 ? 300 : 0,
-				endDelay: node.dataset.type === 'text' || length < 75 ? 0 : 300,
+				duration,
+				delay,
+				endDelay,
 				easing: 'ease-out',
 				fill: 'backwards',
 			},
@@ -135,6 +139,7 @@ export default class SVGAnim {
 				strokeDashoffset: 0,
 			}
 		})
+		this.duration += delay + endDelay + duration
 	}
 
 	async animate(node) {
