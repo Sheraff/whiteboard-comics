@@ -13,9 +13,33 @@ header {
 	width: 100%;
 }
 
+.svg-card, 
+svg-card {
+	box-shadow: -10px 11px 13px -11px;
+	--shadow-duration: .5s;
+	--shadow-delay: .3s;
+	&.shadow-zoom-in {
+		animation: var(--shadow-duration) linear var(--shadow-delay) shadow-zoom forwards;
+	}
+	&.shadow-zoom-out {
+		animation: var(--shadow-duration) linear var(--shadow-delay) reverse shadow-zoom backwards;
+	}
+	@keyframes shadow-zoom { 
+		from { 
+			box-shadow: -10px 11px 13px -11px; 
+		}
+		50% {
+			box-shadow: -50px 50px 100px 0px;
+		} 
+		to {
+			box-shadow: -50px 50px 100px 0px #FFFFFF00;
+		}
+	}
+}
+
 svg-card {
 	display: block;
-	box-shadow: -10px 11px 13px -11px;
+	
 	--bound-width: 100%;
 	--bound-height: 100%;
 
@@ -23,6 +47,10 @@ svg-card {
 	&:not(:defined), &:not(.sized) {
 		background-color: white;
 		opacity: 0;
+	}
+
+	&[data-top]{
+		box-shadow: none;
 	}
 
 	svg {

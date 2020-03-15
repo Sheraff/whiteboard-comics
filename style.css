@@ -11,9 +11,33 @@ header {
   top: 0;
   width: 100%;
 }
+.svg-card,
+svg-card {
+  box-shadow: -10px 11px 13px -11px;
+  --shadow-duration: 0.5s;
+  --shadow-delay: 0.3s;
+}
+.svg-card.shadow-zoom-in,
+svg-card.shadow-zoom-in {
+  animation: var(--shadow-duration) linear var(--shadow-delay) shadow-zoom forwards;
+}
+.svg-card.shadow-zoom-out,
+svg-card.shadow-zoom-out {
+  animation: var(--shadow-duration) linear var(--shadow-delay) reverse shadow-zoom backwards;
+}
+@keyframes shadow-zoom {
+  from {
+    box-shadow: -10px 11px 13px -11px;
+  }
+  50% {
+    box-shadow: -50px 50px 100px 0px;
+  }
+  to {
+    box-shadow: -50px 50px 100px 0px #FFFFFF00;
+  }
+}
 svg-card {
   display: block;
-  box-shadow: -10px 11px 13px -11px;
   --bound-width: 100%;
   --bound-height: 100%;
   transition: opacity 0.3s;
@@ -22,6 +46,9 @@ svg-card:not(:defined),
 svg-card:not(.sized) {
   background-color: white;
   opacity: 0;
+}
+svg-card[data-top] {
+  box-shadow: none;
 }
 svg-card svg text,
 svg-card svg tspan {

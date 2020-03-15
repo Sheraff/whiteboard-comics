@@ -63,13 +63,21 @@ export default class Grid extends HTMLElement {
 			() => {
 				card.dataset.live = true
 				delete card.dataset.top
+				card.classList.remove('shadow-zoom-out')
 			},
 			() => {
 				card.dataset.top = true
 				card.dataset.last = true
 				this.placeholder.style.color = card.style.color
 				this.placeholder[card.attributes.featured ? 'setAttribute' : 'removeAttribute']('featured', true)
+				// card.insertAdjacentElement('afterend', this.placeholder)
 				this.insertBefore(this.placeholder, card)
+				this.placeholder.style.setProperty('--shadow-duration', `${Math.max(300, card.eraseAnim.duration - 300)}ms`)
+				this.placeholder.style.setProperty('--shadow-delay', '300ms')
+				this.placeholder.classList.add('shadow-zoom-in')
+			},
+			() => {
+				card.classList.add('visible-meta')
 			}
 		)
 	}
@@ -79,12 +87,17 @@ export default class Grid extends HTMLElement {
 			card,
 			() => {
 				this.removeChild(this.placeholder)
+				this.placeholder.classList.remove('shadow-zoom-in')
 				card.dataset.top = true
 				delete card.dataset.live
+				card.classList.remove('visible-meta')
 			},
 			() => {
 				card.dataset.live = true
 				delete card.dataset.top
+				card.style.setProperty('--shadow-duration', `${Math.max(300, card.eraseAnim.duration - 300)}ms`)
+				card.style.setProperty('--shadow-delay', '300ms')
+				card.classList.add('shadow-zoom-out')
 			},
 			() => {
 				delete card.dataset.last
@@ -109,8 +122,8 @@ export default class Grid extends HTMLElement {
 			before()
 
 			const transition = this.createTransition(card, toggle, {
-				delay: card.eraseAnim.duration / 4,
-				duration: card.eraseAnim.duration * 3 / 4,
+				delay: 300,
+				duration: Math.max(300, card.eraseAnim.duration - 300),
 			})
 
 			await Promise.all([
