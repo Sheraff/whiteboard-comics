@@ -16,6 +16,7 @@ svg-card {
   box-shadow: -10px 11px 13px -11px;
   --shadow-duration: 0.5s;
   --shadow-delay: 0.3s;
+  will-change: box-shadow;
 }
 .svg-card.shadow-zoom-in,
 svg-card.shadow-zoom-in {
@@ -33,7 +34,7 @@ svg-card.shadow-zoom-out {
     box-shadow: -50px 50px 100px 0px;
   }
   to {
-    box-shadow: -50px 50px 100px 0px #FFFFFF00;
+    box-shadow: -70px 70px 200px 0px #FFFFFF00;
   }
 }
 svg-card {
@@ -124,8 +125,8 @@ grid-layout [featured] {
   grid-column-end: span var(--featured);
   grid-row-end: span var(--featured);
 }
-grid-layout svg-card[data-last-played] {
-  z-index: 1;
+grid-layout svg-card[data-last] {
+  z-index: 2;
 }
 grid-layout svg-card:not([data-top]).move-up {
   transform: translateY(-300px);
@@ -135,6 +136,9 @@ grid-layout svg-card:not([data-top]).move-down {
 }
 grid-layout svg-card:not([data-top]).node-down svg {
   display: none;
+}
+grid-layout .svg-card {
+  z-index: 1;
 }
 @media (min-width: 375px) {
   grid-layout {

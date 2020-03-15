@@ -18,6 +18,7 @@ svg-card {
 	box-shadow: -10px 11px 13px -11px;
 	--shadow-duration: .5s;
 	--shadow-delay: .3s;
+	will-change: box-shadow;
 	&.shadow-zoom-in {
 		animation: var(--shadow-duration) linear var(--shadow-delay) shadow-zoom forwards;
 	}
@@ -32,7 +33,7 @@ svg-card {
 			box-shadow: -50px 50px 100px 0px;
 		} 
 		to {
-			box-shadow: -50px 50px 100px 0px #FFFFFF00;
+			box-shadow: -70px 70px 200px 0px #FFFFFF00;
 		}
 	}
 }
@@ -162,8 +163,8 @@ grid-layout {
 
 	svg-card {
 
-		&[data-last-played] {
-			z-index: 1;
+		&[data-last] {
+			z-index: 2;
 		}
 
 		&:not([data-top]) {
@@ -181,6 +182,10 @@ grid-layout {
 				}
 			}
 		}
+	}
+
+	.svg-card {
+		z-index: 1;
 	}
 }
 
