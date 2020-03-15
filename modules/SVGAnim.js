@@ -66,9 +66,9 @@ export default class SVGAnim {
 
 	then(resolve) {
 		if (this.promise)
-			this.promise.then(resolve)
+			return this.promise.then(resolve)
 		else
-			resolve()
+			return resolve()
 	}
 
 	async * iterateGenerator(callback, taskDuration = IdlePromise.padding, resolve) {
