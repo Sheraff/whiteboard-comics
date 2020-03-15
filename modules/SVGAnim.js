@@ -166,8 +166,8 @@ export default class SVGAnim {
 		if (node.dataset.type === 'text')
 			return length * 2.5 / 4
 		if (node.dataset.type === 'erase')
-			return 35 * Math.log(Math.pow(length, 2))
+			return 35 * Math.max(.1, Math.log(Math.pow(length, 2)))
 
-		return 25 * Math.log(Math.pow(length, 2))
+		return 25 * Math.max(.1, Math.log(Math.pow(length, 2)))
 	}
 }
