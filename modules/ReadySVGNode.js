@@ -161,6 +161,7 @@ export default class ReadyNode {
 
 		const idlePromise = new IdlePromise(async function* (resolve) {
 			yield
+			node.removeAttribute('id')
 			// find and extract "erase"
 			const erasePath = node.firstElementChild
 			erasePath.dataset.type = 'erase'
