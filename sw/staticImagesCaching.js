@@ -38,6 +38,7 @@ class JpegBlobUploader {
 				status: 200,
 				headers: new Headers({
 					'Content-Type': 'image/jpeg',
+					'Cache-Control': 'public, max-age=31536000',
 				})
 			})).then(() => {
 				port.postMessage({ url })
