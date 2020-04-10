@@ -35,6 +35,18 @@ export default class Card extends HTMLElement {
 			this.removeEventListener('mouseover', this.hover)
 		})
 
+		// temporarily allow clicks on static image to allow for right click > save image as
+		this.ReadyNode.staticPromise.then(img => {
+			this.addEventListener('contextmenu', () => {
+				img.style.setProperty('display', 'block')
+				img.style.setProperty('pointer-events', 'auto')
+				setTimeout(() => {
+					img.style.removeProperty('display')
+					img.style.removeProperty('pointer-events')
+				}, 0)
+			}, { capture: true })
+		})
+
 		// if mouse over, immediately request playability in case of click
 		this.addEventListener('mouseover', this.hover, { once: true })
 
