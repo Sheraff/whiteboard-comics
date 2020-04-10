@@ -40,9 +40,11 @@ export default class Card extends HTMLElement {
 			this.addEventListener('contextmenu', () => {
 				img.style.setProperty('display', 'block')
 				img.style.setProperty('pointer-events', 'auto')
+				img.style.setProperty('opacity', 0)
 				setTimeout(() => {
 					img.style.removeProperty('display')
 					img.style.removeProperty('pointer-events')
+					img.style.removeProperty('opacity')
 				}, 0)
 			}, { capture: true })
 		})
