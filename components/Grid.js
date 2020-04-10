@@ -9,7 +9,12 @@ export default class Grid extends HTMLElement {
 			this.cards.set(name, card)
 
 			await customElements.whenDefined('svg-card')
-			card.background.addEventListener('click', this.getOnClick(card))
+			card.addEventListener('click', this.getOnClick(card))
+
+			// temporarily set <text> fill to opaque white to allow for selection
+			card.addEventListener('mousedown', () => card.classList.add('selecting'))
+			card.addEventListener('mouseup', () => card.classList.remove('selecting'))
+			card.addEventListener('mouseout', () => card.classList.remove('selecting'))
 		})
 		this.placeholder = document.createElement('div')
 		this.placeholder.classList.add('svg-card')
@@ -33,6 +38,11 @@ export default class Grid extends HTMLElement {
 
 	getOnClick(card) {
 		return () => {
+			// check that click isn't just selecting text
+			const { type } = document.getSelection()
+			if(type === 'Range')
+				return
+
 			if (this.attributes.current && this.attributes.current.value === card.attributes.name.value) {
 				this.removeAttribute('current')
 				this.routing.push()

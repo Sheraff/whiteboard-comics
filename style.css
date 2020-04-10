@@ -78,6 +78,10 @@ svg-card.alphabetized text,
 svg-card.alphabetized tspan {
   fill: rgba(0, 0, 0, 0);
 }
+svg-card.selecting text,
+svg-card.selecting tspan {
+  fill: rgba(255, 255, 255, 0.1) !important;
+}
 svg-card[data-last] {
   z-index: 1;
 }

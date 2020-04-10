@@ -89,13 +89,14 @@ span {
 	}
 }
 
-:host(.static-img:not([data-top]):not([data-live])) {
+:host(.static-img:not([data-top]):not([data-live]):not(:hover)) {
 	::slotted(svg:not([slot])) {
 		display: none;
 	}
 }
 
-:host(.static-img:not([data-top])[data-live]) {
+:host(.static-img:not([data-top])[data-live]), 
+:host(.static-img:hover) {
 	::slotted([slot=static]) {
 		display: none;
 	}

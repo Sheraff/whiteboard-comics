@@ -77,9 +77,10 @@ span {
 :host([data-top]) ::slotted([slot=static]) {
   display: none;
 }
-:host(.static-img:not([data-top]):not([data-live])) ::slotted(svg:not([slot])) {
+:host(.static-img:not([data-top]):not([data-live]):not(:hover)) ::slotted(svg:not([slot])) {
   display: none;
 }
-:host(.static-img:not([data-top])[data-live]) ::slotted([slot=static]) {
+:host(.static-img:not([data-top])[data-live]) ::slotted([slot=static]),
+:host(.static-img:hover) ::slotted([slot=static]) {
   display: none;
 }
