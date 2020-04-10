@@ -25,7 +25,7 @@ export default class ReadyNode {
 		this.display = this.displayPromise.finish
 		this.finish = this.fullPromise.finish
 
-		this.makeStatic()
+		this.staticPromise = new IdlePromise(this.makeStatic.bind(this))
 	}
 
 	get urgent() {
@@ -214,40 +214,38 @@ export default class ReadyNode {
 		])
 	}
 
-	makeStatic() {
-		return new IdlePromise((async function* (resolve, reject) {
-			const src = `/static/graphs_${this.name}.jpg`
-			const jpegBlobUploader = new SWJpegBlobUploader()
+	async * makeStatic(resolve, reject) {
+		const src = `/static/graphs_${this.name}.jpg`
+		const jpegBlobUploader = new SWJpegBlobUploader()
 
+		yield
+		const cached = await jpegBlobUploader.has(src)
+
+		yield
+		const img = document.createElement('img')
+		img.setAttribute('slot', 'static')
+		img.setAttribute('alt', `static version of animated SVG graph ${this.name}`)
+
+		const loadPromise = new Promise(resolve => {
+			img.addEventListener('load', resolve, { once: true })
+			img.addEventListener('error', reject, { once: true })
+		})
+
+		if (cached) {
+			img.src = src
+		} else {
+			const { node } = await this.fullPromise
 			yield
-			const cached = await jpegBlobUploader.has(src)
-
+			const buffer = await svgToImageBlob(node)
 			yield
-			const img = document.createElement('img')
-			img.setAttribute('slot', 'static')
-			img.setAttribute('alt', `static version of animated SVG graph ${this.name}`)
+			jpegBlobUploader.put(src, buffer, src => img.src = src)
+		}
 
-			const loadPromise = new Promise(resolve => {
-				img.addEventListener('load', resolve, { once: true })
-				img.addEventListener('error', reject, { once: true })
-			})
+		await loadPromise
 
-			if (cached) {
-				img.src = src
-			} else {
-				const { node } = await this.fullPromise
-				yield
-				const buffer = await svgToImageBlob(node)
-				yield
-				jpegBlobUploader.put(src, buffer, src => img.src = src)
-			}
-
-			await loadPromise
-
-			yield
-			this.parent.appendChild(img)
-			this.parent.classList.add('static-img')
-			resolve()
-		}).bind(this))
+		yield
+		this.parent.appendChild(img)
+		this.parent.classList.add('static-img')
+		resolve(img)
 	}
 }
