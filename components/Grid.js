@@ -12,6 +12,7 @@ export default class Grid extends HTMLElement {
 			card.addEventListener('click', this.getOnClick(card))
 
 			// temporarily set <text> fill to opaque white to allow for selection
+			// TODO: to allow for selection, we have to make SVG display (when an img could otherwise be enough) which causes weird rendering glitch
 			card.addEventListener('mousedown', () => card.classList.add('selecting'))
 			card.addEventListener('mouseup', () => card.classList.remove('selecting'))
 			card.addEventListener('mouseout', () => card.classList.remove('selecting'))
