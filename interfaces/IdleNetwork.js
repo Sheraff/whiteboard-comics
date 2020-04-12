@@ -1,11 +1,8 @@
 import SWState from './SWState.js'
+import makeSingleton from '../functions/makeSingleton.js'
 
-export default class IdleNetwork {
+export default makeSingleton(class IdleNetwork {
 	constructor() {
-		if (!!IdleNetwork.instance)
-			return IdleNetwork.instance
-		IdleNetwork.instance = this
-
 		this.calls = {}
 		this.worker = new Worker('../workers/idleNetworkWorker.js')
 		this.worker.addEventListener('message', this.onMessage.bind(this))
@@ -58,4 +55,4 @@ export default class IdleNetwork {
 		return id
 	}
 	
-}
+})

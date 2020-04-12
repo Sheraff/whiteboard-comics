@@ -10,14 +10,12 @@
 import IndexedDBManager from '../interfaces/IndexedDB.js'
 import IdlePromise from './IdlePromise.js'
 import IdleNetwork from '../interfaces/IdleNetwork.js'
+import makeSingleton from '../functions/makeSingleton.js'
+
 const svgNS = 'http://www.w3.org/2000/svg'
 
-export default class Alphabet {
+export default makeSingleton(class Alphabet {
 	constructor() {
-		if (!!Alphabet.instance)
-			return Alphabet.instance
-		Alphabet.instance = this
-
 		this.charsMap = new Map()
 		this.run()
 
@@ -168,4 +166,4 @@ export default class Alphabet {
 		clips.forEach(clip => fragment.appendChild(clip))
 		defs.appendChild(fragment)
 	}
-}
+})

@@ -1,10 +1,8 @@
-export default class SWState {
+import makeSingleton from '../functions/makeSingleton.js'
+
+export default makeSingleton(class SWState {
 
 	constructor() {
-		if (!!SWState.instance)
-			return SWState.instance
-		SWState.instance = this
-
 		this.promise = new Promise((resolve, reject) => {
 			if(!navigator.serviceWorker) {
 				console.error('navigator.serviceWorker: old browser or missing HTTPS connection', navigator.serviceWorker)
@@ -39,4 +37,4 @@ export default class SWState {
 		this.portMap.set(`${id}-${target}`, port2)
 		return port2
 	}
-}
+})

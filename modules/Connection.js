@@ -1,9 +1,8 @@
-export default class Connection {
+import makeSingleton from '../functions/makeSingleton.js'
+
+export default makeSingleton(class Connection {
 	// TODO: use this to re-fetch graphs that were requested when offline and failed
 	constructor() {
-		if (!!Connection.instance)
-			return Connection.instance
-		Connection.instance = this
 		this.connectionChange()
 		navigator.connection.addEventListener('change', this.connectionChange)
 	}
@@ -26,4 +25,4 @@ export default class Connection {
 				this.onlinePromise = new Promise(resolve => this.onlineResolve = resolve)
 		}
 	}
-}
+})

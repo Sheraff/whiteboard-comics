@@ -1,10 +1,8 @@
-export default class Router {
+import makeSingleton from '../functions/makeSingleton.js'
+
+export default makeSingleton(class Router {
 
 	constructor(initialState) {
-		if (!!Router.instance)
-			return Router.instance
-		Router.instance = this
-
 		history.replaceState(initialState, initialState, location.pathname)
 		addEventListener('popstate', this.popStateListener.bind(this))
 		this.listeners = new Set()
@@ -37,4 +35,4 @@ export default class Router {
 			.replace(/,/gi, ', ')
 			.replace(/([a-z()])(?!$)([^a-z()\s,])/gi, '$1 $2 ')
 	}
-}
+})

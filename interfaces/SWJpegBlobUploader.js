@@ -1,12 +1,10 @@
 import SWState from './SWState.js'
+import makeSingleton from '../functions/makeSingleton.js'
+
 const CACHE_NAME = 'whiteboard-files-cache-v0'
 
-export default class SWJpegBlobUploader {
+export default makeSingleton(class SWJpegBlobUploader {
 	constructor() {
-		if (!!SWJpegBlobUploader.instance)
-			return SWJpegBlobUploader.instance
-		SWJpegBlobUploader.instance = this
-
 		this.SWState = new SWState()
 		this.port = this.SWState.connect('SWJpegBlobUploader', 'jpegBlobUploader')
 		this.port.onmessage = (e) => {
@@ -57,4 +55,4 @@ export default class SWJpegBlobUploader {
 	send(url, data) {
 		this.port.postMessage({ url, data }, [data])
 	}
-}
+})
