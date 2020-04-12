@@ -14,6 +14,7 @@ const URLS = [
 	// '/functions/extendSVG.js',
 	// '/functions/hex2hsl.js',
 	// '/functions/SVGToPNG.js',
+	// '/functions/makeSingleton.js',
 	// '/interfaces/IdleNetwork.js',
 	// '/interfaces/IndexedDB.js',
 	// '/interfaces/SWState.js',
