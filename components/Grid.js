@@ -137,14 +137,14 @@ export default class Grid extends HTMLElement {
 				duration: Math.max(300, card.eraseAnim.duration - 300),
 			})
 
-			await Promise.all([
-				transition,
-				card.eraseAnim.play()
-					.then(() => card.SVGAnim.idlePromise.finish())
-					.then(() => card.SVGAnim.prepare())
-					.then(() => card.eraseAnim.prepare()),
-				card.SVGAnim.idlePromise,
-			])
+			const animation = card.eraseAnim.play()
+				.then(() => card.SVGAnim.idlePromise.finish())
+				.then(() => card.SVGAnim.prepare())
+				.then(() => card.eraseAnim.prepare())
+
+			await transition
+			await animation
+			await card.SVGAnim.idlePromise
 
 			if (after instanceof Function)
 				after()
