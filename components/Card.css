@@ -51,7 +51,19 @@
 ::slotted([slot=external-link]),
 ::slotted([slot=date]),
 span {
-  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+  position: fixed;
+  top: var(--margin);
+  left: var(--margin);
+}
+:host(.visible-meta) ::slotted([slot=internal-link]),
+:host(.visible-meta) ::slotted([slot=author]),
+:host(.visible-meta) ::slotted([slot=external-link]),
+:host(.visible-meta) ::slotted([slot=date]),
+:host(.visible-meta) span {
+  opacity: 1;
+  transition-timing-function: ease-out;
 }
 ::slotted([slot=static]) {
   object-fit: contain;
@@ -77,10 +89,12 @@ span {
 :host([data-top]) ::slotted([slot=static]) {
   display: none;
 }
-:host(.static-img:not([data-top]):not([data-live]):not(:hover)) ::slotted(svg:not([slot])) {
+:host(.static-img:not([data-top]):not([data-live])) ::slotted(svg:not([slot])) {
   display: none;
 }
-:host(.static-img:not([data-top])[data-live]) ::slotted([slot=static]),
-:host(.static-img:hover) ::slotted([slot=static]) {
+:host(.static-img:not([data-top])[data-live]) ::slotted([slot=static]) {
   display: none;
+}
+:host(.static-img:hover) ::slotted([slot=static]) {
+  pointer-events: none;
 }

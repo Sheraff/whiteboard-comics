@@ -128,29 +128,26 @@ export default class Grid extends HTMLElement {
 
 		await card.eraseAnim.idlePromise
 
-		await new Promise(resolve => requestAnimationFrame(async () => {
+		await new Promise(requestAnimationFrame)
 
-			before()
+		before()
 
-			const transition = this.createTransition(card, toggle, {
-				delay: 300,
-				duration: Math.max(300, card.eraseAnim.duration - 300),
-			})
+		const transition = this.createTransition(card, toggle, {
+			delay: 300,
+			duration: Math.max(300, card.eraseAnim.duration - 300),
+		})
 
-			const animation = card.eraseAnim.play()
-				.then(() => card.SVGAnim.idlePromise.finish())
-				.then(() => card.SVGAnim.prepare())
-				.then(() => card.eraseAnim.prepare())
+		const animation = card.eraseAnim.play()
+			.then(() => card.SVGAnim.idlePromise.finish())
+			.then(() => card.SVGAnim.prepare())
+			.then(() => card.eraseAnim.prepare())
 
-			await transition
-			await animation
-			await card.SVGAnim.idlePromise
+		await transition
+		await animation
+		await card.SVGAnim.idlePromise
 
-			if (after instanceof Function)
-				after()
-
-			resolve()
-		}))
+		if (after instanceof Function)
+			after()
 	}
 
 	createTransition(card, transformation, options = {}) {

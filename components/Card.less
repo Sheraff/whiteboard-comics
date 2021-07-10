@@ -57,7 +57,22 @@
 ::slotted([slot=external-link]),
 ::slotted([slot=date]),
 span {
-	display: none;
+	opacity: 0;
+	transition: opacity .3s ease-in;
+	position: fixed;
+	top: var(--margin);
+	left: var(--margin);
+}
+
+:host(.visible-meta) {
+	::slotted([slot=internal-link]),
+	::slotted([slot=author]),
+	::slotted([slot=external-link]),
+	::slotted([slot=date]),
+	span {
+		opacity: 1;
+		transition-timing-function: ease-out;
+	}
 }
 
 ::slotted([slot=static]) {
@@ -89,15 +104,20 @@ span {
 	}
 }
 
-:host(.static-img:not([data-top]):not([data-live]):not(:hover)) {
+:host(.static-img:not([data-top]):not([data-live])) {
 	::slotted(svg:not([slot])) {
 		display: none;
 	}
 }
 
-:host(.static-img:not([data-top])[data-live]), 
-:host(.static-img:hover) {
+:host(.static-img:not([data-top])[data-live]) {
 	::slotted([slot=static]) {
 		display: none;
+	}
+}
+
+:host(.static-img:hover) {
+	::slotted([slot=static]) {
+		pointer-events: none;
 	}
 }

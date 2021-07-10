@@ -3,6 +3,9 @@ import ReadyNode from '../modules/ReadySVGNode.js'
 
 export default class Card extends HTMLElement {
 
+	// TODO: use internal-link slot as .background (and update link src)
+	// so that clicks can always be intercepted (even on right click > open in new tab)
+
 	constructor() {
 		super()
 		this.ReadyNode = new ReadyNode(this)
